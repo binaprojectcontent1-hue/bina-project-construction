@@ -14,6 +14,9 @@ import {
   ShieldCheck,
   ExternalLink,
   Info,
+  Radio,
+  Send,
+  CheckCircle2,
 } from 'lucide-react';
 import { getStoredDeployHookUrl, setStoredDeployHookUrl, triggerCloudflareDeploy } from '../lib/cloudflare';
 import { isSupabaseConfigured } from '../lib/supabase';
@@ -25,9 +28,19 @@ import { Badge } from '../components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { deployRateLimiter } from '../lib/rate-limiter';
 import { validateInput, cloudflareDeployHookSchema } from '../lib/validation-schemas';
+import { useToast } from '../components/ui/Toast';
+import {
+  INDEXNOW_KEY,
+  INDEXNOW_HOST,
+  submitToIndexNow,
+  pingSearchEngines,
+  type IndexingResult,
+} from '../lib/indexing';
 import type { User } from '@supabase/supabase-js';
 
 export const Settings: React.FC<{ user?: User }> = ({ user }) => {
+  const toast = useToast();
+
   // Advanced toggle
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -43,6 +56,12 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
   const [quickDeploying, setQuickDeploying] = useState(false);
   const [quickDeployResult, setQuickDeployResult] = useState<{ success: boolean; message: string } | null>(null);
   const [deployRateInfo, setDeployRateInfo] = useState({ attempts: 0, remainingAttempts: 10, isBlocked: false });
+
+  // IndexNow & Search Engine Indexing State
+  const [indexingRunning, setIndexingRunning] = useState(false);
+  const [manualUrlInput, setManualUrlInput] = useState('');
+  const [manualSubmitting, setManualSubmitting] = useState(false);
+  const [indexingResult, setIndexingResult] = useState<IndexingResult | null>(null);
 
   useEffect(() => {
     setHookUrl(getStoredDeployHookUrl());
@@ -125,6 +144,64 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
       setCfTestResult(res);
     } finally {
       setCfTesting(false);
+    }
+  };
+
+  const handleBroadcastAll = async () => {
+    setIndexingRunning(true);
+    setIndexingResult(null);
+    try {
+      const corePages = [
+        '/',
+        '/tentang-kami',
+        '/layanan',
+        '/portfolio',
+        '/blog',
+        '/kontak',
+      ];
+      const res = await submitToIndexNow(corePages);
+      await pingSearchEngines();
+      setIndexingResult(res);
+
+      if (res.success) {
+        toast.success(
+          'IndexNow & Ping Berhasil',
+          `6 halaman utama dikirim ke Bing, Yandex, dan ping sitemap dikirim ke Google (${res.status === 202 ? '202 Accepted' : '200 OK'}).`
+        );
+      } else {
+        toast.error('Gagal Mengirim ke IndexNow', res.message);
+      }
+    } catch (err: any) {
+      toast.error('Kesalahan Indexing', err?.message || 'Gagal mengirim sinyal indeks.');
+    } finally {
+      setIndexingRunning(false);
+    }
+  };
+
+  const handleManualIndexNow = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!manualUrlInput.trim()) return;
+
+    setManualSubmitting(true);
+    setIndexingResult(null);
+    try {
+      const res = await submitToIndexNow([manualUrlInput.trim()]);
+      await pingSearchEngines();
+      setIndexingResult(res);
+
+      if (res.success) {
+        toast.success(
+          'IndexNow Terkirim',
+          `URL berhasil dikirim ke IndexNow (${res.status === 202 ? '202 Accepted' : '200 OK'}).`
+        );
+        setManualUrlInput('');
+      } else {
+        toast.error('IndexNow Ditolak', res.message);
+      }
+    } catch (err: any) {
+      toast.error('Kesalahan Indexing', err?.message || 'Gagal menghubungi IndexNow.');
+    } finally {
+      setManualSubmitting(false);
     }
   };
 
@@ -251,7 +328,149 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
         </CardContent>
       </Card>
 
-      {/* 2. System Health Status (Reassuring & Clean) */}
+      {/* 2. Instant Search Engine Indexing (IndexNow & Sitemap Ping) */}
+      <Card className="shadow-sm border-slate-200">
+        <CardHeader className="pb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
+                <Radio className="w-5 h-5" />
+              </div>
+              <div>
+                <CardTitle className="text-base font-semibold text-slate-900">
+                  Pengindeksan Instan Mesin Pencari
+                </CardTitle>
+                <CardDescription className="text-xs text-slate-500">
+                  Protokol IndexNow (Bing, Yandex, Seznam, Naver) & Ping Otomatis Sitemap Google
+                </CardDescription>
+              </div>
+            </div>
+            <Badge variant="success" className="w-fit text-[11px] gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-700 border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>IndexNow Aktif</span>
+            </Badge>
+          </div>
+        </CardHeader>
+
+        <CardContent className="pt-2 space-y-4">
+          <div className="p-3.5 rounded-xl bg-slate-50 text-xs text-slate-600 leading-relaxed flex items-start gap-3">
+            <Info className="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium text-slate-800 mb-0.5">Bagaimana cara kerja pengindeksan instan ini?</p>
+              <p>
+                Sistem ini bekerja serupa dengan fitur <em>XML-RPC Ping</em> pada WordPress, namun memakai standar modern <strong>IndexNow</strong>.
+                Setiap kali Anda menekan tombol <strong>Simpan & Deploy</strong> pada artikel atau portofolio, URL konten baru otomatis ditembakkan ke mesin pencari dalam hitungan detik tanpa harus menunggu crawler datang berhari-hari.
+              </p>
+            </div>
+          </div>
+
+          {/* Protocol Configuration Status Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3 rounded-lg border border-slate-200 bg-white space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold text-slate-500 uppercase">Kunci Verifikasi Domain</span>
+                <a
+                  href={`https://${INDEXNOW_HOST}/${INDEXNOW_KEY}.txt`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-blue-600 hover:underline inline-flex items-center gap-1"
+                >
+                  <span>Cek Berkas Kunci</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              <p className="font-mono text-xs text-slate-800 break-all select-all font-medium">
+                {INDEXNOW_KEY}
+              </p>
+            </div>
+
+            <div className="p-3 rounded-lg border border-slate-200 bg-white space-y-1">
+              <span className="text-[11px] font-semibold text-slate-500 uppercase block">Mitra Mesin Pencari</span>
+              <p className="text-xs text-slate-700">
+                Microsoft Bing, Google (via Sitemap Ping), Yandex, Seznam, Naver
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Actions & Manual Submission Form */}
+          <div className="pt-2 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="default"
+                onClick={handleBroadcastAll}
+                disabled={indexingRunning}
+                className="gap-2 text-xs font-semibold h-10 border-slate-300 text-slate-800 hover:bg-slate-50"
+              >
+                {indexingRunning ? (
+                  <RefreshCw className="w-4 h-4 animate-spin text-slate-600" />
+                ) : (
+                  <Send className="w-4 h-4 text-emerald-600" />
+                )}
+                <span>{indexingRunning ? 'Mengirim ke Mesin Pencari...' : 'Kirim Seluruh Halaman Utama Sekarang'}</span>
+              </Button>
+
+              <span className="text-xs text-slate-400 hidden sm:inline">•</span>
+              <span className="text-xs text-slate-500">
+                Mengirim 6 halaman utama (Beranda, Layanan, Portofolio, Blog, Kontak) ke IndexNow & ping sitemap Google
+              </span>
+            </div>
+
+            {/* Manual URL Submit Form */}
+            <form onSubmit={handleManualIndexNow} className="flex flex-col sm:flex-row gap-2 pt-1">
+              <Input
+                type="text"
+                placeholder="Contoh: /blog/tips-membangun-rumah atau https://binaproject.com/portfolio/proyek-a"
+                value={manualUrlInput}
+                onChange={(e) => setManualUrlInput(e.target.value)}
+                className="text-xs font-mono h-10 flex-1"
+              />
+              <Button
+                type="submit"
+                size="default"
+                disabled={manualSubmitting || !manualUrlInput.trim()}
+                className="bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-semibold h-10 px-4 shrink-0 gap-1.5"
+              >
+                {manualSubmitting ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-3.5 h-3.5" />
+                )}
+                <span>Kirim URL ke IndexNow</span>
+              </Button>
+            </form>
+          </div>
+
+          {/* Indexing Feedback Result */}
+          {indexingResult && (
+            <div
+              className={`p-3 rounded-lg text-xs flex items-start gap-2.5 border animate-in fade-in-50 ${
+                indexingResult.success
+                  ? 'bg-emerald-50/80 border-emerald-200 text-emerald-900'
+                  : 'bg-rose-50/80 border-rose-200 text-rose-900'
+              }`}
+            >
+              {indexingResult.success ? (
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-600 mt-0.5" />
+              ) : (
+                <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600 mt-0.5" />
+              )}
+              <div className="space-y-1">
+                <p className="font-semibold">{indexingResult.message}</p>
+                {indexingResult.urls.length > 0 && (
+                  <p className="text-[11px] text-slate-600">
+                    URL terkirim ({indexingResult.urls.length}):{' '}
+                    <span className="font-mono text-slate-800">{indexingResult.urls.join(', ')}</span>
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* 3. System Health Status (Reassuring & Clean) */}
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">

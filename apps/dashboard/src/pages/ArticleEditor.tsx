@@ -27,6 +27,7 @@ import { ImageUploader } from '../components/ImageUploader';
 import { RichTextEditor } from '../components/RichTextEditor';
 import { HelpTooltip } from '../components/ui/HelpTooltip';
 import { triggerCloudflareDeploy } from '../lib/cloudflare';
+import { submitContentUrl } from '../lib/indexing';
 import { Button } from '../components/ui/button';
 import { Input, Textarea } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
@@ -270,12 +271,18 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
       if (autoDeploy) {
         setDeploying(true);
-        const deployToastId = toast.loading('Memicu deployment ke Cloudflare Pages...');
-        const deployRes = await triggerCloudflareDeploy();
+        const deployToastId = toast.loading('Memicu deployment & sinyal pengindeksan...');
+        const [deployRes] = await Promise.all([
+          triggerCloudflareDeploy(),
+          submitContentUrl('blog', slug).catch(() => null),
+        ]);
         toast.dismiss(deployToastId);
         if (deployRes.success) {
-          toast.success('Deployment Terpicu', 'Website sedang diperbarui otomatis (~45s).');
-          setSuccess('Artikel tersimpan & Trigger Deploy ke Cloudflare Pages berhasil dikirim!');
+          toast.success(
+            'Deploy & Indexing Terpicu',
+            'Website sedang diperbarui & URL telah dikirim ke IndexNow untuk pengindeksan instan.'
+          );
+          setSuccess('Artikel tersimpan, Trigger Deploy ke Cloudflare Pages & IndexNow berhasil dikirim!');
         } else {
           toast.error('Deploy Gagal', deployRes.message);
           setError('Artikel tersimpan, namun webhook Cloudflare gagal: ' + deployRes.message);

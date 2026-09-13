@@ -10,7 +10,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "postbuild": "node -e \"const fs=require('fs'); if(fs.existsSync('dist/sitemap-index.xml')) fs.copyFileSync('dist/sitemap-index.xml', 'dist/sitemap.xml');\"",
+    "postbuild": "node scripts/ping-sitemap.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
