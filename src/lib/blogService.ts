@@ -36,6 +36,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | undefine
       .from('articles')
       .select('*')
       .eq('slug', slug)
+      .or('status.eq.published,status.is.null')
       .single();
 
     if (!error && data) {

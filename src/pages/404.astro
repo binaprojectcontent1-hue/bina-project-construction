@@ -2,6 +2,28 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Breadcrumb from '@components/Breadcrumb.astro';
 import { Icon } from 'astro-icon/components';
+import { supabase } from '@lib/supabase';
+
+// Pre-fetch redirects from Supabase at build time for instant client-side resolution
+let staticRedirects: Record<string, string> = {};
+if (supabase) {
+  try {
+    const { data } = await supabase.from('redirects').select('source_path, target_path');
+    if (data && Array.isArray(data)) {
+      for (const r of data) {
+        if (r.source_path && r.target_path) {
+          const normalized = r.source_path.replace(/\/$/, '').toLowerCase();
+          staticRedirects[normalized] = r.target_path;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Redirect pre-fetch notice (non-fatal):', err);
+  }
+}
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <BaseLayout
@@ -9,6 +31,50 @@ import { Icon } from 'astro-icon/components';
   description="Maaf, halaman yang Anda tuju tidak ditemukan atau telah dipindahkan."
   noindex={true}
 >
+  <script is:inline define:vars={{ staticRedirects, supabaseUrl, supabaseKey }}>
+    (function () {
+      try {
+        var rawPath = window.location.pathname;
+        var cleanPath = rawPath.replace(/\/$/, '').toLowerCase();
+        if (!cleanPath) return;
+
+        // 1. Instant static lookup (zero network latency)
+        if (staticRedirects && staticRedirects[cleanPath]) {
+          window.location.replace(staticRedirects[cleanPath] + window.location.search + window.location.hash);
+          return;
+        }
+
+        // 2. Dynamic runtime lookup against Supabase REST API (for redirects added after SSG build)
+        if (supabaseUrl && supabaseKey) {
+          var encoded = encodeURIComponent(cleanPath);
+          var apiUrl =
+            supabaseUrl.replace(/\/$/, '') +
+            '/rest/v1/redirects?or=(source_path.eq.' +
+            encoded +
+            ',source_path.eq.' +
+            encodeURIComponent(cleanPath + '/') +
+            ')&select=target_path&limit=1';
+
+          fetch(apiUrl, {
+            headers: {
+              apikey: supabaseKey,
+              Authorization: 'Bearer ' + supabaseKey,
+            },
+          })
+            .then(function (res) {
+              return res.json();
+            })
+            .then(function (records) {
+              if (records && records.length > 0 && records[0].target_path) {
+                window.location.replace(records[0].target_path + window.location.search + window.location.hash);
+              }
+            })
+            .catch(function () {});
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <Breadcrumb title="404 - Halaman Tidak Ditemukan" />
 
   <section class="space">

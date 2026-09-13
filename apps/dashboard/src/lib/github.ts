@@ -167,7 +167,17 @@ export async function uploadToGitHubStorage(
       reader.readAsDataURL(file);
     });
 
-    const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${path}`;
+    // Resolve target path: ensure clean filename and extension if only directory is provided
+    const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+    const cleanFileName = file.name
+      .replace(/\.[^/.]+$/, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '-');
+    const finalPath = path.includes('.')
+      ? path
+      : `${path.replace(/\/$/, '')}/${Date.now()}-${cleanFileName}.${fileExt}`;
+
+    const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${finalPath}`;
 
     const checkResponse = await fetch(apiUrl, {
       headers: {
@@ -190,7 +200,7 @@ export async function uploadToGitHubStorage(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: `Upload: ${path}`,
+        message: `Upload: ${finalPath}`,
         content: base64Content,
         branch: config.branch,
         ...(sha && { sha }),
@@ -203,7 +213,7 @@ export async function uploadToGitHubStorage(
     }
 
     const result = await uploadResponse.json();
-    const cdn_url = `https://cdn.jsdelivr.net/gh/${config.owner}/${config.repo}@${config.branch}/${path}`;
+    const cdn_url = `https://cdn.jsdelivr.net/gh/${config.owner}/${config.repo}@${config.branch}/${finalPath}`;
 
     return {
       url: result.content.html_url,

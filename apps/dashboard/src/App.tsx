@@ -226,7 +226,8 @@ export function App() {
         await supabase.auth.signOut();
       }
       setSession(null);
-      window.location.href = '/login';
+      window.location.hash = '';
+      window.location.href = '/';
     }
   };
 

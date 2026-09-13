@@ -14,17 +14,20 @@ const totalCount = projects.length;
 const interiorCount = projects.filter((p) => {
   const c = (p.category || '').toLowerCase();
   const t = (p.title || '').toLowerCase();
-  return c.includes('interior') || t.includes('interior') || c.includes('kitchen') || t.includes('kitchen');
-}).length;
-const konstruksiCount = projects.filter((p) => {
-  const c = (p.category || '').toLowerCase();
-  const t = (p.title || '').toLowerCase();
-  return c.includes('konstruksi') || t.includes('konstruksi');
+  return c.includes('interior') || t.includes('interior') || c.includes('kitchen') || t.includes('kitchen') || c.includes('dapur') || t.includes('dapur');
 }).length;
 const eksteriorCount = projects.filter((p) => {
   const c = (p.category || '').toLowerCase();
   const t = (p.title || '').toLowerCase();
   return c.includes('eksterior') || t.includes('eksterior');
+}).length;
+const konstruksiCount = projects.filter((p) => {
+  const c = (p.category || '').toLowerCase();
+  const t = (p.title || '').toLowerCase();
+  const isEks = c.includes('eksterior') || t.includes('eksterior');
+  const isInt = c.includes('interior') || t.includes('interior') || c.includes('kitchen') || t.includes('kitchen') || c.includes('dapur') || t.includes('dapur');
+  const isKon = c.includes('konstruksi') || t.includes('konstruksi');
+  return isKon || (!isEks && !isInt);
 }).length;
 ---
 

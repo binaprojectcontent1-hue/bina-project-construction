@@ -41,6 +41,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | undefine
       .from('projects')
       .select('*')
       .eq('slug', slug)
+      .or('status.eq.published,status.is.null')
       .single();
 
     if (!error && data) {

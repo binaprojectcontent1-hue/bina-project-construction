@@ -23,6 +23,7 @@ class SessionManager {
   private static instance: SessionManager;
   private config: SessionConfig;
   private lastActivityTime: number = Date.now();
+  private lastResetTime: number = 0;
   private idleTimerId?: NodeJS.Timeout;
   private activityListenersAdded: boolean = false;
 
@@ -56,11 +57,18 @@ class SessionManager {
   }
 
   /**
-   * Reset idle timer on user activity
+   * Reset idle timer on user activity with 5s throttling to protect main thread
    */
   private resetIdleTimer = (): void => {
-    this.lastActivityTime = Date.now();
+    const now = Date.now();
+    this.lastActivityTime = now;
     
+    // Throttle timer recreation to once every 5 seconds
+    if (now - this.lastResetTime < 5000) {
+      return;
+    }
+    this.lastResetTime = now;
+
     // Clear existing timer
     if (this.idleTimerId) {
       clearTimeout(this.idleTimerId);
@@ -84,9 +92,10 @@ class SessionManager {
       // Show logout message
       this.showLogoutMessage('Sesi Anda berakhir karena tidak ada aktivitas selama 30 menit.');
       
-      // Redirect to login
+      // Redirect to home/login
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.hash = '';
+        window.location.href = '/';
       }, 2000);
     } catch (error) {
       errorLogger.logError(
@@ -195,7 +204,8 @@ class SessionManager {
       this.showLogoutMessage(reason);
       
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.hash = '';
+        window.location.href = '/';
       }, 2000);
     } catch (error) {
       errorLogger.logError(
