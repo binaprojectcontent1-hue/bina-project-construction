@@ -4,7 +4,7 @@ import Breadcrumb from '@components/Breadcrumb.astro';
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import aboutImg3 from '@assets/images/normal/about_3.jpg';
-import CoverageMap from '@components/CoverageMap';
+import LiveProjectsMap from '@components/LiveProjectsMap';
 import SectionHeader from '@components/SectionHeader.astro';
 import ProcessSection from '@components/sections/ProcessSection.astro';
 import TeamSection from '@components/TeamSection.astro';
@@ -72,14 +72,14 @@ import TeamSection from '@components/TeamSection.astro';
     </div>
   </div>
 
-  <!--============================== Coverage Area Section (Visual Peta Langsung) ==============================-->
-  <section class="coverage-sec space-bottom" id="coverage-sec">
+  <!--============================== Live Projects Map Section ==============================-->
+  <section class="coverage-sec space-bottom" id="proyek-berjalan">
     <div class="container">
       <SectionHeader
-        badge="Wilayah Layanan"
+        badge="Proyek Berjalan"
         badgeIcon="solar:map-point-wave-bold"
-        title="Jangkauan Wilayah Operasional"
-        description="Bina Project berpusat di Kota Malang sebagai kantor studio dan workshop utama. Didukung tim dan armada mandiri, kami siap melayani pengerjaan konstruksi dan interior di wilayah Malang Raya, Pasuruan, Surabaya, dan sekitarnya."
+        title="Peta Progres Proyek Lapangan"
+        description="Pantau proyek konstruksi dan interior yang sedang dikerjakan oleh tim Bina Project secara real-time di berbagai lokasi."
         align="center"
       />
 
@@ -87,7 +87,7 @@ import TeamSection from '@components/TeamSection.astro';
       <div class="row">
         <div class="col-12">
           <div class="coverage-map-presentation-wrapper">
-            <CoverageMap client:visible />
+            <LiveProjectsMap client:visible />
           </div>
         </div>
       </div>

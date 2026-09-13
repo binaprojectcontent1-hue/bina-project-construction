@@ -9,7 +9,7 @@ export const MAIN_NAV: readonly NavItem[] = [
   { name: 'Home', href: '/', icon: 'solar:home-2-linear' },
   { name: 'Tentang Kami', href: '/about', icon: 'solar:users-group-rounded-linear' },
   { name: 'Portfolio', href: '/portfolio', icon: 'solar:city-linear' },
-  { name: 'Wilayah Layanan', href: '/about#coverage-sec', icon: 'solar:map-point-linear' },
+  { name: 'Proyek Berjalan', href: '/about#proyek-berjalan', icon: 'solar:map-point-linear' },
   { name: 'Artikel', href: '/blog', icon: 'solar:document-text-linear' },
   { name: 'Kontak Kami', href: '/contact', icon: 'solar:headphones-round-sound-linear' },
 ] as const;
