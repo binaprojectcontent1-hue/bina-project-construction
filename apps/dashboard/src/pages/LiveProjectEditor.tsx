@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { liveProjectFormSchema } from '../schemas/liveProjectSchema';
 import { LocationPickerMap } from '../components/LocationPickerMap';
 import { LiveProjectImageUploader } from '../components/LiveProjectImageUploader';
+import { resolveDashboardMediaUrl } from '../lib/media';
 import { FALLBACK_LIVE_PROJECTS } from '../../../../src/data/liveProjects';
 import { Button } from '../components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
@@ -531,7 +532,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                 {imageUrl && !imgError ? (
                   <div className="w-full aspect-square relative overflow-hidden bg-slate-100">
                     <img
-                      src={imageUrl}
+                      src={resolveDashboardMediaUrl(imageUrl)}
                       alt={title || 'Preview Proyek'}
                       className="w-full h-full object-cover"
                     />

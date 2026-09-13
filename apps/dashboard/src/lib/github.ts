@@ -154,7 +154,7 @@ export async function uploadToGitHubStorage(
   file: File,
   path: string,
   config: GitHubStorageConfig
-): Promise<{ url: string; cdn_url: string }> {
+): Promise<{ url: string; cdn_url: string; own_domain_url: string; path: string }> {
   try {
     const reader = new FileReader();
     const base64Content = await new Promise<string>((resolve, reject) => {
@@ -214,10 +214,13 @@ export async function uploadToGitHubStorage(
 
     const result = await uploadResponse.json();
     const cdn_url = `https://cdn.jsdelivr.net/gh/${config.owner}/${config.repo}@${config.branch}/${finalPath}`;
+    const own_domain_url = `https://binaproject.com/media/${finalPath}`;
 
     return {
       url: result.content.html_url,
       cdn_url,
+      own_domain_url,
+      path: finalPath,
     };
   } catch (e: any) {
     throw new Error(`Upload gagal: ${e.message}`);

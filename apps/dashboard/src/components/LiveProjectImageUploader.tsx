@@ -4,13 +4,14 @@ import {
   Image as ImageIcon,
   RefreshCw,
   X,
-  GitBranch,
+  Globe,
   CheckCircle2,
   AlertCircle,
   ExternalLink,
 } from 'lucide-react';
 import { isGitHubConfigured, getGitHubConfig, uploadToGitHubStorage } from '../lib/github';
 import { supabase } from '../lib/supabase';
+import { resolveDashboardMediaUrl } from '../lib/media';
 import { compressImageClientSide, formatFileSize } from '../utils/imageCompression';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -28,14 +29,15 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
   onChange,
   folder = 'live-projects',
 }) => {
-  const [uploading, setUploading] = useState(false);
-  const [compressing, setCompressing] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [showUrlInput, setShowUrlInput] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
+
+  const [uploading, setUploading] = useState(false);
+  const [compressing, setCompressing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [showUrlInput, setShowUrlInput] = useState(false);
 
   const ghConfigured = isGitHubConfigured();
   const ghConfig = getGitHubConfig();
@@ -46,35 +48,34 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
       return;
     }
 
-    setError(null);
-    setStatusMessage(null);
-
     try {
+      setError(null);
       setCompressing(true);
-      setStatusMessage('Mengoptimalkan ukuran gambar...');
+      setStatusMessage('Mengompresi foto secara otomatis...');
 
-      // Smart client-side compression
+      // 1. Client-side compression
       const { file, wasCompressed, originalSize, compressedSize } =
-        await compressImageClientSide(rawFile, 1200, 0.88);
-
+        await compressImageClientSide(rawFile);
       setCompressing(false);
 
       if (wasCompressed) {
-        setStatusMessage(
-          `Kompresi sukses: ${formatFileSize(originalSize)} ➔ ${formatFileSize(compressedSize)}`
+        toast.info(
+          'Optimasi Foto',
+          `Ukuran foto dioptimalkan: ${formatFileSize(originalSize)} ➔ ${formatFileSize(compressedSize)}`
         );
       }
 
       setUploading(true);
-      setStatusMessage('Mengunggah ke GitHub Media (bina-media)...');
+      setStatusMessage('Menyimpan ke Cloud Media Resmi Bina Project...');
 
-      // 1. Primary: Upload directly to GitHub Storage (bina-media)
+      // 1. Primary: Upload to GitHub Storage and assign own domain proxy URL
       if (ghConfigured && ghConfig) {
         const ghRes = await uploadToGitHubStorage(file, folder, ghConfig);
-        onChange(ghRes.cdn_url);
+        // Save own domain URL (https://binaproject.com/media/live-projects/...)
+        onChange(ghRes.own_domain_url);
         toast.success(
           'Foto Berhasil Diunggah!',
-          'Tersimpan di GitHub bina-media dan didistribusikan via jsDelivr CDN.'
+          `Tersimpan di Cloud Media Resmi (https://binaproject.com/media/${folder}/...)`
         );
         setStatusMessage(null);
         return;
@@ -98,22 +99,22 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
 
         const { data } = supabase.storage.from('media').getPublicUrl(filePath);
         if (data?.publicUrl) {
-          onChange(data.publicUrl);
-          toast.success('Foto Diunggah ke Supabase Storage');
+          onChange(`https://binaproject.com/media/${filePath}`);
+          toast.success('Foto Diunggah ke Media Cloud');
           setStatusMessage(null);
           return;
         }
       }
 
-      throw new Error('Penyimpanan GitHub Storage belum dikonfigurasi.');
+      throw new Error('Penyimpanan media belum terkonfigurasi di pengaturan.');
     } catch (err: any) {
       console.error('Failed to upload image:', err);
-      const errMsg = err?.message || 'Gagal mengunggah foto.';
-      setError(errMsg);
-      toast.error('Upload Gagal', errMsg);
+      setError(err?.message || 'Gagal mengunggah foto.');
+      toast.error('Upload Gagal', err?.message || 'Terjadi kesalahan saat mengunggah foto.');
     } finally {
-      setCompressing(false);
       setUploading(false);
+      setCompressing(false);
+      setStatusMessage(null);
     }
   };
 
@@ -141,7 +142,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
     }
   };
 
-  const isJsdelivrUrl = value.includes('cdn.jsdelivr.net');
+  const isOwnDomainUrl = value.includes('binaproject.com/media') || value.startsWith('/media');
 
   return (
     <div className="space-y-3">
@@ -161,10 +162,10 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
         </span>
         <Badge
           variant="secondary"
-          className="text-[10px] font-semibold gap-1 text-slate-700 bg-slate-100 border border-slate-200/80 rounded-full py-0.5 px-2.5"
+          className="text-[10px] font-semibold gap-1 text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded-full py-0.5 px-2.5"
         >
-          <GitBranch className="w-3 h-3 text-[#22416D]" />
-          <span>GitHub + jsDelivr CDN</span>
+          <Globe className="w-3 h-3 text-emerald-600" />
+          <span>Cloud Media Resmi (binaproject.com)</span>
         </Badge>
       </div>
 
@@ -181,7 +182,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
         <div className="w-full aspect-square rounded-2xl border border-slate-200 bg-slate-50 flex flex-col items-center justify-center p-6 text-center shadow-xs">
           <RefreshCw className="w-8 h-8 text-[#22416D] animate-spin mb-3" />
           <p className="text-xs font-bold text-slate-800">
-            {compressing ? 'Mengompresi Foto...' : 'Mengunggah ke GitHub Media...'}
+            {compressing ? 'Mengompresi Foto...' : 'Mengunggah ke Media Cloud...'}
           </p>
           <p className="text-[11px] text-slate-500 mt-1 font-medium">{statusMessage}</p>
         </div>
@@ -190,7 +191,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
         <div className="space-y-2">
           <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 shadow-xs group">
             <img
-              src={value}
+              src={resolveDashboardMediaUrl(value)}
               alt="Dokumentasi Proyek"
               className="w-full h-full object-cover"
               onError={(e) => {
@@ -204,10 +205,10 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
               <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22416D] text-white shadow-sm">
                 Rasio 1:1
               </span>
-              {isJsdelivrUrl && (
+              {isOwnDomainUrl && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-sm flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
-                  <span>jsDelivr CDN</span>
+                  <span>binaproject.com</span>
                 </span>
               )}
             </div>
@@ -238,14 +239,15 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-            <span className="truncate max-w-[220px] font-mono text-[10px]" title={value}>
-              {value}
+          {/* Quick Info & Toggle Manual URL */}
+          <div className="flex items-center justify-between text-[11px] text-slate-500 px-1">
+            <span className="truncate max-w-[200px] font-mono text-[10px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
+              {value.length > 34 ? `${value.slice(0, 34)}...` : value}
             </span>
             <button
               type="button"
               onClick={() => setShowUrlInput(!showUrlInput)}
-              className="text-[#22416D] hover:underline font-semibold cursor-pointer shrink-0 ml-2"
+              className="text-[#22416D] hover:underline font-semibold text-[11px] cursor-pointer"
             >
               {showUrlInput ? 'Sembunyikan URL' : 'Edit URL'}
             </button>
@@ -271,11 +273,11 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
             Klik atau Geser Foto Lapangan
           </h4>
           <p className="text-xs text-slate-500 mt-1 max-w-[210px] leading-relaxed">
-            Format JPG, PNG, atau WebP. Otomatis dikompresi & disimpan ke repository GitHub.
+            Format JPG, PNG, atau WebP. Otomatis dikompresi & disajikan via domain resmi binaproject.com.
           </p>
-          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-medium border border-slate-200/60">
-            <GitBranch className="w-3 h-3 text-[#22416D]" />
-            <span>Target: github.com/{ghConfig?.owner || '...'}/{ghConfig?.repo || 'bina-media'}</span>
+          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-semibold border border-emerald-200/60">
+            <Globe className="w-3 h-3 text-emerald-600" />
+            <span>Target: https://binaproject.com/media/live-projects/...</span>
           </div>
         </div>
       )}
@@ -290,7 +292,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
             pill
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="https://cdn.jsdelivr.net/... atau URL gambar"
+            placeholder="https://binaproject.com/media/... atau URL gambar"
             className="text-xs placeholder:text-slate-400 border-slate-200"
           />
         </div>

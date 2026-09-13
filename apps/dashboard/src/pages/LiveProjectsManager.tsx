@@ -24,6 +24,7 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Skeleton } from '../components/ui/skeleton';
 import { useToast } from '../components/ui/Toast';
+import { resolveDashboardMediaUrl } from '../lib/media';
 import { FALLBACK_LIVE_PROJECTS } from '../../../../src/data/liveProjects';
 
 export interface LiveProjectRecord {
@@ -423,7 +424,7 @@ create policy "Authenticated users have full access to live projects" on public.
                       <div className="flex items-center gap-3.5">
                         {item.image_url ? (
                           <img
-                            src={item.image_url}
+                            src={resolveDashboardMediaUrl(item.image_url)}
                             alt={item.title}
                             className="w-12 h-12 rounded-xl object-cover aspect-square bg-slate-100 flex-shrink-0 shadow-2xs border border-slate-200"
                           />
@@ -526,7 +527,7 @@ create policy "Authenticated users have full access to live projects" on public.
                 <div className="relative w-full aspect-square bg-slate-100 overflow-hidden">
                   {item.image_url ? (
                     <img
-                      src={item.image_url}
+                      src={resolveDashboardMediaUrl(item.image_url)}
                       alt={item.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />

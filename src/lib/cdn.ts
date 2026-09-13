@@ -20,7 +20,29 @@ export function getMediaUrl(path: string): string {
     return `/media/${subpath}`;
   }
 
-  // 2. If it's already an absolute URL (and not Supabase), return as is
+  // 2. If path is own-domain https://binaproject.com/media/...
+  const ownDomainPattern = /^https?:\/\/(?:www\.)?binaproject\.com\/media\/(.+)$/;
+  const ownMatch = path.match(ownDomainPattern);
+  if (ownMatch && ownMatch[1]) {
+    const subpath = ownMatch[1];
+    if (import.meta.env.DEV) {
+      return `https://cdn.jsdelivr.net/gh/${cdnRepo}@${cdnBranch}/${subpath}`;
+    }
+    return `/media/${subpath}`;
+  }
+
+  // 3. If path is a jsDelivr CDN URL pointing to GitHub media repo, normalize
+  const jsdelivrPattern = /^https?:\/\/cdn\.jsdelivr\.net\/gh\/[^/@]+@[^/]+\/(.+)$/;
+  const jsdelivrMatch = path.match(jsdelivrPattern);
+  if (jsdelivrMatch && jsdelivrMatch[1]) {
+    const subpath = jsdelivrMatch[1];
+    if (import.meta.env.DEV) {
+      return `https://cdn.jsdelivr.net/gh/${cdnRepo}@${cdnBranch}/${subpath}`;
+    }
+    return `/media/${subpath}`;
+  }
+
+  // 4. If it's already an external absolute URL (e.g. Unsplash), return as is
   if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('//') || path.startsWith('data:')) {
     return path;
   }

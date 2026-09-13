@@ -3,6 +3,7 @@ import type { Map as LeafletMap, Marker as LeafletMarker } from 'leaflet';
 import type { LiveProject } from '../types/liveProject';
 import { FALLBACK_LIVE_PROJECTS } from '../data/liveProjects';
 import { createClient } from '@supabase/supabase-js';
+import { getMediaUrl } from '../lib/cdn';
 import 'leaflet/dist/leaflet.css';
 import '@styles/coverage.css';
 
@@ -171,7 +172,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           ${
             proj.image_url
               ? `<div class="live-project-popup-thumb-1to1">
-                  <img src="${proj.image_url}" alt="${proj.title}" class="live-project-popup-img" />
+                  <img src="${getMediaUrl(proj.image_url)}" alt="${proj.title}" class="live-project-popup-img" />
                   <span class="live-project-popup-category">${proj.category}</span>
                 </div>`
               : `<div class="live-project-popup-category-bar"><span class="live-project-popup-category">${proj.category}</span></div>`
