@@ -3,6 +3,9 @@
   "type": "module",
   "version": "2.0.0",
   "description": "Bina Project Construction & Interior Official Website",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
