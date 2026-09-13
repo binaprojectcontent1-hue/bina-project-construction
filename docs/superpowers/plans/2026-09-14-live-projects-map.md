@@ -1,6 +1,6 @@
 # Live Projects Map Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Transform the static "Wilayah Layanan" map into an interactive "Peta Proyek Berjalan" (Live Projects Map) showing real-time on-going project locations and progress percentages across East Java, and build an intuitive management module in the Admin Dashboard for non-programmers.
 
@@ -30,7 +30,7 @@
 **Interfaces:**
 - Produces: `public.live_projects` table schema, indexes, RLS policies, and 4 starter rows.
 
-- [ ] **Step 1: Write the Supabase SQL migration file**
+- [x] **Step 1: Write the Supabase SQL migration file**
 
 ```sql
 -- Migration: 20260914_live_projects.sql
@@ -122,7 +122,7 @@ values
 on conflict do nothing;
 ```
 
-- [ ] **Step 2: Commit the migration file**
+- [x] **Step 2: Commit the migration file**
 
 ```bash
 git add supabase/migrations/20260914_live_projects.sql
@@ -140,7 +140,7 @@ git commit -m "feat(db): add live_projects table migration and starter seed data
 **Interfaces:**
 - Produces: `LiveProject` TypeScript interface and `FALLBACK_LIVE_PROJECTS` array.
 
-- [ ] **Step 1: Create `src/types/liveProject.ts`**
+- [x] **Step 1: Create `src/types/liveProject.ts`**
 
 ```typescript
 export interface LiveProject {
@@ -159,7 +159,7 @@ export interface LiveProject {
 }
 ```
 
-- [ ] **Step 2: Create `src/data/liveProjects.ts`**
+- [x] **Step 2: Create `src/data/liveProjects.ts`**
 
 ```typescript
 import type { LiveProject } from '../types/liveProject';
@@ -216,7 +216,7 @@ export const FALLBACK_LIVE_PROJECTS: LiveProject[] = [
 ];
 ```
 
-- [ ] **Step 3: Commit types and fallback data**
+- [x] **Step 3: Commit types and fallback data**
 
 ```bash
 git add src/types/liveProject.ts src/data/liveProjects.ts
@@ -234,7 +234,7 @@ git commit -m "feat(data): add LiveProject types and fallback dataset"
 - Consumes: `LiveProject` from `src/types/liveProject.ts`, `FALLBACK_LIVE_PROJECTS` from `src/data/liveProjects.ts`, `supabase` client from `@supabase/supabase-js`.
 - Produces: `<LiveProjectsMap />` React component.
 
-- [ ] **Step 1: Write `src/components/LiveProjectsMap.tsx`**
+- [x] **Step 1: Write `src/components/LiveProjectsMap.tsx`**
 
 Implement:
 1. Leaflet map container centered on East Java (`[-7.95, 112.62]`, zoom 10).
@@ -255,12 +255,12 @@ Implement:
    - Category filter pills (Semua, Konstruksi, Renovasi, Interior).
 5. Supabase data fetch with graceful fallback to `FALLBACK_LIVE_PROJECTS`.
 
-- [ ] **Step 2: Verify component with `npx astro check`**
+- [x] **Step 2: Verify component with `npx astro check`**
 
 Run: `npx astro check`
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit map component**
+- [x] **Step 3: Commit map component**
 
 ```bash
 git add src/components/LiveProjectsMap.tsx
@@ -279,14 +279,14 @@ git commit -m "feat(ui): create LiveProjectsMap component with architectural pin
 - Replaces `<CoverageMap />` with `<LiveProjectsMap client:visible />` in `about.astro`.
 - Updates navigation link from "Wilayah Layanan" to "Proyek Berjalan".
 
-- [ ] **Step 1: Update `src/data/navigation.ts`**
+- [x] **Step 1: Update `src/data/navigation.ts`**
 
 Change line 12:
 ```typescript
 { name: 'Proyek Berjalan', href: '/about#proyek-berjalan', icon: 'solar:map-point-linear' },
 ```
 
-- [ ] **Step 2: Update `src/pages/about.astro`**
+- [x] **Step 2: Update `src/pages/about.astro`**
 
 Replace the old Coverage section:
 - Section ID: `#proyek-berjalan`
@@ -297,12 +297,12 @@ Replace the old Coverage section:
   - `description="Pantau proyek konstruksi dan interior yang sedang dikerjakan oleh tim Bina Project secara real-time di berbagai lokasi."`
 - Component: `<LiveProjectsMap client:visible />`
 
-- [ ] **Step 3: Run `npx astro check` to verify types and templates**
+- [x] **Step 3: Run `npx astro check` to verify types and templates**
 
 Run: `npx astro check`
 Expected: 0 errors.
 
-- [ ] **Step 4: Commit website integration**
+- [x] **Step 4: Commit website integration**
 
 ```bash
 git add src/data/navigation.ts src/pages/about.astro
@@ -320,14 +320,14 @@ git commit -m "feat(pages): integrate LiveProjectsMap and update navigation to P
 **Interfaces:**
 - Produces: `liveProjectFormSchema` and `LiveProjectFormData` in dashboard.
 
-- [ ] **Step 1: Install Leaflet in dashboard workspace**
+- [x] **Step 1: Install Leaflet in dashboard workspace**
 
 Run:
 ```bash
 npm --prefix apps/dashboard install leaflet @types/leaflet
 ```
 
-- [ ] **Step 2: Create `apps/dashboard/src/schemas/liveProjectSchema.ts`**
+- [x] **Step 2: Create `apps/dashboard/src/schemas/liveProjectSchema.ts`**
 
 ```typescript
 import { z } from 'zod';
@@ -365,12 +365,12 @@ export const liveProjectFormSchema = z.object({
 export type LiveProjectFormData = z.infer<typeof liveProjectFormSchema>;
 ```
 
-- [ ] **Step 3: Run `npm run typecheck:dash` to verify schema**
+- [x] **Step 3: Run `npm run typecheck:dash` to verify schema**
 
 Run: `npm run typecheck:dash`
 Expected: 0 errors.
 
-- [ ] **Step 4: Commit dashboard schema and dependencies**
+- [x] **Step 4: Commit dashboard schema and dependencies**
 
 ```bash
 git add apps/dashboard/package.json apps/dashboard/package-lock.json apps/dashboard/src/schemas/liveProjectSchema.ts
@@ -388,7 +388,7 @@ git commit -m "feat(dash): install leaflet and create live project validation sc
 - Consumes: `lat: number`, `lng: number`, `onChange: (lat: number, lng: number) => void`.
 - Produces: `<LocationPickerMap />` React component.
 
-- [ ] **Step 1: Write `apps/dashboard/src/components/LocationPickerMap.tsx`**
+- [x] **Step 1: Write `apps/dashboard/src/components/LocationPickerMap.tsx`**
 
 Features:
 1. Interactive Leaflet container inside modal.
@@ -399,12 +399,12 @@ Features:
 4. Clicking anywhere on the map moves the pin there.
 5. Visual helper text: "Klik atau geser pin ke perkiraan area proyek. Koordinat tersimpan otomatis dan dirahasiakan dari publik." (Zero numerical coordinate confusion for non-programmers).
 
-- [ ] **Step 2: Verify with `npm run typecheck:dash`**
+- [x] **Step 2: Verify with `npm run typecheck:dash`**
 
 Run: `npm run typecheck:dash`
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit LocationPickerMap component**
+- [x] **Step 3: Commit LocationPickerMap component**
 
 ```bash
 git add apps/dashboard/src/components/LocationPickerMap.tsx
@@ -422,7 +422,7 @@ git commit -m "feat(dash): add interactive LocationPickerMap component for admin
 - Consumes: `supabase`, `LocationPickerMap`, `liveProjectFormSchema`.
 - Produces: `<LiveProjectsManager />` page.
 
-- [ ] **Step 1: Write `apps/dashboard/src/pages/LiveProjectsManager.tsx`**
+- [x] **Step 1: Write `apps/dashboard/src/pages/LiveProjectsManager.tsx`**
 
 Features:
 1. **Header & Quick Stats:**
@@ -448,12 +448,12 @@ Features:
    - Field: Toggle "Tampilkan di Peta Website"
    - Integrasi Zod validation & feedback error yang jelas
 
-- [ ] **Step 2: Run `npm run typecheck:dash`**
+- [x] **Step 2: Run `npm run typecheck:dash`**
 
 Run: `npm run typecheck:dash`
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit LiveProjectsManager page**
+- [x] **Step 3: Commit LiveProjectsManager page**
 
 ```bash
 git add apps/dashboard/src/pages/LiveProjectsManager.tsx
@@ -471,7 +471,7 @@ git commit -m "feat(dash): create LiveProjectsManager page with full CRUD and mi
 **Interfaces:**
 - Adds `'live-projects'` tab to `TabType`, sidebar navigation, and router rendering in `App.tsx`.
 
-- [ ] **Step 1: Update `apps/dashboard/src/components/Sidebar.tsx`**
+- [x] **Step 1: Update `apps/dashboard/src/components/Sidebar.tsx`**
 
 1. Add `'live-projects'` to `TabType`:
 ```typescript
@@ -488,7 +488,7 @@ export type TabType =
 ```
 2. In the navigation items array in `Sidebar.tsx`, add the "Proyek Berjalan" entry with `MapPin` icon directly below Portofolio.
 
-- [ ] **Step 2: Update `apps/dashboard/src/App.tsx`**
+- [x] **Step 2: Update `apps/dashboard/src/App.tsx`**
 
 1. Import `LiveProjectsManager` from `./pages/LiveProjectsManager`.
 2. Add `'live-projects'` to `validTabs` array.
@@ -498,12 +498,12 @@ export type TabType =
 ```
 4. Render `<LiveProjectsManager />` when `activeTab === 'live-projects'`.
 
-- [ ] **Step 3: Run `npm run typecheck:dash` to verify all routes and types**
+- [x] **Step 3: Run `npm run typecheck:dash` to verify all routes and types**
 
 Run: `npm run typecheck:dash`
 Expected: 0 errors.
 
-- [ ] **Step 4: Commit dashboard navigation integration**
+- [x] **Step 4: Commit dashboard navigation integration**
 
 ```bash
 git add apps/dashboard/src/components/Sidebar.tsx apps/dashboard/src/App.tsx
@@ -517,7 +517,7 @@ git commit -m "feat(dash): wire live-projects tab into dashboard sidebar and rou
 **Files:**
 - Verify: Full website and dashboard build.
 
-- [ ] **Step 1: Run typechecks across all projects**
+- [x] **Step 1: Run typechecks across all projects**
 
 Run:
 ```bash
@@ -526,7 +526,7 @@ npm run typecheck:dash
 ```
 Expected: Both pass with 0 errors.
 
-- [ ] **Step 2: Verify production build**
+- [x] **Step 2: Verify production build**
 
 Run:
 ```bash
@@ -535,7 +535,7 @@ npm run build:dash
 ```
 Expected: Both builds succeed without error.
 
-- [ ] **Step 3: Visual & functional test using browser**
+- [x] **Step 3: Visual & functional test using browser**
 
 1. Open `/about#proyek-berjalan` in browser, verify map loads with architectural pins.
 2. Click pins: check popup title, category badge, general area, progress bar, photo, and WhatsApp link.
@@ -543,7 +543,7 @@ Expected: Both builds succeed without error.
 4. Test adding a new project with the mini map location picker, verify pin updates without coordinate leak.
 5. Test toggling active/inactive switch.
 
-- [ ] **Step 4: Final commit & push to GitHub**
+- [x] **Step 4: Final commit & push to GitHub**
 
 ```bash
 git commit -am "chore: complete live projects map feature implementation and verification"
