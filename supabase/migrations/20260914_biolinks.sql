@@ -36,7 +36,7 @@ CREATE POLICY "biolinks_auth_manage" ON public.biolinks
 CREATE TABLE IF NOT EXISTS public.biolink_settings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     profile_name VARCHAR(100) DEFAULT 'Bina Project',
-    tagline VARCHAR(200) DEFAULT 'Jasa Konstruksi & Interior Terpercaya di Malang',
+    tagline TEXT DEFAULT 'Jasa Konstruksi & Interior Terpercaya di Malang',
     avatar_url TEXT,
     updated_at TIMESTAMPTZ DEFAULT now()
 );

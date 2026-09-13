@@ -446,12 +446,16 @@ export const BioLinkEditor: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">Tagline / Deskripsi Singkat</label>
-                <Input
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-700">Tagline / Deskripsi Singkat</label>
+                  <span className="text-[10px] text-slate-400 font-medium">Bisa ditekan Enter untuk baris baru</span>
+                </div>
+                <textarea
                   value={editTagline}
                   onChange={(e) => setEditTagline(e.target.value)}
-                  placeholder="Contoh: Jasa Konstruksi & Interior Terpercaya di Malang"
-                  className="h-10"
+                  placeholder="Contoh:&#10;Jasa Konstruksi & Interior Terpercaya&#10;Melayani Area Malang & Sekitarnya"
+                  rows={3}
+                  className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#22416D] focus:border-[#22416D] transition-colors resize-y leading-relaxed font-sans"
                 />
               </div>
 
@@ -818,7 +822,7 @@ export const BioLinkEditor: React.FC = () => {
                     <span>{editProfileName || 'Bina Project'}</span>
                     <span className="text-[#F68A0A] text-xs">✓</span>
                   </h3>
-                  <p className="text-[11px] text-slate-300 mt-0.5 line-clamp-2 leading-relaxed">
+                  <p className="text-[11px] text-slate-300 mt-0.5 whitespace-pre-line leading-relaxed">
                     {editTagline || 'Jasa Konstruksi & Interior Terpercaya di Malang'}
                   </p>
                 </div>
