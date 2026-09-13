@@ -61,7 +61,7 @@ WHERE NOT EXISTS (SELECT 1 FROM public.biolink_settings);
 INSERT INTO public.biolinks (title, url, icon, is_active, sort_order)
 SELECT title, url, icon, is_active, sort_order FROM (
     VALUES 
-    ('Konsultasi Gratis via WhatsApp', 'https://wa.me/6281234567890?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20proyek', 'message-circle', true, 1),
+    ('Konsultasi Gratis via WhatsApp', 'https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20proyek', 'message-circle', true, 1),
     ('Kunjungi Website Resmi Bina Project', 'https://binaproject.com', 'globe', true, 2),
     ('Lihat Portofolio Proyek & Desain', 'https://binaproject.com/portfolio', 'briefcase', true, 3),
     ('Hitung Estimasi Biaya Bangun / Renovasi', 'https://binaproject.com/kontak', 'calculator', true, 4),
