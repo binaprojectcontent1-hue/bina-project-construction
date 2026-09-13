@@ -120,10 +120,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'Portofolio Proyek'
                 : activeTab === 'articles'
                 ? 'Artikel & Berita'
+                : activeTab === 'biolink'
+                ? 'Bio Link (Linktree)'
                 : activeTab === 'redirects'
-                ? 'Pengalihan Tautan (301)'
+                ? 'Pengalihan Link (301)'
                 : activeTab === 'settings'
-                ? 'Pengaturan & Publikasi'
+                ? 'Pengaturan & Cloudflare'
                 : 'Beranda'}
             </span>
           )}
@@ -141,9 +143,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3.5 h-9 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3.5 h-9 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-xl transition-colors shadow-xs cursor-pointer"
+            title="Lihat website publik di tab baru"
           >
-            <span>Web Publik</span>
+            <span>Lihat Web Publik</span>
             <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </button>
         </a>
@@ -153,14 +156,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           type="button"
           onClick={handleDeploy}
           disabled={deploying}
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 h-9 px-3.5 bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold rounded-xl shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+          title="Publikasikan semua perubahan data terbaru langsung ke website live"
         >
           {deploying ? (
             <RefreshCw className="w-3.5 h-3.5 animate-spin" />
           ) : (
             <Rocket className="w-3.5 h-3.5" />
           )}
-          <span>{deploying ? 'Deploying...' : 'Perbarui Web'}</span>
+          <span className="hidden sm:inline">{deploying ? 'Mempublikasikan...' : 'Publikasikan ke Website'}</span>
+          <span className="sm:hidden">{deploying ? 'Proses...' : 'Publikasi'}</span>
         </button>
 
         {/* User Avatar & Logout */}

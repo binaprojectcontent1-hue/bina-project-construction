@@ -156,7 +156,9 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
               <BookOpen className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-slate-900 mt-2">{articles.length}</div>
+          <div className="text-3xl font-extrabold text-slate-900 mt-2 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : articles.length}
+          </div>
           <p className="text-xs text-slate-500 mt-1 font-medium">Semua artikel terdaftar</p>
         </Card>
 
@@ -167,7 +169,9 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-emerald-600 mt-2">{publishedCount}</div>
+          <div className="text-3xl font-extrabold text-emerald-600 mt-2 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : publishedCount}
+          </div>
           <p className="text-xs text-slate-500 mt-1 font-medium">Dapat dibaca publik & terindeks Google</p>
         </Card>
 
@@ -178,7 +182,9 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-slate-700 mt-2">{draftCount}</div>
+          <div className="text-3xl font-extrabold text-slate-700 mt-2 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : draftCount}
+          </div>
           <p className="text-xs text-slate-500 mt-1 font-medium">Masih dalam penyusunan internal</p>
         </Card>
       </div>

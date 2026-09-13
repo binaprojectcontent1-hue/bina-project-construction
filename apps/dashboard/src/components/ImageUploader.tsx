@@ -138,7 +138,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       <CardContent className="pt-4 space-y-4">
         {uploading || compressing ? (
-          <div className="relative rounded-lg overflow-hidden border border-slate-200 bg-slate-50/80 p-8 flex flex-col items-center justify-center space-y-3 animate-pulse">
+          <div className="relative h-48 rounded-xl overflow-hidden border border-slate-200 bg-slate-50/80 p-4 flex flex-col items-center justify-center space-y-3 animate-pulse">
             <div className="w-10 h-10 rounded-full bg-blue-50 text-[#22416D] flex items-center justify-center">
               <div className="w-5 h-5 border-2 border-[#22416D] border-t-transparent rounded-full animate-spin" />
             </div>
@@ -152,11 +152,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             </div>
           </div>
         ) : value ? (
-          <div className="relative rounded-md overflow-hidden border border-slate-200 bg-slate-50 group">
+          <div className="relative h-48 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 group">
             <img
               src={previewSrc}
               alt={altText || 'Preview'}
-              className="w-full h-44 object-cover object-center"
+              className="w-full h-full object-cover object-center"
               onError={(e) => {
                 // Fallback display if CDN cache is still propagating
                 console.warn('Image preview propagating...');
@@ -165,36 +165,32 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             <button
               type="button"
               onClick={() => onChange('')}
-              className="absolute top-2 right-2 p-1 bg-[#0D192B]/80 hover:bg-rose-600 text-white rounded-md transition-all"
-              title="Hapus Gambar"
+              className="absolute top-2.5 right-2.5 p-1.5 bg-[#0D192B]/80 hover:bg-rose-600 text-white rounded-lg transition-all cursor-pointer shadow-md"
+              title="Ganti atau Hapus Gambar"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
-            <div className="absolute bottom-2 left-2 right-2 bg-[#0D192B]/85 backdrop-blur-xs text-white px-2.5 py-1 rounded-md text-[11px] flex items-center justify-between">
+            <div className="absolute bottom-2 left-2 right-2 bg-[#0D192B]/85 backdrop-blur-xs text-white px-3 py-1.5 rounded-lg text-[11px] flex items-center justify-between">
               <span className="truncate max-w-[260px] font-mono text-xs">
                 {value}
               </span>
-              <span className="flex items-center gap-1 text-emerald-400 font-medium">
-                <CheckCircle2 className="w-3 h-3" /> Ready
+              <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Siap Tayang
               </span>
             </div>
           </div>
         ) : (
-          <label className="border border-dashed border-slate-300 hover:border-[#22416D] bg-slate-50/50 hover:bg-slate-50 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer transition-colors">
-            <div className="w-9 h-9 rounded-md bg-slate-100 border border-slate-200 text-slate-600 flex items-center justify-center mb-2">
-              {uploading ? (
-                <div className="w-4 h-4 border-2 border-[#22416D] border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <Upload className="w-4 h-4" />
-              )}
+          <label className="h-48 border-2 border-dashed border-slate-200 hover:border-[#22416D] bg-slate-50/50 hover:bg-slate-50 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors select-none text-center">
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 flex items-center justify-center mb-2 shadow-xs">
+              <Upload className="w-4 h-4 text-[#22416D]" />
             </div>
-            <span className="text-xs font-medium text-slate-800">
-              {uploading ? 'Mengunggah ke GitHub Storage...' : 'Klik untuk unggah foto'}
+            <span className="text-xs font-bold text-slate-800">
+              Pilih Foto Dokumentasi
             </span>
-            <span className="text-xs text-slate-400 mt-0.5">
+            <span className="text-[11px] text-slate-400 mt-1 max-w-[240px]">
               {ghConfigured && ghConfig
-                ? `Tersimpan ke repo ${ghConfig.owner}/${ghConfig.repo}`
-                : 'JPG, PNG, atau WebP (Maks. 5MB)'}
+                ? `Rekomendasi rasio lanskap (16:9). Otomatis dioptimalkan CDN.`
+                : 'Format JPG, PNG, atau WebP (Maks. 5MB)'}
             </span>
             <input
               type="file"
@@ -207,14 +203,14 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         )}
 
         {error && (
-          <div className="flex items-center gap-2 text-xs text-rose-600 bg-rose-50/70 border border-rose-200/70 p-2.5 rounded-md">
+          <div className="flex items-center gap-2 text-xs text-rose-600 bg-rose-50/70 border border-rose-200/70 p-2.5 rounded-xl">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {!ghConfigured && !value && (
-          <div className="flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50/70 border border-amber-200/70 p-2.5 rounded-md">
+          <div className="flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50/70 border border-amber-200/70 p-2.5 rounded-xl">
             <Settings className="w-3.5 h-3.5 flex-shrink-0 text-amber-600" />
             <span>
               Tip: Hubungkan <strong>GitHub Storage</strong> di menu <em>Pengaturan</em> agar foto otomatis terunggah ke repository media Anda.
@@ -224,15 +220,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs">
-            <label className="font-medium text-slate-700">
-              Alt Text Gambar <span className="text-rose-500">*</span>
+            <label className="font-semibold text-slate-700">
+              Deskripsi Gambar untuk Google (Alt Text) <span className="text-rose-500">*</span>
             </label>
-            <span className="text-slate-400 text-xs">Wajib untuk Google Images SEO</span>
+            <span className="text-slate-400 text-[11px]">Membantu rangking Google Image</span>
           </div>
           <Input
             value={altText}
             onChange={(e) => onAltChange(e.target.value)}
             placeholder="Contoh: Tampak Depan Villa Tropis Modern di Kota Batu Malang"
+            className="rounded-xl h-10 text-xs"
           />
         </div>
       </CardContent>

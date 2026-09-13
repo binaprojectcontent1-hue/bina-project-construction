@@ -151,14 +151,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Navigation Section 2: Content Management */}
           <div className="space-y-1">
             <div className="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              Kelola Konten
+              Kelola Konten Website
             </div>
 
             {/* Portofolio */}
             <button
               type="button"
               onClick={() => handleSelect('portfolio')}
-              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors ${
+              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors cursor-pointer ${
                 isTabActive('portfolio')
                   ? 'bg-[#22416D] text-white shadow-xs'
                   : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
@@ -181,7 +181,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('articles')}
-              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors ${
+              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors cursor-pointer ${
                 isTabActive('articles')
                   ? 'bg-[#22416D] text-white shadow-xs'
                   : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
@@ -204,7 +204,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('biolink')}
-              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors ${
+              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors cursor-pointer ${
                 activeTab === 'biolink'
                   ? 'bg-[#22416D] text-white shadow-xs'
                   : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
@@ -215,11 +215,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span className="truncate">Bio Link (Linktree)</span>
               </div>
               <span
-                className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
+                className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
                   activeTab === 'biolink' ? 'bg-white/20 text-white' : 'bg-blue-50 text-[#22416D]'
                 }`}
               >
-                Baru
+                Aktif
               </span>
             </button>
           </div>
@@ -233,7 +233,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('redirects')}
-              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors ${
+              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors cursor-pointer ${
                 activeTab === 'redirects'
                   ? 'bg-[#22416D] text-white shadow-xs'
                   : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
@@ -241,7 +241,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Shuffle className={`w-5 h-5 shrink-0 ${activeTab === 'redirects' ? 'text-white' : 'text-slate-500'}`} />
-                <span className="truncate">Pengalihan Tautan (301)</span>
+                <span className="truncate">Pengalihan Link (301)</span>
               </div>
             </button>
 

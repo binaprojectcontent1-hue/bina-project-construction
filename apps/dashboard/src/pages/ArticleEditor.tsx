@@ -40,20 +40,19 @@ interface ArticleEditorProps {
   onSave?: (id: string) => void;
 }
 
-// Solar Icon Components (lightweight SVG replacements for Lucide)
-const Icon = {
-  ArrowLeft: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>,
-  Save: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>,
-  Globe: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
-  Check: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 6 9 17 4 12"/></svg>,
-  AlertCircle: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>,
-  RefreshCw: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>,
-  Rocket: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
-  Send: ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>,
-};
-
-const { ArrowLeft, Save, Globe, Check, AlertCircle, RefreshCw, Rocket, Send } = Icon;
-
+import {
+  ArrowLeft,
+  Save,
+  Globe,
+  Check,
+  AlertCircle,
+  RefreshCw,
+  Rocket,
+  Send,
+  Lock,
+  Unlock,
+} from 'lucide-react';
+import { Skeleton } from '../components/ui/skeleton';
 
 export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps) {
   const [loading, setLoading] = useState(false);
@@ -85,7 +84,8 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   const [metaDescription, setMetaDescription] = useState('');
   const [focusKeyword, setFocusKeyword] = useState('');
   const [ogImageType, setOgImageType] = useState<'branded' | 'raw_cover'>('branded');
-  const [autoSlug, setAutoSlug] = useState(true);
+  const [autoSlug, setAutoSlug] = useState(!articleId);
+  const [isSlugLocked, setIsSlugLocked] = useState(Boolean(articleId));
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -121,6 +121,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
             setOgImageType(data.og_image_type);
           }
           setAutoSlug(false);
+          setIsSlugLocked(true);
           setIsDirty(false);
         }
       } catch (err: any) {
@@ -137,7 +138,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   const handleTitleChange = (val: string) => {
     setTitle(val);
     setIsDirty(true);
-    if (autoSlug) {
+    if (autoSlug && !isSlugLocked) {
       const generated = generateSlug(val);
       setSlug(generated);
       validateSlug(generated);
@@ -317,66 +318,118 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
   if (loading) {
     return (
-      <Card className="p-16 text-center text-slate-400">
-        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-slate-500" />
-        <span className="text-xs font-medium">Memuat data artikel...</span>
-      </Card>
+      <div className="max-w-6xl mx-auto space-y-6 pb-28 animate-in fade-in duration-150">
+        {/* Top Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-9 w-9 rounded-xl" />
+            <div className="space-y-2">
+              <Skeleton className="h-6 w-48 rounded-lg" />
+              <Skeleton className="h-4 w-72 rounded-md" />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-9 w-24 rounded-xl" />
+            <Skeleton className="h-9 w-36 rounded-xl" />
+          </div>
+        </div>
+
+        {/* 2-Column Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-7 space-y-6">
+            <Card className="p-6 space-y-4 rounded-2xl">
+              <Skeleton className="h-5 w-40 rounded-md" />
+              <Skeleton className="h-4 w-60 rounded-md" />
+              <div className="space-y-3 pt-2">
+                <Skeleton className="h-10 w-full rounded-xl" />
+                <div className="grid grid-cols-2 gap-4">
+                  <Skeleton className="h-10 rounded-xl" />
+                  <Skeleton className="h-10 rounded-xl" />
+                </div>
+                <Skeleton className="h-20 w-full rounded-xl" />
+                <Skeleton className="h-44 w-full rounded-xl" />
+              </div>
+            </Card>
+            <Card className="p-6 space-y-4 rounded-2xl">
+              <Skeleton className="h-5 w-40 rounded-md" />
+              <Skeleton className="h-48 w-full rounded-xl" />
+            </Card>
+          </div>
+
+          <div className="lg:col-span-5 space-y-6">
+            <Card className="p-5 space-y-3 rounded-2xl">
+              <Skeleton className="h-5 w-32 rounded-md" />
+              <Skeleton className="h-14 w-full rounded-xl" />
+            </Card>
+            <Card className="p-5 space-y-3 rounded-2xl">
+              <Skeleton className="h-5 w-40 rounded-md" />
+              <Skeleton className="h-10 w-full rounded-xl" />
+            </Card>
+            <Card className="p-5 space-y-3 rounded-2xl">
+              <Skeleton className="h-5 w-48 rounded-md" />
+              <Skeleton className="h-36 w-full rounded-xl" />
+            </Card>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-28">
-      {/* Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200">
-        <div className="flex items-center gap-3">
+      {/* Sticky Action Bar */}
+      <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3.5 bg-[#F8FAFC]/95 backdrop-blur-md border-b border-slate-200/80 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all">
+        <div className="flex items-center gap-3 min-w-0">
           <Button
             variant="outline"
             size="icon"
             onClick={handleBack}
-            className="h-9 w-9 text-slate-600"
-            title="Kembali ke Daftar"
+            className="h-9 w-9 rounded-xl text-slate-600 hover:bg-white shadow-xs cursor-pointer shrink-0"
+            title="Kembali ke Daftar Artikel"
           >
             <ArrowLeft className="w-4 h-4" />
           </Button>
-          <div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs uppercase font-semibold">
-                {articleId ? 'Edit Mode' : 'New Article'}
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 truncate">
+                {articleId ? 'Edit Artikel' : 'Tulis Artikel Baru'}
+              </h2>
+              <Badge variant="outline" className={`text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                {status === 'published' ? '🟢 Tayang di Web' : '🟡 Draft (Konsep)'}
               </Badge>
-              <h1 className="text-xl font-semibold tracking-tight text-slate-900">
-                {articleId ? 'Edit Artikel' : 'Tulis Artikel SEO Baru'}
-              </h1>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Konten edukasi arsitektur dan tips konstruksi untuk pembaca & Google
+            <p className="text-xs text-slate-500 mt-0.5 truncate">
+              Tulis konten edukasi arsitektur & konstruksi untuk pembaca dan optimasi SEO Google.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5 shrink-0">
           <Button
             variant="outline"
+            size="sm"
             onClick={() => handleSave(false)}
             disabled={saving || deploying}
-            className="gap-2"
+            className="text-xs font-bold gap-1.5 h-9 px-3.5 rounded-xl border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
+            title="Simpan draf artikel tanpa langsung memicu perubahan di website publik"
           >
-            <Save className="w-4 h-4 text-slate-500" />
+            <Save className="w-3.5 h-3.5 text-slate-500" />
             <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Draft'}</span>
           </Button>
 
           <Button
+            size="sm"
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="gap-2"
+            className="text-xs font-bold gap-2 h-9 px-4 rounded-xl bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            title="Simpan artikel dan publikasikan langsung ke website live"
           >
             {deploying ? (
-              <RefreshCw className="w-4 h-4 animate-spin" />
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
             ) : (
-              <>
-                <Send className="w-4 h-4" />
-                <span>Simpan & Terbitkan</span>
-              </>
+              <Rocket className="w-3.5 h-3.5" />
             )}
+            <span>{deploying ? 'Mempublikasikan...' : 'Simpan & Publikasikan'}</span>
           </Button>
         </div>
       </div>
@@ -484,76 +537,110 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
         {/* Right Column: SEO Configuration */}
         <div className="lg:col-span-5 space-y-6">
-          {/* Smart Slug Engine */}
-          <Card>
-            <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
-              <div className="flex items-center gap-1.5">
-                <Globe className="w-4 h-4 text-slate-600" />
-                <CardTitle className="text-sm font-semibold text-slate-900">
-                  Alamat Web Artikel (URL)
+          {/* Smart Slug Engine with Padlock */}
+          <Card className="shadow-xs rounded-2xl">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm flex items-center gap-1.5 font-semibold text-slate-900">
+                  <Globe className="w-4 h-4 text-slate-500" />
+                  <span>Alamat Link Artikel (URL)</span>
+                  <HelpTooltip content="Alamat tautan permanen artikel di web (misal: binaproject.com/blog/tips-memilih-kontraktor). Otomatis dibuat dari judul agar rapi dan ramah SEO Google." />
                 </CardTitle>
-                <HelpTooltip content="Alamat tautan permanen artikel di web (misal: binaproject.com/blog/tips-memilih-kontraktor). Otomatis dibuat dari judul agar rapi dan ramah SEO Google." />
+                <div className="flex items-center gap-2">
+                  {!isSlugLocked && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAutoSlug(true);
+                        const generated = generateSlug(title);
+                        setSlug(generated);
+                        validateSlug(generated);
+                      }}
+                      className="text-xs text-[#22416D] hover:underline font-semibold cursor-pointer"
+                    >
+                      Reset dari Judul
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIsSlugLocked((prev) => !prev)}
+                    className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg border transition-colors cursor-pointer ${
+                      isSlugLocked
+                        ? 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                        : 'border-amber-200 bg-amber-50 text-amber-800'
+                    }`}
+                    title={isSlugLocked ? 'Klik untuk mengubah alamat link secara manual' : 'Kunci kembali alamat link'}
+                  >
+                    {isSlugLocked ? (
+                      <>
+                        <Lock className="w-3 h-3 text-slate-500" />
+                        <span>Terkunci</span>
+                      </>
+                    ) : (
+                      <>
+                        <Unlock className="w-3 h-3 text-amber-600" />
+                        <span>Buka Kunci</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setAutoSlug(true);
-                  const generated = generateSlug(title);
-                  setSlug(generated);
-                  validateSlug(generated);
-                }}
-                className="text-[11px] text-slate-500 hover:text-[#22416D] underline font-medium"
-              >
-                Buat Otomatis
-              </button>
+              <CardDescription className="text-xs text-slate-500">
+                {isSlugLocked
+                  ? 'Alamat link dikunci otomatis untuk mencegah link artikel rusak tak sengaja.'
+                  : 'Mode ubah link aktif. Gunakan huruf kecil dan tanda hubung (-).'}
+              </CardDescription>
             </CardHeader>
 
-            <CardContent className="pt-4 space-y-3">
+            <CardContent className="pt-2 space-y-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Alamat Tautan URL (Slug) <span className="text-rose-500">*</span>
-                </label>
-                <div className="flex rounded-md border border-slate-200 overflow-hidden focus-within:ring-1 focus-within:ring-[#22416D]">
-                  <span className="inline-flex items-center px-3 bg-slate-50 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
+                <div className={`flex rounded-xl border shadow-xs transition-all overflow-hidden ${
+                  isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#22416D] ring-2 ring-[#22416D]/10'
+                }`}>
+                  <span className="inline-flex items-center px-3 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
                     /blog/
                   </span>
                   <input
                     type="text"
                     value={slug}
+                    readOnly={isSlugLocked}
                     onChange={(e) => handleSlugChange(e.target.value)}
                     placeholder="tips-memilih-kontraktor-malang"
-                    className="flex-1 px-3 py-1.5 text-xs font-mono text-slate-900 focus:outline-none"
+                    className={`flex-1 px-3 py-2 text-xs font-mono focus:outline-none ${
+                      isSlugLocked ? 'text-slate-600 bg-slate-50/80 cursor-not-allowed' : 'text-slate-900 bg-white'
+                    }`}
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-xs pt-1">
+                <div className="flex items-center justify-between text-xs pt-1 flex-wrap gap-1">
                   {slugAvailable === true && (
                     <span className="text-emerald-600 flex items-center gap-1 font-medium text-[11px]">
-                      <Check className="w-3.5 h-3.5" /> Alamat URL valid & tersedia
+                      <Check className="w-3.5 h-3.5" /> Alamat link aman & siap dipakai
                     </span>
                   )}
                   {slugAvailable === false && (
                     <span className="text-rose-600 flex items-center gap-1 font-medium text-[11px]">
-                      <AlertCircle className="w-3.5 h-3.5" /> Alamat URL sudah pernah dipakai!
+                      <AlertCircle className="w-3.5 h-3.5" /> Alamat link sudah pernah digunakan! Mohon ubah sedikit.
                     </span>
                   )}
                   {initialSlug && initialSlug !== slug && (
-                    <span className="text-amber-600 text-xs font-medium">
-                      (Tautan lama /{initialSlug} otomatis dialihkan aman)
+                    <span className="text-amber-600 text-[11px] font-medium">
+                      (Pengalihan otomatis dari /{initialSlug} aktif agar link lama tidak error 404)
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700 flex items-center">
-                  Target Kata Kunci (Focus Keyword)
+              <div className="space-y-1.5 pt-1">
+                <label className="text-xs font-semibold text-slate-700 flex items-center">
+                  Target Kata Kunci Google (Focus Keyword)
                   <HelpTooltip content="Kata atau kalimat pencarian yang sering diketikkan orang di Google saat mencari topik ini (misal: 'biaya bangun rumah di malang')." />
                 </label>
                 <Input
                   value={focusKeyword}
                   onChange={(e) => setFocusKeyword(e.target.value)}
                   placeholder="Contoh: kontraktor rumah malang"
+                  className="rounded-xl h-10 text-xs"
                 />
               </div>
             </CardContent>

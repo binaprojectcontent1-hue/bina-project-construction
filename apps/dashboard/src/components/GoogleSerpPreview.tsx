@@ -77,11 +77,11 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
               G
             </div>
             <div>
-              <CardTitle className="text-sm font-semibold text-slate-900">
-                Google SERP Snippet Preview
+              <CardTitle className="text-sm font-bold text-slate-900">
+                Simulasi Hasil Pencarian Google (SERP)
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
-                Simulasi hasil pencarian organik Google
+                Pratinjau tampilan judul & deskripsi saat dicari calon klien di Google
               </CardDescription>
             </div>
           </div>

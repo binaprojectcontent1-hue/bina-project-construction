@@ -159,7 +159,9 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
               <FileText className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">{projects.length}</div>
+          <div className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : projects.length}
+          </div>
           <p className="text-xs text-slate-500 mt-1 font-medium">Tersimpan di database</p>
         </Card>
 
@@ -170,7 +172,9 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-emerald-600">{publishedCount}</div>
+          <div className="mt-2 text-3xl font-extrabold tracking-tight text-emerald-600 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : publishedCount}
+          </div>
           <p className="text-xs text-slate-500 mt-1 font-medium">Aktif tampil di website publik</p>
         </Card>
 
@@ -181,7 +185,9 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-slate-700">{draftCount}</div>
+          <div className="mt-2 text-3xl font-extrabold tracking-tight text-slate-700 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : draftCount}
+          </div>
           <p className="text-xs text-slate-500 mt-1 font-medium">Belum ditayangkan ke publik</p>
         </Card>
       </div>

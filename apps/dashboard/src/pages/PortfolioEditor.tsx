@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, ArrowLeft, Globe, Check, AlertCircle, RefreshCw, Rocket, Sparkles, Star } from 'lucide-react';
+import { Save, ArrowLeft, Globe, Check, AlertCircle, RefreshCw, Rocket, Sparkles, Star, Lock, Unlock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { generateSlug, checkSlugAvailability, record301Redirect } from '../utils/slug';
 import { portfolioFormSchema } from '../schemas/portfolioSchema';
@@ -14,6 +14,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../co
 import { Badge } from '../components/ui/badge';
 import { Input, Textarea } from '../components/ui/input';
 import { useToast } from '../components/ui/Toast';
+import { Skeleton } from '../components/ui/skeleton';
 
 interface PortfolioEditorProps {
   projectId?: string;
@@ -49,7 +50,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
   const [ogImageType, setOgImageType] = useState<'branded' | 'raw_cover'>('branded');
-  const [autoSlug, setAutoSlug] = useState(true);
+  const [autoSlug, setAutoSlug] = useState(!projectId);
+  const [isSlugLocked, setIsSlugLocked] = useState(Boolean(projectId));
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -76,20 +78,18 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           setDescription(data.description || '');
           setCoverImage(data.cover_image || '');
           setAltCoverImage(data.alt_cover_image || '');
-          setGalleryImages(Array.isArray(data.gallery_images) ? data.gallery_images : []);
+          setGalleryImages(data.gallery_images || []);
           setFeatured(Boolean(data.featured));
           setStatus(data.status || 'published');
           setMetaTitle(data.meta_title || '');
           setMetaDescription(data.meta_description || '');
-          if (data.og_image_type) {
-            setOgImageType(data.og_image_type);
-          }
+          setOgImageType(data.og_image_type || 'branded');
           setAutoSlug(false);
-          setIsDirty(false);
+          setIsSlugLocked(true);
         }
       } catch (err: any) {
-        setError('Gagal memuat detail proyek: ' + err.message);
-        toast.error('Gagal Memuat Proyek', err.message);
+        console.error('Failed to load project:', err);
+        setError('Gagal memuat data proyek: ' + err.message);
       } finally {
         setLoading(false);
       }
@@ -285,55 +285,117 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
 
   if (loading) {
     return (
-      <Card className="p-12 text-center text-slate-400">
-        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-slate-600" />
-        <p className="text-xs">Memuat data proyek...</p>
-      </Card>
+      <div className="max-w-6xl mx-auto space-y-6 pb-28 animate-in fade-in duration-150">
+        {/* Top Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-9 w-9 rounded-xl" />
+            <div className="space-y-2">
+              <Skeleton className="h-6 w-48 rounded-lg" />
+              <Skeleton className="h-4 w-72 rounded-md" />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-9 w-24 rounded-xl" />
+            <Skeleton className="h-9 w-36 rounded-xl" />
+          </div>
+        </div>
+
+        {/* 2-Column Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-7 space-y-6">
+            <Card className="p-6 space-y-4 rounded-2xl">
+              <Skeleton className="h-5 w-40 rounded-md" />
+              <Skeleton className="h-4 w-60 rounded-md" />
+              <div className="space-y-3 pt-2">
+                <Skeleton className="h-10 w-full rounded-xl" />
+                <div className="grid grid-cols-2 gap-4">
+                  <Skeleton className="h-10 rounded-xl" />
+                  <Skeleton className="h-10 rounded-xl" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <Skeleton className="h-10 rounded-xl" />
+                  <Skeleton className="h-10 rounded-xl" />
+                </div>
+                <Skeleton className="h-32 w-full rounded-xl" />
+              </div>
+            </Card>
+            <Card className="p-6 space-y-4 rounded-2xl">
+              <Skeleton className="h-5 w-40 rounded-md" />
+              <Skeleton className="h-48 w-full rounded-xl" />
+              <Skeleton className="h-28 w-full rounded-xl" />
+            </Card>
+          </div>
+
+          <div className="lg:col-span-5 space-y-6">
+            <Card className="p-5 space-y-3 rounded-2xl">
+              <Skeleton className="h-5 w-32 rounded-md" />
+              <Skeleton className="h-14 w-full rounded-xl" />
+              <Skeleton className="h-14 w-full rounded-xl" />
+            </Card>
+            <Card className="p-5 space-y-3 rounded-2xl">
+              <Skeleton className="h-5 w-40 rounded-md" />
+              <Skeleton className="h-10 w-full rounded-xl" />
+            </Card>
+            <Card className="p-5 space-y-3 rounded-2xl">
+              <Skeleton className="h-5 w-48 rounded-md" />
+              <Skeleton className="h-36 w-full rounded-xl" />
+            </Card>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 pb-28">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-4">
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="icon" onClick={handleBack} className="h-8 w-8 text-slate-600">
+    <div className="max-w-6xl mx-auto space-y-6 pb-28">
+      {/* Sticky Action Bar */}
+      <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3.5 bg-[#F8FAFC]/95 backdrop-blur-md border-b border-slate-200/80 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all">
+        <div className="flex items-center gap-3 min-w-0">
+          <Button variant="outline" size="icon" onClick={handleBack} className="h-9 w-9 rounded-xl text-slate-600 hover:bg-white shadow-xs cursor-pointer shrink-0">
             <ArrowLeft className="w-4 h-4" />
           </Button>
-          <div>
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">
-              {projectId ? 'Edit Portofolio Proyek' : 'Tambah Portofolio Baru'}
-            </h2>
-            <p className="text-xs text-slate-500">
-              Sesuaikan rincian pengerjaan, gambar dokumentasi, dan optimasi slug SEO.
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 truncate">
+                {projectId ? 'Edit Portofolio Proyek' : 'Tambah Proyek Baru'}
+              </h2>
+              <Badge variant="outline" className={`text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                {status === 'published' ? '🟢 Tayang di Web' : '🟡 Draft (Konsep)'}
+              </Badge>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5 truncate">
+              Isi data pengerjaan, foto dokumentasi, dan optimasi alamat link pencarian Google.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5 shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={() => handleSave(false)}
             disabled={saving || deploying}
-            className="text-xs gap-1.5"
+            className="text-xs font-bold gap-1.5 h-9 px-3.5 rounded-xl border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
+            title="Simpan data ke database tanpa langsung memicu perubahan di website publik"
           >
             <Save className="w-3.5 h-3.5 text-slate-500" />
-            <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Saja'}</span>
+            <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Draft'}</span>
           </Button>
 
           <Button
             size="sm"
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="text-xs gap-1.5 bg-[#22416D] hover:bg-[#1A3356]"
+            className="text-xs font-bold gap-2 h-9 px-4 rounded-xl bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            title="Simpan ke database dan publikasikan langsung ke website live"
           >
             {deploying ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Rocket className="w-3.5 h-3.5" />
             )}
-            <span>{deploying ? 'Deploying...' : 'Simpan & Deploy'}</span>
+            <span>{deploying ? 'Mempublikasikan...' : 'Simpan & Publikasikan'}</span>
           </Button>
         </div>
       </div>
@@ -537,59 +599,94 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             </CardContent>
           </Card>
 
-          {/* Smart Slug Engine Card */}
-          <Card className="shadow-xs">
+          {/* Smart Slug Engine Card with Padlock */}
+          <Card className="shadow-xs rounded-2xl">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm flex items-center gap-1.5">
                   <Globe className="w-4 h-4 text-slate-500" />
-                  <span>Alamat Web Halaman (URL)</span>
-                  <HelpTooltip content="Ini adalah tautan link halaman proyek (contoh: binaproject.com/portfolio/nama-proyek). Sistem otomatis membuatnya dari judul proyek agar rapi dan ramah pencarian Google." />
+                  <span>Alamat Link Halaman (URL)</span>
+                  <HelpTooltip content="Ini adalah alamat tautan proyek di website (misal: binaproject.com/portfolio/nama-proyek). Sistem membuatnya secara otomatis dari judul proyek agar rapi dan ramah Google." />
                 </CardTitle>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAutoSlug(true);
-                    const generated = generateSlug(title);
-                    setSlug(generated);
-                    validateSlug(generated);
-                  }}
-                  className="text-xs text-[#22416D] hover:underline font-medium"
-                >
-                  Buat Otomatis dari Judul
-                </button>
+                <div className="flex items-center gap-2">
+                  {!isSlugLocked && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAutoSlug(true);
+                        const generated = generateSlug(title);
+                        setSlug(generated);
+                        validateSlug(generated);
+                      }}
+                      className="text-xs text-[#22416D] hover:underline font-semibold cursor-pointer"
+                    >
+                      Reset dari Judul
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIsSlugLocked((prev) => !prev)}
+                    className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg border transition-colors cursor-pointer ${
+                      isSlugLocked
+                        ? 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                        : 'border-amber-200 bg-amber-50 text-amber-800'
+                    }`}
+                    title={isSlugLocked ? 'Klik untuk mengubah alamat link secara manual' : 'Kunci kembali alamat link'}
+                  >
+                    {isSlugLocked ? (
+                      <>
+                        <Lock className="w-3 h-3 text-slate-500" />
+                        <span>Terkunci</span>
+                      </>
+                    ) : (
+                      <>
+                        <Unlock className="w-3 h-3 text-amber-600" />
+                        <span>Buka Kunci</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
-              <CardDescription>Alamat link bersih yang mudah dibaca oleh calon klien & Google.</CardDescription>
+              <CardDescription>
+                {isSlugLocked
+                  ? 'Alamat link dikunci otomatis untuk mencegah link rusak tak sengaja.'
+                  : 'Mode ubah link aktif. Gunakan huruf kecil dan tanda hubung (-).'}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="flex rounded-md border border-slate-200 shadow-xs focus-within:ring-1 focus-within:ring-[#22416D] overflow-hidden">
-                <span className="inline-flex items-center px-2.5 bg-slate-50 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
+              <div className={`flex rounded-xl border shadow-xs transition-all overflow-hidden ${
+                isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#22416D] ring-2 ring-[#22416D]/10'
+              }`}>
+                <span className="inline-flex items-center px-3 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
                   /portfolio/
                 </span>
                 <input
                   type="text"
                   value={slug}
+                  readOnly={isSlugLocked}
                   onChange={(e) => handleSlugChange(e.target.value)}
                   placeholder="villa-tropis-modern-batu"
-                  className="flex-1 px-3 py-1.5 text-xs font-mono text-slate-900 focus:outline-none bg-white"
+                  className={`flex-1 px-3 py-2 text-xs font-mono focus:outline-none ${
+                    isSlugLocked ? 'text-slate-600 bg-slate-50/80 cursor-not-allowed' : 'text-slate-900 bg-white'
+                  }`}
                 />
               </div>
 
               {/* Real-time slug check feedback */}
-              <div className="text-xs pt-1 flex items-center justify-between">
+              <div className="text-xs pt-1 flex items-center justify-between flex-wrap gap-1">
                 {slugAvailable === true && (
                   <span className="text-emerald-600 flex items-center gap-1 text-[11px] font-medium">
-                    <Check className="w-3.5 h-3.5" /> Alamat URL tersedia & siap dipakai
+                    <Check className="w-3.5 h-3.5" /> Alamat link aman & siap dipakai
                   </span>
                 )}
                 {slugAvailable === false && (
                   <span className="text-rose-600 flex items-center gap-1 text-[11px] font-medium">
-                    <AlertCircle className="w-3.5 h-3.5" /> Alamat URL sudah pernah dipakai! Mohon ganti sedikit.
+                    <AlertCircle className="w-3.5 h-3.5" /> Alamat link sudah pernah digunakan! Mohon ubah sedikit.
                   </span>
                 )}
                 {initialSlug && initialSlug !== slug && (
-                  <span className="text-amber-600 text-[11px]">
-                    (Tautan lama /{initialSlug} otomatis dialihkan aman)
+                  <span className="text-amber-600 text-[11px] font-medium">
+                    (Pengalihan otomatis dari /{initialSlug} aktif agar link lama tidak error 404)
                   </span>
                 )}
               </div>
