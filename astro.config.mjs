@@ -23,6 +23,9 @@ export default defineConfig({
     domains: ['cdn.jsdelivr.net', 'images.unsplash.com', 'raw.githubusercontent.com'],
   },
   vite: {
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
     build: {
       sourcemap: false,
     },

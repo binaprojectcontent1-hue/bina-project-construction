@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { Map as LeafletMap, Marker as LeafletMarker } from 'leaflet';
 import type { LiveProject } from '../types/liveProject';
 import { FALLBACK_LIVE_PROJECTS } from '../data/liveProjects';
@@ -18,7 +18,6 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
   const [projects, setProjects] = useState<LiveProject[]>(FALLBACK_LIVE_PROJECTS);
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Fetch live projects from Supabase or fallback
   useEffect(() => {
@@ -230,9 +229,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
             <span className="live-indicator-title">LIVE ON-GOING PROJECTS</span>
           </div>
           <p className="live-projects-count-desc">
-            {isLoading
-              ? 'Memuat data proyek...'
-              : `${filteredProjects.length} Titik Proyek Aktif Sedang Berjalan`}
+            {filteredProjects.length} Titik Proyek Aktif Sedang Berjalan
           </p>
         </div>
 
@@ -271,6 +268,8 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           overflow: hidden;
           box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
           background: #f8fafc;
+          isolation: isolate;
+          z-index: 1;
         }
 
         .live-projects-hud-bar {
@@ -278,7 +277,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           top: 1rem;
           left: 1rem;
           right: 1rem;
-          z-index: 1000;
+          z-index: 30;
           display: flex;
           flex-wrap: wrap;
           align-items: center;
@@ -367,7 +366,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           position: absolute;
           bottom: 1rem;
           left: 1rem;
-          z-index: 1000;
+          z-index: 30;
           display: flex;
           align-items: center;
           gap: 0.5rem;
