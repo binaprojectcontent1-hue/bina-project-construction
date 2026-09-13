@@ -31,6 +31,7 @@ import { Button } from '../components/ui/button';
 import { Input, Textarea } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
+import { useToast } from '../components/ui/Toast';
 
 interface ArticleEditorProps {
   articleId?: string;
@@ -59,6 +60,8 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   const [deploying, setDeploying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const toast = useToast();
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -113,9 +116,11 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           setMetaDescription(data.meta_description || '');
           setFocusKeyword(data.focus_keyword || '');
           setAutoSlug(false);
+          setIsDirty(false);
         }
       } catch (err: any) {
         setError('Gagal memuat artikel: ' + err.message);
+        toast.error('Gagal Memuat Artikel', err.message);
       } finally {
         setLoading(false);
       }
@@ -126,6 +131,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
   const handleTitleChange = (val: string) => {
     setTitle(val);
+    setIsDirty(true);
     if (autoSlug) {
       const generated = generateSlug(val);
       setSlug(generated);
@@ -135,6 +141,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
   const handleSlugChange = (val: string) => {
     setAutoSlug(false);
+    setIsDirty(true);
     const cleaned = generateSlug(val);
     setSlug(cleaned);
     validateSlug(cleaned);
@@ -152,7 +159,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   // Guard against accidental loss of unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (title.trim() || content.trim()) {
+      if (isDirty) {
         e.preventDefault();
         e.returnValue = '';
       }
@@ -160,7 +167,16 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [title, content]);
+  }, [isDirty]);
+
+  const handleBack = () => {
+    if (isDirty) {
+      if (!window.confirm('Ada perubahan artikel yang belum disimpan. Yakin ingin keluar?')) {
+        return;
+      }
+    }
+    onBack && onBack();
+  };
 
   const handleContentChange = (val: string) => {
     setContent(val);
@@ -248,14 +264,20 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         if (insertErr) throw insertErr;
       }
 
+      setIsDirty(false);
+      toast.success('Artikel Berhasil Disimpan', 'Data artikel telah tersimpan ke database.');
       setSuccess('Artikel berhasil disimpan!');
 
       if (autoDeploy) {
         setDeploying(true);
+        const deployToastId = toast.loading('Memicu deployment ke Cloudflare Pages...');
         const deployRes = await triggerCloudflareDeploy();
+        toast.dismiss(deployToastId);
         if (deployRes.success) {
+          toast.success('Deployment Terpicu', 'Website sedang diperbarui otomatis (~45s).');
           setSuccess('Artikel tersimpan & Trigger Deploy ke Cloudflare Pages berhasil dikirim!');
         } else {
+          toast.error('Deploy Gagal', deployRes.message);
           setError('Artikel tersimpan, namun webhook Cloudflare gagal: ' + deployRes.message);
         }
         setDeploying(false);
@@ -265,7 +287,9 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         onSave && onSave(articleId!);
       }, 1200);
     } catch (err: any) {
-      setError(err?.message || 'Terjadi kesalahan saat menyimpan artikel.');
+      const msg = err?.message || 'Terjadi kesalahan saat menyimpan artikel.';
+      setError(msg);
+      toast.error('Gagal Menyimpan Artikel', msg);
     } finally {
       setSaving(false);
     }
@@ -281,14 +305,14 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-16">
+    <div className="space-y-6 max-w-6xl mx-auto pb-28">
       {/* Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div className="flex items-center gap-3">
           <Button
             variant="outline"
             size="icon"
-            onClick={onBack}
+            onClick={handleBack}
             className="h-9 w-9 text-slate-600"
             title="Kembali ke Daftar"
           >
@@ -609,6 +633,73 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
             type="blog"
             publishedDate={publishDate}
           />
+        </div>
+      </div>
+
+      {/* Sticky Bottom Floating Action Bar */}
+      <div className="fixed bottom-0 left-0 md:left-72 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 py-3 px-4 md:px-8 shadow-lg flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Status Publikasi:</span>
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
+              status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                status === 'published' ? 'bg-emerald-500' : 'bg-amber-500'
+              }`}
+            />
+            {status === 'published' ? 'Tayang (Published)' : 'Draft'}
+          </span>
+          <span className="text-xs text-slate-400 hidden md:inline">
+            • {readingTime} menit baca
+          </span>
+          {isDirty && (
+            <span className="text-xs text-amber-600 font-medium hidden sm:inline flex items-center gap-1">
+              • Ada perubahan belum disimpan
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleBack}
+            disabled={saving || deploying}
+            className="text-xs h-9 px-3 text-slate-600"
+          >
+            Batal
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => handleSave(false)}
+            disabled={saving || deploying}
+            className="text-xs h-9 px-3.5 gap-1.5 text-slate-800 font-semibold"
+          >
+            <Save className="w-3.5 h-3.5 text-slate-500" />
+            <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Draft'}</span>
+          </Button>
+
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => handleSave(true)}
+            disabled={saving || deploying}
+            className="text-xs h-9 px-4 gap-1.5 bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs font-semibold"
+          >
+            {deploying ? (
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Rocket className="w-3.5 h-3.5" />
+            )}
+            <span>{deploying ? 'Deploying...' : 'Simpan & Deploy'}</span>
+          </Button>
         </div>
       </div>
     </div>

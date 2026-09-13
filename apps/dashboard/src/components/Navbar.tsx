@@ -15,57 +15,52 @@ import {
 import { triggerCloudflareDeploy } from '../lib/cloudflare';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { useToast } from './ui/Toast';
 
 interface NavbarProps {
   activeTab: string;
   userEmail?: string;
   onLogout?: () => void;
   onToggleMobile?: () => void;
+  onNavigate?: (tab: any) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activeTab, userEmail, onLogout, onToggleMobile }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  activeTab,
+  userEmail,
+  onLogout,
+  onToggleMobile,
+  onNavigate,
+}) => {
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<{ success: boolean; message: string; timestamp?: string } | null>(null);
+  const toast = useToast();
 
   const handleDeploy = async () => {
     setDeploying(true);
     setDeployResult(null);
+    const toastId = toast.loading('Memulai deployment Cloudflare Pages...');
     try {
       const res = await triggerCloudflareDeploy();
       setDeployResult(res);
+      toast.dismiss(toastId);
       if (res.success) {
+        toast.success('Deployment Berhasil Terpicu!', 'Cloudflare sedang memproses build terbaru (~45 detik).');
         setTimeout(() => setDeployResult(null), 7000);
+      } else {
+        toast.error('Deployment Gagal', res.message);
       }
+    } catch (err: any) {
+      toast.dismiss(toastId);
+      toast.error('Gagal memicu deployment', err?.message || 'Koneksi bermasalah');
     } finally {
       setDeploying(false);
     }
   };
 
-  // Human readable breadcrumb title
-  const getBreadcrumbTitle = () => {
-    switch (activeTab) {
-      case 'overview':
-        return 'Beranda & Ringkasan';
-      case 'portfolio':
-        return 'Portofolio Proyek';
-      case 'portfolio-new':
-        return 'Portofolio / Editor Proyek';
-      case 'articles':
-        return 'Artikel & Berita';
-      case 'article-new':
-        return 'Artikel / Tulis Baru';
-      case 'redirects':
-        return 'Pengalihan Tautan (301)';
-      case 'settings':
-        return 'Pengaturan & Publikasi';
-      default:
-        return 'Beranda';
-    }
-  };
-
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-slate-200/90 bg-white/95 backdrop-blur-md px-4 md:px-8 shadow-xs">
-      {/* Left: Mobile Toggle & Breadcrumbs */}
+      {/* Left: Mobile Toggle & Interactive Breadcrumbs */}
       <div className="flex items-center gap-3 min-w-0">
         {onToggleMobile && (
           <button
@@ -78,13 +73,61 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, userEmail, onLogout, 
           </button>
         )}
 
-        <div className="flex items-center gap-2 text-sm font-semibold text-slate-500 min-w-0">
-          <span className="text-[#22416D] font-extrabold hidden sm:inline">Bina Project</span>
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm font-semibold text-slate-500 min-w-0">
+          <button
+            type="button"
+            onClick={() => onNavigate && onNavigate('overview')}
+            className="text-[#22416D] font-extrabold hover:text-[#172D4B] hover:underline hidden sm:inline cursor-pointer transition-colors"
+            title="Kembali ke Beranda"
+          >
+            Bina Project
+          </button>
           <ChevronRight className="w-4 h-4 text-slate-300 hidden sm:inline flex-shrink-0" />
-          <span className="text-slate-900 font-bold truncate text-sm md:text-base">
-            {getBreadcrumbTitle()}
-          </span>
-        </div>
+
+          {activeTab === 'portfolio-new' ? (
+            <>
+              <button
+                type="button"
+                onClick={() => onNavigate && onNavigate('portfolio')}
+                className="hover:text-[#22416D] hover:underline cursor-pointer transition-colors truncate"
+              >
+                Portofolio Proyek
+              </button>
+              <ChevronRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
+              <span className="text-slate-900 font-bold truncate text-sm md:text-base">
+                Editor Proyek
+              </span>
+            </>
+          ) : activeTab === 'article-new' ? (
+            <>
+              <button
+                type="button"
+                onClick={() => onNavigate && onNavigate('articles')}
+                className="hover:text-[#22416D] hover:underline cursor-pointer transition-colors truncate"
+              >
+                Artikel & Berita
+              </button>
+              <ChevronRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
+              <span className="text-slate-900 font-bold truncate text-sm md:text-base">
+                Tulis Artikel
+              </span>
+            </>
+          ) : (
+            <span className="text-slate-900 font-bold truncate text-sm md:text-base">
+              {activeTab === 'overview'
+                ? 'Beranda & Ringkasan'
+                : activeTab === 'portfolio'
+                ? 'Portofolio Proyek'
+                : activeTab === 'articles'
+                ? 'Artikel & Berita'
+                : activeTab === 'redirects'
+                ? 'Pengalihan Tautan (301)'
+                : activeTab === 'settings'
+                ? 'Pengaturan & Publikasi'
+                : 'Beranda'}
+            </span>
+          )}
+        </nav>
       </div>
 
       {/* Right: Global Actions & User Profile */}

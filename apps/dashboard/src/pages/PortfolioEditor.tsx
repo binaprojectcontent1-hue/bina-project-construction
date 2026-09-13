@@ -12,6 +12,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Input, Textarea } from '../components/ui/input';
+import { useToast } from '../components/ui/Toast';
 
 interface PortfolioEditorProps {
   projectId?: string;
@@ -25,6 +26,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
   const [deploying, setDeploying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const toast = useToast();
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -77,9 +80,11 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           setMetaTitle(data.meta_title || '');
           setMetaDescription(data.meta_description || '');
           setAutoSlug(false);
+          setIsDirty(false);
         }
       } catch (err: any) {
         setError('Gagal memuat detail proyek: ' + err.message);
+        toast.error('Gagal Memuat Proyek', err.message);
       } finally {
         setLoading(false);
       }
@@ -88,8 +93,29 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
     loadProject();
   }, [projectId]);
 
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
+  const handleBack = () => {
+    if (isDirty) {
+      if (!window.confirm('Ada perubahan data yang belum disimpan. Yakin ingin meninggalkan halaman ini?')) {
+        return;
+      }
+    }
+    onBack && onBack();
+  };
+
   const handleTitleChange = (val: string) => {
     setTitle(val);
+    setIsDirty(true);
     if (autoSlug) {
       const generated = generateSlug(val);
       setSlug(generated);
@@ -99,6 +125,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
 
   const handleSlugChange = (val: string) => {
     setAutoSlug(false);
+    setIsDirty(true);
     const cleaned = generateSlug(val);
     setSlug(cleaned);
     validateSlug(cleaned);
@@ -205,14 +232,20 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
         if (insertErr) throw insertErr;
       }
 
+      setIsDirty(false);
+      toast.success('Proyek Berhasil Disimpan', 'Data portofolio telah disimpan ke database.');
       setSuccess('Proyek berhasil disimpan ke database!');
 
       if (autoDeploy) {
         setDeploying(true);
+        const deployToastId = toast.loading('Memicu deployment ke Cloudflare Pages...');
         const deployRes = await triggerCloudflareDeploy();
+        toast.dismiss(deployToastId);
         if (deployRes.success) {
+          toast.success('Deployment Terpicu', 'Website sedang diperbarui otomatis (~45s).');
           setSuccess('Proyek berhasil disimpan & Deployment ke Cloudflare telah terpicu (~45s)!');
         } else {
+          toast.error('Deploy Gagal', deployRes.message);
           setError('Proyek tersimpan, respon Cloudflare: ' + deployRes.message);
         }
         setDeploying(false);
@@ -222,7 +255,9 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
         onSave && onSave(projectId!);
       }, 1200);
     } catch (err: any) {
-      setError(err?.message || 'Terjadi kesalahan saat menyimpan data.');
+      const msg = err?.message || 'Terjadi kesalahan saat menyimpan data.';
+      setError(msg);
+      toast.error('Gagal Menyimpan Proyek', msg);
     } finally {
       setSaving(false);
     }
@@ -238,11 +273,11 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 pb-16">
+    <div className="max-w-5xl mx-auto space-y-6 pb-28">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="icon" onClick={onBack} className="h-8 w-8 text-slate-600">
+          <Button variant="outline" size="icon" onClick={handleBack} className="h-8 w-8 text-slate-600">
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div>
@@ -590,6 +625,70 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             type="portfolio"
             publishedDate={projectDate}
           />
+        </div>
+      </div>
+
+      {/* Sticky Bottom Floating Action Bar */}
+      <div className="fixed bottom-0 left-0 md:left-72 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 py-3 px-4 md:px-8 shadow-lg flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Status Publikasi:</span>
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
+              status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                status === 'published' ? 'bg-emerald-500' : 'bg-amber-500'
+              }`}
+            />
+            {status === 'published' ? 'Tayang (Published)' : 'Draft'}
+          </span>
+          {isDirty && (
+            <span className="text-xs text-amber-600 font-medium hidden sm:inline flex items-center gap-1">
+              • Ada perubahan belum disimpan
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleBack}
+            disabled={saving || deploying}
+            className="text-xs h-9 px-3 text-slate-600"
+          >
+            Batal
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => handleSave(false)}
+            disabled={saving || deploying}
+            className="text-xs h-9 px-3.5 gap-1.5 text-slate-800 font-semibold"
+          >
+            <Save className="w-3.5 h-3.5 text-slate-500" />
+            <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Saja'}</span>
+          </Button>
+
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => handleSave(true)}
+            disabled={saving || deploying}
+            className="text-xs h-9 px-4 gap-1.5 bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs font-semibold"
+          >
+            {deploying ? (
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Rocket className="w-3.5 h-3.5" />
+            )}
+            <span>{deploying ? 'Deploying...' : 'Simpan & Deploy'}</span>
+          </Button>
         </div>
       </div>
     </div>

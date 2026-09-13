@@ -12,6 +12,7 @@ import {
   LayoutGrid,
   Table as TableIcon,
   CheckCircle2,
+  Copy,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { resolveDashboardMediaUrl } from '../lib/media';
@@ -20,6 +21,7 @@ import { Card } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Skeleton } from '../components/ui/skeleton';
+import { useToast } from '../components/ui/Toast';
 
 interface ArticleListProps {
   onEdit?: (id: string) => void;
@@ -32,7 +34,9 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('table');
+  const toast = useToast();
 
   const fetchArticles = async () => {
     setLoading(true);
@@ -70,6 +74,40 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
     }
   };
 
+  const handleToggleStatus = async (a: any) => {
+    const newStatus = a.status === 'draft' ? 'published' : 'draft';
+    const oldStatus = a.status;
+    setArticles((prev) =>
+      prev.map((item) => (item.id === a.id ? { ...item, status: newStatus } : item))
+    );
+    try {
+      if (!supabase) return;
+      const { error } = await supabase
+        .from('articles')
+        .update({
+          status: newStatus,
+          published_at: newStatus === 'published' ? new Date().toISOString() : null,
+        })
+        .eq('id', a.id);
+      if (error) throw error;
+      toast.success(
+        `Status Diubah: ${newStatus === 'published' ? 'Tayang (Live)' : 'Draft'}`,
+        `Artikel "${a.title}" sekarang berstatus ${newStatus === 'published' ? 'Tayang' : 'Draft'}.`
+      );
+    } catch (err: any) {
+      setArticles((prev) =>
+        prev.map((item) => (item.id === a.id ? { ...item, status: oldStatus } : item))
+      );
+      toast.error('Gagal Mengubah Status', err?.message);
+    }
+  };
+
+  const handleCopyLink = (slug: string) => {
+    const url = `https://binaproject.com/blog/${slug}`;
+    navigator.clipboard.writeText(url);
+    toast.success('Tautan Publik Disalin!', url);
+  };
+
   const handleNew = () => {
     onNew && onNew();
   };
@@ -80,10 +118,14 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
       a.slug?.toLowerCase().includes(search.toLowerCase()) ||
       a.focus_keyword?.toLowerCase().includes(search.toLowerCase());
     const matchCat = categoryFilter === 'all' || a.category === categoryFilter;
-    return matchSearch && matchCat;
+    const matchStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'published' && (a.status === 'published' || !a.status)) ||
+      (statusFilter === 'draft' && a.status === 'draft');
+    return matchSearch && matchCat && matchStatus;
   });
 
-  const publishedCount = articles.filter((a) => a.status === 'published').length;
+  const publishedCount = articles.filter((a) => a.status === 'published' || !a.status).length;
   const draftCount = articles.filter((a) => a.status === 'draft').length;
 
   return (
@@ -142,18 +184,59 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
       </div>
 
       {/* Filter & Search Toolbar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3.5 rounded-2xl shadow-sm">
-        <div className="relative flex-1 w-full sm:max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari judul artikel, topik, atau kata kunci..."
-            className="pl-9.5 h-10 text-sm border-slate-200"
-          />
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl shadow-sm">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Cari judul artikel, kata kunci..."
+              className="pl-9.5 h-10 text-xs border-slate-200"
+            />
+          </div>
+
+          {/* Quick Status Filter Tabs */}
+          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+            <button
+              type="button"
+              onClick={() => setStatusFilter('all')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                statusFilter === 'all'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Semua ({articles.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter('published')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                statusFilter === 'published'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${statusFilter === 'published' ? 'bg-white' : 'bg-emerald-500'}`} />
+              Tayang ({publishedCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter('draft')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                statusFilter === 'draft'
+                  ? 'bg-amber-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${statusFilter === 'draft' ? 'bg-white' : 'bg-amber-500'}`} />
+              Draft ({draftCount})
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
+        <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-end">
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
@@ -192,7 +275,7 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
             type="button"
             onClick={fetchArticles}
             title="Segarkan Data"
-            className="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors shadow-xs"
+            className="p-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors shadow-xs"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -202,33 +285,16 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
       {/* Content Rendering */}
       {loading ? (
         viewMode === 'table' ? (
-          <Card className="overflow-hidden shadow-sm rounded-2xl">
+          <Card className="p-6">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
-                  <tr>
-                    <th className="py-3.5 px-4">Artikel & Ringkasan</th>
-                    <th className="py-3.5 px-4">Alamat URL</th>
-                    <th className="py-3.5 px-4">Kategori & Waktu</th>
-                    <th className="py-3.5 px-4 text-center">Status</th>
-                    <th className="py-3.5 px-4 text-right">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody>
                   {[1, 2, 3, 4, 5].map((i) => (
-                    <tr key={i}>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-3.5">
-                          <Skeleton className="w-12 h-9 rounded-lg flex-shrink-0" />
-                          <div className="space-y-1.5 flex-1">
-                            <Skeleton className="h-4 w-44" />
-                            <Skeleton className="h-3 w-28" />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4"><Skeleton className="h-3.5 w-32" /></td>
-                      <td className="py-3.5 px-4"><Skeleton className="h-5 w-20 rounded-full" /></td>
-                      <td className="py-3.5 px-4 text-center"><Skeleton className="h-5 w-16 mx-auto rounded-full" /></td>
+                    <tr key={i} className="border-b border-slate-100 last:border-0">
+                      <td className="py-3.5 px-4"><Skeleton className="h-10 w-44 rounded-lg" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-4 w-32 rounded-md" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-6 w-24 rounded-full" /></td>
+                      <td className="py-3.5 px-4 text-center"><Skeleton className="h-6 w-16 mx-auto rounded-full" /></td>
                       <td className="py-3.5 px-4 text-right"><Skeleton className="h-8 w-16 ml-auto rounded-md" /></td>
                     </tr>
                   ))}
@@ -242,8 +308,8 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
               <Card key={i} className="overflow-hidden shadow-sm rounded-2xl flex flex-col">
                 <Skeleton className="w-full aspect-video" />
                 <div className="p-4 space-y-2.5 flex-1">
-                  <Skeleton className="h-4 w-4/5" />
-                  <Skeleton className="h-3 w-3/5" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-3 w-1/2" />
                   <div className="pt-2 flex justify-between items-center">
                     <Skeleton className="h-5 w-16 rounded-full" />
                     <Skeleton className="h-5 w-14 rounded-full" />
@@ -257,12 +323,14 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
         <Card className="p-12 text-center space-y-4 rounded-xl">
           <BookOpen className="w-12 h-12 text-slate-300 mx-auto" />
           <div>
-            <h3 className="text-base font-bold text-slate-800">Belum ada artikel yang ditemukan</h3>
+            <h4 className="text-base font-bold text-slate-800">Tidak ada artikel yang sesuai</h4>
             <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
-              Mulai tulis artikel pertama dengan mudah menggunakan editor visual tanpa tag HTML.
+              {search || categoryFilter !== 'all' || statusFilter !== 'all'
+                ? 'Coba ubah kata kunci pencarian atau filter status artikel Anda.'
+                : 'Mulai buat artikel baru yang kaya informasi dan ramah SEO untuk pembaca.'}
             </p>
           </div>
-          <Button onClick={onNew} className="text-xs font-bold bg-[#22416D]">
+          <Button onClick={onNew} size="sm" className="text-xs font-bold bg-[#22416D]">
             Tulis Artikel Baru
           </Button>
         </Card>
@@ -273,7 +341,7 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
                 <tr>
-                  <th className="py-3.5 px-4">Artikel & Ringkasan</th>
+                  <th className="py-3.5 px-4">Artikel</th>
                   <th className="py-3.5 px-4">Alamat URL</th>
                   <th className="py-3.5 px-4">Kategori & Waktu</th>
                   <th className="py-3.5 px-4 text-center">Status</th>
@@ -307,7 +375,7 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
 
                     <td className="py-3.5 px-4">
                       <div className="space-y-1">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 text-[#22416D]">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-[#22416D]">
                           {item.category}
                         </span>
                         <div className="flex items-center gap-2 text-slate-400 text-xs">
@@ -323,19 +391,32 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
                     </td>
 
                     <td className="py-3.5 px-4 text-center">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                          item.status === 'published'
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                            : 'bg-slate-100 text-slate-600'
+                      <button
+                        type="button"
+                        onClick={() => handleToggleStatus(item)}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold cursor-pointer transition-all hover:scale-105 active:scale-95 ${
+                          item.status === 'published' || !item.status
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
+                            : 'bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100'
                         }`}
+                        title="Klik untuk beralih status (Tayang / Draft)"
                       >
-                        {item.status === 'published' ? '🟢 Live' : '📝 Draft'}
-                      </span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'published' || !item.status ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                        <span>{item.status === 'published' || !item.status ? 'Tayang' : 'Draft'}</span>
+                      </button>
                     </td>
 
                     <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => handleCopyLink(item.slug)}
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                          title="Salin Tautan Publik"
+                          aria-label={`Salin tautan artikel ${item.title}`}
+                        >
+                          <Copy className="w-4 h-4" />
+                        </button>
                         <a
                           href={`https://binaproject.com/blog/${item.slug}`}
                           target="_blank"
@@ -390,15 +471,19 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
                     </span>
                   </div>
                   <div className="absolute top-2.5 right-2.5">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold backdrop-blur-xs ${
-                        item.status === 'published'
-                          ? 'bg-emerald-600 text-white shadow-xs'
-                          : 'bg-white/90 text-slate-800 shadow-xs'
+                    <button
+                      type="button"
+                      onClick={() => handleToggleStatus(item)}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold backdrop-blur-md cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm ${
+                        item.status === 'published' || !item.status
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-white/95 text-amber-800 border border-amber-200'
                       }`}
+                      title="Klik untuk beralih status Tayang / Draft"
                     >
-                      {item.status === 'published' ? '🟢 Live' : '📝 Draft'}
-                    </span>
+                      <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'published' || !item.status ? 'bg-white' : 'bg-amber-500'}`} />
+                      <span>{item.status === 'published' || !item.status ? 'Tayang' : 'Draft'}</span>
+                    </button>
                   </div>
                 </div>
 
@@ -422,36 +507,44 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
                 </div>
               </div>
 
-              <div className="p-5 pt-0">
-                <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
+              <div className="p-5 pt-0 mt-2 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleCopyLink(item.slug)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+                    title="Salin Tautan Publik"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
                   <a
                     href={`https://binaproject.com/blog/${item.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-bold text-[#22416D] hover:underline"
+                    className="text-xs text-slate-600 hover:text-[#22416D] inline-flex items-center gap-1 font-semibold"
                   >
                     <span>Lihat di Web</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
+                </div>
 
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => onEdit && onEdit(item.id)}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-colors"
-                    >
-                      <Edit3 className="w-3.5 h-3.5" />
-                      <span>Edit</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(item.id, item.title)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                      title="Hapus"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => onEdit && onEdit(item.id)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-colors"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>Edit</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(item.id, item.title)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                    title="Hapus"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             </Card>

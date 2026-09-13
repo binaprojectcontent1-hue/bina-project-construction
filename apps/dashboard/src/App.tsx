@@ -14,6 +14,7 @@ import { Settings } from './pages/Settings';
 import { Login } from './pages/Login';
 import { sessionManager } from './lib/session-manager';
 import ErrorBoundary from './components/ErrorBoundary';
+import { ToastProvider } from './components/ui/Toast';
 
 interface RouteState {
   tab: TabType;
@@ -358,33 +359,36 @@ export function App() {
 
   return (
     <ErrorBoundary>
-      {session ? (
-        <div className="h-screen bg-[#F8FAFC] flex flex-col font-sans overflow-hidden">
-          <Navbar
-            activeTab={activeTab}
-            userEmail={session?.user?.email || 'admin@binaproject.com'}
-            onLogout={session ? () => handleLogout('Manual logout') : undefined}
-            onToggleMobile={() => setMobileNavOpen((prev) => !prev)}
-          />
-
-          <div className="flex flex-1 overflow-hidden">
-            <Sidebar
+      <ToastProvider>
+        {session ? (
+          <div className="h-screen bg-[#F8FAFC] flex flex-col font-sans overflow-hidden">
+            <Navbar
               activeTab={activeTab}
+              userEmail={session?.user?.email || 'admin@binaproject.com'}
+              onLogout={session ? () => handleLogout('Manual logout') : undefined}
+              onToggleMobile={() => setMobileNavOpen((prev) => !prev)}
               onNavigate={handleNavigate}
-              mobileOpen={mobileNavOpen}
-              onCloseMobile={() => setMobileNavOpen(false)}
-              portfolioCount={portfolioCount}
-              articleCount={articleCount}
             />
 
-            <main className="flex-1 overflow-y-auto p-6">
-              {renderContent()}
-            </main>
+            <div className="flex flex-1 overflow-hidden">
+              <Sidebar
+                activeTab={activeTab}
+                onNavigate={handleNavigate}
+                mobileOpen={mobileNavOpen}
+                onCloseMobile={() => setMobileNavOpen(false)}
+                portfolioCount={portfolioCount}
+                articleCount={articleCount}
+              />
+
+              <main className="flex-1 overflow-y-auto p-6">
+                {renderContent()}
+              </main>
+            </div>
           </div>
-        </div>
-      ) : (
-        <Login onLoginSuccess={handleLoginSuccess} />
-      )}
+        ) : (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        )}
+      </ToastProvider>
     </ErrorBoundary>
   );
 }
