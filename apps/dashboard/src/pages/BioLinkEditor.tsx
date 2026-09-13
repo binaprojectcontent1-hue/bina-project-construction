@@ -813,11 +813,11 @@ export const BioLinkEditor: React.FC = () => {
                 <div className="w-24 h-4 bg-slate-800 rounded-full mb-6 z-10" />
 
                 {/* Profile Logo */}
-                <div className="relative z-10 w-16 h-16 rounded-full p-2 bg-white/10 shadow-lg mb-3 flex items-center justify-center">
+                <div className="relative z-10 h-14 mb-2 flex items-center justify-center">
                   <img
-                    src="/avatar.png"
+                    src="/logo.webp"
                     alt="Logo"
-                    className="w-10 h-10 object-contain rounded-full"
+                    className="max-h-12 w-auto object-contain drop-shadow-md"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/favicon.svg';
                     }}

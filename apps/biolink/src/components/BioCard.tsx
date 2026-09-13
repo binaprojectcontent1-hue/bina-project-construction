@@ -10,21 +10,28 @@ interface BioCardProps {
 }
 
 export function BioCard({ settings, links, loading = false }: BioCardProps) {
-  const defaultLogo = '/favicon.svg';
   const activeLinks = links
     .filter((l) => l.is_active)
     .sort((a, b) => a.sort_order - b.sort_order);
 
+  const defaultLogo = '/logo.webp';
+  const logoSrc =
+    settings?.avatar_url &&
+    settings.avatar_url.trim() !== '' &&
+    !settings.avatar_url.includes('favicon.png')
+      ? settings.avatar_url
+      : defaultLogo;
+
   return (
     <div className="bio-card">
-      {/* Brand Avatar */}
+      {/* Brand Logo */}
       <div className="bio-logo-wrap">
         <img
-          src={settings?.avatar_url || '/avatar.png'}
+          src={logoSrc}
           alt={settings?.profile_name || 'Bina Project'}
           className="bio-logo"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/favicon.svg';
+            (e.target as HTMLImageElement).src = '/logo.webp';
           }}
         />
       </div>

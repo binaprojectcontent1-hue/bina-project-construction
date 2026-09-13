@@ -56,7 +56,7 @@ const DEFAULT_SETTINGS: BioLinkSettings = {
   id: 'demo-settings',
   profile_name: 'Bina Project',
   tagline: 'Jasa Konstruksi & Interior Terpercaya di Malang',
-  avatar_url: '/avatar.png',
+  avatar_url: '/logo.webp',
 };
 
 export function App() {
