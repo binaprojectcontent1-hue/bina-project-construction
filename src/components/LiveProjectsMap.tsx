@@ -92,12 +92,11 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      // CartoDB Voyager tiles (clean, high contrast, elegant architectural style)
+      // Esri World Street Map (Clean architectural road map, high-res, no watermark)
       L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
         {
-          maxZoom: 19,
-          subdomains: 'abcd',
+          maxZoom: 18,
         }
       ).addTo(map);
 

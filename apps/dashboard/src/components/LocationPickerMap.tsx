@@ -48,10 +48,12 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({ lat, lng, 
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        subdomains: 'abcd',
-      }).addTo(map);
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+        {
+          maxZoom: 18,
+        }
+      ).addTo(map);
 
       // Custom Clean Architectural Pin
       const pinHtml = `
