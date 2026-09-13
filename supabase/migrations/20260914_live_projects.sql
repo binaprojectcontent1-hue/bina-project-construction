@@ -48,7 +48,7 @@ values
     65,
     -7.9350,
     112.6580,
-    'https://images.unsplash.com/photo-1541888946425-d0fbb1861593?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=800&auto=format&fit=crop',
     true
   ),
   (

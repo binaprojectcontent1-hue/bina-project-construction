@@ -23,7 +23,8 @@ export type TabType =
   | 'redirects'
   | 'settings'
   | 'portfolio-new'
-  | 'article-new';
+  | 'article-new'
+  | 'live-project-new';
 
 interface SidebarProps {
   activeTab: TabType;
@@ -50,6 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const isTabActive = (tab: TabType) => {
     if (tab === 'portfolio' && activeTab === 'portfolio-new') return true;
     if (tab === 'articles' && activeTab === 'article-new') return true;
+    if (tab === 'live-projects' && activeTab === 'live-project-new') return true;
     return activeTab === tab;
   };
 

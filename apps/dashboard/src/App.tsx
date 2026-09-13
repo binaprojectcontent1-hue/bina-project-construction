@@ -13,6 +13,7 @@ import { RedirectsList } from './pages/RedirectsList';
 import { Settings } from './pages/Settings';
 import { BioLinkEditor } from './pages/BioLinkEditor';
 import { LiveProjectsManager } from './pages/LiveProjectsManager';
+import { LiveProjectEditor } from './pages/LiveProjectEditor';
 import { Login } from './pages/Login';
 import { sessionManager } from './lib/session-manager';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -22,6 +23,7 @@ interface RouteState {
   tab: TabType;
   portfolioId?: string;
   articleId?: string;
+  liveProjectId?: string;
 }
 
 function parseHash(rawHash: string): RouteState {
@@ -45,6 +47,13 @@ function parseHash(rawHash: string): RouteState {
     };
   }
 
+  if (path === 'live-project-edit') {
+    return {
+      tab: 'live-project-new',
+      liveProjectId: params.get('id') || undefined,
+    };
+  }
+
   const validTabs: TabType[] = [
     'overview',
     'portfolio',
@@ -52,6 +61,7 @@ function parseHash(rawHash: string): RouteState {
     'articles',
     'article-new',
     'live-projects',
+    'live-project-new',
     'biolink',
     'redirects',
     'settings',
@@ -62,18 +72,22 @@ function parseHash(rawHash: string): RouteState {
       tab: path as TabType,
       portfolioId: params.get('portfolioId') || undefined,
       articleId: params.get('articleId') || undefined,
+      liveProjectId: params.get('liveProjectId') || undefined,
     };
   }
 
   return { tab: 'overview' };
 }
 
-function buildHash(tab: TabType, portfolioId?: string, articleId?: string): string {
+function buildHash(tab: TabType, portfolioId?: string, articleId?: string, liveProjectId?: string): string {
   if (tab === 'article-new' && articleId) {
     return `#article-edit?id=${encodeURIComponent(articleId)}`;
   }
   if (tab === 'portfolio-new' && portfolioId) {
     return `#portfolio-edit?id=${encodeURIComponent(portfolioId)}`;
+  }
+  if (tab === 'live-project-new' && liveProjectId) {
+    return `#live-project-edit?id=${encodeURIComponent(liveProjectId)}`;
   }
   return `#${tab}`;
 }
@@ -86,14 +100,15 @@ export function App() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [editingPortfolioId, setEditingPortfolioId] = useState<string | undefined>(initialRoute.portfolioId);
   const [editingArticleId, setEditingArticleId] = useState<string | undefined>(initialRoute.articleId);
+  const [editingLiveProjectId, setEditingLiveProjectId] = useState<string | undefined>(initialRoute.liveProjectId);
 
   // Counts
   const [portfolioCount, setPortfolioCount] = useState(0);
   const [articleCount, setArticleCount] = useState(0);
 
   // Sync state to URL Hash
-  const syncRouteToHash = useCallback((tab: TabType, pId?: string, aId?: string) => {
-    const targetHash = buildHash(tab, pId, aId);
+  const syncRouteToHash = useCallback((tab: TabType, pId?: string, aId?: string, lId?: string) => {
+    const targetHash = buildHash(tab, pId, aId, lId);
     if (window.location.hash !== targetHash) {
       window.history.replaceState(null, '', targetHash);
     }
@@ -106,6 +121,7 @@ export function App() {
       setActiveTab(route.tab);
       setEditingPortfolioId(route.portfolioId);
       setEditingArticleId(route.articleId);
+      setEditingLiveProjectId(route.liveProjectId);
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -114,8 +130,8 @@ export function App() {
 
   // Update hash when tab or IDs change
   useEffect(() => {
-    syncRouteToHash(activeTab, editingPortfolioId, editingArticleId);
-  }, [activeTab, editingPortfolioId, editingArticleId, syncRouteToHash]);
+    syncRouteToHash(activeTab, editingPortfolioId, editingArticleId, editingLiveProjectId);
+  }, [activeTab, editingPortfolioId, editingArticleId, editingLiveProjectId, syncRouteToHash]);
 
   // Initialize session management when user logs in
   useEffect(() => {
@@ -217,12 +233,30 @@ export function App() {
     refreshCounts();
   };
 
+  const handleEditLiveProject = (id: string) => {
+    setEditingLiveProjectId(id);
+    setActiveTab('live-project-new');
+  };
+
+  const handleNewLiveProject = () => {
+    setEditingLiveProjectId(undefined);
+    setActiveTab('live-project-new');
+  };
+
+  const handleLiveProjectSave = () => {
+    setEditingLiveProjectId(undefined);
+    setActiveTab('live-projects');
+  };
+
   const handleNavigate = (tab: TabType) => {
     if (tab === 'portfolio' || tab === 'portfolio-new') {
       setEditingPortfolioId(undefined);
     }
     if (tab === 'articles' || tab === 'article-new') {
       setEditingArticleId(undefined);
+    }
+    if (tab === 'live-projects' || tab === 'live-project-new') {
+      setEditingLiveProjectId(undefined);
     }
     setActiveTab(tab);
   };
@@ -264,6 +298,7 @@ export function App() {
       'articles': 'Artikel & Berita - Bina Project Studio',
       'article-new': editingArticleId ? 'Edit Artikel - Bina Project Studio' : 'Tulis Artikel Baru - Bina Project Studio',
       'live-projects': 'Peta Proyek Berjalan - Bina Project Studio',
+      'live-project-new': editingLiveProjectId ? 'Edit Proyek Berjalan - Bina Project Studio' : 'Tambah Proyek Berjalan Baru - Bina Project Studio',
       'biolink': 'Bio Link Manager - Bina Project Studio',
       'redirects': 'Pengalihan Tautan (301) - Bina Project Studio',
       'settings': 'Pengaturan & Publikasi - Bina Project Studio',
@@ -274,7 +309,7 @@ export function App() {
     } else {
       document.title = titles[activeTab] || 'Bina Project Studio - Panel Manajemen';
     }
-  }, [activeTab, session, isSupabaseConfigured, editingPortfolioId, editingArticleId]);
+  }, [activeTab, session, isSupabaseConfigured, editingPortfolioId, editingArticleId, editingLiveProjectId]);
 
   // Show loading state while checking auth
   if (!authChecked) {
@@ -354,7 +389,24 @@ export function App() {
       case 'biolink':
         return <BioLinkEditor />;
       case 'live-projects':
-        return <LiveProjectsManager />;
+        return (
+          <LiveProjectsManager
+            onNew={handleNewLiveProject}
+            onEdit={handleEditLiveProject}
+          />
+        );
+      case 'live-project-new':
+        return (
+          <LiveProjectEditor
+            key={editingLiveProjectId || 'new-live-project'}
+            projectId={editingLiveProjectId}
+            onBack={() => {
+              setEditingLiveProjectId(undefined);
+              setActiveTab('live-projects');
+            }}
+            onSave={handleLiveProjectSave}
+          />
+        );
       case 'redirects':
         return <RedirectsList />;
       case 'settings':

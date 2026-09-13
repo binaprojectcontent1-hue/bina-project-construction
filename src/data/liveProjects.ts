@@ -10,7 +10,7 @@ export const FALLBACK_LIVE_PROJECTS: LiveProject[] = [
     progress: 65,
     lat: -7.9350,
     lng: 112.6580,
-    image_url: 'https://images.unsplash.com/photo-1541888946425-d0fbb1861593?q=80&w=800&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=800&auto=format&fit=crop',
     is_active: true,
   },
   {

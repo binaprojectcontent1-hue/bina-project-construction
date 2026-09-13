@@ -136,11 +136,11 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
       const latLng: [number, number] = [proj.lat, proj.lng];
       bounds.extend(latLng);
 
-      // Minimalist Elegant Architectural Pin (clean, no pulsing radar)
+      // Minimalist Elegant Architectural Pin (clean brand navy theme, no pulsing radar)
       const markerHtml = `
         <div class="live-project-pin-container">
           <div class="live-project-pin-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 21h18"/>
               <path d="M5 21V7l8-4v18"/>
               <path d="M19 21V11l-6-4"/>
@@ -165,18 +165,13 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
       const marker = L.marker(latLng, { icon: customIcon }).addTo(map);
 
-      // Safe consultation message without leaking exact homeowner address
-      const waText = encodeURIComponent(
-        `Halo Tim Bina Project, saya melihat info proyek "${proj.title}" di daerah ${proj.area_name} pada peta proyek berjalan. Saya ingin konsultasi pengerjaan serupa untuk rencana bangunan saya.`
-      );
-      const waUrl = `https://wa.me/6281335335304?text=${waText}`;
-
-      // Minimalist architectural popup card
+      // Minimalist architectural popup card with 1:1 ratio image and no CTA button
       const popupHtml = `
         <div class="live-project-popup-card">
           ${
             proj.image_url
-              ? `<div class="live-project-popup-thumb" style="background-image: url('${proj.image_url}')">
+              ? `<div class="live-project-popup-thumb-1to1">
+                  <img src="${proj.image_url}" alt="${proj.title}" class="live-project-popup-img" />
                   <span class="live-project-popup-category">${proj.category}</span>
                 </div>`
               : `<div class="live-project-popup-category-bar"><span class="live-project-popup-category">${proj.category}</span></div>`
@@ -198,11 +193,6 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
                 <div class="live-project-progress-fill" style="width: ${proj.progress}%;"></div>
               </div>
             </div>
-
-            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="live-project-wa-cta">
-              <span>Tanya Proyek Serupa</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2Z"/></svg>
-            </a>
           </div>
         </div>
       `;
@@ -367,7 +357,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
         .live-projects-map-canvas {
           width: 100%;
-          height: 540px;
+          height: 780px;
           z-index: 1;
         }
 
@@ -380,7 +370,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           align-items: center;
           gap: 0.5rem;
           padding: 0.5rem 0.875rem;
-          background: rgba(255, 255, 255, 0.9);
+          background: rgba(255, 255, 255, 0.92);
           backdrop-filter: blur(8px);
           border-radius: 0.75rem;
           font-size: 0.6875rem;
@@ -412,34 +402,37 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;
-          padding: 0.3rem 0.55rem;
-          background: #0F172A;
+          padding: 0.32rem 0.6rem;
+          background: #0E1E38;
           color: #FFFFFF;
           border-radius: 9999px;
           font-size: 0.75rem;
           font-weight: 700;
-          border: 2px solid #E67E22;
-          box-shadow: 0 6px 14px rgba(15, 23, 42, 0.25);
+          border: 1.5px solid #22416D;
+          box-shadow: 0 4px 12px rgba(14, 30, 56, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
         }
 
         .live-project-pin-pct {
-          color: #FBBF24;
+          color: #F59E0B;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          font-weight: 800;
         }
 
         .live-project-pin-stem {
           width: 2px;
           height: 8px;
-          background: #E67E22;
+          background: #22416D;
           border-radius: 1px;
         }
 
         /* Popup Card Styling */
         .live-project-custom-popup .leaflet-popup-content-wrapper {
           padding: 0;
-          border-radius: 1rem;
+          border-radius: 1.25rem;
           overflow: hidden;
-          box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.2);
-          border: 1px solid rgba(226, 232, 240, 0.8);
+          box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.22);
+          border: 1px solid rgba(226, 232, 240, 0.9);
+          background: #FFFFFF;
         }
 
         .live-project-custom-popup .leaflet-popup-content {
@@ -451,12 +444,20 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           font-family: inherit;
         }
 
-        .live-project-popup-thumb {
-          height: 110px;
-          background-size: cover;
-          background-position: center;
+        .live-project-popup-thumb-1to1 {
+          width: 100%;
+          aspect-ratio: 1 / 1;
           position: relative;
-          padding: 0.6rem;
+          overflow: hidden;
+          background: #F1F5F9;
+        }
+
+        .live-project-popup-img {
+          width: 100% !important;
+          height: 100% !important;
+          max-height: none !important;
+          object-fit: cover !important;
+          display: block !important;
         }
 
         .live-project-popup-category-bar {
@@ -464,19 +465,31 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
         }
 
         .live-project-popup-category {
+          position: absolute;
+          top: 0.625rem;
+          left: 0.625rem;
+          z-index: 10;
           display: inline-block;
-          font-size: 0.65rem;
-          font-weight: 700;
+          font-size: 0.625rem;
+          font-weight: 800;
           text-transform: uppercase;
           letter-spacing: 0.05em;
-          padding: 0.2rem 0.55rem;
+          padding: 0.25rem 0.6rem;
           border-radius: 9999px;
-          background: #E67E22;
+          background: #22416D;
           color: #FFFFFF;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(4px);
+        }
+
+        .live-project-popup-category-bar .live-project-popup-category {
+          position: static;
+          box-shadow: none;
+          background: #22416D;
         }
 
         .live-project-popup-body {
-          padding: 0.875rem;
+          padding: 0.875rem 1rem 1rem;
         }
 
         .live-project-popup-title {
@@ -499,10 +512,10 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
         .live-project-progress-wrap {
           background: #F8FAFC;
-          border-radius: 0.625rem;
-          padding: 0.6rem 0.75rem;
+          border-radius: 0.75rem;
+          padding: 0.65rem 0.8rem;
           border: 1px solid #E2E8F0;
-          margin-bottom: 0.75rem;
+          margin-bottom: 0;
         }
 
         .live-project-progress-header {
@@ -522,6 +535,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           font-size: 0.8125rem;
           font-weight: 800;
           color: #D97706;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
         .live-project-stage-desc {
@@ -546,25 +560,10 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           transition: width 0.5s ease;
         }
 
-        .live-project-wa-cta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.45rem;
-          width: 100%;
-          padding: 0.55rem;
-          background: #0F172A;
-          color: #FFFFFF;
-          font-size: 0.75rem;
-          font-weight: 700;
-          border-radius: 0.5rem;
-          text-decoration: none;
-          transition: background 0.15s ease;
-        }
-
-        .live-project-wa-cta:hover {
-          background: #1E293B;
-          color: #FBBF24;
+        @media (max-width: 1024px) {
+          .live-projects-map-canvas {
+            height: 680px;
+          }
         }
 
         @media (max-width: 640px) {
@@ -576,7 +575,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
             border-top: none;
           }
           .live-projects-map-canvas {
-            height: 420px;
+            height: 560px;
           }
           .live-projects-privacy-note {
             display: none;
