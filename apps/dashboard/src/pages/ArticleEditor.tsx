@@ -84,6 +84,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
   const [focusKeyword, setFocusKeyword] = useState('');
+  const [ogImageType, setOgImageType] = useState<'branded' | 'raw_cover'>('branded');
   const [autoSlug, setAutoSlug] = useState(true);
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
 
@@ -116,6 +117,9 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           setMetaTitle(data.meta_title || '');
           setMetaDescription(data.meta_description || '');
           setFocusKeyword(data.focus_keyword || '');
+          if (data.og_image_type) {
+            setOgImageType(data.og_image_type);
+          }
           setAutoSlug(false);
           setIsDirty(false);
         }
@@ -200,6 +204,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
       meta_description: metaDescription,
       focus_keyword: focusKeyword,
       author,
+      og_image_type: ogImageType,
       is_published: status === 'published',
       is_featured: false,
     });
@@ -229,7 +234,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         }
       }
 
-      const payload = {
+      const payload: Record<string, any> = {
         title,
         slug,
         category,
@@ -239,6 +244,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         content,
         cover_image: coverImage,
         alt_cover_image: altCoverImage,
+        og_image_type: ogImageType,
         status,
         reading_time: readingTime,
         meta_title: metaTitle || null,
@@ -248,20 +254,27 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
       };
 
       if (articleId) {
-        const { error: updateErr } = await supabase
+        let { error: updateErr } = await supabase
           .from('articles')
           .update(payload)
           .eq('id', articleId);
+        if (updateErr && updateErr.message?.includes('og_image_type')) {
+          delete payload.og_image_type;
+          const retry = await supabase.from('articles').update(payload).eq('id', articleId);
+          updateErr = retry.error;
+        }
         if (updateErr) throw updateErr;
       } else {
-        const { error: insertErr } = await supabase
-          .from('articles')
-          .insert([
-            {
-              ...payload,
-              published_at: status === 'published' ? new Date().toISOString() : null,
-            },
-          ]);
+        const insertData: Record<string, any> = {
+          ...payload,
+          published_at: status === 'published' ? new Date().toISOString() : null,
+        };
+        let { error: insertErr } = await supabase.from('articles').insert([insertData]);
+        if (insertErr && insertErr.message?.includes('og_image_type')) {
+          delete insertData.og_image_type;
+          const retry = await supabase.from('articles').insert([insertData]);
+          insertErr = retry.error;
+        }
         if (insertErr) throw insertErr;
       }
 
@@ -626,6 +639,62 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   onChange={(e) => setMetaDescription(e.target.value)}
                   placeholder="Deskripsi 140-160 karakter untuk menarik klik dari pembaca Google..."
                 />
+              </div>
+
+              {/* OG Social Share Preview Selector */}
+              <div className="pt-3 border-t border-slate-100 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                    Tampilan Media Sosial (OG Image)
+                    <HelpTooltip content="Pilih tampilan gambar kartu ketika tautan dibagikan ke WhatsApp, Facebook, LinkedIn, atau Twitter." />
+                  </label>
+                  <span className="text-[10px] bg-amber-100 text-amber-800 font-medium px-2 py-0.5 rounded-full">
+                    1200 × 630 px
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOgImageType('branded');
+                      setIsDirty(true);
+                    }}
+                    className={`p-2.5 rounded-lg border text-left transition-all ${
+                      ogImageType === 'branded'
+                        ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500'
+                        : 'border-slate-200 bg-white hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 font-medium text-xs text-slate-900">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                      Split-Screen Otomatis
+                      <span className="text-[9px] text-amber-700 font-bold bg-amber-100 px-1 py-0.2 rounded">Rekomendasi</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                      Kartu modern berlogo resmi, judul rapi, badge kategori, dan foto cover di sisi kanan.
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOgImageType('raw_cover');
+                      setIsDirty(true);
+                    }}
+                    className={`p-2.5 rounded-lg border text-left transition-all ${
+                      ogImageType === 'raw_cover'
+                        ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500'
+                        : 'border-slate-200 bg-white hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 font-medium text-xs text-slate-900">
+                      <span className="w-2 h-2 rounded-full bg-slate-400 shrink-0" />
+                      Foto Cover Asli
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                      Menggunakan file foto cover polos tanpa grafis tambahan.
+                    </p>
+                  </button>
+                </div>
               </div>
             </CardContent>
           </Card>
