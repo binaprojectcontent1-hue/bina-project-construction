@@ -15,7 +15,7 @@ export const SERVICE_LOCATIONS: readonly ServiceLocation[] = [
     status: 'Kantor Pusat & Studio Workshop (Single Base)',
     isHQ: true,
     isBase: true,
-    address: 'Jl. Watumujur II No.6, Ketawanggede, Lowokwaru, Kota Malang',
+    address: 'Jl. Watumujur II No.6, Kota Malang',
     coordinates: [112.6088, -7.9498],
     latLng: [-7.9498, 112.6088],
     coverage: ['Kota Malang', 'Kota Batu', 'Kabupaten Malang'],

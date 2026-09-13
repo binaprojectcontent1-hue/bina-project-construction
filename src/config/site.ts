@@ -21,7 +21,7 @@ export const siteConfig: SiteConfig = {
     whatsappNumber: '6281335335304',
     whatsappUrl: 'https://wa.me/6281335335304',
     email: 'binaproject.info@gmail.com',
-    address: 'Jl. Watumujur II No.6, Ketawanggede, Kota Malang',
+    address: 'Jl. Watumujur II No.6, Kota Malang',
     city: 'Kota Malang',
     province: 'Jawa Timur',
     postalCode: '65145',

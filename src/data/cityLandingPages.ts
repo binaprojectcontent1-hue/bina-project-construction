@@ -612,7 +612,7 @@ export const CITY_LANDING_PAGES: CityLandingData[] = [
       {
         question: 'Apakah bisa berkunjung langsung ke kantor dan workshop Bina Project di Malang?',
         answer:
-          'Sangat bisa! Kantor studio dan workshop kami beralamat di Jl. Watumujur II No.6, Ketawanggede, Lowokwaru, Kota Malang. Anda dipersilakan datang untuk berdiskusi langsung dengan tim arsitek kami sambil melihat workshop fabrikasi kami.',
+          'Sangat bisa! Kantor studio dan workshop kami beralamat di Jl. Watumujur II No.6, Kota Malang. Anda dipersilakan datang untuk berdiskusi langsung dengan tim arsitek kami sambil melihat workshop fabrikasi kami.',
       },
       {
         question: 'Apakah survei lokasi ke kawasan Malang Raya dikenakan biaya?',
