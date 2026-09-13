@@ -10,25 +10,23 @@ interface BioCardProps {
 }
 
 export function BioCard({ settings, links, loading = false }: BioCardProps) {
-  const logoUrl = 'https://binaproject.com/favicon.png';
+  const defaultLogo = '/favicon.svg';
   const activeLinks = links
     .filter((l) => l.is_active)
     .sort((a, b) => a.sort_order - b.sort_order);
 
   return (
     <div className="bio-card">
-      {/* Brand Avatar with Glowing Gold Border */}
+      {/* Brand Avatar */}
       <div className="bio-logo-wrap">
         <img
-          src={settings?.avatar_url || logoUrl}
+          src={settings?.avatar_url || '/avatar.png'}
           alt={settings?.profile_name || 'Bina Project'}
           className="bio-logo"
           onError={(e) => {
-            // Fallback to text monogram if image fails to load
-            (e.target as HTMLElement).style.display = 'none';
+            (e.target as HTMLImageElement).src = '/favicon.svg';
           }}
         />
-        <div className="bio-logo-fallback">B</div>
       </div>
 
       {/* Profile Header */}
