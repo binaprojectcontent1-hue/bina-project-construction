@@ -1,0 +1,136 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import { getAllProjects } from '@lib/portfolioService';
+import SectionHeader from '@components/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+
+const projects = await getAllProjects();
+---
+
+<BaseLayout
+  title="Portofolio Proyek - Bina Project Construction"
+  description="Dokumentasi hasil karya konstruksi bangunan, renovasi villa, interior kafe, rumah tinggal, dan kitchen set yang telah diselesaikan oleh Bina Project di Malang, Batu, dan sekitarnya."
+>
+  <Breadcrumb title="Portofolio Kami" />
+
+  <section class="space">
+    <div class="container-fluid portfolio-fluid-container">
+      <SectionHeader
+        badge="Projek Yang Sudah Kita Kerjakan"
+        badgeIcon="solar:gallery-wide-bold"
+        title="Portofolio Kami"
+        description="Dokumentasi hasil karya konstruksi bangunan, renovasi hunian, desain interior, dan custom furniture dengan jaminan mutu terbaik."
+        align="center"
+      />
+
+      <div class="filter-menu style2 indicator-active filter-menu-active">
+        <button data-filter="*" class="tab-btn active" type="button">Show All Work</button>
+        <button data-filter=".cat1" class="tab-btn" type="button">Eksterior</button>
+        <button data-filter=".cat2" class="tab-btn" type="button">Interior</button>
+        <button data-filter=".cat3" class="tab-btn" type="button">Konstruksi</button>
+        <button data-filter=".cat4" class="tab-btn" type="button">Kitchen Set</button>
+      </div>
+
+      <div class="row gallery-row filter-active gy-4 gx-4">
+        {projects.map((project) => (
+          <ProjectCard project={project} colClass="col-12 col-md-6 col-lg-4 filter-item" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Area -->
+  <section class="cta-area2" data-overlay="title" data-opacity="9" data-bg-src="/assets/img/bg/cta_bg_1.jpg">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="title-area mb-0 text-center text-lg-start">
+            <span class="sub-title style1 mb-20 text-white">Get Consultation</span>
+            <h2 class="sec-title text-white">Ingin Mewujudkan Proyek Serupa? Konsultasikan Sekarang <span class="text-white">!</span></h2>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="cta-group justify-content-lg-end justify-content-center">
+            <a href="/contact" class="th-btn style1 th-icon">Konsultasi Gratis <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ==========================================================================
+       Portfolio Fluid Container & Isotope Subpixel Safe Grid Widths
+       ========================================================================== */
+    .portfolio-fluid-container {
+      padding-left: clamp(24px, 6vw, 110px);
+      padding-right: clamp(24px, 6vw, 110px);
+    }
+
+    .gallery-row :global(.filter-item) {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .gallery-row :global(.filter-item) {
+        width: 49.9% !important;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .gallery-row :global(.filter-item) {
+        width: 33.3% !important;
+      }
+    }
+
+    /* Mobile-first Filter Tabs (Smooth Horizontal Scrollable Pills) */
+    @media (max-width: 575px) {
+      .filter-menu {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        justify-content: flex-start !important;
+        padding: 4px 4px 16px 4px !important;
+        gap: 8px !important;
+        margin-bottom: 30px !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .filter-menu::-webkit-scrollbar {
+        display: none;
+      }
+
+      .filter-menu .tab-btn {
+        white-space: nowrap !important;
+        padding: 8px 18px !important;
+        border-radius: 999px !important;
+        background: #F1F5F9 !important;
+        color: #475569 !important;
+        font-size: 13.5px !important;
+        font-weight: 600 !important;
+        min-height: 40px !important;
+        border: 1px solid #E2E8F0 !important;
+        flex-shrink: 0 !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .filter-menu .tab-btn:before,
+      .filter-menu .tab-btn:after {
+        display: none !important;
+      }
+
+      .filter-menu .tab-btn.active {
+        background: #22416D !important;
+        color: #FFFFFF !important;
+        border-color: #22416D !important;
+        box-shadow: 0 4px 14px rgba(34, 65, 109, 0.25) !important;
+      }
+    }
+  </style>
+
+  <!-- Isotope Grid Filter Script (Scoped strictly to Portfolio Page) -->
+  <script is:inline src="/assets/js/isotope.pkgd.min.js" defer></script>
+</BaseLayout>

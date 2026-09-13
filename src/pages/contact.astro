@@ -1,0 +1,431 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import ContactForm from '@components/ContactForm.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import { siteConfig } from '@config/site';
+import { Icon } from 'astro-icon/components';
+---
+
+<BaseLayout
+  title={`Hubungi Kami - ${siteConfig.legalName}`}
+  description="Hubungi tim arsitek dan kontraktor Bina Project untuk konsultasi gratis mengenai rencana pembangunan gedung, rumah tinggal, renovasi, kitchen set, atau interior di Kota Malang dan Jawa Timur."
+>
+  <Breadcrumb title="Contact Us" />
+
+  <!--============================== Bento Contact Cards Grid ==============================-->
+  <section class="space-top space-extra-bottom">
+    <div class="container">
+      <SectionHeader
+        badge="Informasi Kontak Resmi"
+        badgeIcon="solar:user-id-bold"
+        title="Mari Terhubung Bersama Kami"
+        description="Tim arsitek dan tenaga ahli konstruksi kami siap membantu mewujudkan hunian dan bangunan impian Anda dengan standar kualitas terbaik."
+        align="center"
+      />
+
+      <div class="row gy-4">
+        <!-- Card 1: Studio & Kantor -->
+        <div class="col-xl-3 col-md-6">
+          <div class="contact-bento-card">
+            <div class="contact-bento-icon">
+              <Icon name="solar:map-point-linear" width="24" height="24" />
+            </div>
+            <h3 class="contact-bento-title">Studio & Kantor</h3>
+            <p class="contact-bento-desc">
+              {siteConfig.contact.address}, {siteConfig.contact.city}
+            </p>
+            <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
+              Petunjuk Rute Maps <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2: WhatsApp Konsultasi -->
+        <div class="col-xl-3 col-md-6">
+          <div class="contact-bento-card">
+            <div class="contact-bento-icon">
+              <Icon name="simple-icons:whatsapp" width="24" height="24" />
+            </div>
+            <h3 class="contact-bento-title">WhatsApp Konsultasi</h3>
+            <p class="contact-bento-desc">
+              Layanan respons cepat untuk diskusi konsep proyek, estimasi biaya, dan jadwal survei lahan.
+            </p>
+            <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
+              {siteConfig.contact.phoneDisplay} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3: Email Resmi -->
+        <div class="col-xl-3 col-md-6">
+          <div class="contact-bento-card">
+            <div class="contact-bento-icon">
+              <Icon name="solar:letter-linear" width="24" height="24" />
+            </div>
+            <h3 class="contact-bento-title">Email Resmi</h3>
+            <p class="contact-bento-desc">
+              Kirimkan berkas TOR, denah tanah, atau dokumen tender proyek Anda kepada tim manajemen kami.
+            </p>
+            <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
+              {siteConfig.contact.email} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4: Jam Operasional -->
+        <div class="col-xl-3 col-md-6">
+          <div class="contact-bento-card">
+            <div class="contact-bento-icon">
+              <Icon name="solar:clock-circle-linear" width="24" height="24" />
+            </div>
+            <h3 class="contact-bento-title">Jam Operasional</h3>
+            <p class="contact-bento-desc mb-2">
+              {siteConfig.contact.openingHoursDetail}
+            </p>
+            <span class="contact-status-badge">
+              <span class="status-indicator"></span> Pelayanan Aktif
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--============================== Split Section: Form Konsultasi & Peta Interaktif ==============================-->
+  <section class="space-bottom overflow-hidden">
+    <div class="container">
+      <div class="row gy-5 align-items-stretch">
+        <!-- Form Sisi Kiri -->
+        <div class="col-lg-6">
+          <div class="contact-form-card h-100">
+            <SectionHeader
+              badge="Kirim Pesan Proyek"
+              badgeIcon="solar:plain-bold"
+              title="Punya Proyek Mendatang? Mari Bicara Sekarang!"
+              description="Lengkapi formulir singkat di bawah ini. Pesan Anda akan langsung terhubung dengan tim arsitek kami via WhatsApp resmi."
+              align="left"
+              class="mb-30"
+            />
+            <ContactForm />
+          </div>
+        </div>
+
+        <!-- Map Sisi Kanan -->
+        <div class="col-lg-6">
+          <div class="contact-map-wrapper h-100">
+            <div class="map-header">
+              <div class="d-flex align-items-center">
+                <div class="map-header-icon me-3">
+                  <Icon name="solar:map-point-wave-linear" width="22" height="22" />
+                </div>
+                <div>
+                  <h3 class="map-title mb-0">Lokasi Kantor & Workshop</h3>
+                  <p class="map-subtitle mb-0">{siteConfig.contact.city}, {siteConfig.contact.province}</p>
+                </div>
+              </div>
+              <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="th-btn style1 map-direction-btn">
+                Petunjuk Arah <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+              </a>
+            </div>
+            <div class="map-container">
+              <iframe
+                src={siteConfig.contact.googleMapsEmbedUrl}
+                width="100%"
+                height="100%"
+                style="border:0; min-height: 420px;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title={`Google Maps Lokasi Kantor ${siteConfig.legalName}`}
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--============================== Trust Strip: 3 Pilar Konsultasi ==============================-->
+  <section class="space-bottom">
+    <div class="container">
+      <div class="trust-strip-wrapper">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="trust-item">
+              <div class="trust-icon">
+                <Icon name="solar:calculator-linear" width="24" height="24" />
+              </div>
+              <div>
+                <h3 class="trust-title">100% Gratis Konsultasi & RAB</h3>
+                <p class="trust-text mb-0">Diskusi konsep desain dan kalkulasi anggaran biaya transparan tanpa biaya komitmen di awal.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="trust-item">
+              <div class="trust-icon">
+                <Icon name="solar:pen-new-square-linear" width="24" height="24" />
+              </div>
+              <div>
+                <h3 class="trust-title">Survei Lokasi Langsung</h3>
+                <p class="trust-text mb-0">Tim siap melakukan pengukuran lahan dan analisis lapangan ke lokasi proyek Anda di seluruh Jawa Timur.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="trust-item">
+              <div class="trust-icon">
+                <Icon name="solar:shield-check-linear" width="24" height="24" />
+              </div>
+              <div>
+                <h3 class="trust-title">Garansi Retensi Pekerjaan</h3>
+                <p class="trust-text mb-0">Setiap proyek terikat kontrak kerja resmi (SPK) dengan jaminan masa pemeliharaan terpercaya.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Contact intro text */
+  .contact-intro-text {
+    max-width: 640px;
+    margin: 10px auto 0;
+    font-size: 16px;
+  }
+  .contact-form-heading {
+    font-size: 32px;
+    line-height: 1.3;
+  }
+  .contact-form-subtext {
+    font-size: 15px;
+    color: #334155;
+  }
+  .map-direction-btn {
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 48px;
+    padding: 12px 18px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Bento Cards */
+  .contact-bento-card {
+    position: relative;
+    background: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    padding: 32px 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(13, 59, 102, 0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .contact-bento-card:hover {
+    box-shadow: 0 10px 30px rgba(13, 59, 102, 0.1);
+  }
+
+  .contact-bento-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: #EFF6FF;
+    color: var(--theme-color, #22416D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .contact-bento-card:hover .contact-bento-icon {
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF;
+  }
+
+  .contact-bento-title {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--title-color, #17202A);
+  }
+
+  .contact-bento-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--bina-slate-700, #334155);
+    flex-grow: 1;
+    margin-bottom: 20px;
+  }
+
+  .contact-bento-action {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--theme-color, #22416D);
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.2s ease;
+  }
+
+  .contact-bento-action:hover {
+    color: #345F99;
+  }
+
+  .contact-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    background: #ECFDF5;
+    color: #059669;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    align-self: flex-start;
+  }
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10B981;
+    margin-right: 6px;
+    animation: pulseGlow 2s infinite;
+  }
+
+  @keyframes pulseGlow {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+  }
+
+  /* Form & Map Section */
+  .contact-form-card {
+    background: #FFFFFF;
+    border: none;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 8px 30px rgba(34, 65, 109, 0.06);
+  }
+
+  .contact-map-wrapper {
+    background: #FFFFFF;
+    border: none;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(34, 65, 109, 0.06);
+  }
+
+  .map-header {
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border-bottom: 1px solid #F1F5F9;
+  }
+
+  .map-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #EFF6FF;
+    color: var(--theme-color, #22416D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .map-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--title-color, #17202A);
+  }
+
+  .map-subtitle {
+    font-size: 14px;
+    color: #334155;
+  }
+
+  .map-container {
+    flex-grow: 1;
+    height: 100%;
+    min-height: 420px;
+  }
+
+  /* Trust Strip */
+  .trust-strip-wrapper {
+    background: var(--bina-gradient-navy, linear-gradient(135deg, #22416D 0%, #0D192B 100%));
+    border-radius: 24px;
+    padding: 40px 36px;
+    color: #FFFFFF;
+    box-shadow: 0 12px 35px rgba(34, 65, 109, 0.15);
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .trust-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #84ACDF;
+    flex-shrink: 0;
+  }
+
+  .trust-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+  }
+
+  .trust-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  @media (max-width: 991px) {
+    .contact-form-card {
+      padding: 30px 20px;
+    }
+    .trust-strip-wrapper {
+      padding: 30px 24px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .map-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .map-direction-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

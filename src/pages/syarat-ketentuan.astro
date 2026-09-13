@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { siteConfig } from '@config/site';
+---
+
+<BaseLayout
+  title="Syarat & Ketentuan - Bina Project Construction"
+  description="Syarat dan Ketentuan penggunaan layanan konstruksi, renovasi, dan desain interior Bina Project."
+>
+  <Breadcrumb title="Syarat & Ketentuan" />
+
+  <section class="space">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="page-single terms-card">
+            <h2 class="sec-title mb-25">Syarat dan Ketentuan Layanan</h2>
+            <p class="mb-30">
+              Terima kasih telah memilih <strong>{siteConfig.legalName.toUpperCase()}</strong>. Sebelum menggunakan layanan kami, harap membaca dan memahami Syarat dan Ketentuan berikut. Dengan menggunakan layanan kami, Anda dianggap telah menyetujui ketentuan yang berlaku.
+            </p>
+
+            <div class="terms-content">
+              <h3 class="h4 mt-30 mb-15">1. Definisi</h3>
+              <p><strong>{siteConfig.legalName}</strong>: Penyedia jasa yang bergerak di bidang konstruksi, renovasi, dan desain interior bangunan.<br />
+              <strong>Pelanggan / Klien</strong>: Pihak individu atau korporasi yang menggunakan layanan kami.<br />
+              <strong>Layanan</strong>: Semua pekerjaan konstruksi, renovasi, perencanaan, dan konsultasi yang disediakan oleh Bina Project.</p>
+
+              <h3 class="h4 mt-30 mb-15">2. Ruang Lingkup Layanan</h3>
+              <p>Kami menyediakan layanan konstruksi, renovasi, desain arsitektur, kitchen set, serta konsultasi pembangunan. Semua proyek akan diselesaikan sesuai dengan surat kontrak kerja yang disepakati oleh kedua belah pihak.</p>
+
+              <h3 class="h4 mt-30 mb-15">3. Pembayaran & Termin</h3>
+              <p>Pembayaran dilakukan bertahap sesuai termin progres kerja yang tertuang dalam kontrak melalui rekening resmi perusahaan. Keterlambatan pembayaran termin dapat mempengaruhi jadwal penyelesaian proyek.</p>
+
+              <h3 class="h4 mt-30 mb-15">4. Perubahan Desain (Addendum)</h3>
+              <p>Setiap perubahan desain atau spesifikasi material di tengah pengerjaan harus dikomunikasikan secara tertulis dan disetujui bersama dalam berita acara pekerjaan tambah/kurang.</p>
+
+              <h3 class="h4 mt-30 mb-15">5. Jaminan Mutu & Garansi</h3>
+              <p>Kami memberikan garansi pemeliharaan pasca konstruksi untuk cacat pengerjaan struktural maupun finishing sesuai durasi yang tercantum pada kontrak.</p>
+
+              <h3 class="h4 mt-30 mb-15">6. Kontak & Layanan Informasi</h3>
+              <p>Jika ada pertanyaan lebih lanjut terkait syarat dan ketentuan ini, Anda dapat menghubungi kami melalui email <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a> atau WhatsApp di <a href={siteConfig.contact.phoneTel}>{siteConfig.contact.phoneDisplay}</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .terms-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+  .terms-content {
+    line-height: 1.8;
+    color: var(--bina-slate-700, #334155);
+  }
+</style>

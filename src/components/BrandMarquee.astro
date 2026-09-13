@@ -1,0 +1,164 @@
+---
+import SectionHeader from '@components/SectionHeader.astro';
+import { PARTNER_BRANDS } from '@data/partners';
+
+const brands = PARTNER_BRANDS;
+---
+
+<section class="brand-partner-section" id="partner-sec">
+  <div class="container">
+    <SectionHeader
+      badge="Kolaborasi & Kemitraan"
+      badgeIcon="solar:hand-shake-bold"
+      title="Partner Terpercaya Kami"
+      description="Dipercaya oleh berbagai instansi BUMN, institusi kesehatan, perusahaan, dan pemilik hunian di seluruh Indonesia."
+      align="center"
+    />
+
+    <div class="swiper brandRunningSwiper">
+      <div class="swiper-wrapper">
+        {/* Repeat 3 sets to ensure continuous smooth infinite marquee */}
+        {[...brands, ...brands, ...brands].map((brand) => (
+          <div class="swiper-slide">
+            <div class="brand-pill-box" title={brand.name}>
+              <img src={brand.src} alt={brand.name} class="brand-logo-img" loading="lazy" decoding="async" width="115" height="48" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand-partner-section {
+    padding-top: 40px;
+    padding-bottom: 50px;
+    background: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brandRunningSwiper {
+    padding: 15px 0 !important;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .brandRunningSwiper :global(.swiper-wrapper) {
+    transition-timing-function: linear !important;
+  }
+
+  .brand-pill-box {
+    background: #FFFFFF;
+    border: none;
+    border-radius: 16px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+
+  .brand-pill-box:hover {
+    box-shadow: 0 6px 18px rgba(13, 59, 102, 0.08);
+  }
+
+  .brand-logo-img {
+    max-height: 80px;
+    max-width: 180px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: opacity(0.85);
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+
+  .brand-pill-box:hover .brand-logo-img {
+    filter: opacity(1);
+  }
+
+  @media (max-width: 768px) {
+    .brand-partner-section {
+      padding-bottom: 40px;
+    }
+    .brand-pill-box {
+      height: 74px;
+      padding: 10px 16px;
+    }
+    .brand-logo-img {
+      max-height: 38px;
+      max-width: 90px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    let brandRetries = 0;
+    const maxRetries = 30;
+
+    function initBrandRunningSlider() {
+      const SwiperConstructor = typeof window !== 'undefined' ? window['Swiper'] : undefined;
+      if (!SwiperConstructor) {
+        if (brandRetries < maxRetries) {
+          brandRetries++;
+          setTimeout(initBrandRunningSlider, 50);
+        }
+        return;
+      }
+
+      const swiperEl = document.querySelector('.brandRunningSwiper');
+      if (!swiperEl) return;
+
+      if (swiperEl.swiper) {
+        swiperEl.swiper.destroy(true, true);
+      }
+
+      new SwiperConstructor(swiperEl, {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        loop: true,
+        speed: 3500,
+        autoplay: {
+          delay: 0,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+        breakpoints: {
+          480: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+          },
+          992: {
+            slidesPerView: 5,
+            spaceBetween: 28,
+          },
+          1200: {
+            slidesPerView: 6,
+            spaceBetween: 30,
+          },
+        },
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBrandRunningSlider);
+    } else {
+      initBrandRunningSlider();
+    }
+
+    document.addEventListener('astro:page-load', function () {
+      brandRetries = 0;
+      initBrandRunningSlider();
+    });
+  })();
+</script>

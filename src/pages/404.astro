@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<BaseLayout
+  title="404 - Halaman Tidak Ditemukan - Bina Project"
+  description="Maaf, halaman yang Anda tuju tidak ditemukan atau telah dipindahkan."
+  noindex={true}
+>
+  <Breadcrumb title="404 - Halaman Tidak Ditemukan" />
+
+  <section class="space">
+    <div class="container">
+      <div class="error-img text-center mb-40">
+        <img
+          src="/assets/img/theme-img/error.svg"
+          alt="404 Halaman Tidak Ditemukan Bina Project"
+          width="450"
+          height="320"
+          class="error-img-asset"
+        />
+      </div>
+      <div class="error-content text-center">
+        <h2 class="error-title">Oops! Halaman Tidak Ditemukan</h2>
+        <p class="error-text mb-30 error-text-centered">
+          Halaman yang Anda cari mungkin telah dipindahkan, dihapus, atau alamat URL yang Anda masukkan salah.
+        </p>
+        <a href="/" class="th-btn style1 th-icon">
+          <Icon name="solar:home-2-linear" width="18" height="18" class="me-2" /> KEMBALI KE BERANDA
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .error-img-asset {
+    max-width: 450px;
+    height: auto;
+  }
+  .error-text-centered {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

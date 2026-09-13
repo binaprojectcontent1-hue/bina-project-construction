@@ -1,0 +1,56 @@
+# Robots.txt for Bina Project Construction (binaproject.com)
+# Generative Engine Optimization (GEO) & Search Engine Directives
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/admin/
+Disallow: /404
+Disallow: /404/
+
+# Allow Full Static Asset Crawling for Rich Snippets & Visual AI
+Allow: /assets/
+Allow: /assets/img/
+Allow: /assets/css/
+Allow: /assets/js/
+
+# OpenAI / SearchGPT / ChatGPT Browsing
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Perplexity AI Crawler
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic Claude Crawlers
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Google Gemini, AI Overview & Vertex Crawler
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Apple Intelligence & Siri Extended Crawler
+User-agent: Applebot-Extended
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# Meta AI Crawler
+User-agent: FacebookBot
+Allow: /
+
+# Sitemaps and LLM Discovery Standard
+Sitemap: https://binaproject.com/sitemap-index.xml

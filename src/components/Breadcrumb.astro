@@ -1,0 +1,81 @@
+---
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title: string;
+  parent?: {
+    title: string;
+    url: string;
+  };
+  bgImage?: string;
+  isH1?: boolean;
+}
+
+const {
+  title,
+  parent,
+  bgImage = '/assets/img/bg/breadcumb-bg.jpg',
+  isH1 = true
+} = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : siteConfig.siteUrl.replace(/\/$/, '');
+const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const itemListElement: any[] = [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Beranda",
+    "item": `${siteUrl}/`
+  }
+];
+
+if (parent) {
+  itemListElement.push({
+    "@type": "ListItem",
+    "position": 2,
+    "name": parent.title,
+    "item": parent.url.startsWith('http') ? parent.url : `${siteUrl}${parent.url}`
+  });
+  itemListElement.push({
+    "@type": "ListItem",
+    "position": 3,
+    "name": title,
+    "item": currentUrl
+  });
+} else {
+  itemListElement.push({
+    "@type": "ListItem",
+    "position": 2,
+    "name": title,
+    "item": currentUrl
+  });
+}
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": itemListElement
+};
+---
+
+<div class="breadcumb-wrapper" data-bg-src={bgImage}>
+  <div class="container">
+    <div class="breadcumb-content">
+      {isH1 ? (
+        <h1 class="breadcumb-title">{title}</h1>
+      ) : (
+        <span class="breadcumb-title d-block">{title}</span>
+      )}
+      <nav aria-label="Navigasi Breadcrumb">
+        <ul class="breadcumb-menu">
+          <li><a href="/">Home</a></li>
+          {parent && <li><a href={parent.url}>{parent.title}</a></li>}
+          <li>{title}</li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

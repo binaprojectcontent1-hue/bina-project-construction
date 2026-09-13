@@ -1,0 +1,543 @@
+---
+/**
+ * @file ProcessSection.astro
+ * @description The Architectural Stacking Deck - 4-stage sticky stacking workflow process
+ * Styled with luxury minimalist aesthetics and strict #22416D (Bina Navy) brand harmony.
+ */
+
+import { WORKFLOW_STEPS } from '@data/workflow';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import SectionHeader from '@components/SectionHeader.astro';
+import type { ImageMetadata } from 'astro';
+import { siteConfig } from '@config/site';
+
+import process1 from '@assets/images/normal/process_stage1_survey.jpg';
+import process2 from '@assets/images/normal/process_stage2_design.jpg';
+import process3 from '@assets/images/normal/process_stage3_construction.jpg';
+import process4 from '@assets/images/normal/process_stage4_handover.jpg';
+
+const workflowSteps = WORKFLOW_STEPS;
+
+const processImages: Record<string, ImageMetadata> = {
+  '01': process1,
+  '02': process2,
+  '03': process3,
+  '04': process4,
+};
+
+const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : siteConfig.siteUrl.replace(/\/$/, '');
+
+// GEO: HowTo JSON-LD dari data workflow 4 tahap (tanpa angka harga spesifik)
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Proses Pembangunan Rumah dengan Bina Project - 4 Tahap Profesional',
+  description:
+    'Panduan 4 tahap proses konstruksi Bina Project dari survei lahan hingga serah terima kunci: survei & analisis lokasi, perancangan 3D & RAB transparan, konstruksi dengan pengawasan berkala, serta serah terima resmi bergaransi.',
+  totalTime: 'PT5M',
+  supply: [
+    { '@type': 'HowToSupply', name: 'Material konstruksi berkualitas sesuai spesifikasi RAB' },
+    { '@type': 'HowToSupply', name: 'Gambar kerja DED (arsitektur, struktur, MEP)' },
+    { '@type': 'HowToSupply', name: 'Surat Perjanjian Kerja (SPK) resmi' },
+  ],
+  tool: [
+    { '@type': 'HowToTool', name: 'Laser meter digital untuk pengukuran presisi' },
+    { '@type': 'HowToTool', name: 'Software visualisasi 3D untuk desain' },
+    { '@type': 'HowToTool', name: 'Peralatan konstruksi standar proyek' },
+  ],
+  step: WORKFLOW_STEPS.map((step, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: step.title,
+    text: `${step.desc} Hasil tahap ini: ${step.deliverable}`,
+    url: `${siteUrl}/#process-sec`,
+    ...(step.milestones && step.milestones.length > 0
+      ? {
+          itemListElement: step.milestones.map((milestone, idx) => ({
+            '@type': 'HowToDirection',
+            position: idx + 1,
+            text: milestone,
+          })),
+        }
+      : {}),
+  })),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
+<section class="process-stack-sec space" id="process-sec">
+  <div class="container">
+    <!-- Section Header (Standard Harmonized Title Area) -->
+    <div class="row justify-content-center">
+      <div class="col-xl-8 col-lg-9 text-center">
+        <SectionHeader
+          badge="Metodologi & Standar Kerja"
+          badgeIcon="solar:route-linear"
+          title="Bagaimana Prosesnya?"
+          description="Kami membagi proses pembangunan ke dalam empat tahap yang jelas. mulai dari survei lahan, penyusunan desain dan anggaran, proses konstruksi, hingga serah terima. Setiap tahap memiliki target dan hasil yang dapat Anda pantau, sehingga pekerjaan berjalan lebih terarah dari awal sampai selesai."
+          align="center"
+        />
+      </div>
+    </div>
+
+    <!-- Stacking Cards Deck -->
+    <div class="process-stack-deck">
+      {workflowSteps.map((step, index) => (
+        <div
+          class="stack-card-wrapper"
+          style={`--card-index: ${index}; --total-cards: ${workflowSteps.length};`}
+          data-step={step.number}
+        >
+          <div class="stack-card-inner">
+            <!-- Left Column: Content & Milestones -->
+            <div class="stack-card-content">
+              <!-- Card Meta Header -->
+              <div class="card-meta-bar">
+                <div class="meta-tag-group">
+                  <span class="phase-badge">{step.phaseTag || `Tahap 0${index + 1}`}</span>
+                </div>
+                <div class="step-num-display">
+                  <span class="step-num-lead">Fase</span>
+                  <span class="step-num-huge">{step.number}</span>
+                </div>
+              </div>
+
+              <!-- Main Title & Description -->
+              <h3 class="stack-step-title">{step.title}</h3>
+              <p class="stack-step-desc">{step.desc}</p>
+
+              <!-- Milestones Checklist -->
+              {step.milestones && step.milestones.length > 0 && (
+                <div class="stack-milestones-box">
+                  <span class="milestones-heading">Yang kami lakukan:</span>
+                  <ul class="milestones-list">
+                    {step.milestones.map((milestone) => (
+                      <li class="milestone-item">
+                        <div class="check-bullet">
+                          <Icon name="solar:check-circle-bold" width="14" height="14" />
+                        </div>
+                        <span class="milestone-text">{milestone}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <!-- Deliverable Strip -->
+              <div class="stack-deliverable-strip">
+                <div class="deliverable-icon-box">
+                  <Icon name="solar:document-text-linear" width="18" height="18" />
+                </div>
+                <div class="deliverable-text-wrap">
+                  <span class="deliverable-label">Hasil tahap ini:</span>
+                  <span class="deliverable-value">{step.deliverable}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Realistic Stage Visual Photo -->
+            <div class="stack-card-visual">
+              <div class="stage-image-container">
+                {processImages[step.number] ? (
+                  <Image 
+                    src={processImages[step.number]} 
+                    alt={`Dokumentasi Tahap ${step.number}: ${step.title}`}
+                    class="stage-visual-img" 
+                    loading="lazy" 
+                    decoding="async"
+                    width={600}
+                    height={600}
+                    format="webp"
+                    quality={85}
+                  />
+                ) : (
+                  <div class="stage-fallback-placeholder"></div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ========================================================
+     Process Stacking Section Styles
+     Strictly using #22416D (Bina Navy) Design System
+     ======================================================== */
+  .process-stack-sec {
+    background: var(--bina-slate-50, #F8FAFC);
+    position: relative;
+    overflow: visible;
+  }
+
+  /* ========================================================
+     The Stacking Deck Container & Geometry
+     ======================================================== */
+  .process-stack-deck {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* Sticky Card Wrapper with Dynamic Offset (Safely cleared below sticky header) */
+  .stack-card-wrapper {
+    position: sticky;
+    top: calc(135px + (var(--card-index) * 20px));
+    z-index: calc(10 + var(--card-index));
+    will-change: transform, opacity, filter;
+    margin-bottom: 30px;
+    transition: 
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Borderless Luxury Philosophy - Zero-Outline Card with Soft Elevation */
+  .stack-card-inner {
+    background: #FFFFFF;
+    border: none;
+    outline: none;
+    border-radius: 24px;
+    box-shadow:
+      0 10px 30px rgba(34, 65, 109, 0.06),
+      0 2px 8px rgba(0, 0, 0, 0.02);
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 32px;
+    padding: 38px 42px;
+    transition: 
+      box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      border-radius 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .stack-card-inner:hover {
+    border: none;
+    outline: none;
+    box-shadow:
+      0 18px 45px rgba(34, 65, 109, 0.11),
+      0 4px 12px rgba(0, 0, 0, 0.03);
+    transform: translateY(-2px);
+  }
+
+  /* Left Column: Content Styling */
+  .stack-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-meta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .meta-tag-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .phase-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #22416D;
+    background: #EFF6FF;
+    border: none;
+    outline: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+
+  .step-num-display {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .step-num-lead {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+  }
+
+  .step-num-huge {
+    font-family: 'Archivo', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #22416D;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .stack-step-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #17202A;
+    margin-bottom: 10px;
+    line-height: 1.35;
+    font-family: 'Archivo', sans-serif;
+  }
+
+  .stack-step-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--bina-slate-700, #334155);
+    margin-bottom: 20px;
+  }
+
+  /* Milestones List - Frameless Bento Box */
+  .stack-milestones-box {
+    background: var(--bina-slate-50, #F8FAFC);
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+
+  .milestones-heading {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #22416D;
+    margin-bottom: 10px;
+  }
+
+  .milestones-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .milestone-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #334155;
+  }
+
+  .check-bullet {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #EFF6FF;
+    color: #22416D;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    border: none;
+    outline: none;
+  }
+
+  .milestone-text {
+    flex: 1;
+    font-weight: 500;
+  }
+
+  /* Deliverable Strip - Frameless Bento Style */
+  .stack-deliverable-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(34, 65, 109, 0.04);
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: auto;
+  }
+
+  .deliverable-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #22416D;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .deliverable-text-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .deliverable-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #22416D;
+    margin-bottom: 2px;
+  }
+
+  .deliverable-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #17202A;
+  }
+
+  /* ========================================================
+     Right Column: Realistic Visual Panel & Badges
+     ======================================================== */
+  .stack-card-visual {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .stage-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #E2E8F0;
+    box-shadow: 0 4px 20px rgba(34, 65, 109, 0.08);
+    display: flex;
+  }
+
+  .stage-visual-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: 
+      transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stack-card-inner:hover .stage-visual-img {
+    transform: scale(1.06);
+    filter: brightness(1.05);
+  }
+
+  .stage-fallback-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #F1F5F9;
+  }
+
+
+  /* ========================================================
+     Responsive Breakpoints
+     ======================================================== */
+  @media (max-width: 991px) {
+    .stack-card-inner {
+      grid-template-columns: 1fr;
+      padding: 28px 24px;
+      gap: 24px;
+    }
+
+    .stack-card-wrapper {
+      top: calc(80px + (var(--card-index) * 16px));
+      margin-bottom: 24px;
+    }
+
+    .stage-image-container {
+      min-height: 240px;
+    }
+
+  }
+
+  @media (max-width: 575px) {
+    .card-meta-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .step-num-display {
+      align-self: flex-start;
+    }
+
+    .stack-step-title {
+      font-size: 19px;
+    }
+
+    .stage-image-container {
+      min-height: 210px;
+    }
+
+  }
+
+  /* ========================================================
+     Scroll-Triggered Entrance Animation (Ultra Smooth)
+     ======================================================== */
+  @keyframes stackCardEnter {
+    from {
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  .stack-card-wrapper {
+    animation: stackCardEnter 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--card-index) * 0.15s);
+  }
+
+  /* Smooth scrolling for entire section */
+  .process-stack-sec {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<script>
+  // Smooth Intersection Observer for Cards
+  if ('IntersectionObserver' in window) {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50px',
+      threshold: 0.1
+    };
+
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all stack cards
+    document.querySelectorAll('.stack-card-wrapper').forEach(card => {
+      cardObserver.observe(card);
+    });
+  }
+</script>

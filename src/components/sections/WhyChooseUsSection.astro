@@ -1,0 +1,522 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import SectionHeader from '@components/SectionHeader.astro';
+import whyImg1 from '@assets/images/normal/why_img_1.jpg';
+import whyImg2 from '@assets/images/normal/why_img_2.jpg';
+import whyImg3 from '@assets/images/normal/why_img_3.jpg';
+---
+
+<section class="why-area space overflow-hidden" id="why-sec">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <SectionHeader
+          badge="Kenapa Memilih Kami"
+          badgeIcon="solar:shield-check-bold"
+          title="Kenapa Harus Kami?"
+          description="Dedikasi kami mengutamakan transparansi anggaran, legalitas kontrak resmi, dan standar mutu arsitektural untuk keamanan investasi Anda."
+          align="center"
+        />
+      </div>
+    </div>
+
+    <div class="row align-items-center g-5">
+      <!-- Left Column: 4 Cards (Static Grid Desktop, Slider Mobile) -->
+      <div class="col-xl-6 col-lg-6 col-12">
+        <!-- Desktop Static Grid (Hidden on Mobile) -->
+        <div class="why-grid-desktop d-none d-lg-grid">
+          <div class="why-box">
+            <div class="why-content">
+              <div class="why-box_icon">
+                <Icon name="solar:shield-check-bold" width="56" height="56" />
+              </div>
+              <div class="why-box_number">01</div>
+            </div>
+            <h3 class="box-title">Berpengalaman</h3>
+            <p class="why-box_text">Ditangani tim berpengalaman lebih dari 10 Tahun dengan track record 162+ proyek sukses.</p>
+          </div>
+
+          <div class="why-box">
+            <div class="why-content">
+              <div class="why-box_icon">
+                <Icon name="solar:lightbulb-linear" width="56" height="56" />
+              </div>
+              <div class="why-box_number">02</div>
+            </div>
+            <h3 class="box-title">Kreatif</h3>
+            <p class="why-box_text">Ide-ide desain inovatif yang dapat menyesuaikan dengan visi dan kebutuhan client Anda.</p>
+          </div>
+
+          <div class="why-box">
+            <div class="why-content">
+              <div class="why-box_icon">
+                <Icon name="solar:heart-bold" width="56" height="56" />
+              </div>
+              <div class="why-box_number">03</div>
+            </div>
+            <h3 class="box-title">Amanah</h3>
+            <p class="why-box_text">Sudah dipercaya ribuan orang dengan testimonial langsung dan rating 99% kepuasan klien.</p>
+          </div>
+
+          <div class="why-box">
+            <div class="why-content">
+              <div class="why-box_icon">
+                <Icon name="solar:check-circle-bold" width="56" height="56" />
+              </div>
+              <div class="why-box_number">04</div>
+            </div>
+            <h3 class="box-title">Bertanggung Jawab</h3>
+            <p class="why-box_text">Tanggung jawab penuh atas pengerjaan dengan kontrak SPK resmi dan garansi tertulis.</p>
+          </div>
+        </div>
+
+        <!-- Mobile Slider (Hidden on Desktop) -->
+        <div class="slider-area d-lg-none">
+          <div class="swiper th-slider has-shadow" id="whySlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":1},"768":{"slidesPerView":1}}}'>
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="why-box">
+                  <div class="why-content">
+                    <div class="why-box_icon">
+                      <Icon name="solar:shield-check-bold" width="56" height="56" />
+                    </div>
+                    <div class="why-box_number">01</div>
+                  </div>
+                  <h3 class="box-title">Berpengalaman</h3>
+                  <p class="why-box_text">Ditangani tim berpengalaman lebih dari 10 Tahun dengan track record 162+ proyek sukses.</p>
+                </div>
+              </div>
+
+              <div class="swiper-slide">
+                <div class="why-box">
+                  <div class="why-content">
+                    <div class="why-box_icon">
+                      <Icon name="solar:lightbulb-linear" width="56" height="56" />
+                    </div>
+                    <div class="why-box_number">02</div>
+                  </div>
+                  <h3 class="box-title">Kreatif</h3>
+                  <p class="why-box_text">Ide-ide desain inovatif yang dapat menyesuaikan dengan visi dan kebutuhan client Anda.</p>
+                </div>
+              </div>
+
+              <div class="swiper-slide">
+                <div class="why-box">
+                  <div class="why-content">
+                    <div class="why-box_icon">
+                      <Icon name="solar:heart-bold" width="56" height="56" />
+                    </div>
+                    <div class="why-box_number">03</div>
+                  </div>
+                  <h3 class="box-title">Amanah</h3>
+                  <p class="why-box_text">Sudah dipercaya ribuan orang dengan testimonial langsung dan rating 99% kepuasan klien.</p>
+                </div>
+              </div>
+
+              <div class="swiper-slide">
+                <div class="why-box">
+                  <div class="why-content">
+                    <div class="why-box_icon">
+                      <Icon name="solar:check-circle-bold" width="56" height="56" />
+                    </div>
+                    <div class="why-box_number">04</div>
+                  </div>
+                  <h3 class="box-title">Bertanggung Jawab</h3>
+                  <p class="why-box_text">Tanggung jawab penuh atas pengerjaan dengan kontrak SPK resmi dan garansi tertulis.</p>
+                </div>
+              </div>
+            </div>
+            <div class="slider-pagination mt-30"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Photo Slider -->
+      <div class="col-xl-6 col-lg-6 col-12">
+        <div class="why-photo-slider-wrapper">
+          <div class="swiper th-slider" id="whyPhotoSlider" data-slider-options='{"loop":true,"autoplay":{"delay":4000},"effect":"fade","fadeEffect":{"crossFade":true}}'>
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="why-photo-frame">
+                  <Image
+                    src={whyImg1}
+                    alt="Tim Berpengalaman Bina Project dalam Konstruksi Berkualitas"
+                    loading="lazy"
+                    decoding="async"
+                    width={600}
+                    height={500}
+                    class="why-slider-img"
+                    format="webp"
+                    quality={85}
+                  />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="why-photo-frame">
+                  <Image
+                    src={whyImg2}
+                    alt="Pekerjaan Detail Interior dan Furniture Custom Bina Project"
+                    loading="lazy"
+                    decoding="async"
+                    width={600}
+                    height={500}
+                    class="why-slider-img"
+                    format="webp"
+                    quality={85}
+                  />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="why-photo-frame">
+                  <Image
+                    src={whyImg3}
+                    alt="Kantor dan Workshop Bina Project Malang"
+                    loading="lazy"
+                    decoding="async"
+                    width={600}
+                    height={500}
+                    class="why-slider-img"
+                    format="webp"
+                    quality={85}
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Navigation Arrows -->
+            <div class="why-slider-nav">
+              <button class="why-slider-btn why-prev" aria-label="Previous Photo">
+                <Icon name="solar:alt-arrow-left-linear" width="20" height="20" />
+              </button>
+              <button class="why-slider-btn why-next" aria-label="Next Photo">
+                <Icon name="solar:alt-arrow-right-linear" width="20" height="20" />
+              </button>
+            </div>
+            <!-- Pagination Dots -->
+            <div class="why-slider-pagination"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-area {
+    background: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Desktop Static Grid - 2x2 Layout */
+  .why-grid-desktop {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* Card Base Style */
+  .why-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    padding: 32px 28px;
+    transform: translateY(0) translateZ(0);
+    will-change: transform, box-shadow;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.35s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .why-box:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #22416D;
+    border-radius: 16px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  .why-box .why-content,
+  .why-box .box-title,
+  .why-box .why-box_text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .why-box .why-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--bina-slate-200, #E2E8F0);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    transition: border-color 0.35s ease;
+  }
+
+  .why-box .box-title {
+    margin-bottom: 10px;
+    color: var(--bina-slate-900, #17202A);
+    transition: color 0.35s ease;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .why-box .why-box_number {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #475569;
+    transition: color 0.35s ease;
+  }
+
+  .why-box .why-box_text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #334155;
+    margin-bottom: 0;
+    flex-grow: 1;
+    transition: color 0.35s ease;
+  }
+
+  .why-box_icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #22416D;
+    transition: color 0.35s ease;
+  }
+
+  .why-box:hover {
+    transform: translateY(-6px) translateZ(0);
+    background-color: #22416D;
+    box-shadow: 0 16px 36px rgba(34, 65, 109, 0.28);
+  }
+
+  .why-box:hover:before {
+    opacity: 1;
+  }
+
+  .why-box:hover .box-title {
+    color: #FFFFFF;
+  }
+
+  .why-box:hover .why-box_text {
+    color: #E2E8F0;
+  }
+
+  .why-box:hover .why-box_number {
+    color: #84ACDF;
+  }
+
+  .why-box:hover .why-content {
+    border-bottom-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .why-box:hover .why-box_icon {
+    color: #FFFFFF;
+  }
+
+  /* Mobile Slider Styles */
+  #whySlider1 .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+
+  #whySlider1 .swiper-slide {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #whySlider1 .why-box {
+    padding: 38px 34px;
+  }
+
+  /* Photo Slider (Right Column) */
+  .why-photo-slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  #whyPhotoSlider {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+      0 20px 45px rgba(34, 65, 109, 0.09),
+      0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .why-photo-frame {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: #CBD5E1;
+    overflow: hidden;
+  }
+
+  .why-slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Slider Navigation Arrows */
+  .why-slider-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+  }
+
+  .why-slider-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    color: #22416D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .why-slider-btn:hover {
+    background: #22416D;
+    color: #FFFFFF;
+    transform: scale(1.1);
+  }
+
+  .why-slider-btn.swiper-button-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* Pagination Dots */
+  .why-slider-pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+  }
+
+  .why-slider-pagination :global(.swiper-pagination-bullet) {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    opacity: 1;
+    transition: all 0.3s ease;
+  }
+
+  .why-slider-pagination :global(.swiper-pagination-bullet-active) {
+    background: #FFFFFF;
+    width: 28px;
+    border-radius: 5px;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 1199px) {
+    .why-photo-frame {
+      height: 450px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .why-grid-desktop {
+      gap: 16px;
+    }
+
+    .why-box {
+      padding: 28px 24px;
+    }
+
+    .why-photo-frame {
+      height: 400px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .why-photo-frame {
+      height: 320px;
+    }
+
+    .why-slider-nav {
+      padding: 0 12px;
+    }
+
+    .why-slider-btn {
+      width: 38px;
+      height: 38px;
+    }
+  }
+</style>
+
+<script>
+  declare const Swiper: any;
+
+  function initWhyPhotoSlider() {
+    const sliderEl = document.getElementById('whyPhotoSlider') as any;
+    if (!sliderEl || typeof Swiper === 'undefined') return;
+
+    if (sliderEl.swiper) {
+      sliderEl.swiper.destroy(true, true);
+    }
+
+    new Swiper(sliderEl, {
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      effect: 'fade',
+      fadeEffect: {
+        crossFade: true,
+      },
+      speed: 800,
+      navigation: {
+        prevEl: '.why-prev',
+        nextEl: '.why-next',
+      },
+      pagination: {
+        el: '.why-slider-pagination',
+        clickable: true,
+      },
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWhyPhotoSlider);
+  } else {
+    initWhyPhotoSlider();
+  }
+
+  document.addEventListener('astro:page-load', initWhyPhotoSlider);
+</script>

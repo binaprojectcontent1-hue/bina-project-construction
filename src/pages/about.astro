@@ -1,0 +1,208 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import aboutImg3 from '@assets/images/normal/about_3.jpg';
+import CoverageMap from '@components/CoverageMap';
+import SectionHeader from '@components/SectionHeader.astro';
+import ProcessSection from '@components/sections/ProcessSection.astro';
+import TeamSection from '@components/TeamSection.astro';
+---
+
+<BaseLayout
+  title="Tentang Kami - Bina Project Construction"
+  description="Mengenal Bina Project Construction, penyedia jasa arsitektur, interior, dan konstruksi terpercaya dengan pengalaman lebih dari 10 tahun di Jawa Timur."
+>
+  <Breadcrumb title="Tentang Kami" />
+
+  <!--============================== About Area ==============================-->
+  <div class="overflow-hidden space" id="about-sec">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-xl-6">
+          <div class="img-box3">
+            <div class="img1">
+              <Image
+                src={aboutImg3}
+                alt="Profil Tim Arsitek dan Tenaga Ahli Konstruksi Bina Project Malang"
+                loading="lazy"
+                decoding="async"
+                width={600}
+                height={520}
+                format="webp"
+                quality={85}
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <SectionHeader
+            badge="Tentang Perusahaan Kami"
+            badgeIcon="solar:buildings-2-bold"
+            title="You Dream It, We Build It"
+            description="Bina Project Construction merupakan usaha yang bergerak di bidang jasa Interior dan Konstruksi yang meliputi pembangunan gedung, perumahan, ruko hingga klinik. Kami hadir untuk menjadi solusi di setiap kebutuhan Interior & Konstruksi Anda. Kami siap bekerjasama dengan instansi dan seluruh sektor lain dengan komitmen mutu terbaik dan transparansi penuh."
+            align="left"
+            class="pe-xl-5 me-xl-5 mb-30"
+          />
+
+            <div class="about-item-wrap">
+              <div class="about-item">
+                <div class="about-item_img"><img src="/assets/img/icon/about_1_1.svg" alt="Icon Tim Berkualitas" width="50" height="50" /></div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Anggota Tim yang Berkualitas dan Ahli</h3>
+                  <p class="about-item_text">Ditangani oleh arsitek dan tukang profesional berpengalaman lebih dari 10 tahun.</p>
+                </div>
+              </div>
+              <div class="about-item">
+                <div class="about-item_img"><img src="/assets/img/icon/why_1_4.svg" alt="Icon Garansi Pasca Pengerjaan" width="46" height="46" /></div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Garansi Pasca Pengerjaan</h3>
+                  <p class="about-item_text">Memiliki komitmen tanggung jawab penuh atas pemeliharaan dan kualitas hasil konstruksi.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--============================== Coverage Area Section (Visual Peta Langsung) ==============================-->
+  <section class="coverage-sec space-bottom" id="coverage-sec">
+    <div class="container">
+      <SectionHeader
+        badge="Wilayah Layanan"
+        badgeIcon="solar:map-point-wave-bold"
+        title="Jangkauan Wilayah Operasional"
+        description="Bina Project berpusat di Kota Malang sebagai kantor studio dan workshop utama. Didukung tim dan armada mandiri, kami siap melayani pengerjaan konstruksi dan interior di wilayah Malang Raya, Pasuruan, Surabaya, dan sekitarnya."
+        align="center"
+      />
+
+      <!-- Full-Width Clean Interactive Map Visual -->
+      <div class="row">
+        <div class="col-12">
+          <div class="coverage-map-presentation-wrapper">
+            <CoverageMap client:load />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--============================== Process Section (The Architectural Stacking Deck) ==============================-->
+  <ProcessSection />
+
+  <!--============================== Our Team Section ==============================-->
+  <TeamSection />
+
+  <!--============================== CTA Area ==============================-->
+  <section class="cta-area2" data-overlay="title" data-opacity="9" data-bg-src="/assets/img/bg/cta_bg_1.jpg">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="title-area mb-0 text-center text-lg-start">
+            <h2 class="sec-title text-white">Konsultasikan Rencana Bangunan Anda Bersama Kami!</h2>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="cta-group justify-content-lg-end justify-content-center">
+            <a href="/contact" class="th-btn style1 th-icon">Konsultasi Gratis <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" /></a>
+            <a href="/portfolio" class="th-btn style3 th-icon">Portfolio Kami <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Zero-CLS Aspect Ratio Reservation for About Hero Image */
+  .img-box3 .img1 {
+    aspect-ratio: 600 / 520;
+    width: 100%;
+    max-width: 600px;
+    background-color: #f1f5f9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .img-box3 .img1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ========================================================
+     Clean Architectural Process Flow (Restrained & Non-Slop)
+     ======================================================== */
+  .process-clean-sec {
+    background-color: var(--bina-slate-50, #F8FAFC);
+    border-top: 1px solid var(--bina-slate-200, #E2E8F0);
+    border-bottom: 1px solid var(--bina-slate-200, #E2E8F0);
+    position: relative;
+    padding: 90px 0;
+  }
+
+  .process-clean-desc {
+    max-width: 640px;
+    color: #334155;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+
+
+  /* ========================================================
+     Coverage Section & Architectural Map (Anti-AI Slop)
+     ======================================================== */
+  .coverage-sec {
+    position: relative;
+    padding-bottom: 90px;
+    background-color: #FFFFFF;
+  }
+
+  .coverage-lead-desc {
+    max-width: 680px;
+    color: #334155;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .coverage-map-presentation-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 520px;
+  }
+
+  @media (max-width: 991px) {
+    .coverage-sec {
+      padding-bottom: 60px;
+    }
+    .coverage-map-presentation-wrapper {
+      min-height: 440px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .coverage-map-presentation-wrapper {
+      min-height: 400px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .cta-group {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      gap: 12px !important;
+    }
+    .cta-group .th-btn {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+  }
+</style>

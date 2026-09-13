@@ -1,0 +1,72 @@
+---
+// SmoothScroll.astro - Modern Lenis Smooth Scroll with GSAP Sync & Reduced Motion Support
+---
+
+<script>
+  import Lenis from 'lenis';
+  import 'lenis/dist/lenis.css';
+
+  // Check user preference for reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.2,
+    });
+
+    // Sync with GSAP ScrollTrigger if present (robust against deferred script loading)
+    let isGsapSynced = false;
+    let attempts = 0;
+    const maxAttempts = 30; // 3 seconds max polling
+
+    const trySyncGsap = () => {
+      // @ts-ignore
+      if (window.gsap && window.ScrollTrigger && !isGsapSynced) {
+        isGsapSynced = true;
+        // @ts-ignore
+        lenis.on('scroll', window.ScrollTrigger.update);
+        // @ts-ignore
+        window.gsap.ticker.add((time: number) => {
+          lenis.raf(time * 1000);
+        });
+        // @ts-ignore
+        window.gsap.ticker.lagSmoothing(0);
+        return true;
+      }
+      return false;
+    };
+
+    // Standard RAF loop as default or fallback
+    function fallbackRaf(time: number) {
+      if (!isGsapSynced) {
+        lenis.raf(time);
+        requestAnimationFrame(fallbackRaf);
+      }
+    }
+    requestAnimationFrame(fallbackRaf);
+
+    const pollGsap = () => {
+      if (trySyncGsap()) return;
+      if (attempts < maxAttempts) {
+        attempts++;
+        setTimeout(pollGsap, 100);
+      }
+    };
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      pollGsap();
+    } else {
+      window.addEventListener('DOMContentLoaded', pollGsap);
+    }
+
+    // Expose globally for interactive components (e.g. scroll to anchor, modals)
+    // @ts-ignore
+    window.lenis = lenis;
+  }
+</script>

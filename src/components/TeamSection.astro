@@ -1,0 +1,152 @@
+---
+import { TEAM_MEMBERS } from '@data/team';
+import SectionHeader from '@components/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<section class="space-top space-extra-bottom" id="our-team">
+  <div class="container">
+    <SectionHeader
+      badge="Profesional Berpengalaman"
+      badgeIcon="solar:users-group-rounded-bold"
+      title="Tim Ahli Bina Project"
+      description="Setiap proyek Bina Project ditangani oleh tim arsitek berlisensi, project manager berpengalaman, dan tenaga ahli terlatih untuk memastikan kualitas dan ketepatan waktu pengerjaan."
+      align="center"
+    />
+
+    <div class="row gy-4">
+      {TEAM_MEMBERS.map((member) => (
+        <div class="col-lg-4 col-md-6">
+          <div class="team-card">
+            <div class="team-img-wrap">
+              <img
+                src={member.image}
+                alt={`${member.name} - ${member.jobTitle} Bina Project`}
+                loading="lazy"
+                decoding="async"
+                width="400"
+                height="400"
+              />
+            </div>
+            <h2 class="team-name">{member.name}</h2>
+            <p class="team-title">{member.jobTitle}</p>
+            <p class="team-desc">{member.description}</p>
+            <div class="team-expertise">
+              <span class="expertise-heading">Keahlian:</span>
+              <ul class="expertise-list">
+                {member.expertise.map((skill) => (
+                  <li class="expertise-item">
+                    <Icon name="solar:check-circle-bold" width="14" height="14" />
+                    <span>{skill}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="team-cta text-center mt-60">
+      <h2 class="mb-3 team-cta-title">Konsultasikan Proyek Anda dengan Tim Profesional Kami</h2>
+      <p class="mb-4 team-cta-text">
+        Setiap proyek mendapat dedikasi penuh dari tim arsitek dan project manager berpengalaman.
+        Hubungi kami untuk diskusi gratis.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .team-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(34, 65, 109, 0.08);
+    height: 100%;
+  }
+  .team-img-wrap {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .team-img-wrap img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eff6ff;
+  }
+  .team-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #17202a;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .team-title {
+    font-size: 0.9rem;
+    color: #22416d;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .team-desc {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #475569;
+    margin-bottom: 20px;
+  }
+  .expertise-heading {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #22416d;
+    display: block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .expertise-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .expertise-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #334155;
+    margin-bottom: 6px;
+  }
+  .expertise-item svg {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: #22416d;
+  }
+  .team-cta-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #17202a;
+  }
+  .team-cta-text {
+    font-size: 1.05rem;
+    color: #475569;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  @media (max-width: 991px) {
+    .team-card {
+      padding: 24px;
+    }
+  }
+  
+  @media (max-width: 575px) {
+    .team-cta {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+  }
+</style>

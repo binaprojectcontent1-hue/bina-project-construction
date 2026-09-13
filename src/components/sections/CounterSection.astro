@@ -1,0 +1,305 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeader from '@components/SectionHeader.astro';
+
+const STATS = [
+  {
+    icon: 'solar:buildings-2-bold',
+    number: 162,
+    plus: '+',
+    label: 'Proyek Selesai',
+    detail: 'Rumah, Villa & Gedung Komersial',
+  },
+  {
+    icon: 'solar:medal-ribbons-star-bold',
+    number: 10,
+    plus: '+ Thn',
+    label: 'Dedikasi & Pengalaman',
+    detail: 'Arsitektur & Teknik Sipil Mandiri',
+  },
+  {
+    icon: 'solar:shield-check-bold',
+    number: 100,
+    plus: '%',
+    label: 'Legalitas & SPK Resmi',
+    detail: 'Transparansi RAB & Garansi BAST',
+  },
+  {
+    icon: 'solar:chart-2-bold',
+    number: 16,
+    plus: '+',
+    label: 'Proyek Berjalan',
+    detail: 'Aktif di Malang & Jawa Timur',
+  },
+];
+---
+
+<section class="counter-modern-sec" id="milestones-sec">
+  <!-- Subtle Ambient Glow Background (Matching Site Identity) -->
+  <div class="counter-bg-decor" aria-hidden="true">
+    <div class="counter-bg-glow counter-bg-glow--1"></div>
+    <div class="counter-bg-glow counter-bg-glow--2"></div>
+  </div>
+
+  <div class="container position-relative">
+    <!-- Standard Harmonized Section Header -->
+    <SectionHeader
+      badge="Rekam Jejak & Kapabilitas"
+      badgeIcon="solar:diploma-verified-bold"
+      title="Dedikasi Konstruksi dalam"
+      titleAccent="Angka Nyata"
+      description="Bukti rekam jejak profesionalisme, ketepatan estimasi RAB, dan jaminan mutu konstruksi bergaransi resmi di Malang dan seluruh Jawa Timur."
+      align="center"
+      variant="dark"
+      class="counter-header-mb"
+    />
+
+    <!-- 4 Frameless Architectural Bento Stat Cards (Zero Outline / Zero Stroke) -->
+    <div class="row g-4 justify-content-center">
+      {STATS.map((stat) => (
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <Icon name={stat.icon} width="28" height="28" />
+            </div>
+
+            <div class="stat-content">
+              <div class="stat-number-wrap">
+                <span class="counter-number">{stat.number}</span>
+                <span class="stat-plus">{stat.plus}</span>
+              </div>
+              <h3 class="stat-label">{stat.label}</h3>
+              <p class="stat-detail">{stat.detail}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .counter-modern-sec {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    background: linear-gradient(135deg, #183050 0%, #22416D 50%, #152945 100%);
+    padding: 80px 0 75px;
+    overflow: hidden;
+  }
+
+  /* Subtle Ambient Glow Decor (Zero CAD Grids / Wireframes) */
+  .counter-bg-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .counter-bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+
+  .counter-bg-glow--1 {
+    top: -80px;
+    right: 10%;
+    width: 420px;
+    height: 420px;
+    background: rgba(132, 172, 223, 0.16);
+  }
+
+  .counter-bg-glow--2 {
+    bottom: -100px;
+    left: 10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(34, 65, 109, 0.35);
+  }
+
+  .counter-header-mb {
+    margin-bottom: 44px !important;
+  }
+
+  /* 4 Frameless Architectural Bento Stat Cards - ZERO OUTLINE / ZERO STROKE */
+  .stat-card {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px 22px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+
+  .stat-card:hover {
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+    border: none !important;
+    outline: none !important;
+  }
+
+  /* Frameless Icon Box */
+  .stat-icon-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    border: none !important;
+    outline: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover .stat-icon-box {
+    background: var(--bina-blue-ice, #84ACDF);
+    color: var(--bina-navy, #22416D);
+    transform: scale(1.06);
+  }
+
+  .stat-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stat-number-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .counter-number {
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: clamp(2rem, 2.5vw, 2.65rem);
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-plus {
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--bina-blue-ice, #84ACDF);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 3px 0;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stat-detail {
+    font-size: 0.8125rem;
+    color: #CBD5E1;
+    margin: 0;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
+  /* Responsive Adjustments */
+  @media (max-width: 991px) {
+    .counter-modern-sec {
+      padding: 60px 0 55px;
+    }
+
+  }
+
+  @media (max-width: 767px) {
+    .counter-modern-sec {
+      padding: 48px 0 42px;
+    }
+
+    .counter-header-mb {
+      margin-bottom: 30px !important;
+    }
+
+    .stat-card {
+      padding: 18px 18px;
+      gap: 16px;
+    }
+
+    .counter-number {
+      font-size: 2.1rem;
+    }
+
+    .stat-label,
+    .stat-detail {
+      white-space: normal;
+    }
+
+  }
+</style>
+
+<script>
+  function initCounterAnimation() {
+    const counterNumbers = document.querySelectorAll('.counter-number');
+    
+    const animateCounter = (element: Element) => {
+      const target = parseInt(element.textContent || '0');
+      const duration = 1800;
+      const step = Math.max(1, target / (duration / 16));
+      let current = 0;
+
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          element.textContent = target.toString();
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(current).toString();
+        }
+      }, 16);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    counterNumbers.forEach(counter => observer.observe(counter));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCounterAnimation);
+  } else {
+    initCounterAnimation();
+  }
+
+  document.addEventListener('astro:page-load', initCounterAnimation);
+</script>

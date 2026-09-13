@@ -1,0 +1,17 @@
+# ==============================================================================
+# CLOUDFLARE PAGES REDIRECTS
+# ==============================================================================
+
+# Legacy URL redirects
+/team  /about#our-team  301
+
+# Media CDN Proxy
+/media/*  https://cdn.jsdelivr.net/gh/binaprojectcontent1-hue/bina-media@main/:splat  200
+# Fallback to Supabase Storage if needed:
+# /media/*  https://jymlsrmilckmphwhsrld.supabase.co/storage/v1/object/public/media/:splat  200
+
+# Canonical trailing slash normalization
+/portfolio  /portfolio/  301
+/blog       /blog/       301
+/about      /about/      301
+/contact    /contact/    301

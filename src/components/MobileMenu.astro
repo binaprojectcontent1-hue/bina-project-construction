@@ -1,0 +1,142 @@
+---
+import { siteConfig } from '@config/site';
+import { Icon } from 'astro-icon/components';
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = siteConfig.mainNav.map((item) => ({
+  ...item,
+  isActive: item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href),
+}));
+---
+
+<div class="th-menu-wrapper custom-mobile-menu">
+  <div class="th-menu-area custom-drawer-body">
+    <!-- Top Header -->
+    <div class="drawer-header d-flex align-items-center justify-content-between pb-20 mb-20 border-bottom">
+      <a href="/" class="d-inline-flex align-items-center">
+        <img src="/assets/img/logo.svg" alt="Bina Project Logo" width="160" height="56" />
+      </a>
+      <button type="button" class="th-menu-toggle drawer-close-btn" aria-label="Tutup Menu Mobile">
+        <Icon name="solar:close-circle-linear" width="22" height="22" />
+      </button>
+    </div>
+
+    <!-- Navigation Menu Landmark -->
+    <nav class="drawer-nav-section flex-grow-1" aria-label="Navigasi Menu Mobile">
+      <div class="drawer-nav-list">
+        {navLinks.map((item) => (
+          <a
+            href={item.href}
+            class={`drawer-nav-link ${item.isActive ? 'active' : ''}`}
+          >
+            <div class="d-flex align-items-center" style="gap: 12px;">
+              <div class="drawer-item-icon">
+                <Icon name={item.icon} width="18" height="18" />
+              </div>
+              <span class="drawer-item-text">{item.name}</span>
+            </div>
+            <Icon name="solar:arrow-right-up-linear" width="16" height="16" class="drawer-arrow" />
+          </a>
+        ))}
+      </div>
+
+      <!-- Micro Studio Info -->
+      <div class="drawer-studio-info mt-25 p-3 rounded-3 bg-light border">
+        <div class="d-flex align-items-center mb-2">
+          <Icon name="solar:pen-new-square-linear" width="14" height="14" class="text-theme me-2" />
+          <span style="font-size: 12px; font-weight: 700; color: var(--bina-slate-900, #17202A); text-transform: uppercase; letter-spacing: 0.5px;">Bina Project Studio</span>
+        </div>
+        <p class="mb-0" style="font-size: 13px; color: #334155; line-height: 1.5;">
+          {siteConfig.contact.address}
+        </p>
+      </div>
+    </nav>
+
+    <!-- Bottom Footer Section -->
+    <div class="drawer-footer pt-20 mt-auto border-top">
+      <a
+        href={siteConfig.contact.whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="th-btn style1 w-100 py-3 mb-15 text-center d-flex align-items-center justify-content-center"
+        style="border-radius: 12px; font-weight: 700; font-size: 14px;"
+      >
+        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> KONSULTASI GRATIS
+      </a>
+
+      <div class="d-flex justify-content-center gap-3">
+        {siteConfig.socials.map((social) => (
+          <a
+            target="_blank"
+            href={social.url}
+            aria-label={social.label}
+            class="drawer-social-btn"
+            rel="noopener noreferrer"
+          >
+            <Icon name={social.icon} width="16" height="16" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Native Zero-Dependency Mobile Menu Handler
+  function initMobileMenu() {
+    const menuWrapper = document.querySelector('.custom-mobile-menu') as HTMLElement | null;
+    const toggleButtons = document.querySelectorAll('.th-menu-toggle');
+
+    if (!menuWrapper) return;
+    if ((menuWrapper as any)._hasMenuHandler) return;
+    (menuWrapper as any)._hasMenuHandler = true;
+
+    const closeMenu = () => {
+      menuWrapper.classList.remove('th-body-visible');
+      document.body.style.overflow = '';
+    };
+
+    const toggleMenu = () => {
+      const isVisible = menuWrapper.classList.toggle('th-body-visible');
+      document.body.style.overflow = isVisible ? 'hidden' : '';
+    };
+
+    toggleButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleMenu();
+      });
+    });
+
+    // Close on backdrop click (click outside drawer body)
+    menuWrapper.addEventListener('click', (e) => {
+      if (e.target === menuWrapper) {
+        closeMenu();
+      }
+    });
+
+    // Close on Escape key press
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuWrapper.classList.contains('th-body-visible')) {
+        closeMenu();
+      }
+    });
+
+    // Close menu when navigating internal link
+    const navLinks = menuWrapper.querySelectorAll('.drawer-nav-link');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>

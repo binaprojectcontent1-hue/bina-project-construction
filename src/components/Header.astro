@@ -1,0 +1,385 @@
+---
+import { siteConfig } from '@config/site';
+import { Icon } from 'astro-icon/components';
+
+const currentPath = Astro.url.pathname;
+
+const navItems = siteConfig.mainNav.map((item) => ({
+  ...item,
+  isActive: item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href),
+}));
+---
+
+<header class="modern-header">
+  <!--============================== Minimal Top Bar ==============================-->
+  <div class="header-top-bar d-none d-lg-block" id="headerTopBar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center position-relative">
+        <div class="top-bar-left">
+          <ul class="top-info-list mb-0">
+            <li>
+              <Icon name="solar:phone-calling-linear" width="16" height="16" class="text-theme me-2" />
+              <a href={siteConfig.contact.phoneTel} class="top-link">{siteConfig.contact.phoneDisplay}</a>
+            </li>
+            <li class="separator">|</li>
+            <li class="d-none d-xl-inline-flex align-items-center">
+              <Icon name="solar:map-point-linear" width="16" height="16" class="text-theme me-2" />
+              <span>{siteConfig.contact.address}</span>
+            </li>
+            <li class="separator d-none d-xl-inline">|</li>
+            <li>
+              <Icon name="solar:letter-linear" width="16" height="16" class="text-theme me-2" />
+              <a href={`mailto:${siteConfig.contact.email}`} class="top-link">{siteConfig.contact.email}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="top-bar-right">
+          <div class="top-social-links">
+            {siteConfig.socials.map((social) => (
+              <a
+                target="_blank"
+                href={social.url}
+                aria-label={social.label}
+                class="social-circle"
+                rel="noopener noreferrer"
+              >
+                <Icon name={social.icon} width="13" height="13" />
+              </a>
+            ))}
+          </div>
+          <button 
+            type="button" 
+            class="top-bar-close-btn" 
+            id="closeTopBar"
+            aria-label="Tutup top bar"
+            title="Tutup"
+          >
+            <Icon name="solar:close-circle-linear" width="18" height="18" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--============================== Main Glassmorphism Navbar ==============================-->
+  <div class="main-navbar-sticky">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between py-2">
+        <!-- Logo -->
+        <div class="navbar-logo">
+          <a href="/" class="d-flex align-items-center">
+            <img
+              src="/assets/img/logo.svg"
+              alt="Bina Project Logo"
+              width="195"
+              height="68"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </a>
+        </div>
+
+        <!-- React Bits Style Pill Dock Nav -->
+        <div class="d-none d-lg-block">
+          <nav class="nav-pill-dock" aria-label="Main Navigation">
+            {navItems.map((item) => (
+              <a
+                href={item.href}
+                class={`nav-pill-item ${item.isActive ? 'active' : ''}`}
+                aria-current={item.isActive ? 'page' : undefined}
+              >
+                {item.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <!-- shadcn/ui Style Actions -->
+        <div class="d-flex align-items-center gap-3">
+          <button type="button" class="action-icon-btn sideMenuToggler d-none d-xl-flex" aria-label="Buka Menu Panel">
+            <Icon name="solar:widget-linear" width="20" height="20" />
+          </button>
+          
+          <a href="/contact" class="shadcn-cta-btn d-none d-sm-inline-flex">
+            <span>KONSULTASI GRATIS</span>
+            <Icon name="solar:arrow-right-up-linear" width="16" height="16" class="ms-2 arrow-icon" />
+          </a>
+
+          <!-- Mobile Toggle -->
+          <button type="button" class="mobile-toggle-btn d-lg-none th-menu-toggle" aria-label="Buka Menu Mobile">
+            <Icon name="solar:hamburger-menu-linear" width="22" height="22" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .modern-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: var(--zi-sticky, 500);
+  }
+
+  /* Top Bar */
+  .header-top-bar {
+    background-color: #F8FAFC;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #334155;
+  }
+
+  .top-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .top-link {
+    color: var(--bina-slate-700, #334155);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .top-link:hover {
+    color: var(--theme-color, #22416D);
+  }
+
+  .separator {
+    color: #94A3B8;
+    user-select: none;
+  }
+
+  .top-social-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .social-circle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    border-radius: 50%;
+    background: #EFF6FF;
+    color: var(--theme-color, #22416D);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .social-circle:hover {
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF;
+  }
+
+  /* Top Bar Close Button */
+  .top-bar-close-btn {
+    background: transparent;
+    border: none;
+    color: #64748B;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 32px;
+    height: 32px;
+  }
+
+  .top-bar-close-btn:hover {
+    background: #FEE2E2;
+    color: #DC2626;
+    transform: rotate(90deg);
+  }
+
+  /* Top Bar Hide Animation - Ultra Smooth & Slow */
+  .header-top-bar {
+    transition: 
+      max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      padding 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      margin 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+      transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    max-height: 100px;
+    transform: translateY(0);
+    transform-origin: top;
+  }
+
+  .header-top-bar.hidden {
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  /* Main Sticky Navbar with Glassmorphism */
+  .main-navbar-sticky {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    z-index: 100;
+  }
+
+  .navbar-logo img {
+    width: 195px;
+    height: 68px;
+    max-width: 100%;
+    aspect-ratio: 195 / 68;
+    display: block;
+  }
+
+  /* Pill Navigation Dock */
+  .nav-pill-dock {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 9999px;
+    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  }
+
+  .nav-pill-item {
+    color: var(--bina-slate-700, #334155);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+  }
+
+  .nav-pill-item:hover {
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF !important;
+  }
+
+  .nav-pill-item.active {
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF !important;
+    box-shadow: 0 2px 8px rgba(34, 65, 109, 0.2);
+  }
+
+  /* Header CTA Button */
+  .shadcn-cta-btn {
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF !important;
+    padding: 11px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid var(--theme-color, #22416D);
+    box-shadow: 0 2px 8px rgba(34, 65, 109, 0.15);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .shadcn-cta-btn:hover {
+    background: #1B3457;
+    border-color: #1B3457;
+  }
+
+  .shadcn-cta-btn .arrow-icon {
+    transition: transform 0.2s ease;
+  }
+
+  .shadcn-cta-btn:hover .arrow-icon {
+    transform: translate(2px, -2px);
+  }
+
+  /* Action Icon Button (Grid / Drawer) */
+  .action-icon-btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1.5px solid #E2E8F0;
+    background: #FFFFFF;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .action-icon-btn:hover {
+    border-color: var(--theme-color, #22416D);
+    color: #FFFFFF;
+    background: var(--theme-color, #22416D);
+  }
+
+  /* Mobile Toggle Button */
+  .mobile-toggle-btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1.5px solid #E2E8F0;
+    background: #FFFFFF;
+    color: var(--bina-slate-900, #17202A);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-toggle-btn:hover {
+    background: #F8FAFC;
+    border-color: #CBD5E1;
+  }
+</style>
+
+<script>
+  // Top Bar Close Functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const closeBtn = document.getElementById('closeTopBar');
+    const topBar = document.getElementById('headerTopBar');
+    
+    if (closeBtn && topBar) {
+      closeBtn.addEventListener('click', () => {
+        topBar.classList.add('hidden');
+        
+        // Save preference to localStorage
+        localStorage.setItem('topBarHidden', 'true');
+      });
+      
+      // Check if user has previously closed the top bar
+      if (localStorage.getItem('topBarHidden') === 'true') {
+        topBar.classList.add('hidden');
+      }
+    }
+  });
+</script>

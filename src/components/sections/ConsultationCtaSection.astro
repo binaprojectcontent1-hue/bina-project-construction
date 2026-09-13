@@ -1,0 +1,58 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import SectionHeader from '@components/SectionHeader.astro';
+import consultationImg from '@assets/images/normal/consultation_img.jpg';
+import consultationThumb from '@assets/images/normal/image.png';
+---
+
+<section class="consultation-sec bg-title position-relative overflow-hidden" data-bg-src="/assets/img/bg/shape_bg_2.png">
+  <div class="consultation-thumb">
+    <div class="shape_1"></div>
+    <div class="shape_2"></div>
+    <Image
+      src={consultationImg}
+      alt="Konsultasi Desain & Konstruksi Bangunan Bina Project"
+      loading="lazy"
+      decoding="async"
+      width={580}
+      height={620}
+      format="webp"
+      quality={85}
+    />
+  </div>
+  <div class="container">
+    <div class="row align-items-end flex-md-row-reverse">
+      <div class="col-md-8">
+        <div class="consultation-title-area">
+          <SectionHeader
+            badge="Konsultasi Gratis"
+            badgeIcon="solar:chat-round-call-bold"
+            title="Konsultasi Gratis, Hubungi Kami!"
+            description="Diskusikan rencana pembangunan atau renovasi hunian Anda bersama tim arsitek dan insinyur Bina Project."
+            align="left"
+            variant="dark"
+            class="mb-30"
+          />
+          <div>
+            <a href="/contact" class="th-btn style1 th-icon">Kontak Kami <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" /></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="consultation-image movingX">
+          <Image 
+            src={consultationThumb} 
+            alt="Konsultasi Bina Project" 
+            loading="lazy" 
+            decoding="async" 
+            width={362} 
+            height={527} 
+            format="webp" 
+            quality={85} 
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

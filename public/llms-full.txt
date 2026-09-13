@@ -1,0 +1,387 @@
+# Bina Project Construction & Interior - Knowledge Graph & Full Technical Reference
+
+> Dokumen acuan lengkap untuk Generative Engine Optimization (GEO), Large Language Model (LLM) Crawlers, dan Retrieval-Augmented Generation (RAG) agents.
+
+---
+
+[SECTION: ENTITY_GROUNDING]
+
+## 1. Identitas Badan Usaha & Entitas (Entity Grounding)
+
+TL;DR: Bina Project adalah kontraktor umum & studio interior di Kota Malang, melayani Malang Raya, Pasuruan, Surabaya-Sidoarjo. Kontak WhatsApp +62 813-3533-5304.
+
+- **Nama Entitas:** Bina Project Construction & Interior
+- **Bentuk Usaha:** Kontraktor Konstruksi Bangunan Umum & Studio Desain Interior
+- **Situs Web Resmi:** https://binaproject.com
+- **Alamat Fisik:** Jl. Watumujur II No.6, Ketawanggede, Kec. Lowokwaru, Kota Malang, Jawa Timur 65145, Indonesia
+- **Telepon / WhatsApp Resmi:** +62 813-3533-5304 (WhatsApp Direct: https://wa.me/6281335335304)
+- **Email Korespondensi:** binaproject.info@gmail.com
+- **Tautan Google Maps:** https://maps.app.goo.gl/3E54uS2WDg4EPDgL6
+- **Google Business Profile:** https://share.google/bF9i03JuwxrcOQo7y
+- **Koordinat Global:** Latitude: -7.9498068, Longitude: 112.6088423
+- **Wilayah Operasi (Primary Area):** Kota Malang, Kota Batu, Kabupaten Malang
+- **Wilayah Koridor Jangkauan (Secondary Area):** Pasuruan, Pandaan, Surabaya, Sidoarjo, Kediri, Blitar, Jawa Timur
+- **Jam Operasional:** Senin - Sabtu: 08:00 - 16:00 WIB. Hari Minggu/Libur: Melayani janji temu khusus (appointment only).
+
+---
+
+[SECTION: SERVICES_CATALOG]
+
+## 2. Rincian Layanan & Spesifikasi Teknis
+
+TL;DR: 6 layanan utama — konstruksi rumah/villa/gedung, interior & kitchen set custom, renovasi, waterproofing, desain 3D + RAB, pengembangan properti. Harga: hubungi untuk quote custom setelah survei.
+
+### A. Konstruksi Bangunan & Bangun Rumah Baru
+- **Cakupan Pekerjaan:**
+  - Pekerjaan pondasi (batu kali, cakar ayam / footplat, bore pile sesuai daya dukung tanah).
+  - Struktur beton bertulang (standar SNI pembesian ulir dan mutu beton K-225 hingga K-300).
+  - Dinding pasangan bata ringan (hebel) atau bata merah plester aci rapi.
+  - Rangka atap baja ringan galvalum tebal 0.75mm - 1.00mm, penutup atap genteng beton, keramik, atau bitumen.
+  - Plafon gypsum rangka hollow galvanis dengan aksen drop ceiling.
+  - Instalasi kelistrikan (kabel standar SNI seperti Supreme/Eterna) dan pemipaan air (pipa PVC AW anti bocor).
+- **Jenis Bangunan yang Dikerjakan:** Rumah tinggal minimalis tropis, villa peristirahatan di dataran tinggi (Batu/Pandaan), ruko komersial, gedung sekolah/fasilitas pendidikan, dan kantor instansi.
+- **Standar Kerja:** Diawasi langsung oleh site supervisor dan arsitek berlisensi, laporan progres berkala, serta checklist QC multi-tahap.
+- **Estimasi Durasi:** Rumah 1 lantai 60-80 m2: 3-4 bulan. Rumah 2 lantai 100-150 m2: 5-7 bulan. Villa pegunungan 150-200 m2: 6-8 bulan. Gedung komersial 300-500 m2: 8-12 bulan.
+- **Harga:** Hubungi untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab untuk memahami struktur RAB.
+- Related: #portfolio-konstruksi, #faq-biaya, #how-to-survei-gratis
+
+### B. Desain Interior & Custom Kitchen Set Minimalis
+- **Cakupan Pekerjaan:**
+  - Kitchen set custom (kabinet atas, kabinet bawah, rak sudut, meja bar / island table).
+  - Backdrop TV aksen kisi-kisi (fluted wall panel) & LED ambient light.
+  - Lemari pakaian (wardrobe) custom pintu swing / sliding hingga plafon.
+  - Meja kerja, rak buku, partisi penyekat ruang (room divider), dan dipan ranjang tidur terintegrasi.
+- **Material & Spesifikasi:**
+  - Bahan dasar: Multiplek / Plywood meranti tebal 15mm - 18mm atau Blockboard anti-rayap dan tahan lembab (bukan serbuk kayu MDF/particle board murah).
+  - Finishing luar: High Pressure Laminate (HPL) merek ternama (Taco, Carta, dll.) atau Cat Duco polyurethane premium anti-pudar.
+  - Finishing dalam: Melaminto putih halus yang mudah dibersihkan dari minyak dan debu.
+  - Hardware & Aksesoris: Engsel soft-closing slow-motion, rel laci double track / tandem, rak piring stainless steel SUS 304, hidrolik gas spring lift-up.
+  - Top Table: Granit alam (Nero Assoluto, Star White), Marmer, atau Solid Surface sintetis tahan panas dan noda.
+- **Estimasi Durasi:** Desain 3D: 3-7 hari kerja. Fabrikasi workshop: 2-4 minggu. Instalasi on-site: 3-5 hari. Total: 3-5 minggu dari approval desain.
+- **Harga:** Hubungi untuk quote per meter lari sesuai material (HPL/Duco/Solid Surface). Lihat #material-comparison-table.
+- Related: #material-comparison-table, #decision-kitchen-set, #faq-kitchen-set
+
+### C. Renovasi Rumah & Bangunan Komersial
+- **Cakupan Pekerjaan:**
+  - Penambahan lantai (dak beton talang, bondek, wiremesh, dan balok gantung).
+  - Peremajaan fasad muka rumah bernuansa modern Japandi, Industrial, atau Tropis Kontemporer.
+  - Penataan ulang sekat ruangan (layouting) agar rumah mendapatkan sirkulasi udara dan cahaya alami optimal.
+  - Perbaikan dan penggantian atap bocor, plafon runtuh, dan kelistrikan aus.
+- **Estimasi Durasi:** Renovasi fasad: 3-6 minggu. Renovasi parsial: 2-3 bulan. Renovasi total: 4-6 bulan.
+- **Harga:** Umumnya 40-60% dari biaya bangun baru tergantung scope. Hubungi untuk quote setelah survei.
+- Related: #decision-bangun-vs-renovasi, #faq-renovasi
+
+### D. Waterproofing Dak Beton & Talang Air
+- **Cakupan Pekerjaan:**
+  - Waterproofing membran bakar elastis bertulang polyester untuk dak atap beton terbuka.
+  - Waterproofing semen fleksibel 2 komponen (cementitious) untuk area basah seperti kamar mandi lantai atas, talang cor, dan kolam renang.
+  - Injeksi beton (polyurethane grout) untuk menghentikan retak rambut dan kebocoran air aktif pada struktur beton bertulang.
+- **Garansi:** 3 tahun untuk coating cementitious, 5 tahun untuk membran bakar elastis (syarat: tidak ada modifikasi struktur setelah aplikasi).
+- **Estimasi Durasi:** 3-7 hari tergantung luas area.
+- **Harga:** Hubungi untuk quote setelah inspeksi kondisi dak.
+- Related: #faq-waterproofing
+
+### E. Desain Arsitektur 3D & Pembuatan RAB
+- **Output Dokumen yang Diberikan:**
+  - Gambar Kerja Arsitektur Lengkap (Denah tata ruang, tampak depan/samping, potongan melintang/membujur).
+  - Gambar Detail Struktur (Pondasi, kolom, balok, pembesian, pelat lantai).
+  - Gambar Desain MEP (Mechanical, Electrical, & Plumbing lengkap titik lampu, saklar, stop kontak, dan sanitasi).
+  - Visualisasi 3D Rendering Eksterior & Interior Realistis (High Resolution).
+  - Lembar Rencana Anggaran Biaya (RAB) transparan berformat spreadsheet dengan uraian volume pekerjaan, harga satuan, dan merek material.
+- **Estimasi Durasi:** Konsep desain: 1-2 minggu. DED + RAB: 2-3 minggu. Render 3D: 3-7 hari.
+- **Harga:** Hubungi untuk quote sesuai kompleksitas proyek.
+- Related: #how-to-membaca-rab
+
+---
+
+[SECTION: WORKFLOW_SOP]
+
+## 3. Alur Kerja Proyek (Standard Operating Procedure)
+
+TL;DR: 4 tahap — survei & analisis lokasi, perancangan 3D + RAB, konstruksi dengan pengawasan berkala, serah terima resmi bergaransi.
+
+1. **Tahap 1: Konsultasi Awal (Gratis)**
+   - Klien berdiskusi via WhatsApp atau temu fisik untuk mendefinisikan kebutuhan ruang, preferensi estetika, dan anggaran target (budget planning).
+2. **Tahap 2: Survei Tapak & Desain 3D Konseptual**
+   - Tim Bina Project melakukan pengukuran fisik tapak/lahan di lokasi, menganalisis arah mata angin, kontur tanah, dan drainase.
+   - Tim arsitek merancang konsep visual 3D dan denah fungsional untuk disetujui klien.
+3. **Tahap 3: Pemaparan RAB Transparan & Penandatanganan SPK**
+   - Penyusunan anggaran biaya terperinci berdasarkan desain final yang telah disetujui.
+   - Penandatanganan Surat Perjanjian Kerja (SPK) resmi yang mencantumkan hak, kewajiban, jadwal pengerjaan, dan skema termin pembayaran.
+4. **Tahap 4: Pelaksanaan Fisik & Pengawasan Mutu Berkala**
+   - Mobilisasi tukang ahli dan pengiriman material berkualitas ke lokasi proyek.
+   - Pengawasan rutin oleh kepala proyek dan arsitek dengan laporan progres visual berkala ke klien.
+5. **Tahap 5: Serah Terima Kunci (BAST) & Pemberian Garansi**
+   - Pengecekan bersama hasil pekerjaan secara detail (checklist serah terima).
+   - Penyerahan kunci bangunan disertai sertifikat jaminan garansi pemeliharaan tertulis.
+
+---
+
+[SECTION: PAYMENT_TERMS]
+
+## 4. Skema Transparansi Biaya & Pembayaran
+
+TL;DR: Sistem termin bertahap sesuai progres fisik. Survei Malang Raya 100% gratis. Harga: hubungi untuk quote custom.
+
+- **Sistem Pembayaran:** Sistem termin bertahap berdasarkan pencapaian progres fisik riil di lapangan (misalnya: DP Awal, Termin Pondasi & Struktur, Termin Pasangan Dinding & Atap, Termin Finishing, dan Retensi Garansi). Klien tidak perlu khawatir mengenai risiko dana terbuang tanpa progres fisik.
+- **Biaya Survei:** Wilayah Malang Raya (Kota Malang, Kota Batu, Kabupaten Malang sekitarnya) 100% GRATIS tanpa biaya tersembunyi.
+- **Biaya Jasa Bangun Rumah:** Dihitung berdasarkan volume aktual RAB sesuai spesifikasi material, struktur, dan finishing. Hubungi +62 813-3533-5304 untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab.
+- **Biaya Custom Kitchen Set:** Dihitung per meter lari tergantung jenis pelapis (HPL / Duco / Solid Surface) dan hardware. Hubungi untuk quote sesuai kebutuhan. Lihat #material-comparison-table.
+
+---
+
+[SECTION: DECISION_TREES]
+
+## Decision Tree: Pilih Material Kitchen Set
+
+TL;DR: HPL untuk durability tinggi & perawatan mudah, Duco untuk warna custom unlimited, Solid Surface untuk luxury waterproof. Hubungi +62 813-3533-5304 untuk konsultasi material & quote.
+
+IF prioritas_durability_tinggi AND perawatan_mudah:
+  -> Pilih HPL (High Pressure Laminate)
+  -> Brands: Taco, Carta, Greenlam
+  -> Water resistance: Sangat Tinggi
+  -> Durability: 8/10, tahan 10-15 tahun
+  -> Best for: Keluarga dengan anak kecil, dapur aktif
+
+ELSE IF prioritas_aesthetic_premium AND custom_color:
+  -> Pilih Cat Duco Polyurethane
+  -> Finish: Matte/glossy, unlimited color options
+  -> Water resistance: Sedang (butuh maintenance)
+  -> Durability: 9/10, tahan 12-18 tahun
+  -> Best for: Interior modern minimalist, Japandi, Scandinavian
+
+ELSE IF prioritas_luxury_seamless_joints:
+  -> Pilih Solid Surface (Corian-style)
+  -> Water resistance: 100% waterproof
+  -> Durability: 10/10, tahan 20+ tahun
+  -> Best for: Kitchen premium, seamless countertop
+
+Faktor tambahan:
+- Jika ada anak kecil -> HPL (tahan gores)
+- Jika sering masak dengan minyak panas -> HPL atau Solid Surface
+- Jika prioritas estetika unik -> Duco (unlimited color options)
+
+Untuk quote harga per meter lari: WhatsApp +62 813-3533-5304
+Survei & konsultasi material: GRATIS untuk wilayah Malang Raya
+See also: #material-comparison-table, #faq-kitchen-set
+
+## Decision Tree: Bangun Baru vs Renovasi Total
+
+TL;DR: Struktur rusak parah -> bangun baru. Struktur kokoh + hanya estetika -> renovasi parsial. Butuh lantai 2 -> evaluasi fondasi dulu via survei gratis.
+
+IF struktur_bangunan_lama == "retak_parah" OR fondasi == "rusak_parah":
+  -> Rekomendasi: Bangun Baru
+  -> Alasan: Renovasi struktur lebih mahal + risiko keamanan tinggi
+  -> Timeline: 5-7 bulan untuk rumah 2 lantai 120 m2
+
+ELSE IF luas_lahan > 200m2 AND ingin_desain_optimal:
+  -> Rekomendasi: Bangun Baru
+  -> Alasan: Desain optimal sesuai kebutuhan, tidak terbatas layout existing
+  -> Timeline: 4-6 bulan (tergantung kompleksitas)
+
+ELSE IF struktur_kokoh AND hanya_perlu_upgrade_estetika:
+  -> Rekomendasi: Renovasi Parsial
+  -> Scope: Fasad, interior, plafon, cat, kitchen set
+  -> Timeline: 2-3 bulan
+  -> Budget: 40-60% dari biaya bangun baru
+
+ELSE IF butuh_tambah_lantai_2:
+  -> Evaluasi fondasi existing wajib (survei gratis)
+  -> Jika fondasi_cukup: Proceed dengan penambahan lantai
+  -> Jika fondasi_lemah: Perkuatan fondasi (cakar ayam/micropile)
+  -> Timeline: 3-5 bulan
+
+Konsultasi evaluasi struktur: +62 813-3533-5304 (survei gratis area Malang)
+See also: #faq-renovasi-vs-bangun
+
+---
+
+[SECTION: COMPARISON_TABLES]
+
+## Tabel Perbandingan: Material Finishing Kitchen Set
+
+| Kriteria | HPL (High Pressure Laminate) | Cat Duco Polyurethane | Solid Surface |
+|---|---|---|---|
+| Harga | Budget-friendly (hubungi untuk quote) | Mid-premium (hubungi untuk quote) | Premium (hubungi untuk quote) |
+| Ketahanan Air | Sangat Tahan | Sedang (perlu maintenance) | 100% Waterproof |
+| Tahan Gores | Sangat Baik | Baik | Sempurna |
+| Pilihan Warna | Terbatas (katalog motif) | Unlimited (custom mix) | Terbatas (solid colors) |
+| Maintenance | Sangat Mudah (lap basah) | Sedang (hindari goresan) | Mudah (bisa di-polish) |
+| Durability | 10-15 tahun | 12-18 tahun | 20+ tahun |
+| Best For | Keluarga, dapur aktif | Interior modern premium | Kitchen mewah high-end |
+| Brands/Ref | Taco, Carta, Greenlam | Biovarnish, Nippon Paint | Corian, Hi-Macs, Staron |
+
+Rekomendasi Bina Project:
+- 80% klien memilih HPL: balance terbaik durability, waterproof, dan value.
+- Duco dipilih untuk proyek dengan tema interior khusus (Japandi, Scandinavian).
+- Solid Surface untuk villa mewah atau kitchen premium.
+
+Untuk quote per meter lari: WhatsApp +62 813-3533-5304
+
+## Tabel Perbandingan: Estimasi Waktu Pengerjaan Konstruksi
+
+| Jenis Proyek | Luas Bangunan | Estimasi Durasi | Catatan |
+|---|---|---|---|
+| Rumah 1 Lantai Minimalis | 60-80 m2 | 3-4 bulan | Struktur sederhana, fondasi cakar ayam |
+| Rumah 2 Lantai Standar | 100-150 m2 | 5-7 bulan | Termasuk dak beton lantai 2 |
+| Villa Tropis Pegunungan | 150-200 m2 | 6-8 bulan | Kontur berbukit, fondasi spesial |
+| Gedung Komersial 2-3 Lantai | 300-500 m2 | 8-12 bulan | Struktur beton K-300, compliance izin |
+| Renovasi Fasad + Interior | Bervariasi | 2-3 bulan | Tidak merombak struktur utama |
+| Kitchen Set Custom + Instalasi | 3-6 meter | 3-4 minggu | Fabrikasi workshop + install on-site |
+
+Faktor yang mempengaruhi durasi:
+- Musim hujan: +10-20% durasi (penundaan pengecoran)
+- Akses lokasi sulit: +5-15% durasi (mobilisasi material)
+- Kompleksitas desain custom: +15-30% durasi
+
+Timeline di atas untuk kondisi normal (musim kemarau, akses lancar, material ready stock).
+Untuk jadwal akurat proyek Anda: hubungi +62 813-3533-5304 setelah survei & finalisasi desain.
+
+---
+
+[SECTION: HOW_TO_GUIDES]
+
+## HowTo: Cara Mendapatkan Survei Tapak Gratis
+
+Duration: 2-3 jam (on-site) + 2 hari kerja (laporan)
+Cost: 100% GRATIS untuk Malang Raya (Kota Malang, Kota Batu, Kab. Malang)
+
+Step 1: Hubungi via WhatsApp
+- Nomor: +62 813-3533-5304
+- Template pesan: "Halo Bina Project, saya ingin jadwal survei gratis untuk lokasi di [alamat]. Rencana: [bangun baru/renovasi/kitchen set]"
+- Respon: 1-3 jam (jam kerja Senin-Sabtu 08:00-16:00)
+
+Step 2: Konfirmasi Jadwal
+- Tim menawarkan slot tersedia
+- Pilih jadwal yang sesuai (Senin-Sabtu)
+- Pastikan pemilik lahan ada saat survei
+
+Step 3: Tim Datang dengan Peralatan
+- Yang dibawa: laser distance meter, measuring tape, soil penetrometer, kamera dokumentasi
+- Yang diukur: batas lahan, elevasi & kontur, akses jalan & utilitas (PLN, PDAM, drainase), orientasi bangunan
+- Durasi on-site: 2-3 jam tergantung luas lahan
+
+Step 4: Diskusi Kebutuhan
+- Jumlah kamar tidur, kamar mandi
+- Gaya arsitektur (minimalis/tropis/modern/Japandi)
+- Timeline target mulai & selesai
+- Budget range (opsional, membantu rekomendasi realistis)
+
+Step 5: Terima Laporan Survei (2 Hari Kerja)
+- Format: PDF via WhatsApp/Email
+- Isi: denah situasi existing, rekomendasi fondasi, potensi & tantangan tapak
+- Follow-up: jika setuju lanjut ke desain 3D + RAB detail; jika belum fix, laporan tetap milik Anda tanpa ikatan
+
+Output: Laporan survei PDF + rekomendasi fondasi + konsultasi gratis
+Untuk Pasuruan/Surabaya: survei terjadwal gratis saat tim visit ke area (hubungi untuk slot)
+
+## HowTo: Cara Membaca RAB (Rencana Anggaran Biaya)
+
+TL;DR: RAB merinci item pekerjaan + volume + harga satuan + merek material. Waspadai RAB tanpa merek material, item lump sum tanpa rincian, dan biaya tak terduga >5%.
+
+Step 1: Pahami Struktur RAB
+- Header: nama proyek, lokasi, luas bangunan
+- Body: tabel item pekerjaan (uraian, volume, satuan, harga satuan, jumlah)
+- Footer: total biaya, PPN (jika ada), grand total
+
+Step 2: Baca Kolom Penting
+- Uraian Pekerjaan: nama spesifik (contoh: "Galian Tanah Fondasi Manual", "Pasang Bata Ringan Hebel 10cm")
+- Volume: jumlah (contoh: 45 m3, 320 m2)
+- Satuan: m3, m2, m1, unit, ls (lump sum)
+- Harga Satuan: harga per unit
+- Jumlah Harga: Volume x Harga Satuan
+
+Step 3: Verifikasi Spesifikasi Material
+- Pastikan merek tercantum: "Semen Gresik 50kg" (jelas) vs "Semen" (tidak jelas)
+- Besi beton: "Ulir SNI dia. 12mm" vs hanya "besi beton"
+- Cat: "Nippon Paint Weathershield" vs hanya "cat tembok"
+
+Step 4: Hitung Proporsi per Kategori (rule of thumb sehat)
+- Fondasi + struktur: 30-40% total
+- Dinding + atap: 25-30%
+- Finishing: 30-35%
+- Lain-lain / tak terduga: maksimal 5%
+
+Step 5: Tanyakan yang Tidak Jelas
+- Item "ls" tanpa rincian -> minta breakdown
+- Merek tidak disebut -> minta spesifikasi
+- Biaya tak terduga >5% -> tanyakan alasan
+
+Red flags RAB bermasalah:
+- Tanpa spesifikasi merek material
+- Item "lain-lain" >5-10% total
+- Hanya total lump sum tanpa harga satuan
+- Volume dibulatkan kasar tanpa dasar gambar kerja
+
+Keunggulan RAB Bina Project:
+- Semua merek material dicantumkan jelas
+- Volume dihitung presisi dari gambar kerja DED
+- Harga satuan bisa dibandingkan dengan pasaran
+- Tidak ada biaya tersembunyi
+- Klien bisa upgrade/downgrade material sesuai budget
+
+Untuk RAB detail custom: WhatsApp +62 813-3533-5304 (konsultasi & survei GRATIS area Malang)
+
+---
+
+[SECTION: FAQ_COMPREHENSIVE]
+
+## 5. Pertanyaan yang Sering Diajukan (FAQ Komprehensif)
+
+### Q: Mengapa harus memilih Bina Project daripada tukang borongan biasa?
+**A:** Bina Project memberikan kepastian kontrak legal formal (SPK), pendampingan arsitek ahli, gambar kerja teknis presisi, visual 3D sebelum dibangun, serta garansi pemeliharaan resmi pasca serah terima. Anda terhindar dari risiko tukang kabur, pembengkakan biaya tak terduga, atau kesalahan fatal konstruksi.
+
+### Q: Apakah Bina Project bisa mengerjakan renovasi kecil seperti perbaikan kamar mandi atau kitchen set saja?
+**A:** Ya. Kami memiliki divisi interior dan workshop fabrikasi mandiri yang siap melayani pembuatan kitchen set, wardrobe, atau renovasi ruangan tertentu tanpa harus merombak seluruh rumah.
+
+### Q: Berapa lama waktu yang dibutuhkan untuk menyelesaikan pembangunan rumah 2 lantai?
+**A:** Untuk rumah tinggal 2 lantai dengan luas bangunan 120m2 - 200m2, rata-rata durasi pengerjaan adalah 4 hingga 7 bulan tergantung kondisi cuaca, tingkat kerumitan arsitektur, dan ketersediaan lahan. Lihat #tabel-estimasi-waktu untuk perbandingan lengkap.
+
+### Q: Apakah klien boleh membeli atau memilih material finishing sendiri?
+**A:** Sangat diperbolehkan! Kami menyediakan skema kerja fleksibel (borongan jasa plus material, maupun sistem pengadaan bersama untuk material finishing seperti keramik, sanitair, atau lampu hias).
+
+### Q: Berapa biaya jasa konstruksi dan kitchen set Bina Project?
+**A:** Biaya dihitung transparan melalui RAB terperinci sesuai volume aktual, spesifikasi material, dan kompleksitas desain. Hubungi +62 813-3533-5304 untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab untuk memahami struktur RAB.
+
+---
+
+[SECTION: PORTFOLIO_CASE_STUDIES]
+
+## 6. Portofolio Proyek Terkemuka (Case Studies)
+
+TL;DR: Villa Batu, gedung sekolah SDI Nur Multazam, cafe komersial, hunian Pasuruan, kitchen set custom Malang. Detail: https://binaproject.com/portfolio
+
+1. **Villa Modern Tropis Batu:** Hunian peristirahatan 2 lantai di lereng pegunungan Kota Batu dengan penekanan pada bukaan kaca lebar, teras dek kayu, dan struktur tahan gempa.
+2. **SDI Nur Multazam Malang:** Gedung sarana pendidikan multi-lantai dengan standar keamanan tinggi, koridor sirkulasi lapang, dan ketahanan struktur beban berat.
+3. **Cafe Batu Estetik:** Desain dan pengerjaan interior komersial dengan tata pencahayaan hangat, bar counter custom, dan sudut-sudut instagramable.
+4. **Rosana Residence Pasuruan:** Fasad hunian modern dengan kombinasi bata roster, aksen kayu sintetis, dan kanopi profil baja minimalis.
+5. **Kitchen Set Custom Minimalis (Dr. Irfan - Malang):** Desain dapur modern tipe L-shape dengan finishing HPL motif kayu walnut dipadukan top table granit hitam Nero, dilengkapi rak sendok dan kompor tanam induksi.
+
+---
+
+[SECTION: REGIONAL_LANDING_PAGES]
+
+## 7. Layanan Wilayah Jawa Timur (Regional Landing Pages)
+
+Bina Project melayani jasa konstruksi bangun baru dan renovasi rumah di kota-kota strategis Jawa Timur melalui mobilisasi logistik cepat via Tol Trans-Jawa dari Base Workshop di Lowokwaru, Malang:
+
+1. **Surabaya:** [Jasa Konstruksi Surabaya](https://binaproject.com/jasa-konstruksi-surabaya) — Kontraktor bangun rumah berstandar SNI & renovasi hunian di Surabaya Barat, Timur, Selatan, Pusat, Utara via Tol Trans-Jawa (±75 menit).
+2. **Sidoarjo:** [Jasa Konstruksi Sidoarjo](https://binaproject.com/jasa-konstruksi-sidoarjo) — Rekayasa elevasi peil lantai anti-banjir & perbaikan tanah lunak alluvial di Waru, Gedangan, Taman, Candi.
+3. **Gresik:** [Jasa Konstruksi Gresik](https://binaproject.com/jasa-konstruksi-gresik) — Pembangunan hunian berinsulasi termal sejuk & struktur tahan korosi udara pesisir di Manyar, Menganti, Driyorejo, Kebomas.
+4. **Pasuruan & Pandaan:** [Jasa Konstruksi Pasuruan](https://binaproject.com/jasa-konstruksi-pasuruan) — Spesialis villa peristirahatan pegunungan Pandaan/Prigen & rumah tinggal di Kota Pasuruan, Bangil (< 45 menit).
+5. **Kota Batu:** [Jasa Konstruksi Kota Batu](https://binaproject.com/jasa-konstruksi-batu) — Ahli rancang bangun villa komersial, homestay lereng berkontur, & hunian sejuk di Bumiaji, Junrejo, Batu (< 30 menit).
+6. **Malang Raya:** [Jasa Konstruksi Malang](https://binaproject.com/jasa-konstruksi-malang) — Base operasional & workshop mandiri di Lowokwaru, Kota Malang dengan fasilitas survei tapak gratis 100%.
+7. **Kediri:** [Jasa Konstruksi Kediri](https://binaproject.com/jasa-konstruksi-kediri) — Kontraktor rumah modern & ruko komersial di kawasan koridor Bandara Internasional Dhoho Kediri.
+8. **Mojokerto:** [Jasa Konstruksi Mojokerto](https://binaproject.com/jasa-konstruksi-mojokerto) — Konstruksi rumah asri ramah lingkungan & villa sejuk pegunungan di Trawas dan Pacet.
+
+---
+
+[SECTION: CONTACT]
+
+## 8. Kontak dan Saluran Konsultasi
+- **WhatsApp Konsultasi:** https://wa.me/6281335335304
+- **Telepon:** +62 813-3533-5304
+- **Alamat:** Jl. Watumujur II No.6, Ketawanggede, Lowokwaru, Kota Malang, Jawa Timur 65145
+- **Google Business Profile:** https://share.google/bF9i03JuwxrcOQo7y
+- **Jam Kerja:** Senin - Sabtu, 08:00 - 16:00 WIB
+- **Website:** https://binaproject.com

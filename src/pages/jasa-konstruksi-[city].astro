@@ -1,0 +1,939 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import BrandMarquee from '@components/BrandMarquee.astro';
+import ContactForm from '@components/ContactForm.astro';
+import { CITY_LANDING_PAGES, type CityLandingData } from '@data/cityLandingPages';
+import { getAllProjects } from '@lib/portfolioService';
+import { siteConfig } from '@config/site';
+import { createWhatsAppUrl } from '@utils/whatsapp';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+
+import aboutImg from '@assets/images/normal/about_3.jpg';
+import consultationImg from '@assets/images/normal/consultation_img.jpg';
+import consultationThumb from '@assets/images/normal/image.png';
+
+export async function getStaticPaths() {
+  return CITY_LANDING_PAGES.map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+interface Props {
+  city: CityLandingData;
+}
+
+const { city } = Astro.props;
+
+const canonicalUrl = `${siteConfig.siteUrl}/jasa-konstruksi-${city.slug}`;
+const cleanSiteUrl = siteConfig.siteUrl.replace(/\/$/, '');
+const waUrl = createWhatsAppUrl({ customMessage: city.whatsappMessage });
+
+// Fetch real projects from portfolio service
+const allProjects = await getAllProjects();
+const sampleProjects = allProjects.filter((p) =>
+  city.sampleProjectSlugs.includes(p.slug)
+).slice(0, 3);
+// Fallback if not matching
+const displayProjects = sampleProjects.length > 0 ? sampleProjects : allProjects.slice(0, 3);
+
+// Schema.org Local Business, FAQPage, and Breadcrumbs
+const schemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["HomeAndConstructionBusiness", "GeneralContractor"],
+      "@id": `${canonicalUrl}#service`,
+      "name": `Bina Project - Jasa Konstruksi ${city.cityName}`,
+      "alternateName": `Kontraktor Bangun Rumah ${city.cityName}`,
+      "description": city.heroSubheadline,
+      "url": canonicalUrl,
+      "telephone": siteConfig.contact.phoneTel.replace('tel:', ''),
+      "priceRange": "$$",
+      "currenciesAccepted": "IDR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": siteConfig.contact.address,
+        "addressLocality": siteConfig.contact.city,
+        "addressRegion": "Jawa Timur",
+        "postalCode": siteConfig.contact.postalCode,
+        "addressCountry": "ID"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": city.geo.lat,
+        "longitude": city.geo.lng
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": city.cityName
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Jawa Timur"
+        }
+      ],
+      "parentOrganization": {
+        "@id": `${cleanSiteUrl}/#organization`
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
+      "mainEntity": city.faqs.map((f) => ({
+        "@type": "Question",
+        "name": f.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": f.answer
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Beranda",
+          "item": `${cleanSiteUrl}/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": `Jasa Konstruksi ${city.cityName}`,
+          "item": canonicalUrl
+        }
+      ]
+    }
+  ]
+};
+
+const cityKeywords = `jasa konstruksi ${city.cityName.toLowerCase()}, kontraktor bangun rumah ${city.cityName.toLowerCase()}, kontraktor rumah ${city.cityName.toLowerCase()}, bangun rumah ${city.cityName.toLowerCase()}, renovasi rumah ${city.cityName.toLowerCase()}, jasa arsitek ${city.cityName.toLowerCase()}, estimasi rab rumah ${city.cityName.toLowerCase()}, biaya bangun rumah ${city.cityName.toLowerCase()}, bina project jawa timur`;
+---
+
+<BaseLayout
+  title={`${city.heroHeadline} | Bina Project`}
+  description={city.heroSubheadline}
+  keywords={cityKeywords}
+  canonicalUrl={canonicalUrl}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+
+  <!-- 1. Authentic Main Website Breadcrumb Header -->
+  <Breadcrumb
+    title={`Jasa Konstruksi ${city.cityName}`}
+    parent={{ title: 'Layanan Konstruksi', url: '/portfolio' }}
+  />
+
+  <!-- 2. Overview / About Style Section (Matching AboutSection) -->
+  <section class="overflow-hidden space" id="overview-sec">
+    <div class="container">
+      <div class="row align-items-center gy-5">
+        <div class="col-xl-6">
+          <div class="img-box3">
+            <div class="img1 position-relative">
+              <Image
+                src={aboutImg}
+                alt={`Kontraktor Jasa Konstruksi ${city.cityName} - Bina Project`}
+                loading="eager"
+                decoding="async"
+                width={600}
+                height={520}
+                format="webp"
+                quality={85}
+              />
+              <div class="city-badge-floating">
+                <span class="city-badge-num">10+</span>
+                <span class="city-badge-lbl">Tahun Pengalaman Konstruksi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="title-area mb-20 pe-xl-4">
+            <span class="sub-title style1">KONTRAKTOR TERPERCAYA DI {city.cityName.toUpperCase()}</span>
+            <h2 class="sec-title mb-20">{city.heroHeadline}</h2>
+            <div>
+              <p class="sec-text mb-30 text-start">
+                {city.heroSubheadline}
+              </p>
+            </div>
+
+            <div class="about-item-wrap mb-4">
+              <div class="about-item">
+                <div class="about-item_img">
+                  <img src="/assets/img/icon/about_1_1.svg" alt="Icon Struktur SNI" width="50" height="50" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Standar Struktur SNI & Gambar Kerja DED</h3>
+                  <p class="about-item_text">Perencanaan arsitektur 3D realistis dan perhitungan teknik sipil presisi tanpa tebak-tebakan.</p>
+                </div>
+              </div>
+
+              <div class="about-item">
+                <div class="about-item_img">
+                  <img src="/assets/img/icon/why_1_4.svg" alt="Icon Garansi Resmi" width="46" height="46" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">RAB Detail Terbuka & SPK Resmi Bergaransi</h3>
+                  <p class="about-item_text">Sistem pembayaran bertahap (termin) sesuai opname progres fisik di lapangan tanpa mark-up biaya.</p>
+                </div>
+              </div>
+
+              <div class="about-item">
+                <div class="about-item_img">
+                  <img src="/assets/img/icon/service_1_1.svg" alt="Icon Logistik Cepat" width="50" height="50" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Mobilisasi Cepat via Tol Trans-Jawa ({city.travelTime})</h3>
+                  <p class="about-item_text">Prefabrikasi komponen di Workshop Base Malang dan tim mandor tukang ahli standby di {city.cityName}.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 align-items-center">
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" class="th-btn style1 th-icon">
+                Konsultasi WhatsApp {city.cityShort}
+                <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+              </a>
+              <a href="#estimasi-biaya" class="th-btn style4 th-icon">
+                Estimasi Biaya per m²
+                <Icon name="solar:calculator-minimalistic-bold" width="16" height="16" class="ms-2" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Modern Stat Ribbon (Matching CounterSection) -->
+  <section class="counter-modern-sec">
+    <div class="container">
+      <div class="counter-modern-wrapper">
+        <div class="row g-4 text-start">
+          <div class="col-lg-3 col-sm-6">
+            <div class="stat-card">
+              <div class="stat-icon-box">
+                <Icon name="solar:routing-2-bold" width="28" height="28" />
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">
+                  <span class="counter-number">{city.travelTime.split(' ')[1] || '70'}</span>
+                  <span class="stat-plus"> Mnt</span>
+                </div>
+                <p class="stat-label">Akses Tol Cepat</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-sm-6">
+            <div class="stat-card">
+              <div class="stat-icon-box">
+                <Icon name="solar:map-point-wave-bold" width="28" height="28" />
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">
+                  <span class="counter-number">{city.districts.length}</span>
+                  <span class="stat-plus">+</span>
+                </div>
+                <p class="stat-label">Kawasan Layanan {city.cityShort}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-sm-6">
+            <div class="stat-card">
+              <div class="stat-icon-box">
+                <Icon name="solar:buildings-bold" width="28" height="28" />
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">
+                  <span class="counter-number">162</span>
+                  <span class="stat-plus">+</span>
+                </div>
+                <p class="stat-label">Proyek Jawa Timur Selesai</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-sm-6">
+            <div class="stat-card">
+              <div class="stat-icon-box">
+                <Icon name="solar:shield-check-bold" width="28" height="28" />
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">
+                  <span class="counter-number">100</span>
+                  <span class="stat-plus">%</span>
+                </div>
+                <p class="stat-label">SPK Resmi & Bergaransi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Local Architectural Context & Engineering Solutions (Matching Why/Service Box) -->
+  <section class="space bg-light overflow-hidden">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center mb-50">
+          <span class="sub-title style1">Analisa & Rekayasa Lapangan</span>
+          <h2 class="sec-title">Membangun di {city.cityName} dengan Pendekatan yang Tepat</h2>
+          <p class="sec-text">
+            Kondisi tanah, intensitas paparan cuaca, dan elevasi jalan di {city.cityName} menuntut spesifikasi pondasi dan perlindungan bangunan yang dirancang cermat.
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4 align-items-stretch">
+        <div class="col-lg-6">
+          <div class="city-harmonized-card h-100">
+            <div class="city-card-header-icon bg-rose-50 text-rose-600">
+              <Icon name="solar:danger-triangle-bold" width="32" height="32" />
+            </div>
+            <span class="city-card-sub text-rose-600">Tantangan Geografis & Lingkungan</span>
+            <h3 class="box-title mb-3">{city.localChallengeTitle}</h3>
+            <p class="sec-text text-start mb-0">{city.localChallengeDesc}</p>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="city-harmonized-card h-100">
+            <div class="city-card-header-icon bg-blue-50 text-[#22416D]">
+              <Icon name="solar:check-circle-bold" width="32" height="32" />
+            </div>
+            <span class="city-card-sub text-[#22416D]">Solusi Rekayasa Bina Project</span>
+            <h3 class="box-title mb-3">{city.localSolutionTitle}</h3>
+            <p class="sec-text text-start mb-0">{city.localSolutionDesc}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Target Districts & Neighborhoods in City -->
+  <section class="space overflow-hidden">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-5">
+          <div class="title-area mb-30 text-start">
+            <span class="sub-title style1">Area Layanan Terjadwal</span>
+            <h2 class="sec-title">Jangkauan Kawasan di {city.cityName}</h2>
+            <p class="sec-text">
+              Tim arsitek estimator dan armada material kami melayani pembangunan rumah tinggal baru, villa, maupun renovasi di berbagai kecamatan dan kawasan perumahan populer di {city.cityName}:
+            </p>
+          </div>
+
+          <div class="city-info-box p-3 rounded-3 bg-light border">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <Icon name="solar:routing-2-bold" width="18" height="18" class="text-theme" />
+              <strong class="text-xs text-slate-900">Rute Akses Mobilisasi:</strong>
+            </div>
+            <p class="text-xs text-slate-600 mb-0">{city.tollRoute}</p>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="city-districts-container p-4 p-md-5 rounded-3 bg-light border">
+            <div class="row g-2.5">
+              {city.districts.map((d) => (
+                <div class="col-sm-6">
+                  <div class="city-district-item">
+                    <span class="city-district-pin">📍</span>
+                    <span class="city-district-name">{d}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="mt-4 pt-3 border-top text-center text-sm-start">
+              <span class="text-xs text-slate-500">
+                Lahan Anda di luar daftar di atas? Kami tetap melayani seluruh wilayah {city.cityName}. <a href={waUrl} target="_blank" rel="noopener noreferrer" class="text-theme font-weight-bold">Tanyakan jadwal survei tapak →</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Transparent Price Simulation per m² (Matching Website Cards) -->
+  <section class="space bg-light overflow-hidden" id="estimasi-biaya">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center mb-50">
+          <span class="sub-title style1">Transparansi Anggaran</span>
+          <h2 class="sec-title">Estimasi Biaya Bangun Rumah di {city.cityName}</h2>
+          <p class="sec-text">
+            Simulasi acuan biaya per meter persegi (m²) dengan spesifikasi material SNI pilihan. Perhitungan final disusun secara terperinci dalam dokumen Rencana Anggaran Biaya (RAB) transparan.
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4 align-items-stretch">
+        {city.priceTiers.map((tier) => {
+          const tierWa = createWhatsAppUrl({
+            customMessage: `Halo Bina Project, saya ingin konsultasi paket bangun rumah "${tier.name}" di ${city.cityName}...`,
+          });
+          return (
+            <div class="col-lg-4">
+              <div class={`city-price-box h-100 ${tier.popular ? 'city-price-box-popular' : ''}`}>
+                {tier.popular && (
+                  <div class="city-price-ribbon">
+                    <span>Paling Diminati</span>
+                  </div>
+                )}
+                <div class="city-price-header">
+                  <h3 class="box-title mb-1">{tier.name}</h3>
+                  <p class="city-price-desc">{tier.description}</p>
+                  <div class="city-price-amount">
+                    <span class="price-val">{tier.priceRange}</span>
+                    <span class="price-unit">{tier.targetUnit}</span>
+                  </div>
+                </div>
+
+                <div class="city-price-specs">
+                  <span class="specs-title">Spesifikasi Material:</span>
+                  <ul class="specs-list p-0 m-0">
+                    {tier.specs.map((spec) => (
+                      <li>
+                        <span class="specs-check">✓</span>
+                        <span>{spec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="city-price-action">
+                  <a
+                    href={tierWa}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={tier.popular ? 'th-btn style1 w-100' : 'th-btn style4 w-100'}
+                  >
+                    Konsultasi Paket Ini
+                    <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-xs text-muted mb-0">
+          * Catatan: Harga di atas merupakan simulasi acuan standar. Luas lahan, kontur kemiringan, dan pilihan custom interior akan dihitung transparan dalam RAB detail resmi.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 4-Stage Methodology (Matching ProcessSection) -->
+  <section class="space overflow-hidden">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center mb-50">
+          <span class="sub-title style1">Metodologi & Standar Kerja</span>
+          <h2 class="sec-title">4 Tahap Pembangunan Rumah Bergaransi</h2>
+          <p class="sec-text">
+            Setiap proyek dikelola dengan alur terukur dari survei awal hingga serah terima kunci, didukung laporan berkala kepada pemilik rumah.
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-3 col-sm-6">
+          <div class="city-step-box h-100">
+            <span class="step-badge">Fase 01</span>
+            <h3 class="box-title mt-2 mb-2">Survei & Analisa Tapak</h3>
+            <p class="sec-text text-start text-xs mb-0">
+              Tim estimator dan arsitek melakukan survei tapak langsung ke lahan Anda di {city.cityName} untuk pengukuran fisik, peil elevasi, dan orientasi cahaya.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+          <div class="city-step-box h-100">
+            <span class="step-badge">Fase 02</span>
+            <h3 class="box-title mt-2 mb-2">Desain 3D & RAB Detail</h3>
+            <p class="sec-text text-start text-xs mb-0">
+              Penyusunan denah fungsional, visualisasi 3D realistis eksterior-interior, serta Rencana Anggaran Biaya (RAB) terbuka tanpa biaya siluman.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+          <div class="city-step-box h-100">
+            <span class="step-badge">Fase 03</span>
+            <h3 class="box-title mt-2 mb-2">SPK & Konstruksi Termin</h3>
+            <p class="sec-text text-start text-xs mb-0">
+              Penandatanganan kontrak SPK legal. Pembangunan dikerjakan dengan sistem pembayaran bertahap (termin) sesuai verifikasi progres fisik di lapangan.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+          <div class="city-step-box h-100">
+            <span class="step-badge">Fase 04</span>
+            <h3 class="box-title mt-2 mb-2">Serah Terima & Garansi</h3>
+            <p class="sec-text text-start text-xs mb-0">
+              Pengecekan checklist bersama, serah terima kunci, serta penyerahan Sertifikat Jaminan Garansi resmi struktur dan kebocoran.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Real Relevant Projects (Matching Portfolio Grid) -->
+  {displayProjects.length > 0 && (
+    <section class="space bg-light overflow-hidden">
+      <div class="container">
+        <div class="row justify-content-between align-items-end mb-40">
+          <div class="col-lg-8">
+            <div class="title-area mb-0 text-start">
+              <span class="sub-title style1">Karya Terealisasi</span>
+              <h2 class="sec-title">Portofolio Konstruksi di Jawa Timur</h2>
+            </div>
+          </div>
+          <div class="col-lg-auto mt-3 mt-lg-0">
+            <a href="/portfolio" class="th-btn style4 th-icon">
+              Lihat Semua Portofolio
+              <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+            </a>
+          </div>
+        </div>
+
+        <div class="row gallery-row gy-4 gx-4">
+          {displayProjects.map((project) => (
+            <ProjectCard project={project} colClass="col-12 col-md-6 col-lg-4" />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 9. Brand Marquee (Suppliers & Official Partners) -->
+  <BrandMarquee />
+
+  <!-- 10. Consultation Callout Section (Matching ConsultationCtaSection) -->
+  <section class="consultation-sec bg-title position-relative overflow-hidden" data-bg-src="/assets/img/bg/shape_bg_2.png">
+    <div class="consultation-thumb">
+      <div class="shape_1"></div>
+      <div class="shape_2"></div>
+      <Image
+        src={consultationImg}
+        alt={`Konsultasi Bangun Rumah ${city.cityName}`}
+        loading="lazy"
+        decoding="async"
+        width={580}
+        height={620}
+        format="webp"
+        quality={85}
+      />
+    </div>
+    <div class="container">
+      <div class="row align-items-end flex-md-row-reverse">
+        <div class="col-md-8">
+          <div class="consultation-title-area">
+            <div class="title-area mb-30 text-start">
+              <span class="sub-title style1 mb-20 text-white">Get Consultation</span>
+              <h2 class="sec-title text-white">
+                Konsultasi Proyek di {city.cityName} <br class="d-none d-md-block" />Hubungi Kami Sekarang <span class="text-white">!</span>
+              </h2>
+              <p class="text-white-50 text-sm mt-2 mb-0">
+                Diskusikan rencana denah, estimasi anggaran, dan jadwal survei tapak langsung bersama arsitek kami tanpa komitmen awal.
+              </p>
+            </div>
+            <div>
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" class="th-btn style1 th-icon">
+                Hubungi via WhatsApp
+                <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="consultation-image movingX">
+            <Image
+              src={consultationThumb}
+              alt="Konsultasi Bina Project"
+              loading="lazy"
+              decoding="async"
+              width={362}
+              height={527}
+              format="webp"
+              quality={85}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. FAQ Section (Matching FaqSection) -->
+  <section class="space-top space-extra-bottom overflow-hidden bg-light" id="faq-sec">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center mb-40">
+          <span class="sub-title style1">
+            <Icon name="solar:question-circle-linear" width="16" height="16" class="text-theme me-2" />
+            FAQ & Bantuan
+          </span>
+          <h2 class="sec-title">Pertanyaan Seputar Konstruksi di {city.cityName}</h2>
+          <p class="sec-text">Informasi penting mengenai survei lahan, sistem pembayaran termin, dan garansi pemeliharaan proyek Anda.</p>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="faq-accordion-wrap">
+            {city.faqs.map((faq, index) => (
+              <details class="faq-accordion-item mb-3" open={index === 0}>
+                <summary class="faq-accordion-header">
+                  <span class="faq-question-text">{faq.question}</span>
+                  <Icon name="solar:alt-arrow-down-linear" width="16" height="16" class="faq-chevron" />
+                </summary>
+                <div class="faq-accordion-body">
+                  <p class="mb-0">{faq.answer}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Contact Form Section (Matching ContactSection) -->
+  <section class="space overflow-hidden" id="contact-sec">
+    <div class="container">
+      <div class="row gy-5">
+        <div class="col-lg-6">
+          <div>
+            <div class="title-area mb-30 text-start">
+              <span class="sub-title style1">Hubungi Kami</span>
+              <h2 class="sec-title">Punya Proyek di {city.cityName}? Mari Bicara Sekarang!</h2>
+              <p class="sec-text">
+                Kirimkan rincian kebutuhan Anda atau hubungi kami langsung via WhatsApp untuk respon cepat.
+              </p>
+            </div>
+            <ContactForm />
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="contact-image h-100 d-flex flex-column justify-content-center p-4 p-md-5 rounded-3 bg-light border">
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="city-contact-icon-circle">
+                <Icon name="solar:map-point-wave-bold" width="32" height="32" class="text-theme" />
+              </div>
+              <div>
+                <span class="d-block text-xs text-muted font-bold text-uppercase">Base Kantor & Workshop</span>
+                <span class="text-sm font-bold text-dark">{siteConfig.contact.address}</span>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="city-contact-icon-circle">
+                <Icon name="simple-icons:whatsapp" width="28" height="28" class="text-emerald-600" />
+              </div>
+              <div>
+                <span class="d-block text-xs text-muted font-bold text-uppercase">Konsultasi WhatsApp</span>
+                <span class="text-sm font-bold text-dark">{siteConfig.contact.phoneDisplay}</span>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="city-contact-icon-circle">
+                <Icon name="solar:clock-circle-bold" width="30" height="30" class="text-theme" />
+              </div>
+              <div>
+                <span class="d-block text-xs text-muted font-bold text-uppercase">Jam Operasional</span>
+                <span class="text-sm font-bold text-dark">{siteConfig.contact.openingHours}</span>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-3 border-top">
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="th-btn style1 w-100 d-flex align-items-center justify-content-center"
+              >
+                Chat WhatsApp ({city.cityShort})
+                <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Floating badge on About Image */
+  .city-badge-floating {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF;
+    padding: 16px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(34, 65, 109, 0.35);
+    text-align: center;
+    z-index: 2;
+  }
+  .city-badge-num {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .city-badge-lbl {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 4px;
+  }
+
+  /* Harmonized Analysis Cards */
+  .city-harmonized-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 36px 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .city-harmonized-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(13, 59, 102, 0.08);
+  }
+  .city-card-header-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+  .city-card-sub {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* District Items */
+  .city-district-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bina-slate-800, #1E293B);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .city-district-item:hover {
+    border-color: var(--theme-color, #22416D);
+    transform: translateX(3px);
+  }
+  .city-district-pin {
+    font-size: 14px;
+  }
+
+  /* Pricing Cards Harmonization */
+  .city-price-box {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 36px 28px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .city-price-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(13, 59, 102, 0.1);
+  }
+  .city-price-box-popular {
+    border: 2px solid var(--theme-color, #22416D) !important;
+    box-shadow: 0 8px 30px rgba(34, 65, 109, 0.12);
+  }
+  .city-price-ribbon {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 16px;
+    border-radius: 9999px;
+  }
+  .city-price-desc {
+    font-size: 12px;
+    color: #64748B;
+    margin-bottom: 16px;
+    min-height: 36px;
+  }
+  .city-price-amount {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #F1F5F9;
+  }
+  .price-val {
+    display: block;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--theme-color, #22416D);
+    letter-spacing: -0.5px;
+  }
+  .price-unit {
+    display: block;
+    font-size: 12px;
+    color: #94A3B8;
+    margin-top: 2px;
+  }
+  .specs-title {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1E293B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .specs-list {
+    list-style: none;
+    space-y: 10px;
+    margin-bottom: 28px;
+  }
+  .specs-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: #475569;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .specs-check {
+    color: #10B981;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .city-price-action {
+    margin-top: auto;
+  }
+
+  /* Step Boxes */
+  .city-step-box {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .city-step-box:hover {
+    transform: translateY(-4px);
+    border-color: var(--theme-color, #22416D);
+  }
+  .step-badge {
+    display: inline-block;
+    background: rgba(34, 65, 109, 0.08);
+    color: var(--theme-color, #22416D);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Contact Icon Circle */
+  .city-contact-icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* FAQ Accordion Item Harmonization */
+  .faq-accordion-item {
+    background: #FFFFFF;
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    transition: box-shadow 0.3s ease;
+  }
+  .faq-accordion-item[open] {
+    box-shadow: 0 8px 24px rgba(13, 59, 102, 0.08);
+  }
+  .faq-accordion-header {
+    padding: 20px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--bina-slate-900, #17202A);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+    user-select: none;
+  }
+  .faq-accordion-header::-webkit-details-marker {
+    display: none;
+  }
+  .faq-chevron {
+    font-size: 14px;
+    color: var(--theme-color, #22416D);
+    transition: transform 0.3s ease;
+  }
+  .faq-accordion-item[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+  .faq-accordion-body {
+    padding: 0 24px 24px 24px;
+    color: var(--bina-slate-600, #475569);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+</style>

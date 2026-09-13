@@ -1,0 +1,138 @@
+---
+// TextTickerRibbon.astro - Modern Architectural Infinite Typography Marquee
+interface Props {
+  variant?: 'dark' | 'light';
+  speed?: number;
+}
+
+const { variant = 'dark', speed = 25 } = Astro.props;
+
+const tickerItems = [
+  'ARCHITECTURAL DESIGN',
+  'GENERAL CONTRACTOR',
+  'BESPOKE INTERIOR',
+  'STRUCTURAL ENGINEERING',
+  'RESIDENTIAL & COMMERCIAL',
+  'PRECISION 3D RENDERING',
+  'QUALITY GUARANTEE',
+  'LEGAL CONTRACT PROTECTION',
+];
+---
+
+<div class={`arch-ticker-strip ${variant === 'light' ? 'is-light' : 'is-dark'}`} aria-hidden="true">
+  <div class="ticker-track" style={`animation-duration: ${speed}s;`}>
+    <div class="ticker-content">
+      {tickerItems.map((item) => (
+        <span class="ticker-item">
+          <span class="ticker-text">{item}</span>
+          <span class="ticker-bullet">✦</span>
+        </span>
+      ))}
+    </div>
+    <div class="ticker-content" aria-hidden="true">
+      {tickerItems.map((item) => (
+        <span class="ticker-item">
+          <span class="ticker-text">{item}</span>
+          <span class="ticker-bullet">✦</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .arch-ticker-strip {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+    padding: 18px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 10;
+  }
+
+  .arch-ticker-strip.is-dark {
+    background-color: var(--bina-navy-dark, #0D192B);
+    color: #FFFFFF;
+  }
+
+  .arch-ticker-strip.is-light {
+    background-color: var(--bina-slate-50, #F8FAFC);
+    color: var(--bina-slate-900, #17202A);
+    border-top-color: var(--bina-slate-200, #E2E8F0);
+    border-bottom-color: var(--bina-slate-200, #E2E8F0);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll linear infinite;
+    will-change: transform;
+  }
+
+  .ticker-track:hover {
+    animation-play-state: paused;
+  }
+
+  .ticker-content {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-right: 32px;
+    flex-shrink: 0;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 32px;
+    white-space: nowrap;
+  }
+
+  .ticker-text {
+    font-family: var(--title-font, 'Archivo', sans-serif);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.88;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .arch-ticker-strip.is-dark .ticker-text:hover {
+    opacity: 1;
+    color: var(--bina-blue-ice, #84ACDF);
+  }
+
+  .arch-ticker-strip.is-light .ticker-text:hover {
+    opacity: 1;
+    color: var(--bina-navy, #22416D);
+  }
+
+  .ticker-bullet {
+    font-size: 10px;
+    color: var(--bina-blue-ice, #84ACDF);
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .arch-ticker-strip.is-light .ticker-bullet {
+    color: var(--bina-navy, #22416D);
+  }
+
+  @keyframes marqueeScroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+    }
+  }
+</style>

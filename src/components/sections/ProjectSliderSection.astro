@@ -1,0 +1,213 @@
+---
+import type { Project } from '@types';
+import ProjectCard from '@components/ProjectCard.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<section class="project-area project-sec overflow-hidden space-bottom project-sec-compact" id="portfolio">
+  <div class="container">
+    <!-- Architectural Header Row -->
+    <div class="project-header-row mb-40">
+      <SectionHeader
+        badge="Hasil Karya Terbaru"
+        badgeIcon="solar:gallery-wide-bold"
+        title="Karya & Realisasi Konstruksi"
+        description="Dokumentasi proyek konstruksi hunian, villa tropis, interior komersial, dan kitchen set yang telah kami selesaikan dengan mutu bergaransi."
+        align="left"
+        class="project-header-text mb-0"
+      />
+
+      <div class="project-header-actions d-none d-md-flex">
+        <a href="/portfolio" class="view-all-portfolio-btn">
+          <span>Lihat Semua Portofolio</span>
+          <Icon name="solar:arrow-right-linear" width="16" height="16" />
+        </a>
+        <div class="slider-nav-group">
+          <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
+            <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
+          </button>
+          <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label="Project Berikutnya">
+            <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial Swiper Carousel Container -->
+    <div class="slider-area position-relative">
+      <div
+        class="swiper th-slider project-slider-editorial"
+        id="projectSlider1"
+        data-slider-options='{"slidesPerView":1,"spaceBetween":24,"loop":true,"breakpoints":{"576":{"slidesPerView":1.15},"768":{"slidesPerView":2},"1200":{"slidesPerView":3}}}'
+      >
+        <div class="swiper-wrapper py-3">
+          {projects.map((project) => (
+            <div class="swiper-slide h-auto">
+              <ProjectCard project={project} colClass="w-100 h-100" />
+            </div>
+          ))}
+        </div>
+
+        <!-- Pagination Bullets -->
+        <div class="slider-pagination text-center mt-35"></div>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation & Action Button -->
+    <div class="project-mobile-action d-md-none mt-30 text-center">
+      <div class="slider-nav-group justify-content-center mb-20">
+        <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
+          <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
+        </button>
+        <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label="Project Berikutnya">
+          <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
+        </button>
+      </div>
+      <a href="/portfolio" class="view-all-portfolio-btn w-100 justify-content-center">
+        <span>Lihat Semua Portofolio</span>
+        <Icon name="solar:arrow-right-linear" width="16" height="16" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ========================================================
+     Latest Project Section - Editorial Portfolio Theme
+     Strictly using #22416D (Bina Navy) Design System
+     ======================================================== */
+  .project-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .project-header-text {
+    max-width: 620px;
+  }
+
+  .project-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .view-all-portfolio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #EFF6FF;
+    color: #22416D !important;
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 12px 20px;
+    min-height: 48px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    border: none;
+  }
+
+  .view-all-portfolio-btn:hover {
+    background: #22416D;
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(34, 65, 109, 0.2);
+  }
+
+  .slider-nav-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .custom-nav-btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    color: #22416D;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    outline: none;
+    padding: 0;
+  }
+
+  .custom-nav-btn:hover {
+    background: #22416D;
+    border-color: #22416D;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(34, 65, 109, 0.25);
+  }
+
+  /* Swiper Slide Flex Heights */
+  :global(.project-slider-editorial .swiper-slide) {
+    height: auto;
+    display: flex;
+  }
+
+  :global(.project-slider-editorial .swiper-slide .cat1),
+  :global(.project-slider-editorial .swiper-slide .cat2),
+  :global(.project-slider-editorial .swiper-slide .cat3) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.project-slider-editorial .editorial-card) {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Pagination Bullets - Modern Pill indicator with 48px Touch Target */
+  :global(.project-slider-editorial .slider-pagination) {
+    position: relative;
+    z-index: 2;
+  }
+
+  :global(.project-slider-editorial .swiper-pagination-bullet) {
+    width: 8px;
+    height: 8px;
+    background: #94A3B8;
+    opacity: 1;
+    border-radius: 99px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin: 0 4px !important;
+    display: inline-block;
+    box-sizing: content-box !important;
+    padding: 20px 6px !important;
+    background-clip: content-box !important;
+    cursor: pointer;
+  }
+
+  :global(.project-slider-editorial .swiper-pagination-bullet-active) {
+    width: 24px;
+    background: #22416D;
+    border-radius: 99px;
+    background-clip: content-box !important;
+  }
+
+  @media (max-width: 767px) {
+    .project-header-row {
+      margin-bottom: 24px;
+    }
+  }
+</style>

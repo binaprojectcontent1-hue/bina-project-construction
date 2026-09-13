@@ -1,0 +1,317 @@
+---
+// Custom Architectural Cursor matching Bina Project Brand Theme
+---
+
+<div class="bina-cursor-container" aria-hidden="true">
+  <div class="bina-cursor-dot" id="binaCursorDot"></div>
+  <div class="bina-cursor-ring" id="binaCursorRing"></div>
+</div>
+
+<style>
+  /* Hidden by default on mobile, touchscreens, and reduced-motion */
+  .bina-cursor-container {
+    display: none;
+    pointer-events: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .bina-cursor-container {
+      display: block;
+    }
+
+    /* Inner Precision Dot */
+    .bina-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: var(--bina-navy, #22416D);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999999;
+      transform: translate3d(-100px, -100px, 0);
+      transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.25s ease,
+                  opacity 0.25s ease;
+      opacity: 0;
+      box-shadow: 0 0 4px rgba(34, 65, 109, 0.25);
+    }
+
+    /* Outer Smooth Follower Ring */
+    .bina-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 34px;
+      height: 34px;
+      border: 1.5px solid var(--bina-navy, #22416D);
+      background-color: transparent;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999998;
+      transform: translate3d(-100px, -100px, 0);
+      transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s ease,
+                  background-color 0.25s ease,
+                  box-shadow 0.25s ease,
+                  opacity 0.25s ease;
+      opacity: 0;
+    }
+
+    /* Hovering Interactive Elements State */
+    .bina-cursor-ring.is-hovering {
+      width: 52px;
+      height: 52px;
+      border-color: var(--bina-blue-ice, #84ACDF);
+      background-color: rgba(34, 65, 109, 0.07);
+      box-shadow: 0 0 20px rgba(132, 172, 223, 0.3);
+    }
+
+    .bina-cursor-dot.is-hovering {
+      width: 4px;
+      height: 4px;
+      background-color: var(--bina-blue-accent, #345F99);
+    }
+
+    /* Active / Click Down State */
+    .bina-cursor-ring.is-active {
+      width: 24px;
+      height: 24px;
+      border-color: var(--bina-navy, #22416D);
+      background-color: rgba(34, 65, 109, 0.18);
+    }
+
+    .bina-cursor-dot.is-active {
+      width: 6px;
+      height: 6px;
+    }
+
+    /* Dark Background Contrast Adaptation */
+    .bina-cursor-ring.is-on-dark {
+      border-color: var(--bina-blue-ice, #84ACDF);
+      box-shadow: 0 0 16px rgba(132, 172, 223, 0.4);
+    }
+
+    .bina-cursor-ring.is-on-dark.is-hovering {
+      background-color: rgba(132, 172, 223, 0.15);
+      border-color: #FFFFFF;
+    }
+
+    .bina-cursor-dot.is-on-dark {
+      background-color: #FFFFFF;
+      box-shadow: 0 0 8px rgba(132, 172, 223, 0.8);
+    }
+
+    /* Text Input State */
+    .bina-cursor-ring.is-text {
+      width: 4px;
+      height: 24px;
+      border-radius: 2px;
+      border: none;
+      background-color: var(--bina-navy, #22416D);
+    }
+
+    .bina-cursor-dot.is-text {
+      opacity: 0 !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bina-cursor-container {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initBinaCustomCursor() {
+    // Only enable on desktop pointer devices
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      return;
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const rawDot = document.getElementById('binaCursorDot');
+    const rawRing = document.getElementById('binaCursorRing');
+    if (!rawDot || !rawRing) return;
+
+    const dotEl: HTMLElement = rawDot;
+    const ringEl: HTMLElement = rawRing;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let isVisible = false;
+    let isHovering = false;
+    let isOnDark = false;
+    let isText = false;
+    let rafId: number | null = null;
+
+    // Linear interpolation for smooth trailing
+    const LERP_FACTOR = 0.18;
+
+    function render() {
+      // Smoothly interpolate ring position towards mouse
+      ringX += (mouseX - ringX) * LERP_FACTOR;
+      ringY += (mouseY - ringY) * LERP_FACTOR;
+
+      // Center the dot (8px default)
+      dotEl.style.transform = `translate3d(${mouseX - 4}px, ${mouseY - 4}px, 0)`;
+
+      // Center the ring based on current diameter
+      const ringRect = ringEl.getBoundingClientRect();
+      const halfWidth = ringRect.width / 2 || 17;
+      const halfHeight = ringRect.height / 2 || 17;
+      ringEl.style.transform = `translate3d(${ringX - halfWidth}px, ${ringY - halfHeight}px, 0)`;
+
+      rafId = requestAnimationFrame(render);
+    }
+
+    // Interactive target detection
+    const INTERACTIVE_SELECTORS = [
+      'a',
+      'button',
+      '[role="button"]',
+      '.th-btn',
+      '.city-pill-btn',
+      '.tool-btn',
+      '.action-icon-btn',
+      '.social-circle',
+      '.drawer-social-btn',
+      '.footer-social-circle',
+      '.nav-pill-item',
+      '.clean-city-tab',
+      '.custom-leaflet-pin-wrapper',
+      '.popup-wa-cta',
+      '.coverage-simple-wa-btn',
+      '.leaflet-control-zoom a',
+      '.swiper-button-next',
+      '.swiper-button-prev',
+      '.sideMenuToggler',
+      '.th-menu-toggle',
+      '.modern-close-btn',
+      'summary',
+      '.faq-btn'
+    ].join(',');
+
+    const TEXT_SELECTORS = 'input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]), textarea';
+
+    const DARK_SELECTORS = [
+      '.cta-area2',
+      '.modern-footer',
+      '[data-overlay="title"]',
+      '[data-overlay="dark"]',
+      '.coverage-portal-cta-banner'
+    ].join(',');
+
+    function onMouseMove(e: MouseEvent) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!isVisible) {
+        isVisible = true;
+        dotEl.style.opacity = '1';
+        ringEl.style.opacity = '1';
+        ringX = mouseX;
+        ringY = mouseY;
+      }
+
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        // Check interactive hover
+        const interactiveEl = target.closest(INTERACTIVE_SELECTORS);
+        if (interactiveEl && !isHovering) {
+          isHovering = true;
+          ringEl.classList.add('is-hovering');
+          dotEl.classList.add('is-hovering');
+        } else if (!interactiveEl && isHovering) {
+          isHovering = false;
+          ringEl.classList.remove('is-hovering');
+          dotEl.classList.remove('is-hovering');
+        }
+
+        // Check text input hover
+        const textEl = target.closest(TEXT_SELECTORS);
+        if (textEl && !isText) {
+          isText = true;
+          ringEl.classList.add('is-text');
+          dotEl.classList.add('is-text');
+        } else if (!textEl && isText) {
+          isText = false;
+          ringEl.classList.remove('is-text');
+          dotEl.classList.remove('is-text');
+        }
+
+        // Check dark background hover
+        const darkEl = target.closest(DARK_SELECTORS);
+        if (darkEl && !isOnDark) {
+          isOnDark = true;
+          ringEl.classList.add('is-on-dark');
+          dotEl.classList.add('is-on-dark');
+        } else if (!darkEl && isOnDark) {
+          isOnDark = false;
+          ringEl.classList.remove('is-on-dark');
+          dotEl.classList.remove('is-on-dark');
+        }
+      }
+    }
+
+    function onMouseDown() {
+      ringEl.classList.add('is-active');
+      dotEl.classList.add('is-active');
+    }
+
+    function onMouseUp() {
+      ringEl.classList.remove('is-active');
+      dotEl.classList.remove('is-active');
+    }
+
+    function onMouseLeave() {
+      isVisible = false;
+      dotEl.style.opacity = '0';
+      ringEl.style.opacity = '0';
+    }
+
+    function onMouseEnter() {
+      isVisible = true;
+      dotEl.style.opacity = '1';
+      ringEl.style.opacity = '1';
+    }
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mousedown', onMouseDown, { passive: true });
+    window.addEventListener('mouseup', onMouseUp, { passive: true });
+    document.documentElement.addEventListener('mouseleave', onMouseLeave);
+    document.documentElement.addEventListener('mouseenter', onMouseEnter);
+
+    rafId = requestAnimationFrame(render);
+
+    // Cleanup on page swap (Astro View Transitions / SPA)
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mousedown', onMouseDown);
+        window.removeEventListener('mouseup', onMouseUp);
+        document.documentElement.removeEventListener('mouseleave', onMouseLeave);
+        document.documentElement.removeEventListener('mouseenter', onMouseEnter);
+      },
+      { once: true }
+    );
+  }
+
+  // Initialize on load and on Astro navigation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBinaCustomCursor);
+  } else {
+    initBinaCustomCursor();
+  }
+  document.addEventListener('astro:page-load', initBinaCustomCursor);
+</script>

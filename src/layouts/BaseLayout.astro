@@ -1,0 +1,374 @@
+---
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import MobileMenu from '@components/MobileMenu.astro';
+import SideMenu from '@components/SideMenu.astro';
+import Preloader from '@components/Preloader.astro';
+import ScrollToTop from '@components/ScrollToTop.astro';
+import SmoothScroll from '@components/SmoothScroll.astro';
+import CustomCursor from '@components/CustomCursor.astro';
+import { siteConfig } from '@config/site';
+import { MASTER_SERVICES } from '@data/services';
+import '@styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  type?: string;
+  noindex?: boolean;
+  preloadImage?: string;
+}
+
+const siteUrl = Astro.site ? Astro.site.href : siteConfig.siteUrl;
+const cleanSiteUrl = siteUrl.replace(/\/$/, '');
+
+const {
+  title = `${siteConfig.legalName} - ${siteConfig.tagline}`,
+  description = siteConfig.description,
+  keywords = 'jasa konstruksi malang, desain interior malang, kontraktor rumah batu, kitchen set kediri, bina project construction, arsitek malang',
+  ogImage = '/assets/img/normal/about_1.jpg',
+  canonicalUrl = new URL(Astro.url.pathname, siteUrl).href,
+  type = 'website',
+  noindex = false,
+  preloadImage,
+} = Astro.props;
+
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${cleanSiteUrl}/${ogImage.replace(/^\//, '')}`;
+
+// GEO: Service -> portfolio workExample mapping (bukti pengerjaan per layanan)
+const servicePortfolioExamples: Record<string, string[]> = {
+  konstruksi: ['villa', 'sdi-nur-multazam', 'rosana'],
+  interior: ['interior-mr-samian', 'cafe-batu', 'kitchen-set-dr-irfan'],
+  renovasi: ['amd-academy', 'rosana-collection'],
+  waterproofing: [],
+  'arsitektur-rab': ['villa'],
+  developer: ['rosana'],
+};
+
+// Schema.org Comprehensive Connected Knowledge Graph (@graph)
+const connectedSchemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${cleanSiteUrl}/#website`,
+      "url": `${cleanSiteUrl}/`,
+      "name": siteConfig.name,
+      "description": siteConfig.description,
+      "inLanguage": "id-ID",
+      "publisher": {
+        "@id": `${cleanSiteUrl}/#organization`
+      }
+    },
+    {
+      "@type": ["HomeAndConstructionBusiness", "GeneralContractor", "Organization"],
+      "@id": `${cleanSiteUrl}/#organization`,
+      "name": siteConfig.legalName,
+      "alternateName": siteConfig.name,
+      "url": `${cleanSiteUrl}/`,
+      "logo": {
+        "@type": "ImageObject",
+        "@id": `${cleanSiteUrl}/#logo`,
+        "url": `${cleanSiteUrl}/assets/img/logo.svg`,
+        "caption": siteConfig.legalName
+      },
+      "image": resolvedOgImage,
+      "description": siteConfig.description,
+      "telephone": siteConfig.contact.phoneTel.replace('tel:', ''),
+      "email": siteConfig.contact.email,
+      "priceRange": "$$",
+      "currenciesAccepted": "IDR",
+      "paymentAccepted": "Cash, Bank Transfer, Termin",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": siteConfig.contact.address,
+        "addressLocality": siteConfig.contact.city,
+        "addressRegion": siteConfig.contact.province,
+        "postalCode": siteConfig.contact.postalCode,
+        "addressCountry": "ID"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -7.9498068,
+        "longitude": 112.6088423
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "08:00",
+          "closes": "16:00"
+        }
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": siteConfig.contact.phoneTel.replace('tel:', ''),
+          "contactType": "customer service",
+          "areaServed": "ID",
+          "availableLanguage": ["Indonesian", "Javanese"]
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "162"
+      },
+      "slogan": siteConfig.tagline,
+      "hasMap": siteConfig.contact.googleMapsUrl,
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Kota Malang, Jawa Timur"
+      },
+      "knowsAbout": [
+        "Jasa Konstruksi Bangunan",
+        "Bangun Rumah Baru SNI",
+        "Desain Interior Minimalis",
+        "Custom Kitchen Set HPL Malang",
+        "Waterproofing Dak Beton & Talang",
+        "Renovasi Rumah & Bangunan Komersial",
+        "Rencana Anggaran Biaya (RAB) Transparan",
+        "Detail Engineering Design (DED)",
+        "Arsitektur Tropis Modern"
+      ],
+      "sameAs": [
+        ...siteConfig.socials.map((s) => s.url),
+        siteConfig.contact.googleMapsUrl
+      ],
+      "areaServed": [
+        { "@type": "City", "name": "Kota Malang", "sameAs": "https://id.wikipedia.org/wiki/Kota_Malang" },
+        { "@type": "City", "name": "Kota Batu", "sameAs": "https://id.wikipedia.org/wiki/Kota_Batu" },
+        { "@type": "AdministrativeArea", "name": "Kabupaten Malang", "sameAs": "https://id.wikipedia.org/wiki/Kabupaten_Malang" },
+        { "@type": "City", "name": "Pasuruan", "sameAs": "https://id.wikipedia.org/wiki/Kota_Pasuruan" },
+        { "@type": "City", "name": "Surabaya", "sameAs": "https://id.wikipedia.org/wiki/Kota_Surabaya" },
+        { "@type": "City", "name": "Sidoarjo", "sameAs": "https://id.wikipedia.org/wiki/Kabupaten_Sidoarjo" },
+        { "@type": "City", "name": "Kediri", "sameAs": "https://id.wikipedia.org/wiki/Kota_Kediri" },
+        { "@type": "AdministrativeArea", "name": "Jawa Timur", "sameAs": "https://id.wikipedia.org/wiki/Jawa_Timur" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Katalog Layanan Konstruksi & Desain Interior",
+        "itemListElement": MASTER_SERVICES.map((service) => ({
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": service.title,
+            "description": service.description,
+            "provider": {
+              "@id": `${cleanSiteUrl}/#organization`
+            },
+            ...((servicePortfolioExamples[service.id]?.length ?? 0) > 0
+              ? {
+                  workExample: (servicePortfolioExamples[service.id] ?? []).map((slug) => ({
+                    "@type": "CreativeWork",
+                    "@id": `${cleanSiteUrl}/portfolio/${slug}#project`,
+                    url: `${cleanSiteUrl}/portfolio/${slug}`,
+                  })),
+                }
+              : {}),
+          },
+        })),
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+      "url": canonicalUrl,
+      "name": title,
+      "description": description,
+      "isPartOf": {
+        "@id": `${cleanSiteUrl}/#website`
+      },
+      "about": {
+        "@id": `${cleanSiteUrl}/#organization`
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": resolvedOgImage
+      },
+      "inLanguage": "id-ID"
+    }
+  ]
+};
+---
+
+<!doctype html>
+<html class="no-js" lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>{title}</title>
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content="Bina Project" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <>
+        <!-- Advanced Robots Directives for Maximum Google Snippet Visibility -->
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      </>
+    )}
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Canonical & Alternate Links -->
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="id" href={canonicalUrl} />
+    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+
+    <!-- LLM and AI Agent Context Discovery (GEO Protocol) -->
+    <link rel="alternate" type="text/plain" href={`${cleanSiteUrl}/llms.txt`} title="LLM Context Protocol" />
+    <link rel="alternate" type="text/plain" href={`${cleanSiteUrl}/llms-full.txt`} title="LLM Full Reference Context" />
+    <link rel="alternate" type="application/json" href={`${cleanSiteUrl}/llms-context.json`} title="Machine-Readable Knowledge Base" />
+
+    <!-- Geo Meta Tags for Local Search Ranking (Kota Malang & Jawa Timur) -->
+    <meta name="geo.region" content="ID-JI" />
+    <meta name="geo.placename" content="Kota Malang, Jawa Timur" />
+    <meta name="geo.position" content="-7.949807;112.608842" />
+    <meta name="ICBM" content="-7.949807, 112.608842" />
+
+    <!-- Open Graph / Facebook Meta -->
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Bina Project" />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <meta name="twitter:image:alt" content={title} />
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png" />
+    <link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png" />
+    <link rel="manifest" href="/assets/img/favicons/manifest.json" />
+    <meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml" />
+    <meta name="msapplication-TileColor" content="#22416D" />
+    <meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#22416D" />
+
+    <!-- Google Fonts (Optimized Subset & Non-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700&display=swap"
+    />
+
+    <!-- LCP Critical Image Preload (Hero / Featured Media) -->
+    {preloadImage && (
+      <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+    )}
+
+    <!-- Critical Inline Styles (Prevent FOUC & Stabilize Layout) -->
+    <style is:inline>
+      :root {
+        --theme-color: #22416D;
+        --theme-color2: #3B82F6;
+        --title-color: #17202A;
+        --body-color: #475569;
+        --body-font: 'Archivo', sans-serif;
+        --title-font: 'Titillium Web', sans-serif;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        color: var(--body-color);
+        font-family: var(--body-font);
+        overflow-x: hidden;
+      }
+      .main-navbar-sticky {
+        min-height: 68px;
+      }
+    </style>
+
+    <!-- Stylesheets (Core Grid Synchronous, Plugins Non-Blocking) -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" />
+    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+
+    <!-- Schema.org Connected Knowledge Graph JSON-LD -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(connectedSchemaGraph)} />
+
+    <!-- Google Analytics 4 (Privacy-Focused, Auto Anonymize IPs) -->
+    <!-- Add G-XXXXXXXXXX in .env production -->
+    {import.meta.env.SITE?.includes('binaproject.com') && (
+      <>
+        <!-- Google Tag Manager -->
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P'}`} />
+        <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','${import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P'}');`} />
+        <!-- End Google Tag Manager -->
+        
+        <!-- GA4 Default Configuration -->
+        <script is:inline set:html={`window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P'}', {send_page_view: true, anonymize_ip: true});`} />
+      </>
+    )}
+  </head>
+
+  <body>
+    <Preloader />
+    <SideMenu />
+    <MobileMenu />
+    <Header />
+
+    <main>
+      <slot />
+    </main>
+
+    <Footer />
+    <ScrollToTop />
+    <SmoothScroll />
+    <CustomCursor />
+
+    <!-- Scripts (Optimized Core Scripts, Deferred) -->
+    <script is:inline src="/assets/js/vendor/jquery-3.6.0.min.js" defer></script>
+    <script is:inline src="/assets/js/bootstrap.min.js" defer></script>
+    <script is:inline src="/assets/js/swiper-bundle.min.js" defer></script>
+    <script is:inline src="/assets/js/jquery.magnific-popup.min.js" defer></script>
+    <script is:inline src="/assets/js/jquery.counterup.min.js" defer></script>
+    <script is:inline src="/assets/js/imagesloaded.pkgd.min.js" defer></script>
+    <script is:inline src="/assets/js/gsap.min.js" defer></script>
+    <script is:inline src="/assets/js/ScrollTrigger.min.js" defer></script>
+    <script is:inline src="/assets/js/main.js" defer></script>
+  </body>
+</html>

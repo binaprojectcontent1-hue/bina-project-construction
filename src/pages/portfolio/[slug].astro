@@ -1,0 +1,362 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { getAllProjects, getProjectBySlug } from '@lib/portfolioService';
+import { getMediaUrl } from '@lib/cdn';
+import { Icon } from 'astro-icon/components';
+import { siteConfig } from '@config/site';
+
+// Explicitly declare prerender for clarity (optional in static mode)
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const projects = await getAllProjects();
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project: initialProject } = Astro.props;
+const { slug } = Astro.params;
+
+// Fetch project or fallback to props
+const project = initialProject || (slug ? await getProjectBySlug(slug) : undefined);
+
+if (!project) {
+  return Astro.redirect('/404');
+}
+
+const coverUrl = getMediaUrl(project.cover_image);
+
+// SEO & Image Meta
+const coverAlt = project.alt_cover_image || `Foto Utama Proyek ${project.title} - ${project.category} Bina Project`;
+const pageTitle = project.meta_title || `${project.title} - Portofolio Bina Project`;
+const pageDescription = project.meta_description || project.description;
+const canonicalSlugUrl = `${siteConfig.siteUrl}/portfolio/${project.slug}`;
+
+// Schema.org CreativeWork & LocalBusiness Project Schema
+const projectSchema = {
+  "@context": "https://schema.org",
+  "@type": ["CreativeWork", "VisualArtwork"],
+  "name": project.title,
+  "headline": pageTitle,
+  "description": pageDescription,
+  "image": coverUrl,
+  "url": canonicalSlugUrl,
+  "creator": {
+    "@type": "Organization",
+    "name": "Bina Project",
+    "url": siteConfig.siteUrl
+  },
+  "locationCreated": {
+    "@type": "Place",
+    "name": project.location
+  },
+  "dateCreated": project.project_date,
+  "datePublished": project.published_at || undefined,
+  "inLanguage": "id-ID"
+};
+// GEO: ImageGallery + ImageObject JSON-LD untuk dokumentasi visual proyek
+function inferGalleryCaption(imgSrc: string, fallback: string): string {
+  const name = (imgSrc || '').toLowerCase();
+  if (name.includes('kitchen') || name.includes('dapur')) return 'Area kitchen set custom dengan finishing rapi oleh Bina Project';
+  if (name.includes('facade') || name.includes('fasad') || name.includes('front')) return 'Fasad eksterior bangunan hasil pengerjaan Bina Project';
+  if (name.includes('living') || name.includes('ruang-tamu') || name.includes('ruangtamu')) return 'Ruang tamu dengan interior minimalis oleh Bina Project';
+  if (name.includes('bedroom') || name.includes('kamar')) return 'Kamar tidur dengan desain interior fungsional oleh Bina Project';
+  if (name.includes('bathroom') || name.includes('kamar-mandi')) return 'Kamar mandi dengan finishing waterproof oleh Bina Project';
+  return fallback;
+}
+
+const galleryImageList: string[] = Array.isArray(project.gallery_images) ? project.gallery_images : [];
+const galleryImageSchemas = galleryImageList.map((imgSrc, index) => {
+  const imgUrl = getMediaUrl(imgSrc);
+  return {
+    '@type': 'ImageObject',
+    '@id': `${canonicalSlugUrl}#image-${index + 1}`,
+    contentUrl: imgUrl,
+    caption: inferGalleryCaption(imgSrc, `Dokumentasi ${project.title} (${project.category}) - Foto ${index + 1} oleh Bina Project`),
+    creator: { '@id': `${siteConfig.siteUrl}/#organization` },
+    copyrightHolder: { '@id': `${siteConfig.siteUrl}/#organization` },
+    representativeOfPage: index === 0,
+  };
+});
+
+const imageGallerySchema =
+  galleryImageSchemas.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ImageGallery',
+        name: `Galeri Foto ${project.title}`,
+        description: `Dokumentasi visual proyek ${project.category} - ${project.title} di ${project.location} oleh Bina Project`,
+        image: galleryImageSchemas,
+      }
+    : null;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={coverUrl}
+  canonicalUrl={canonicalSlugUrl}
+  preloadImage={coverUrl}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(projectSchema)} />
+  {imageGallerySchema && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(imageGallerySchema)} />
+  )}
+
+  <Breadcrumb
+    title={project.title}
+    parent={{ title: 'Portofolio', url: '/portfolio' }}
+  />
+
+  <section class="space-top space-extra-bottom">
+    <div class="container">
+      <div class="page-single">
+        <div class="page-img mb-30">
+          <img
+            src={coverUrl}
+            alt={coverAlt}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            width="1200"
+            height="600"
+          />
+        </div>
+
+        <ul class="project-details-wrap project-details-list">
+          <li>
+            <span class="title d-block">Klien:</span>
+            <p class="text">{project.client || 'Klien Bina Project'}</p>
+          </li>
+          <li>
+            <span class="title d-block">Kategori:</span>
+            <p class="text">{project.category}</p>
+          </li>
+          <li>
+            <span class="title d-block">Tanggal Projek:</span>
+            <p class="text">{project.project_date}</p>
+          </li>
+          <li>
+            <span class="title d-block">Lokasi:</span>
+            <p class="text">{project.location}</p>
+          </li>
+        </ul>
+
+        <div class="row">
+          <div class="col-12">
+            <h2 class="sec-title mb-20">{project.title}</h2>
+            <p class="mb-30 text-start" style="font-size: 1.05rem; line-height: 1.8;">
+              {project.description}
+            </p>
+          </div>
+        </div>
+
+        <!-- Project Photo Gallery -->
+        {project.gallery_images && project.gallery_images.length > 0 && (
+          <div class="mt-50">
+            <div class="d-flex align-items-center justify-content-between mb-30 flex-wrap gap-2">
+              <div>
+                <span class="gallery-badge-subtitle">Dokumentasi Visual</span>
+                <h3 class="sec-title mb-0" style="font-size: 24px;">Galeri Hasil Pengerjaan</h3>
+              </div>
+              <span class="gallery-count-text">
+                <Icon name="solar:gallery-linear" width="16" height="16" class="me-1" />
+                {project.gallery_images.length} Foto Dokumentasi
+              </span>
+            </div>
+
+            <div class="row gy-4">
+              {project.gallery_images.map((imgSrc, index) => {
+                const imgUrl = getMediaUrl(imgSrc);
+                return (
+                  <div class="col-md-6 col-lg-4">
+                    <div class="editorial-gallery-card">
+                      <div class="gallery-thumb-container">
+                        <img
+                          src={imgUrl}
+                          alt={`Dokumentasi ${project.title} ${project.category} - Foto ${index + 1}`}
+                          loading="lazy"
+                          decoding="async"
+                          width="600"
+                          height="400"
+                        />
+                        <a
+                          href={imgUrl}
+                          class="gallery-action-overlay popup-image"
+                          aria-label={`Perbesar foto ${index + 1} - ${project.title}`}
+                          title="Klik untuk melihat resolusi penuh"
+                        >
+                          <div class="overlay-glass-inner">
+                            <span class="zoom-icon-bubble">
+                              <Icon name="solar:magnifer-linear" width="20" height="20" />
+                            </span>
+                            <span class="zoom-action-label">Perbesar Foto</span>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <!-- Navigation Buttons -->
+        <div class="mt-50 d-flex flex-column flex-sm-row justify-content-between align-items-stretch gap-3">
+          <a href="/portfolio" class="th-btn style3 th-icon text-center justify-content-center">
+            <Icon name="solar:arrow-left-linear" width="16" height="16" class="me-2" /> Kembali ke Portfolio
+          </a>
+          <a href="/contact" class="th-btn th-icon text-center justify-content-center">
+            Konsultasi Proyek Serupa <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ==========================================================================
+       Modern Architectural Gallery Cards & Smooth Hover System
+       ========================================================================== */
+    .gallery-badge-subtitle {
+      display: block;
+      color: #22416D;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .gallery-count-text {
+      display: inline-flex;
+      align-items: center;
+      color: #334155;
+      font-size: 13.5px;
+      font-weight: 600;
+      gap: 5px;
+    }
+
+    .editorial-gallery-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background-color: #F8FAFC;
+      box-shadow: 0 4px 16px rgba(34, 65, 109, 0.05);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .editorial-gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px -8px rgba(34, 65, 109, 0.22), 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .gallery-thumb-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      overflow: hidden;
+      border-radius: 16px;
+      background-color: #E2E8F0;
+    }
+
+    .gallery-thumb-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1);
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .editorial-gallery-card:hover .gallery-thumb-container img {
+      transform: scale(1.08);
+    }
+
+    /* Entire Overlay is Clickable */
+    .gallery-action-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: linear-gradient(
+        180deg,
+        rgba(13, 25, 43, 0.1) 0%,
+        rgba(13, 25, 43, 0.7) 100%
+      );
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      backdrop-filter: blur(1.5px);
+      -webkit-backdrop-filter: blur(1.5px);
+    }
+
+    .editorial-gallery-card:hover .gallery-action-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .overlay-glass-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      transform: translateY(8px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .editorial-gallery-card:hover .overlay-glass-inner {
+      transform: translateY(0);
+    }
+
+    .zoom-icon-bubble {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      color: #22416D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      transform: scale(0.85);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .editorial-gallery-card:hover .zoom-icon-bubble {
+      transform: scale(1);
+    }
+
+    .zoom-icon-bubble:hover {
+      background: #22416D !important;
+      color: #FFFFFF !important;
+      transform: scale(1.1) !important;
+    }
+
+    .zoom-action-label {
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    @media (max-width: 767px) {
+      .gallery-thumb-container {
+        aspect-ratio: 16 / 10;
+      }
+      .zoom-icon-bubble {
+        width: 42px;
+        height: 42px;
+      }
+    }
+  </style>
+</BaseLayout>

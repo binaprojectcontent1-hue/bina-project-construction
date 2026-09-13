@@ -1,0 +1,49 @@
+import React from 'react';
+
+export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => (
+    <div
+      ref={ref}
+      className={`rounded-2xl border-0 bg-white text-slate-900 shadow-sm ${className}`}
+      {...props}
+    />
+  )
+);
+Card.displayName = 'Card';
+
+export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => {
+    const hasRow = className.includes('flex-row');
+    const baseFlex = hasRow ? 'flex items-center justify-between' : 'flex flex-col space-y-1.5';
+    return <div ref={ref} className={`p-6 ${baseFlex} ${className}`} {...props} />;
+  }
+);
+CardHeader.displayName = 'CardHeader';
+
+export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className = '', ...props }, ref) => (
+    <h3 ref={ref} className={`font-semibold leading-none tracking-tight text-slate-900 ${className}`} {...props} />
+  )
+);
+CardTitle.displayName = 'CardTitle';
+
+export const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className = '', ...props }, ref) => (
+    <p ref={ref} className={`text-sm text-slate-500 leading-relaxed ${className}`} {...props} />
+  )
+);
+CardDescription.displayName = 'CardDescription';
+
+export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => (
+    <div ref={ref} className={`p-6 pt-0 ${className}`} {...props} />
+  )
+);
+CardContent.displayName = 'CardContent';
+
+export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', ...props }, ref) => (
+    <div ref={ref} className={`flex items-center p-6 pt-0 ${className}`} {...props} />
+  )
+);
+CardFooter.displayName = 'CardFooter';

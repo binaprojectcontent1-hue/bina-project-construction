@@ -1,0 +1,707 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getImage } from 'astro:assets';
+import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
+import heroBg2 from '@assets/images/hero/hero_bg_1_2.jpg';
+
+const optimizedHero1 = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
+const optimizedHero2 = await getImage({ src: heroBg2, format: 'webp', quality: 85, width: 1920 });
+
+export interface HeroSlide {
+  image: string;
+  subtitle: string;
+  title: string;
+  desc: string;
+  isH1: boolean;
+}
+
+const heroSlides: readonly HeroSlide[] = [
+  {
+    image: optimizedHero1.src,
+    subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
+    title: 'Jasa Konstruksi & <br /> Desain Interior Malang',
+    desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB, dan pengawasan profesional.',
+    isH1: true,
+  },
+  {
+    image: optimizedHero2.src,
+    subtitle: 'You Dream It, We Build It',
+    title: 'BINA PROJECT <br /> CONSTRUCTION',
+    desc: 'Penyedia jasa bangun rumah baru, renovasi gedung, kitchen set minimalis, dan developer terpercaya di Malang Raya.',
+    isH1: false,
+  },
+];
+---
+
+<section class="hero-fs-sec" id="hero">
+  <div class="swiper hero-fs-slider" id="heroFsSlider">
+    <div class="swiper-wrapper">
+      {heroSlides.map((slide) => (
+        <div class="swiper-slide hero-fs-slide">
+          <!-- Fullscreen Background Image -->
+          <div class="hero-fs-bg" style={`background-image: url('${slide.image}');`}></div>
+
+          <!-- Deep Navy Architectural Overlay for High Legibility -->
+          <div class="hero-fs-overlay"></div>
+
+          <!-- Centered Content Container -->
+          <div class="container h-100 position-relative d-flex align-items-center justify-content-center">
+            <div class="hero-fs-content hero-fs-centered">
+              <span class="hero-fs-eyebrow">{slide.subtitle}</span>
+              {slide.isH1 ? (
+                <h1 class="hero-fs-title" set:html={slide.title} />
+              ) : (
+                <h2 class="hero-fs-title" set:html={slide.title} />
+              )}
+              <p class="hero-fs-desc">{slide.desc}</p>
+
+              <!-- Centered Action Buttons -->
+              <div class="hero-fs-cta-group justify-content-center">
+                <a href="/portfolio" class="hero-fs-btn-primary">
+                  Lihat Portofolio Kami
+                </a>
+                <a href="/contact" class="hero-fs-btn-secondary">
+                  Konsultasi Gratis
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Sleek Minimalist Slider Controls -->
+    <div class="hero-fs-controls-bottom">
+      <div class="hero-fs-nav-cluster">
+        <button type="button" class="hero-fs-nav-btn prev" id="heroSlidePrev" aria-label="Slide Sebelumnya">
+          <Icon name="solar:alt-arrow-left-linear" width="13" height="13" />
+        </button>
+        <div class="hero-fs-pagination" id="heroFsPagination"></div>
+        <button type="button" class="hero-fs-nav-btn next" id="heroSlideNext" aria-label="Slide Berikutnya">
+          <Icon name="solar:alt-arrow-right-linear" width="13" height="13" />
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    let heroRetries = 0;
+    const maxRetries = 30;
+
+    function initHeroSlider() {
+      const sliderEl = document.getElementById('heroFsSlider');
+      if (!sliderEl) return;
+
+      if (typeof Swiper === 'undefined') {
+        if (heroRetries < maxRetries) {
+          heroRetries++;
+          setTimeout(initHeroSlider, 100);
+        }
+        return;
+      }
+
+      // Avoid re-initialization if swiper instance already exists
+      if (sliderEl.swiper) {
+        sliderEl.swiper.destroy(true, true);
+      }
+
+      const heroSec = sliderEl.closest('.hero-fs-sec');
+
+      new Swiper(sliderEl, {
+        effect: 'fade',
+        fadeEffect: {
+          crossFade: true,
+        },
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: true,
+        speed: 1000,
+        autoplay: {
+          delay: 6000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+        navigation: {
+          prevEl: '#heroSlidePrev',
+          nextEl: '#heroSlideNext',
+        },
+        pagination: {
+          el: '#heroFsPagination',
+          clickable: true,
+          renderBullet: function (index, className) {
+            return '<span class="' + className + '" role="button" tabindex="0" aria-label="Slide ' + (index + 1) + '"><span class="bullet-bar"></span></span>';
+          },
+        },
+        on: {
+          init: function (swiper) {
+            heroSec?.classList.add('is-initialized');
+            triggerScramble(swiper);
+          },
+          slideChangeTransitionStart: function (swiper) {
+            triggerScramble(swiper);
+          },
+        },
+      });
+
+      function triggerScramble(swiper) {
+        if (!swiper || !swiper.slides) return;
+        const activeSlide = swiper.slides[swiper.activeIndex];
+        if (!activeSlide) return;
+        const eyebrow = activeSlide.querySelector('.hero-fs-eyebrow');
+        if (eyebrow) {
+          scrambleText(eyebrow);
+        }
+      }
+
+      function scrambleText(element) {
+        if (!element) return;
+        const originalText = element.getAttribute('data-original-text') || element.textContent?.trim() || '';
+        if (!element.getAttribute('data-original-text')) {
+          element.setAttribute('data-original-text', originalText);
+        }
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789_#-+';
+        let iteration = 0;
+        clearInterval(element._scrambleInterval);
+
+        element._scrambleInterval = setInterval(() => {
+          element.textContent = originalText
+            .split('')
+            .map((char, index) => {
+              if (char === ' ') return ' ';
+              if (index < iteration) {
+                return originalText[index];
+              }
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join('');
+
+          if (iteration >= originalText.length) {
+            clearInterval(element._scrambleInterval);
+            element.textContent = originalText;
+          }
+          iteration += 1 / 1.5;
+        }, 28);
+      }
+
+      heroSec?.classList.add('is-initialized');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeroSlider);
+    } else {
+      initHeroSlider();
+    }
+
+    document.addEventListener('astro:page-load', function () {
+      heroRetries = 0;
+      initHeroSlider();
+    });
+  })();
+</script>
+
+<style is:global>
+  /* ========================================================
+     Fullscreen Hero Slider (Clean Architectural & Fade)
+     ======================================================== */
+  .hero-fs-sec {
+    position: relative !important;
+    width: 100% !important;
+    height: calc(100vh - 138px) !important;
+    min-height: 580px !important;
+    max-height: 880px !important;
+    background-color: #0D192B !important;
+    overflow: hidden !important;
+  }
+
+  .hero-fs-sec .hero-fs-slider {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+  }
+
+  .hero-fs-sec .hero-fs-slide {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    overflow: hidden !important;
+  }
+
+  .hero-fs-sec .hero-fs-bg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    transform: scale(1);
+    transition: transform 7s ease-out;
+    z-index: 0 !important;
+  }
+
+  .hero-fs-sec .swiper-slide-active .hero-fs-bg {
+    transform: scale(1.04);
+  }
+
+  .hero-fs-sec .hero-fs-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: 
+      radial-gradient(ellipse at center, rgba(10, 34, 57, 0.65) 0%, rgba(10, 34, 57, 0.88) 100%),
+      linear-gradient(180deg, rgba(10, 34, 57, 0.4) 0%, rgba(10, 34, 57, 0.85) 100%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+  }
+
+  .hero-fs-sec .hero-fs-content {
+    position: relative !important;
+    z-index: 3 !important;
+    max-width: 840px !important;
+    padding: 30px 20px 65px 20px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* ========================================================
+     Staggered Text Motion Animation on Slide Transition
+     ======================================================== */
+  .hero-fs-sec .hero-fs-eyebrow,
+  .hero-fs-sec .hero-fs-title,
+  .hero-fs-sec .hero-fs-desc,
+  .hero-fs-sec .hero-fs-cta-group,
+  .hero-fs-sec .hero-fs-trust-strip {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    will-change: opacity, transform;
+  }
+
+  /* Active Slide Cascading In */
+  .hero-fs-sec .swiper-slide-active .hero-fs-eyebrow {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.15s;
+  }
+
+  .hero-fs-sec .swiper-slide-active .hero-fs-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.30s;
+  }
+
+  .hero-fs-sec .swiper-slide-active .hero-fs-desc {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.45s;
+  }
+
+  .hero-fs-sec .swiper-slide-active .hero-fs-cta-group {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.60s;
+  }
+
+  .hero-fs-sec .swiper-slide-active .hero-fs-trust-strip {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.75s;
+  }
+
+  /* Fallback before Swiper is fully loaded / initialized */
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-eyebrow,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-title,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-desc,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-cta-group,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-trust-strip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-fs-sec .hero-fs-eyebrow {
+    display: inline-block !important;
+    font-family: 'Archivo', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 2.5px !important;
+    text-transform: uppercase !important;
+    color: #FFFFFF !important;
+    margin-bottom: 20px !important;
+    text-align: center !important;
+  }
+
+  .hero-fs-sec .hero-fs-title {
+    font-size: clamp(34px, 5.2vw, 56px) !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 22px !important;
+    text-align: center !important;
+    max-width: 800px !important;
+  }
+
+  .hero-fs-sec .hero-fs-desc {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: #CBD5E1 !important;
+    line-height: 1.75 !important;
+    margin-bottom: 36px !important;
+    max-width: 640px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
+  .hero-fs-sec .hero-fs-cta-group {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 16px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 38px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .hero-fs-sec .hero-fs-btn-primary {
+    background: #22416D !important;
+    color: #FFFFFF !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 13px 32px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease !important;
+    box-shadow: 0 4px 16px rgba(34, 65, 109, 0.4) !important;
+  }
+
+  .hero-fs-sec .hero-fs-btn-primary:hover {
+    background: #345F99 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 22px rgba(34, 65, 109, 0.5) !important;
+  }
+
+  .hero-fs-sec .hero-fs-btn-secondary {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 12px 32px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  .hero-fs-sec .hero-fs-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #FFFFFF !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .hero-fs-sec .hero-fs-trust-strip {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 18px !important;
+    flex-wrap: wrap !important;
+    padding-top: 22px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .hero-fs-sec .fs-trust-item {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+  }
+
+  .hero-fs-sec .fs-trust-val {
+    font-family: 'Archivo', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+  }
+
+  .hero-fs-sec .fs-trust-lbl {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #94A3B8 !important;
+  }
+
+  .hero-fs-sec .fs-trust-sep {
+    color: rgba(255, 255, 255, 0.25) !important;
+    font-size: 14px !important;
+    user-select: none !important;
+  }
+
+  /* ========================================================
+     Sleek Minimalist Slider Controls (Simple & Compact)
+     ======================================================== */
+  .hero-fs-sec .hero-fs-controls-bottom {
+    position: absolute !important;
+    bottom: 24px !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 10 !important;
+    display: flex !important;
+    justify-content: center !important;
+    pointer-events: none !important;
+  }
+
+  .hero-fs-sec .hero-fs-nav-cluster {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+    pointer-events: auto !important;
+    background: rgba(13, 25, 43, 0.45) !important;
+    padding: 3px 8px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .hero-fs-sec .hero-fs-nav-btn {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    max-height: none !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .hero-fs-sec .hero-fs-nav-btn:before,
+  .hero-fs-sec .hero-fs-nav-btn:after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .hero-fs-sec .hero-fs-nav-btn:hover {
+    color: #FFFFFF !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    transform: none !important;
+  }
+
+  .hero-fs-sec .hero-fs-nav-btn:active {
+    transform: scale(0.92) !important;
+  }
+
+  .hero-fs-sec .hero-fs-pagination,
+  .hero-fs-sec .swiper-pagination-bullets.swiper-pagination-horizontal {
+    position: static !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: auto !important;
+    min-width: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .hero-fs-sec .swiper-pagination-bullet {
+    background: transparent !important;
+    background-color: transparent !important;
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+    min-width: auto !important;
+    box-sizing: content-box !important;
+    margin: 0 !important;
+    padding: 5px 2px !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .hero-fs-sec .swiper-pagination-bullet:before,
+  .hero-fs-sec .swiper-pagination-bullet:after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .hero-fs-sec .bullet-bar {
+    display: block !important;
+    width: 14px !important;
+    height: 2.5px !important;
+    border-radius: 2px !important;
+    background-color: rgba(255, 255, 255, 0.35) !important;
+    transition: width 0.3s ease, background-color 0.25s ease !important;
+  }
+
+  .hero-fs-sec .swiper-pagination-bullet:hover .bullet-bar {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .hero-fs-sec .swiper-pagination-bullet.swiper-pagination-bullet-active .bullet-bar {
+    width: 24px !important;
+    background-color: #84ACDF !important;
+    box-shadow: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fs-sec .hero-fs-eyebrow,
+    .hero-fs-sec .hero-fs-title,
+    .hero-fs-sec .hero-fs-desc,
+    .hero-fs-sec .hero-fs-cta-group,
+    .hero-fs-sec .hero-fs-trust-strip,
+    .hero-fs-sec .hero-fs-bg,
+    .hero-fs-sec .hero-fs-btn-primary,
+    .hero-fs-sec .hero-fs-btn-secondary,
+    .hero-fs-sec .hero-fs-nav-btn {
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .hero-fs-sec {
+      height: calc(100vh - 80px) !important;
+      height: calc(100svh - 80px) !important;
+      min-height: 560px !important;
+      max-height: none !important;
+      padding: 0 !important;
+      padding-bottom: 0 !important;
+      background-color: #0D192B !important;
+      overflow: hidden !important;
+    }
+    .hero-fs-sec .hero-fs-slider {
+      width: 100% !important;
+      height: 100% !important;
+      position: relative !important;
+    }
+    .hero-fs-sec .swiper-wrapper {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .hero-fs-sec .hero-fs-slide {
+      width: 100% !important;
+      height: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
+    }
+    .hero-fs-sec .hero-fs-bg {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background-size: cover !important;
+      background-position: center !important;
+    }
+    .hero-fs-sec .hero-fs-overlay {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .hero-fs-sec .hero-fs-content {
+      padding: 35px 15px 65px 15px !important;
+    }
+    .hero-fs-sec .hero-fs-controls-bottom {
+      bottom: 16px !important;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .hero-fs-sec {
+      min-height: 540px !important;
+    }
+    .hero-fs-sec .hero-fs-eyebrow {
+      font-size: 12px !important;
+      letter-spacing: 1.5px !important;
+      margin-bottom: 12px !important;
+    }
+    .hero-fs-sec .hero-fs-title {
+      font-size: clamp(26px, 7vw, 34px) !important;
+      line-height: 1.25 !important;
+      margin-bottom: 14px !important;
+    }
+    .hero-fs-sec .hero-fs-desc {
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+      margin-bottom: 24px !important;
+    }
+    .hero-fs-sec .hero-fs-cta-group {
+      flex-direction: column !important;
+      width: 100% !important;
+      max-width: 320px !important;
+      gap: 10px !important;
+      margin-bottom: 0 !important;
+    }
+    .hero-fs-sec .hero-fs-btn-primary,
+    .hero-fs-sec .hero-fs-btn-secondary {
+      width: 100% !important;
+      justify-content: center !important;
+      padding: 12px 20px !important;
+      font-size: 13.5px !important;
+    }
+    .hero-fs-sec .hero-fs-content {
+      padding: 25px 15px 60px 15px !important;
+    }
+    .hero-fs-sec .hero-fs-controls-bottom {
+      bottom: 14px !important;
+    }
+  }
+</style>
+

@@ -1,0 +1,65 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import BlogCard from '@components/BlogCard.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import { getAllArticles } from '@lib/blogService';
+
+const articles = await getAllArticles();
+---
+
+<BaseLayout
+  title="Artikel & Tips Desain Interior - Bina Project"
+  description="Kumpulan artikel edukasi, tren desain arsitektur, tips menata kitchen set minimalis, dan panduan renovasi rumah dari tim ahli Bina Project."
+>
+  <Breadcrumb title="Artikel & Berita" />
+
+  <section class="space">
+    <div class="container-fluid blog-fluid-container">
+      <SectionHeader
+        badge="Blog & Inspirasi"
+        badgeIcon="solar:document-text-bold"
+        title="Tips & Tren Desain Masa Kini"
+        description="Kumpulan artikel edukasi, tren desain arsitektur modern, dan panduan konstruksi dari tim ahli Bina Project."
+        align="center"
+      />
+
+      <div class="row blog-row gy-4 gx-4">
+        {articles.map((article, index) => (
+          <BlogCard
+            article={article}
+            colClass="col-12 col-md-6 col-lg-4 blog-item"
+            loading={index < 3 ? 'eager' : 'lazy'}
+            priority={index < 3}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ==========================================================================
+       Blog Fluid Container & Match Portfolio Grid Widths
+       ========================================================================== */
+    .blog-fluid-container {
+      padding-left: clamp(24px, 6vw, 110px);
+      padding-right: clamp(24px, 6vw, 110px);
+    }
+
+    .blog-row :global(.blog-item) {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .blog-row :global(.blog-item) {
+        width: 49.9% !important;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .blog-row :global(.blog-item) {
+        width: 33.3% !important;
+      }
+    }
+  </style>
+</BaseLayout>

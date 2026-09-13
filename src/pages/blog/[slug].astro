@@ -1,0 +1,220 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { getAllArticles, getArticleBySlug } from '@lib/blogService';
+import { getMediaUrl } from '@lib/cdn';
+import { Icon } from 'astro-icon/components';
+import { siteConfig } from '@config/site';
+
+// Explicitly declare prerender for clarity (optional in static mode)
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const articles = await getAllArticles();
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article: initialArticle } = Astro.props;
+const { slug } = Astro.params;
+
+const article = initialArticle || (slug ? await getArticleBySlug(slug) : undefined);
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+
+const allArticles = await getAllArticles();
+const recentArticles = allArticles.filter((a) => a.slug !== article.slug).slice(0, 3);
+const coverUrl = getMediaUrl(article.cover_image);
+const coverAlt = article.alt_cover_image || `Cover Artikel ${article.title} - Bina Project`;
+const pageTitle = article.meta_title || `${article.title} - Blog Bina Project`;
+const pageDescription = article.meta_description || article.excerpt;
+const canonicalSlugUrl = `${siteConfig.siteUrl}/blog/${article.slug}`;
+
+// Schema.org BlogPosting & Article with Rich Snippet details
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": ["BlogPosting", "Article"],
+  "headline": pageTitle,
+  "name": article.title,
+  "description": pageDescription,
+  "image": coverUrl,
+  "url": canonicalSlugUrl,
+  "mainEntityOfPage": canonicalSlugUrl,
+  "datePublished": article.published_at || article.publish_date,
+  "dateModified": article.updated_at || article.published_at || article.publish_date,
+  "author": {
+    "@type": "Person",
+    "name": article.author || "Bina Project"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Bina Project",
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteConfig.siteUrl}/assets/img/logo.svg`
+    }
+  },
+  "inLanguage": "id-ID",
+  ...(article.focus_keyword ? { "keywords": article.focus_keyword } : {})
+};
+
+/**
+ * Build-time HTML sanitizer — strips dangerous tags/attributes from CMS content
+ * to prevent XSS attacks via Supabase-stored article HTML.
+ */
+function sanitizeHtml(html: string): string {
+  if (!html) return '';
+  return html
+    // Remove <script> tags and their content
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // Remove on* event handlers (onclick, onerror, onload, etc.)
+    .replace(/\s+on\w+\s*=\s*(["']).*?\1/gi, '')
+    .replace(/\s+on\w+\s*=\s*[^\s>]+/gi, '')
+    // Remove javascript: protocol URLs
+    .replace(/href\s*=\s*(["'])\s*javascript:.*?\1/gi, 'href="#"')
+    .replace(/src\s*=\s*(["'])\s*javascript:.*?\1/gi, 'src=""')
+    // Remove <iframe>, <object>, <embed>, <form> tags
+    .replace(/<\/?(?:iframe|object|embed|form|base|meta|link)\b[^>]*>/gi, '')
+    // Remove style attributes containing expression() or url() with javascript:
+    .replace(/style\s*=\s*(["'])[^"']*expression\s*\([^"']*\1/gi, '')
+    .replace(/style\s*=\s*(["'])[^"']*javascript:[^"']*\1/gi, '');
+}
+
+const sanitizedContent = sanitizeHtml(article.content);
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={coverUrl}
+  canonicalUrl={canonicalSlugUrl}
+  type="article"
+  preloadImage={coverUrl}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <Breadcrumb
+    title={article.title}
+    parent={{ title: 'Artikel', url: '/blog' }}
+    isH1={false}
+  />
+
+  <section class="th-blog-wrapper space-top space-extra-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-xxl-8 col-lg-8">
+          <article class="th-blog blog-single">
+            <div class="blog-img">
+              <img
+                src={coverUrl}
+                alt={coverAlt}
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                width="1000"
+                height="500"
+              />
+            </div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <a href="#"><Icon name="solar:user-linear" width="16" height="16" class="me-1" /> Oleh {article.author}</a>
+                <a href="#"><Icon name="solar:calendar-date-linear" width="16" height="16" class="me-1" /> {article.publish_date}</a>
+                <a href="#"><Icon name="solar:tag-linear" width="16" height="16" class="me-1" /> {article.category}</a>
+              </div>
+              <h1 class="blog-title" style="font-size: 2rem; line-height: 1.4; margin-bottom: 25px;">
+                {article.title}
+              </h1>
+
+              <div class="article-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--bina-slate-700, #334155);" set:html={sanitizedContent} />
+
+              <div class="share-links clearfix mt-40 pt-20 border-top">
+                <div class="row justify-content-between align-items-center">
+                  <div class="col-md-auto">
+                    <span class="share-links-title">Bagikan:</span>
+                    <div class="th-social style2">
+                      <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + ' - ' + canonicalSlugUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Share WhatsApp"><Icon name="simple-icons:whatsapp" width="16" height="16" /></a>
+                      <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalSlugUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Share Facebook"><Icon name="simple-icons:facebook" width="16" height="16" /></a>
+                      <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(canonicalSlugUrl)}&text=${encodeURIComponent(article.title)}`} target="_blank" rel="noopener noreferrer" aria-label="Share Twitter"><Icon name="simple-icons:x" width="16" height="16" /></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="col-xxl-4 col-lg-4">
+          <aside class="sidebar-area">
+            <div class="widget">
+              <h3 class="widget_title">Artikel Terbaru</h3>
+              <div class="recent-post-wrap">
+                {recentArticles.map((recent) => (
+                  <div class="recent-post">
+                    <div class="media-img">
+                      <a href={`/blog/${recent.slug}`}>
+                        <img
+                          src={getMediaUrl(recent.cover_image)}
+                          alt={recent.title}
+                          loading="lazy"
+                          decoding="async"
+                          width="100"
+                          height="80"
+                        />
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <h4 class="post-title">
+                        <a class="text-inherit" href={`/blog/${recent.slug}`}>{recent.title}</a>
+                      </h4>
+                      <div class="recent-post-meta">
+                        <a href={`/blog/${recent.slug}`}><Icon name="solar:calendar-date-linear" width="14" height="14" class="me-1" /> {recent.publish_date}</a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="widget widget_banner" data-bg-src="/assets/img/bg/cta_bg_1.jpg">
+              <div class="widget-banner">
+                <h4 class="title text-white">Konsultasi Rencana Bangunan Anda Sekarang</h4>
+                <a href="/contact" class="th-btn style1 mt-20">Hubungi Kami</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .share-links .th-social {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .share-links .th-social a {
+      width: 44px !important;
+      height: 44px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 12px !important;
+      background-color: #F1F5F9 !important;
+      color: #22416D !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .share-links .th-social a:hover {
+      background-color: #22416D !important;
+      color: #FFFFFF !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(34, 65, 109, 0.25);
+    }
+  </style>
+</BaseLayout>

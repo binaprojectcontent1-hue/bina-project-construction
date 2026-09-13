@@ -1,0 +1,72 @@
+---
+/**
+ * @file TestimonialSection.astro
+ * @description Stack Testimonial (Draggable Card Deck)
+ * Redesigned section on Homepage powered by motion/react and Bina Navy (#22416D).
+ */
+
+import { TESTIMONIALS } from '@data/testimonials';
+import { StackTestimonial } from '@components/StackTestimonial';
+import SectionHeader from '@components/SectionHeader.astro';
+import { siteConfig } from '@config/site';
+
+const testimonials = TESTIMONIALS;
+
+const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : siteConfig.siteUrl.replace(/\/$/, '');
+
+// GEO: Review JSON-LD dari data testimonial terverifikasi (6 ulasan bintang 5)
+const reviewSchemas = TESTIMONIALS.map((t) => ({
+  '@type': 'Review',
+  '@id': `${siteUrl}/#review-${t.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+  itemReviewed: { '@id': `${siteUrl}/#organization` },
+  author: { '@type': 'Person', name: t.name },
+  reviewRating: {
+    '@type': 'Rating',
+    ratingValue: String(t.rating),
+    bestRating: '5',
+    worstRating: '1',
+  },
+  reviewBody: t.quote,
+  datePublished: '2025-11-15',
+  publisher: { '@id': `${siteUrl}/#organization` },
+}));
+
+const reviewListSchema = {
+  '@context': 'https://schema.org',
+  '@graph': reviewSchemas,
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(reviewListSchema)} />
+
+<section class="testimonial-section-modern space" id="testi-sec">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <SectionHeader
+          badge="Testimonial Klien"
+          badgeIcon="solar:chat-round-like-bold"
+          title="Apa Kata Klien Bina Project?"
+          description="Kepuasan dan kepercayaan Anda adalah prioritas utama dari setiap karya konstruksi & desain kami."
+          align="center"
+        />
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <StackTestimonial client:visible testimonials={testimonials} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonial-section-modern {
+    background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+    position: relative;
+    overflow: hidden;
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+</style>

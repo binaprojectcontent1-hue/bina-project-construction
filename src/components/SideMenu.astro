@@ -1,0 +1,316 @@
+---
+import { siteConfig } from '@config/site';
+import { Icon } from 'astro-icon/components';
+---
+
+<div class="sidemenu-wrapper sidemenu-info">
+  <div class="sidemenu-content modern-sidemenu">
+    <!-- Header Drawer -->
+    <div class="d-flex align-items-center justify-content-between mb-35 pb-25 border-bottom">
+      <a href="/" class="d-inline-block">
+        <img src="/assets/img/logo.svg" alt="Bina Project Logo" width="180" height="63" />
+      </a>
+      <button class="modern-close-btn sideMenuCls" aria-label="Tutup Menu">
+        <Icon name="solar:close-circle-linear" width="22" height="22" />
+      </button>
+    </div>
+
+    <!-- About Section -->
+    <div class="sidebar-block mb-35">
+      <div class="studio-badge mb-15">
+        <Icon name="solar:pen-new-square-linear" width="14" height="14" class="me-1 text-theme" /> Studio Arsitektur & Kontraktor
+      </div>
+      <p class="sidebar-text">
+        {siteConfig.description}
+      </p>
+    </div>
+
+    <!-- Contact Information Cards -->
+    <div class="sidebar-block mb-35">
+      <p class="sidebar-section-title mb-20">Informasi Kontak</p>
+      
+      <div class="sidebar-info-list">
+        <!-- Address -->
+        <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="sidebar-info-item">
+          <div class="sidebar-info-icon">
+            <Icon name="solar:map-point-linear" width="18" height="18" />
+          </div>
+          <div>
+            <span class="info-label">Alamat Kantor</span>
+            <p class="info-val mb-0">{siteConfig.contact.address}</p>
+          </div>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="sidebar-info-item">
+          <div class="sidebar-info-icon">
+            <Icon name="simple-icons:whatsapp" width="18" height="18" />
+          </div>
+          <div>
+            <span class="info-label">WhatsApp Hotline</span>
+            <p class="info-val mb-0">{siteConfig.contact.phoneDisplay}</p>
+          </div>
+        </a>
+
+        <!-- Email -->
+        <a href={`mailto:${siteConfig.contact.email}`} class="sidebar-info-item">
+          <div class="sidebar-info-icon">
+            <Icon name="solar:letter-linear" width="18" height="18" />
+          </div>
+          <div>
+            <span class="info-label">Email Resmi</span>
+            <p class="info-val mb-0">{siteConfig.contact.email}</p>
+          </div>
+        </a>
+
+        <!-- Hours -->
+        <div class="sidebar-info-item no-link">
+          <div class="sidebar-info-icon">
+            <Icon name="solar:clock-circle-linear" width="18" height="18" />
+          </div>
+          <div>
+            <span class="info-label">Jam Operasional</span>
+            <p class="info-val mb-0">{siteConfig.contact.openingHours}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="sidebar-block mb-35">
+      <p class="sidebar-section-title mb-15">Media Sosial</p>
+      <div class="sidebar-social-list">
+        {siteConfig.socials.map((social) => (
+          <a
+            target="_blank"
+            href={social.url}
+            aria-label={social.label}
+            class="sidebar-social-btn"
+            rel="noopener noreferrer"
+          >
+            <Icon name={social.icon} width="16" height="16" />
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Direct CTA -->
+    <div class="mt-auto pt-20">
+      <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="th-btn style1 w-100 text-center py-3 d-flex align-items-center justify-content-center" style="border-radius: 12px; font-weight: 700;">
+        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> KONSULTASI WHATSAPP
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modern-sidemenu {
+    background: #FFFFFF !important;
+    padding: 35px 30px !important;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: -8px 0 40px rgba(13, 59, 102, 0.15) !important;
+  }
+
+  .modern-close-btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1.5px solid #E2E8F0;
+    background: #F8FAFC;
+    color: var(--bina-slate-700, #334155);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .modern-close-btn:hover {
+    background: #EF4444;
+    border-color: #EF4444;
+    color: #FFFFFF;
+    transform: rotate(90deg);
+  }
+
+  .studio-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background: #EFF6FF;
+    color: var(--theme-color, #22416D);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .sidebar-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #334155;
+    margin-bottom: 0;
+  }
+
+  .sidebar-section-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--title-color, #17202A);
+  }
+
+  .sidebar-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .sidebar-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: none;
+    background: #F8FAFC;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .sidebar-info-item:not(.no-link):hover {
+    background: #EFF6FF;
+  }
+
+  .sidebar-info-item:not(.no-link):hover .info-val {
+    color: var(--theme-color, #22416D);
+  }
+
+  .sidebar-info-item:not(.no-link):hover .sidebar-info-icon {
+    background: var(--theme-color, #22416D);
+    color: #FFFFFF;
+  }
+
+  .sidebar-info-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    color: var(--theme-color, #22416D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .info-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #475569;
+    margin-bottom: 2px;
+  }
+
+  .info-val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bina-slate-900, #17202A);
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  .sidebar-social-list {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sidebar-social-btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 12px;
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    color: var(--theme-color, #22416D);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .sidebar-social-btn:hover {
+    background: var(--theme-color, #22416D);
+    border-color: var(--theme-color, #22416D);
+    color: #FFFFFF;
+  }
+</style>
+
+<script>
+  // Native Zero-Dependency Side Menu Handler
+  function initSideMenu() {
+    const sideWrapper = document.querySelector('.sidemenu-wrapper') as HTMLElement | null;
+    const sideOpenBtns = document.querySelectorAll('.sideMenuToggler');
+    const sideCloseBtns = document.querySelectorAll('.sideMenuCls');
+
+    if (!sideWrapper) return;
+    if ((sideWrapper as any)._hasSideMenuHandler) return;
+    (sideWrapper as any)._hasSideMenuHandler = true;
+
+    const openSideMenu = () => {
+      sideWrapper.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeSideMenu = () => {
+      sideWrapper.classList.remove('show');
+      document.body.style.overflow = '';
+    };
+
+    sideOpenBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openSideMenu();
+      });
+    });
+
+    sideCloseBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSideMenu();
+      });
+    });
+
+    // Close on backdrop click
+    sideWrapper.addEventListener('click', (e) => {
+      if (e.target === sideWrapper) {
+        closeSideMenu();
+      }
+    });
+
+    // Close on Escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sideWrapper.classList.contains('show')) {
+        closeSideMenu();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSideMenu);
+  } else {
+    initSideMenu();
+  }
+
+  document.addEventListener('astro:page-load', initSideMenu);
+</script>

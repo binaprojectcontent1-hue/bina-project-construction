@@ -1,0 +1,40 @@
+---
+import ContactForm from '@components/ContactForm.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import { Image } from 'astro:assets';
+import contactImg from '@assets/images/normal/contact-image.jpg';
+---
+
+<section class="space overflow-hidden" id="contact-sec">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-6">
+        <div>
+          <SectionHeader
+            badge="Hubungi Kami"
+            badgeIcon="solar:phone-calling-rounded-bold"
+            title="Punya Proyek Mendatang? Mari Bicara Sekarang!"
+            description="Konsultasikan kebutuhan konstruksi dan interior Anda bersama tim kami untuk estimasi dan survei lokasi."
+            align="left"
+            class="mb-30"
+          />
+          <ContactForm />
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="contact-image">
+          <Image
+            src={contactImg}
+            alt="Konsultasi Proyek Bina Project Konstruksi Malang"
+            loading="lazy"
+            decoding="async"
+            width={600}
+            height={550}
+            format="webp"
+            quality={85}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

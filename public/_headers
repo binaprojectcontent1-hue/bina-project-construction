@@ -1,0 +1,26 @@
+/*
+  # Enhanced Security Headers (Production Ready)
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 0
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), payment=()
+  
+  # Content-Security-Policy (CSP) - Strict but Functional
+  # Allows scripts from google analytics, unsafe-inline for inline JS (required by current build), 
+  # and necessary external domains for functionality
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: http:; connect-src 'self' https://*.supabase.co https://cdn.jsdelivr.net https://api.github.com; frame-src 'self' https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'
+  
+  # Cache Control
+  /assets/*
+    Cache-Control: public, max-age=31536000, immutable
+  
+  /media/*
+    Cache-Control: public, max-age=31536000, immutable
+    X-Robots-Tag: all
+  
+  /*.html
+    Cache-Control: public, max-age=0, must-revalidate
+    
+  /favicon.ico
+    Cache-Control: public, max-age=86400, stale-while-revalidate=604800

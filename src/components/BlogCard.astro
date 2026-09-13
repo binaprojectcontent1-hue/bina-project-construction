@@ -1,0 +1,227 @@
+---
+import type { Article } from '../types/database';
+import { Image } from 'astro:assets';
+import { getMediaUrl } from '../lib/cdn';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  article: Article;
+  colClass?: string;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+}
+
+const {
+  article,
+  colClass = 'col-md-6 col-lg-4',
+  loading: explicitLoading,
+  priority = false,
+} = Astro.props;
+
+// Optimized loading strategy for Core Web Vitals (LCP & zero CLS)
+const loading = explicitLoading ?? (priority ? 'eager' : 'lazy');
+const fetchpriority = priority || loading === 'eager' ? 'high' : 'auto';
+
+// Ensure valid image source with defensive fallback
+const coverUrl = getMediaUrl(article.cover_image) || '/assets/img/blog/blog_1_1.jpg';
+const articleUrl = `/blog/${article.slug}`;
+
+// Helper for parseable ISO datetime for <time> tag (SEO & Screen Readers)
+const parseIsoDate = (dateStr: string): string | null => {
+  try {
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d.toISOString().split('T')[0];
+  } catch {
+    return null;
+  }
+};
+const isoDate = parseIsoDate(article.publish_date);
+---
+
+<div class={`${colClass} blog-col-wrapper`}>
+  <article class="blog-grid" aria-labelledby={`blog-title-${article.slug}`}>
+    <div class="blog-img">
+      <a href={articleUrl} tabindex="-1" aria-hidden="true" class="blog-img-link">
+        <Image
+          src={coverUrl}
+          alt={`Gambar artikel: ${article.title}`}
+          loading={loading}
+          decoding="async"
+          fetchpriority={fetchpriority}
+          width={600}
+          height={380}
+        />
+      </a>
+    </div>
+    <div class="blog-content">
+      <div class="blog-meta">
+        <span class="blog-meta-item">
+          <Icon name="solar:calendar-date-linear" width="15" height="15" aria-hidden="true" />
+          {isoDate ? (
+            <time datetime={isoDate}>{article.publish_date}</time>
+          ) : (
+            <span>{article.publish_date}</span>
+          )}
+        </span>
+        <span class="blog-meta-item">
+          <Icon name="solar:tag-linear" width="15" height="15" aria-hidden="true" />
+          <span class="blog-category">{article.category}</span>
+        </span>
+      </div>
+      <h3 class="blog-title box-title" id={`blog-title-${article.slug}`}>
+        <a href={articleUrl}>{article.title}</a>
+      </h3>
+      <p class="blog-text">{article.excerpt}</p>
+      <div class="blog-action">
+        <a href={articleUrl} class="th-btn btn-sm" aria-label={`Baca selengkapnya artikel ${article.title}`}>
+          BACA SELENGKAPNYA <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  </article>
+</div>
+
+<style>
+  /* ==========================================================================
+     Zero-CLS & Performance-First Blog Card Styles
+     ========================================================================== */
+  .blog-col-wrapper {
+    display: flex;
+  }
+
+  .blog-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border: none;
+    outline: none;
+    border-radius: var(--radius-lg, 16px);
+    overflow: hidden;
+    box-shadow: 0 4px 20px -2px rgba(10, 34, 57, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .blog-grid:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px -4px rgba(10, 34, 57, 0.12);
+  }
+
+  /* Reserved Aspect-Ratio Box: Pre-allocates exact dimensions to eliminate CLS */
+  .blog-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 600 / 380;
+    overflow: hidden;
+    background-color: #f1f5f9; /* Neutral skeleton placeholder */
+    contain: layout paint;
+  }
+
+  .blog-img-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .blog-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .blog-grid:hover .blog-img :global(img) {
+    transform: scale(1.04);
+  }
+
+  .blog-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 28px 24px 24px 24px;
+  }
+
+  .blog-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  .blog-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .blog-meta-item i {
+    color: #22416D;
+    font-size: 13px;
+  }
+
+  /* Clamped Title with Reserved Min-Height to Guarantee Uniform Card Heights */
+  .blog-title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--bina-slate-900, #17202A);
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.4em * 2);
+  }
+
+  .blog-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .blog-title a:hover {
+    color: #345F99;
+  }
+
+  /* Clamped Excerpt to Prevent Vertical Text Jumps Across Grid Columns */
+  .blog-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #64748b;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Anchors action CTA button permanently to the card footer */
+  .blog-action {
+    margin-top: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-img :global(img),
+    .blog-grid {
+      transition: none !important;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .blog-content {
+      padding: 22px 18px 20px 18px;
+    }
+
+    .blog-action .th-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 12px 20px;
+      font-size: 13.5px;
+    }
+  }
+</style>

@@ -1,0 +1,463 @@
+/* ==============================================================================
+   BINA PROJECT - GLOBAL STYLES
+   ============================================================================== */
+@import './coverage.css';
+
+/* Centralized Z-Index Design Tokens */
+:root {
+  --zi-negative: -1;
+  --zi-base: 1;
+  --zi-card: 5;
+  --zi-dropdown: 100;
+  --zi-sticky: 500;
+  --zi-drawer: 900;
+  --zi-modal: 1000;
+  --zi-preloader: 2000;
+
+  /* ==============================================================================
+     BINA PROJECT - CORE BRAND & COLOR DESIGN TOKENS
+     ============================================================================== */
+  /* Brand Primary & Accents */
+  --bina-navy: #22416D;
+  --bina-navy-hover: #1B3457;
+  --bina-navy-dark: #0D192B;
+  --bina-navy-deep: #0A1320;
+  --bina-blue-accent: #345F99;
+  --bina-blue-ice: #84ACDF;
+  --bina-blue-50: #EFF6FF;
+
+  /* Neutral Slate Scale */
+  --bina-white: #FFFFFF;
+  --bina-slate-50: #F8FAFC;
+  --bina-slate-100: #F1F5F9;
+  --bina-slate-200: #E2E8F0; /* Standard Border */
+  --bina-slate-300: #CBD5E1;
+  --bina-slate-400: #94A3B8;
+  --bina-slate-500: #475569; /* Slate-600 WCAG AAA Compliant (7.57:1 on white) */
+  --bina-slate-700: #334155; /* Secondary Headings & Strong Body */
+  --bina-slate-900: #17202A; /* Primary Headings & Dark Text */
+
+  /* Standardized Gradients */
+  --bina-gradient-navy: linear-gradient(135deg, #22416D 0%, #0D192B 100%);
+  --bina-gradient-dark: linear-gradient(180deg, #0D192B 0%, #0A1320 100%);
+  --bina-gradient-accent: linear-gradient(90deg, #84ACDF 0%, #345F99 60%, #22416D 100%);
+
+  /* Standard Status Badges & Surfaces */
+  --bina-badge-blue-bg: rgba(34, 65, 109, 0.08);
+  --bina-badge-blue-text: #22416D;
+  --bina-success: #10B981;
+  --bina-success-bg: #ECFDF5;
+  --bina-rating-bg: #FEF3C7;
+  --bina-rating-text: #92400E; /* Amber-800 WCAG AA Compliant on #FEF3C7 (6.5:1) */
+
+  /* ==============================================================================
+     BINA PROJECT - CORE TYPOGRAPHY DESIGN TOKENS
+     ============================================================================== */
+  --font-display: 'Archivo', sans-serif;
+  --font-heading: 'Archivo', sans-serif;
+  --font-technical: 'Titillium Web', sans-serif;
+  --font-body: 'Archivo', sans-serif;
+
+  /* Legacy template variable synchronization */
+  --title-font: var(--font-heading);
+  --body-font: var(--font-body);
+
+  /* Modular Font Scale (Rem-Based) */
+  --text-xs: 0.75rem;     /* 12px - Badges, pills, micro text */
+  --text-sm: 0.875rem;    /* 14px - Card metadata, footer links, small buttons */
+  --text-base: 1rem;       /* 16px - Standard body text, form inputs */
+  --text-lg: 1.125rem;    /* 18px - Lead text, article body, card titles */
+  --text-xl: 1.25rem;     /* 20px - Section sub-titles, h4 */
+  --text-2xl: 1.5rem;     /* 24px - Subsection headers, h3 */
+  --text-3xl: 2rem;       /* 32px - Section titles h2 desktop */
+  --text-4xl: 2.5rem;     /* 40px - Major highlights */
+
+  /* Fluid Clamped Sizes */
+  --fluid-h1: clamp(2.25rem, 5vw, 3.5rem);     /* 36px -> 56px Hero Title */
+  --fluid-h2: clamp(1.75rem, 3.5vw, 2.375rem); /* 28px -> 38px Section H2 */
+
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* Tracking (Letter Spacing) */
+  --tracking-kicker: 0.12em;
+
+  /* ==============================================================================
+     BINA PROJECT - CORE SPACING & VERTICAL RHYTHM TOKENS
+     ============================================================================== */
+  --space-section-desktop: 90px;
+  --space-section-tablet: 65px;
+  --space-section-mobile: 45px;
+
+  --space-compact-desktop: 60px;
+  --space-compact-mobile: 35px;
+
+  /* Component Gaps */
+  --gap-xs: 8px;
+  --gap-sm: 12px;
+  --gap-md: 16px;
+  --gap-lg: 24px;
+  --gap-xl: 32px;
+  --gap-2xl: 48px;
+
+  /* Standard Title Area Spacing */
+  --title-area-mb: 40px;
+
+  /* ==============================================================================
+     BINA PROJECT - CORE CONTAINER & GRID DESIGN TOKENS (FASE D4)
+     ============================================================================== */
+  --main-container: 1280px;
+  --container-max-width: 1320px;
+  --container-gutters: 30px;
+
+  /* ==============================================================================
+     BINA PROJECT - COMPONENT DESIGN TOKENS (FASE D5)
+     ============================================================================== */
+  --radius-xs: 4px;
+  --radius-sm: 8px;      /* Micro badges, small button, pill tags */
+  --radius-md: 12px;     /* Standard button, input field */
+  --radius-lg: 16px;     /* Standard card (Services, WhyChooseUs, Blog) */
+  --radius-xl: 20px;     /* Bento card, large dialog */
+  --radius-2xl: 24px;    /* Modern process & testimonial stacking cards */
+  --radius-pill: 9999px; /* Nav pill dock, filter tabs, round badges */
+}
+
+/* ==============================================================================
+   STANDARDIZED SECTION VERTICAL RHYTHM (.space & .space-*)
+   Prevents double-stacking and excessive 240px chasms
+   ============================================================================== */
+.space,
+.space-top {
+  padding-top: var(--space-section-desktop) !important;
+}
+
+.space,
+.space-bottom {
+  padding-bottom: var(--space-section-desktop) !important;
+}
+
+.space-extra,
+.space-extra-top {
+  padding-top: calc(var(--space-section-desktop) - 20px) !important;
+}
+
+.space-extra,
+.space-extra-bottom {
+  padding-bottom: calc(var(--space-section-desktop) - 20px) !important;
+}
+
+@media (max-width: 991px) {
+  .space,
+  .space-top {
+    padding-top: var(--space-section-tablet) !important;
+  }
+  .space,
+  .space-bottom {
+    padding-bottom: var(--space-section-tablet) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .space,
+  .space-top {
+    padding-top: var(--space-section-mobile) !important;
+  }
+  .space,
+  .space-bottom {
+    padding-bottom: var(--space-section-mobile) !important;
+  }
+}
+
+/* Custom utility & Lenis-compatible smooth scroll standards */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html {
+  scroll-behavior: auto !important;
+}
+
+/* Responsive Justification: Safe Left-Align on Mobile, Justified on Large Screens */
+.text-justify {
+  text-align: left;
+  text-wrap: pretty;
+}
+
+@media (min-width: 992px) {
+  .text-justify {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Card & Box Zero-Outline / Borderless Standards */
+.contact-bento-card,
+.contact-form-card,
+.contact-map-wrapper,
+.modern-testi-card,
+.brand-pill-box,
+.faq-accordion-item,
+.footer-callout-card,
+.footer-contact-card,
+.sidebar-info-item,
+.terms-card,
+.page-single,
+.stat-card {
+  border: none !important;
+  outline: none !important;
+}
+
+/* ==============================================================================
+   INLINED SVG ICONS (SOLAR & SIMPLE ICONS) ZERO-CLS STANDARDS
+   ============================================================================== */
+svg[data-icon] {
+  display: inline-block;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* ==============================================================================
+   CORE CONTAINER & GRID ALIGNMENT STANDARDS (FASE D4)
+   Eliminates Container Jumping & Guarantees Flush Vertical Alignment
+   ============================================================================== */
+@media only screen and (min-width: 1300px) {
+  .container,
+  .th-container,
+  .why-area .th-container,
+  .project-sec .th-container,
+  .header-layout2 .th-container,
+  .modern-header .th-container {
+    --main-container: 1280px !important;
+    max-width: var(--container-max-width, 1320px) !important;
+    padding-left: calc(var(--container-gutters, 30px) / 2) !important;
+    padding-right: calc(var(--container-gutters, 30px) / 2) !important;
+  }
+}
+
+/* Fix Project Slider Mobile Overflow (Eliminates legacy 413px/440px forced widths on mobile) */
+@media (max-width: 767px) {
+  .project-slider .swiper-slide-active,
+  .project-slider .swiper-slide {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .project-slider .project-card {
+    width: 100% !important;
+  }
+}
+
+/* Contact Bento Action & Badge Bottom Baseline Alignment */
+.contact-bento-action,
+.contact-status-badge {
+  margin-top: auto !important;
+}
+
+/* ==============================================================================
+   STANDARDIZED UI COMPONENTS: BUTTONS, BADGES & FORMS (FASE D5)
+   ============================================================================== */
+
+/* 1. Universal Button Hierarchy & Modern Rounded Scale (12px standard, 8px small) */
+.th-btn {
+  border-radius: var(--radius-md, 12px) !important;
+  font-family: var(--font-display, 'Archivo', sans-serif) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 14px 28px !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease !important;
+}
+
+.th-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(34, 65, 109, 0.25) !important;
+}
+
+.th-btn.btn-sm {
+  border-radius: var(--radius-sm, 8px) !important;
+  padding: 9px 18px !important;
+  font-size: 12px !important;
+}
+
+/* 2. Universal Section Title & Kicker Modern Lockup */
+.title-area {
+  margin-bottom: var(--title-area-mb, 40px) !important;
+  position: relative;
+  z-index: 2;
+}
+
+.title-area.text-center {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+/* Universal Sub-Title / Kicker Pill Badge */
+.sub-title {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 6px 16px !important;
+  border-radius: var(--radius-pill, 9999px) !important;
+  background: var(--bina-blue-50, #EFF6FF) !important;
+  border: 1px solid rgba(34, 65, 109, 0.12) !important;
+  color: var(--bina-navy, #22416D) !important;
+  font-family: var(--font-heading, 'Archivo', sans-serif) !important;
+  font-size: var(--text-xs, 0.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: var(--tracking-kicker, 0.12em) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 14px !important;
+  width: fit-content !important;
+  line-height: 1 !important;
+  box-shadow: 0 1px 2px rgba(34, 65, 109, 0.04) !important;
+}
+
+/* Eliminate ALL legacy template horizontal lines and pseudo-elements permanently */
+.sub-title::before,
+.sub-title::after,
+.sub-title.style1::before,
+.sub-title.style1::after,
+.sub-title.style2::before,
+.sub-title.style2::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Universal Section Heading (H2) */
+.sec-title,
+.title-area .sec-title {
+  font-family: var(--font-heading, 'Archivo', sans-serif) !important;
+  font-size: var(--fluid-h2, clamp(1.75rem, 3.5vw, 2.375rem)) !important;
+  font-weight: 800 !important;
+  line-height: var(--leading-tight, 1.2) !important;
+  letter-spacing: -0.02em !important;
+  color: var(--bina-slate-900, #17202A) !important;
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+/* Universal Section Lead / Description */
+.sec-text,
+.title-area .sec-text {
+  font-family: var(--font-body, 'Archivo', sans-serif) !important;
+  font-size: var(--text-base, 1rem) !important;
+  line-height: var(--leading-relaxed, 1.75) !important;
+  color: var(--bina-slate-500, #475569) !important;
+  margin: 0 !important;
+}
+
+.title-area.text-center .sec-text {
+  max-width: 680px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Dark Theme overrides for CTA / Dark Sections */
+.title-area--dark .sub-title,
+.consultation-title-area .sub-title {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #FFFFFF !important;
+}
+
+.title-area--dark .sec-title,
+.consultation-title-area .sec-title {
+  color: #FFFFFF !important;
+}
+
+.title-area--dark .sec-text,
+.consultation-title-area .sec-text {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+
+/* 3. Global Input Focus Ring (Bina Navy Brand Glow) */
+input:focus,
+select:focus,
+textarea:focus,
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bina-navy, #22416D) !important;
+  box-shadow: 0 0 0 3px rgba(34, 65, 109, 0.15) !important;
+  outline: none !important;
+}
+
+/* 4. High-Contrast Form Placeholders (WCAG AA Compliance) */
+::placeholder,
+.form-control::placeholder,
+.form-select::placeholder {
+  color: var(--bina-slate-500, #475569) !important;
+  opacity: 1 !important;
+}
+
+/* ==============================================================================
+   LUXURY BRAND FINISHING POLISH & MICRO-INTERACTIONS (FASE D6)
+   ============================================================================== */
+
+/* 1. Brand-Tailored Text Selection */
+::selection {
+  background-color: rgba(34, 65, 109, 0.18) !important;
+  color: #22416D !important;
+}
+
+::-moz-selection {
+  background-color: rgba(34, 65, 109, 0.18) !important;
+  color: #22416D !important;
+}
+
+/* 2. Sleek Architectural Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bina-slate-50, #F8FAFC);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+  border: 2px solid var(--bina-slate-50, #F8FAFC);
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bina-navy, #22416D);
+}
+
+/* Firefox scrollbar compatibility */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #CBD5E1 var(--bina-slate-50, #F8FAFC);
+}
+
+/* 3. Universal Prefers-Reduced-Motion Safety Guard */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
