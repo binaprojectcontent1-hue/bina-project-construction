@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 *,
 *::before,
 *::after {
@@ -161,6 +163,82 @@ body {
   gap: 14px;
   width: 100%;
   animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
+/* Glass Button Component (shadcn / 21st.dev) */
+.glass-button-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 9999px;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.glass-button-wrap:hover {
+  transform: translateY(-2px);
+}
+
+.glass-button-wrap:active {
+  transform: translateY(0);
+}
+
+.glass-button {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 9999px;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-button-wrap:hover .glass-button {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.15),
+    0 8px 28px rgba(0, 0, 0, 0.38);
+}
+
+.glass-button-text {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.glass-button-shadow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.18), transparent 70%);
+  filter: blur(8px);
+  opacity: 0.5;
+  transition: all 0.24s ease;
+}
+
+.glass-button-wrap:hover .glass-button-shadow {
+  opacity: 1;
+  filter: blur(10px);
 }
 
 /* Link Button - Clean, Modern, No Stroke */

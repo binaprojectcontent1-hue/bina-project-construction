@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import type { BioLink } from '../types';
 import { supabase } from '../lib/supabase';
+import { GlassButton } from '@/components/ui/glass-button';
 
 interface LinkButtonProps {
   link: BioLink;
@@ -121,20 +122,22 @@ export function LinkButton({ link }: LinkButtonProps) {
   };
 
   return (
-    <a
+    <GlassButton
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      className="link-button group"
+      size="default"
+      className="w-full group"
+      contentClassName="flex items-center gap-4 w-full px-5 py-4"
       aria-label={link.title}
     >
       <div className="link-button-icon-wrapper">
         <Icon className="link-button-icon" />
       </div>
-      <span className="link-button-text">{link.title}</span>
+      <span className="link-button-text flex-1 text-left">{link.title}</span>
       <ArrowUpRight className="link-button-arrow" />
-    </a>
+    </GlassButton>
   );
 }
 
