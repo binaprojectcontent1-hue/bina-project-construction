@@ -4,9 +4,9 @@ import Footer from '@components/Footer.astro';
 import MobileMenu from '@components/MobileMenu.astro';
 import SideMenu from '@components/SideMenu.astro';
 import Preloader from '@components/Preloader.astro';
-import ScrollToTop from '@components/ScrollToTop.astro';
 import SmoothScroll from '@components/SmoothScroll.astro';
 import CustomCursor from '@components/CustomCursor.astro';
+import FloatingWhatsApp from '@components/FloatingWhatsApp.astro';
 import { siteConfig } from '@config/site';
 import { MASTER_SERVICES } from '@data/services';
 import '@styles/global.css';
@@ -40,12 +40,12 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${cleanSiteUrl}/
 
 // GEO: Service -> portfolio workExample mapping (bukti pengerjaan per layanan)
 const servicePortfolioExamples: Record<string, string[]> = {
-  konstruksi: ['villa', 'sdi-nur-multazam', 'rosana'],
-  interior: ['interior-mr-samian', 'cafe-batu', 'kitchen-set-dr-irfan'],
-  renovasi: ['amd-academy', 'rosana-collection'],
+  konstruksi: [],
+  interior: ['kitchen-set-pak-mario'],
+  renovasi: [],
   waterproofing: [],
-  'arsitektur-rab': ['villa'],
-  developer: ['rosana'],
+  'arsitektur-rab': [],
+  developer: [],
 };
 
 // Schema.org Comprehensive Connected Knowledge Graph (@graph)
@@ -314,39 +314,84 @@ const connectedSchemaGraph = {
       }
     </style>
 
-    <!-- Stylesheets (Core Grid Minified, Plugins Non-Blocking) -->
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/style.min.css" />
-    <Fragment set:html={`
-      <link rel="preload" as="style" href="/assets/css/magnific-popup.min.css" onload="this.onload=null;this.rel='stylesheet'" />
-      <noscript><link rel="stylesheet" href="/assets/css/magnific-popup.min.css" /></noscript>
-      <link rel="preload" as="style" href="/assets/css/swiper-bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" />
-      <noscript><link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" /></noscript>
-    `} />
+    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" />
+    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
     <!-- Schema.org Connected Knowledge Graph JSON-LD -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(connectedSchemaGraph)} />
 
-    <!-- Google Analytics 4 (Privacy-Focused, Auto Anonymize IPs) -->
-    <!-- Add G-XXXXXXXXXX in .env production -->
-    {import.meta.env.SITE?.includes('binaproject.com') && (
-      <>
-        <!-- Google Tag Manager -->
-        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P'}`} />
-        <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','${import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P'}');`} />
-        <!-- End Google Tag Manager -->
-        
-        <!-- GA4 Default Configuration -->
-        <script is:inline set:html={`window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P'}', {send_page_view: true, anonymize_ip: true});`} />
-      </>
-    )}
+    <!-- Performance & Attribution Tracking Stack (GA4 & Meta Pixel) -->
+    {(() => {
+      const gaId = import.meta.env.PUBLIC_GA_ID || import.meta.env.VITE_GA_ID || 'G-J8QZ1X2Y3P';
+      const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID || import.meta.env.VITE_META_PIXEL_ID || '';
+      return (
+        <>
+          {/* Google Analytics 4 */}
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+          <script is:inline set:html={`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}', {
+              send_page_view: true,
+              anonymize_ip: true,
+              transport_type: 'beacon'
+            });
+          `} />
+
+          {/* Meta Pixel (Facebook & Instagram Ads) */}
+          {metaPixelId && (
+            <>
+              <script is:inline set:html={`
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '${metaPixelId}');
+                fbq('track', 'PageView');
+              `} />
+              <noscript>
+                <img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`} alt="" />
+              </noscript>
+            </>
+          )}
+
+          {/* Unified Commercial Lead Tracker (Dispatches to GA4, Meta Pixel & DOM) */}
+          <script is:inline set:html={`
+            window.trackLead = function(channel, details) {
+              try {
+                if (typeof window.gtag === 'function') {
+                  window.gtag('event', 'generate_lead', {
+                    method: channel || 'whatsapp',
+                    lead_detail: details || '',
+                    event_category: 'Commercial Conversion',
+                    page_location: window.location.href
+                  });
+                }
+                if (typeof window.fbq === 'function') {
+                  window.fbq('track', 'Lead', {
+                    content_name: details || channel,
+                    content_category: 'Inbound Inquiry'
+                  });
+                }
+                window.dispatchEvent(new CustomEvent('bina:lead_conversion', {
+                  detail: { channel: channel, details: details, timestamp: Date.now() }
+                }));
+              } catch (err) {
+                console.warn('[Analytics] Non-fatal tracking event error:', err);
+              }
+            };
+          `} />
+        </>
+      );
+    })()}
   </head>
 
   <body>
@@ -360,7 +405,7 @@ const connectedSchemaGraph = {
     </main>
 
     <Footer />
-    <ScrollToTop />
+    <FloatingWhatsApp />
     <SmoothScroll />
     <CustomCursor />
 
@@ -373,6 +418,6 @@ const connectedSchemaGraph = {
     <script is:inline src="/assets/js/imagesloaded.pkgd.min.js" defer></script>
     <script is:inline src="/assets/js/gsap.min.js" defer></script>
     <script is:inline src="/assets/js/ScrollTrigger.min.js" defer></script>
-    <script is:inline src="/assets/js/main.min.js" defer></script>
+    <script is:inline src="/assets/js/main.js" defer></script>
   </body>
 </html>

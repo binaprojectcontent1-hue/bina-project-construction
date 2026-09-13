@@ -308,36 +308,8 @@ svg[data-icon] {
   text-align: center !important;
 }
 
-/* Universal Sub-Title / Kicker Pill Badge */
+/* Universal Sub-Title / Kicker Pill Badge - Disabled */
 .sub-title {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  padding: 6px 16px !important;
-  border-radius: var(--radius-pill, 9999px) !important;
-  background: var(--bina-blue-50, #EFF6FF) !important;
-  border: 1px solid rgba(34, 65, 109, 0.12) !important;
-  color: var(--bina-navy, #22416D) !important;
-  font-family: var(--font-heading, 'Archivo', sans-serif) !important;
-  font-size: var(--text-xs, 0.75rem) !important;
-  font-weight: 700 !important;
-  letter-spacing: var(--tracking-kicker, 0.12em) !important;
-  text-transform: uppercase !important;
-  margin-bottom: 14px !important;
-  width: fit-content !important;
-  line-height: 1 !important;
-  box-shadow: 0 1px 2px rgba(34, 65, 109, 0.04) !important;
-}
-
-/* Eliminate ALL legacy template horizontal lines and pseudo-elements permanently */
-.sub-title::before,
-.sub-title::after,
-.sub-title.style1::before,
-.sub-title.style1::after,
-.sub-title.style2::before,
-.sub-title.style2::after {
-  content: none !important;
   display: none !important;
 }
 
@@ -371,21 +343,27 @@ svg[data-icon] {
 }
 
 /* Dark Theme overrides for CTA / Dark Sections */
-.title-area--dark .sub-title,
-.consultation-title-area .sub-title {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(255, 255, 255, 0.22) !important;
-  color: #FFFFFF !important;
-}
-
 .title-area--dark .sec-title,
-.consultation-title-area .sec-title {
+.consultation-title-area .sec-title,
+.cta-area2 .sec-title,
+.cta-area .sec-title,
+[data-overlay] .sec-title,
+.sec-title.text-white,
+.title-area .sec-title.text-white,
+.sec-title .text-white,
+.title-area .text-white {
   color: #FFFFFF !important;
 }
 
 .title-area--dark .sec-text,
-.consultation-title-area .sec-text {
-  color: rgba(255, 255, 255, 0.85) !important;
+.consultation-title-area .sec-text,
+.cta-area2 .sec-text,
+.cta-area .sec-text,
+[data-overlay] .sec-text,
+.sec-text.text-white,
+.title-area .sec-text.text-white,
+.title-area .text-white-50 {
+  color: rgba(255, 255, 255, 0.88) !important;
 }
 
 
@@ -469,3 +447,43 @@ textarea:focus,
     scroll-behavior: auto !important;
   }
 }
+
+/* 4. Disable Legacy Scroll-To-Top Button */
+.scroll-top {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ==============================================================================
+   5. SKELETON SHIMMER & LOADING PLACEHOLDERS
+   ============================================================================== */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #F1F5F9 0%,
+    #E2E8F0 50%,
+    #F1F5F9 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none !important;
+    background: #F1F5F9 !important;
+  }
+}
+
+

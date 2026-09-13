@@ -53,3 +53,15 @@ export interface Redirect {
   updated_at?: string;
 }
 
+export interface Lead {
+  id?: string;
+  name: string;
+  email?: string;
+  phone: string;
+  service?: string;
+  message?: string;
+  source_url?: string;
+  status?: 'new' | 'contacted' | 'survey_scheduled' | 'deal' | 'lost';
+  created_at?: string;
+}
+

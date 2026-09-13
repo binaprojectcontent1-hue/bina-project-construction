@@ -4,6 +4,11 @@ import { Image } from 'astro:assets';
 import SectionHeader from '@components/SectionHeader.astro';
 import consultationImg from '@assets/images/normal/consultation_img.jpg';
 import consultationThumb from '@assets/images/normal/image.png';
+import { createWhatsAppUrl } from '@utils/whatsapp';
+
+const waConsultationUrl = createWhatsAppUrl({
+  customMessage: 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek konstruksi/interior dan estimasi RAB gratis.',
+});
 ---
 
 <section class="consultation-sec bg-title position-relative overflow-hidden" data-bg-src="/assets/img/bg/shape_bg_2.png">
@@ -26,16 +31,29 @@ import consultationThumb from '@assets/images/normal/image.png';
       <div class="col-md-8">
         <div class="consultation-title-area">
           <SectionHeader
-            badge="Konsultasi Gratis"
+            badge="Konsultasi & Estimasi RAB"
             badgeIcon="solar:chat-round-call-bold"
-            title="Konsultasi Gratis, Hubungi Kami!"
-            description="Diskusikan rencana pembangunan atau renovasi hunian Anda bersama tim arsitek dan insinyur Bina Project."
+            title="Rencanakan Bangunan Impian Tanpa Khawatir Biaya Membengkak"
+            description="Konsultasikan desain 3D, pemilihan material SNI, serta estimasi anggaran biaya (RAB) terbuka langsung bersama tim arsitek & project manager Bina Project."
             align="left"
             variant="dark"
             class="mb-30"
           />
-          <div>
-            <a href="/contact" class="th-btn style1 th-icon">Kontak Kami <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" /></a>
+          <div class="d-flex flex-wrap gap-3">
+            <a
+              href={waConsultationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="th-btn style1 th-icon d-inline-flex align-items-center"
+              style="background-color: #25D366; border-color: #25D366; color: #FFFFFF; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);"
+              onclick="if(typeof window.trackLead==='function') window.trackLead('consultation_sec_wa', 'homepage');"
+            >
+              <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" />
+              Konsultasi Cepat via WhatsApp
+            </a>
+            <a href="/contact" class="th-btn style3 th-icon d-inline-flex align-items-center">
+              Jadwalkan Survei Lokasi <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+            </a>
           </div>
         </div>
       </div>

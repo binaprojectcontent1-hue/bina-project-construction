@@ -4,29 +4,27 @@ import {
   Check,
   AlertCircle,
   RefreshCw,
-  ShieldCheck,
   Database,
   Globe,
-  GitBranch,
   Key,
-  ExternalLink,
   HardDrive,
   ChevronDown,
   ChevronUp,
   ShieldAlert,
+  ShieldCheck,
+  ExternalLink,
   Info,
-  Sparkles,
 } from 'lucide-react';
 import { getStoredDeployHookUrl, setStoredDeployHookUrl, triggerCloudflareDeploy } from '../lib/cloudflare';
 import { isSupabaseConfigured } from '../lib/supabase';
-import { getGitHubConfig, setGitHubConfig, testGitHubConnection, isGitHubConfigured } from '../lib/github';
+import { isGitHubConfigured } from '../lib/github';
 import { HelpTooltip } from '../components/ui/HelpTooltip';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { deployRateLimiter } from '../lib/rate-limiter';
-import { validateInput, cloudflareDeployHookSchema, githubConfigSchema } from '../lib/validation-schemas';
+import { validateInput, cloudflareDeployHookSchema } from '../lib/validation-schemas';
 import type { User } from '@supabase/supabase-js';
 
 export const Settings: React.FC<{ user?: User }> = ({ user }) => {
@@ -46,27 +44,8 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
   const [quickDeployResult, setQuickDeployResult] = useState<{ success: boolean; message: string } | null>(null);
   const [deployRateInfo, setDeployRateInfo] = useState({ attempts: 0, remainingAttempts: 10, isBlocked: false });
 
-  // GitHub Storage State (Skema A)
-  const [ghOwner, setGhOwner] = useState('');
-  const [ghRepo, setGhRepo] = useState('');
-  const [ghBranch, setGhBranch] = useState('main');
-  const [ghToken, setGhToken] = useState('');
-  const [ghSaved, setGhSaved] = useState(false);
-  const [ghTesting, setGhTesting] = useState(false);
-  const [ghTestResult, setGhTestResult] = useState<{ success: boolean; message: string } | null>(null);
-  const [ghValidationError, setGhValidationError] = useState<string | null>(null);
-  const [ghConfigSaved, setGhConfigSaved] = useState(false);
-
   useEffect(() => {
     setHookUrl(getStoredDeployHookUrl());
-
-    const ghConfig = getGitHubConfig();
-    if (ghConfig) {
-      setGhOwner(ghConfig.owner);
-      setGhRepo(ghConfig.repo);
-      setGhBranch(ghConfig.branch || 'main');
-      setGhToken(ghConfig.token);
-    }
 
     // Check rate limit status on mount
     updateUserStatus();
@@ -146,64 +125,6 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
       setCfTestResult(res);
     } finally {
       setCfTesting(false);
-    }
-  };
-
-  const handleSaveGitHub = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate all fields before saving
-    const validation = validateInput(
-      githubConfigSchema,
-      { owner: ghOwner.trim(), repo: ghRepo.trim(), branch: ghBranch.trim() || 'main', token: ghToken.trim() },
-      'GitHubConfig'
-    );
-    
-    if (!validation.success) {
-      setGhValidationError(validation.error || 'Validation failed');
-      setTimeout(() => setGhValidationError(null), 5000);
-      return;
-    }
-    
-    try {
-      const config = getGitHubConfig();
-      // Handle undefined safely
-      if (config) {
-        setGhOwner(config.owner);
-      } else {
-        setGhOwner('');
-      }
-      setGhRepo(config?.repo || '');
-      setGhBranch(config?.branch || 'main');
-      setGhToken(config?.token || '');
-      
-      setGitHubConfig({
-        owner: ghOwner.trim(),
-        repo: ghRepo.trim(),
-        branch: ghBranch.trim() || 'main',
-        token: ghToken.trim(),
-      });
-      setGhConfigSaved(true);
-      setGhValidationError(null);
-      setTimeout(() => setGhConfigSaved(false), 3000);
-    } catch (error: any) {
-      setGhValidationError(error.message || 'Gagal menyimpan konfigurasi');
-    }
-  };
-
-  const handleTestGitHub = async () => {
-    setGhTesting(true);
-    setGhTestResult(null);
-    try {
-      const res = await testGitHubConnection({
-        owner: ghOwner.trim(),
-        repo: ghRepo.trim(),
-        branch: ghBranch.trim() || 'main',
-        token: ghToken.trim(),
-      });
-      setGhTestResult(res);
-    } finally {
-      setGhTesting(false);
     }
   };
 
@@ -354,11 +275,11 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
                     Penyimpanan Foto
                     <HelpTooltip content="Tempat semua file foto portofolio dan artikel disimpan dengan aman di repository GitHub." />
                   </p>
-                  <p className="text-slate-500 text-[11px] mt-0.5">GitHub Storage</p>
+                  <p className="text-slate-500 text-[11px] mt-0.5">GitHub Media Storage</p>
                 </div>
               </div>
-              <Badge variant={ghActive ? 'success' : 'outline'} className="text-xs">
-                {ghActive ? '🟢 Terhubung' : '⚠️ Perlu Setup'}
+              <Badge variant="secondary" className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200">
+                {ghActive ? '🟢 Terhubung (.env)' : '⚠️ Perlu Setup'}
               </Badge>
             </div>
 
@@ -411,7 +332,7 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
                   </Badge>
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-500">
-                  Konfigurasi token otorisasi GitHub dan webhook integrasi Cloudflare
+                  Konfigurasi webhook integrasi Cloudflare (Penyimpanan foto GitHub dikunci via .env)
                 </CardDescription>
               </div>
             </div>
@@ -441,138 +362,10 @@ export const Settings: React.FC<{ user?: User }> = ({ user }) => {
               <div>
                 <span className="font-semibold block">Catatan Keamanan:</span>
                 <span>
-                  Pengaturan di bawah ini hanya perlu diubah jika ada pergantian repository GitHub atau token akses baru.
-                  Untuk staf admin pembuat konten harian, Anda tidak perlu mengubah kolom di bawah ini.
+                  Kredensial GitHub Media Storage dan Supabase telah tersimpan aman di berkas lingkungan sistem (.env).
+                  Pengaturan di bawah ini hanya digunakan untuk memperbarui Webhook deploy Cloudflare.
                 </span>
               </div>
-            </div>
-
-            {/* GitHub Storage Form */}
-            <div className="p-4 rounded-lg bg-white border border-slate-200 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <div className="flex items-center gap-2">
-                  <HardDrive className="w-4 h-4 text-slate-700" />
-                  <h3 className="text-xs font-semibold text-slate-900">
-                    GitHub Media Storage (Repository Khusus Media)
-                  </h3>
-                </div>
-                <Badge variant={ghActive ? 'success' : 'outline'} className="text-xs">
-                  {ghActive ? 'Aktif' : 'Belum Konfigurasi'}
-                </Badge>
-              </div>
-
-              <form onSubmit={handleSaveGitHub} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">
-                      GitHub Username / Owner <span className="text-rose-500">*</span>
-                    </label>
-                    <Input
-                      value={ghOwner}
-                      onChange={(e) => setGhOwner(e.target.value)}
-                      placeholder="Contoh: nanda-addi"
-                      className="font-mono text-xs"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">
-                      Nama Repository Media <span className="text-rose-500">*</span>
-                    </label>
-                    <Input
-                      value={ghRepo}
-                      onChange={(e) => setGhRepo(e.target.value)}
-                      placeholder="Contoh: bina-media"
-                      className="font-mono text-xs"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">Branch Utama</label>
-                    <Input
-                      value={ghBranch}
-                      onChange={(e) => setGhBranch(e.target.value)}
-                      placeholder="main"
-                      className="font-mono text-xs"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-slate-700">
-                      GitHub Personal Access Token (PAT) <span className="text-rose-500">*</span>
-                    </label>
-                    <a
-                      href="https://github.com/settings/tokens/new?scopes=repo&description=BinaProjectStudio"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] text-slate-500 hover:text-[#22416D] underline flex items-center gap-1"
-                    >
-                      <span>Buat Token di GitHub (Centang `repo`)</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                  <Input
-                    type="password"
-                    value={ghToken}
-                    onChange={(e) => setGhToken(e.target.value)}
-                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx atau github_pat_..."
-                    className="font-mono text-xs"
-                  />
-                  
-                  {ghValidationError && (
-                    <div className="mt-2 p-2 rounded-md bg-rose-50 border border-rose-200 text-rose-700 text-[11px] flex items-center gap-1.5">
-                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                      <span>{ghValidationError}</span>
-                    </div>
-                  )}
-                  
-                  <span className="text-[11px] text-slate-400 block pt-0.5">
-                    Token disimpan aman di penyimpanan lokal browser dan hanya digunakan untuk mengunggah file foto.
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2.5 pt-1">
-                  <Button type="submit" size="sm" className="gap-2 text-xs">
-                    {ghSaved && <Check className="w-3.5 h-3.5 text-emerald-400" />}
-                    <span>{ghSaved ? 'Tersimpan!' : 'Simpan Pengaturan GitHub'}</span>
-                  </Button>
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleTestGitHub}
-                    disabled={ghTesting || !ghToken || !ghOwner || !ghRepo}
-                    className="gap-2 text-xs"
-                  >
-                    {ghTesting ? (
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    ) : (
-                      <GitBranch className="w-3.5 h-3.5 text-slate-600" />
-                    )}
-                    <span>{ghTesting ? 'Memeriksa Repo...' : 'Uji Koneksi GitHub'}</span>
-                  </Button>
-                </div>
-              </form>
-
-              {ghTestResult && (
-                <div
-                  className={`p-3 rounded-md text-xs flex items-center gap-2.5 border ${
-                    ghTestResult.success
-                      ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
-                      : 'bg-rose-50/70 border-rose-200 text-rose-800'
-                  }`}
-                >
-                  {ghTestResult.success ? (
-                    <Check className="w-4 h-4 flex-shrink-0 text-emerald-600" />
-                  ) : (
-                    <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
-                  )}
-                  <span>{ghTestResult.message}</span>
-                </div>
-              )}
             </div>
 
             {/* Cloudflare Deploy Hook Form */}

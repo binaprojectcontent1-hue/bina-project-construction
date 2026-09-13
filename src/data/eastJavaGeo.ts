@@ -1,4 +1,4 @@
-// GeoJSON dataset of East Java (Jawa Timur) optimized for react-simple-maps
+// GeoJSON dataset of East Java (Jawa Timur) for CoverageMap
 export interface GeoFeature {
   type: 'Feature';
   properties: {

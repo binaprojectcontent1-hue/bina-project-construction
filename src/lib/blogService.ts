@@ -1,48 +1,51 @@
 import { supabase, isSupabaseConfigured } from './supabase';
 import type { Article } from '@types';
-import { ARTICLES } from '@data/articles';
-
-export { ARTICLES };
 
 export async function getAllArticles(): Promise<Article[]> {
-  if (isSupabaseConfigured && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('articles')
-        .select('*')
-        .or('status.eq.published,status.is.null')
-        .order('created_at', { ascending: false });
-
-      if (!error && data) {
-        return data as Article[];
-      }
-    } catch (e) {
-      // Log error without exposing details in production
-      console.warn('[BlogService] Database fetch failed, using fallback dataset');
-    }
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn('[BlogService] Supabase is not configured');
+    return [];
   }
 
-  return ARTICLES as unknown as Article[];
+  try {
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .or('status.eq.published,status.is.null')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('[BlogService] Database fetch error:', error.message);
+      return [];
+    }
+
+    return (data as Article[]) || [];
+  } catch (e) {
+    console.error('[BlogService] Database fetch failed:', e);
+    return [];
+  }
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
-  if (isSupabaseConfigured && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('articles')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-
-      if (!error && data) {
-        return data as Article;
-      }
-    } catch (e) {
-      // Log error without exposing details in production
-      console.warn(`[BlogService] Failed to fetch article ${slug}`);
-    }
+  if (!isSupabaseConfigured || !supabase) {
+    return undefined;
   }
 
-  return (ARTICLES as unknown as Article[]).find((a) => a.slug === slug);
+  try {
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+    if (!error && data) {
+      return data as Article;
+    }
+  } catch (e) {
+    console.error(`[BlogService] Failed to fetch article ${slug} from DB:`, e);
+  }
+
+  return undefined;
 }
+
 

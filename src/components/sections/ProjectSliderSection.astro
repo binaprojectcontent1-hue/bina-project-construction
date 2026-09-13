@@ -9,8 +9,20 @@ interface Props {
 }
 
 const { projects } = Astro.props;
+const isSlider = projects.length > 3;
+const sliderConfig = JSON.stringify({
+  slidesPerView: 1,
+  spaceBetween: 24,
+  loop: true,
+  breakpoints: {
+    576: { slidesPerView: 1.2 },
+    768: { slidesPerView: 2 },
+    1200: { slidesPerView: 3 },
+  },
+});
 ---
 
+{projects.length > 0 && (
 <section class="project-area project-sec overflow-hidden space-bottom project-sec-compact" id="portfolio">
   <div class="container">
     <!-- Architectural Header Row -->
@@ -29,7 +41,53 @@ const { projects } = Astro.props;
           <span>Lihat Semua Portofolio</span>
           <Icon name="solar:arrow-right-linear" width="16" height="16" />
         </a>
-        <div class="slider-nav-group">
+        {isSlider && (
+          <div class="slider-nav-group">
+            <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
+              <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
+            </button>
+            <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label="Project Berikutnya">
+              <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Editorial Projects: Clean Grid for <= 3, Swiper Carousel for > 3 -->
+    {isSlider ? (
+      <div class="slider-area position-relative">
+        <div
+          class="swiper th-slider project-slider-editorial"
+          id="projectSlider1"
+          data-slider-options={sliderConfig}
+        >
+          <div class="swiper-wrapper py-3">
+            {projects.map((project) => (
+              <div class="swiper-slide h-auto">
+                <ProjectCard project={project} colClass="w-100 h-100" />
+              </div>
+            ))}
+          </div>
+
+          <!-- Pagination Bullets -->
+          <div class="slider-pagination text-center mt-35"></div>
+        </div>
+      </div>
+    ) : (
+      <div class="row gy-4">
+        {projects.map((project) => (
+          <div class="col-12 col-md-6 col-lg-4">
+            <ProjectCard project={project} colClass="w-100 h-100" />
+          </div>
+        ))}
+      </div>
+    )}
+
+    <!-- Mobile Bottom Navigation & Action Button -->
+    <div class="project-mobile-action d-md-none mt-30 text-center">
+      {isSlider && (
+        <div class="slider-nav-group justify-content-center mb-20">
           <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
             <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
           </button>
@@ -37,39 +95,7 @@ const { projects } = Astro.props;
             <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
           </button>
         </div>
-      </div>
-    </div>
-
-    <!-- Editorial Swiper Carousel Container -->
-    <div class="slider-area position-relative">
-      <div
-        class="swiper th-slider project-slider-editorial"
-        id="projectSlider1"
-        data-slider-options='{"slidesPerView":1,"spaceBetween":24,"loop":true,"breakpoints":{"576":{"slidesPerView":1.15},"768":{"slidesPerView":2},"1200":{"slidesPerView":3}}}'
-      >
-        <div class="swiper-wrapper py-3">
-          {projects.map((project) => (
-            <div class="swiper-slide h-auto">
-              <ProjectCard project={project} colClass="w-100 h-100" />
-            </div>
-          ))}
-        </div>
-
-        <!-- Pagination Bullets -->
-        <div class="slider-pagination text-center mt-35"></div>
-      </div>
-    </div>
-
-    <!-- Mobile Bottom Navigation & Action Button -->
-    <div class="project-mobile-action d-md-none mt-30 text-center">
-      <div class="slider-nav-group justify-content-center mb-20">
-        <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
-          <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
-        </button>
-        <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label="Project Berikutnya">
-          <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
-        </button>
-      </div>
+      )}
       <a href="/portfolio" class="view-all-portfolio-btn w-100 justify-content-center">
         <span>Lihat Semua Portofolio</span>
         <Icon name="solar:arrow-right-linear" width="16" height="16" />
@@ -77,6 +103,7 @@ const { projects } = Astro.props;
     </div>
   </div>
 </section>
+)}
 
 <style>
   /* ========================================================

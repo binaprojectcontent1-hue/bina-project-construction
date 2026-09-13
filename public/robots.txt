@@ -54,3 +54,5 @@ Allow: /
 
 # Sitemaps and LLM Discovery Standard
 Sitemap: https://binaproject.com/sitemap-index.xml
+Sitemap: https://binaproject.com/sitemap.xml
+

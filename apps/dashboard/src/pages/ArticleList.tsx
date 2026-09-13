@@ -19,6 +19,7 @@ import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
+import { Skeleton } from '../components/ui/skeleton';
 
 interface ArticleListProps {
   onEdit?: (id: string) => void;
@@ -200,10 +201,58 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
 
       {/* Content Rendering */}
       {loading ? (
-        <Card className="p-12 text-center text-slate-400 rounded-xl">
-          <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#22416D]" />
-          <span className="text-sm font-medium">Memuat daftar artikel...</span>
-        </Card>
+        viewMode === 'table' ? (
+          <Card className="overflow-hidden shadow-sm rounded-2xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
+                  <tr>
+                    <th className="py-3.5 px-4">Artikel & Ringkasan</th>
+                    <th className="py-3.5 px-4">Alamat URL</th>
+                    <th className="py-3.5 px-4">Kategori & Waktu</th>
+                    <th className="py-3.5 px-4 text-center">Status</th>
+                    <th className="py-3.5 px-4 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <tr key={i}>
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center gap-3.5">
+                          <Skeleton className="w-12 h-9 rounded-lg flex-shrink-0" />
+                          <div className="space-y-1.5 flex-1">
+                            <Skeleton className="h-4 w-44" />
+                            <Skeleton className="h-3 w-28" />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-3.5 w-32" /></td>
+                      <td className="py-3.5 px-4"><Skeleton className="h-5 w-20 rounded-full" /></td>
+                      <td className="py-3.5 px-4 text-center"><Skeleton className="h-5 w-16 mx-auto rounded-full" /></td>
+                      <td className="py-3.5 px-4 text-right"><Skeleton className="h-8 w-16 ml-auto rounded-md" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <Card key={i} className="overflow-hidden shadow-sm rounded-2xl flex flex-col">
+                <Skeleton className="w-full aspect-video" />
+                <div className="p-4 space-y-2.5 flex-1">
+                  <Skeleton className="h-4 w-4/5" />
+                  <Skeleton className="h-3 w-3/5" />
+                  <div className="pt-2 flex justify-between items-center">
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                    <Skeleton className="h-5 w-14 rounded-full" />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )
       ) : filteredArticles.length === 0 ? (
         <Card className="p-12 text-center space-y-4 rounded-xl">
           <BookOpen className="w-12 h-12 text-slate-300 mx-auto" />

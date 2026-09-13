@@ -40,7 +40,7 @@ const isoDate = parseIsoDate(article.publish_date);
 
 <div class={`${colClass} blog-col-wrapper`}>
   <article class="blog-grid" aria-labelledby={`blog-title-${article.slug}`}>
-    <div class="blog-img">
+    <div class="blog-img skeleton-shimmer">
       <a href={articleUrl} tabindex="-1" aria-hidden="true" class="blog-img-link">
         <Image
           src={coverUrl}

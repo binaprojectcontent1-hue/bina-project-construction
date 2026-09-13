@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
-    "@types/node": "^22.20.2",
     "lucide-react": "^1.44.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zod": "^4.6.2"
   },
   "devDependencies": {
+    "@types/node": "^22.20.2",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.3.4",

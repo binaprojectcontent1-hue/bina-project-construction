@@ -137,7 +137,21 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       </CardHeader>
 
       <CardContent className="pt-4 space-y-4">
-        {value ? (
+        {uploading || compressing ? (
+          <div className="relative rounded-lg overflow-hidden border border-slate-200 bg-slate-50/80 p-8 flex flex-col items-center justify-center space-y-3 animate-pulse">
+            <div className="w-10 h-10 rounded-full bg-blue-50 text-[#22416D] flex items-center justify-center">
+              <div className="w-5 h-5 border-2 border-[#22416D] border-t-transparent rounded-full animate-spin" />
+            </div>
+            <div className="text-center space-y-1">
+              <p className="text-xs font-bold text-slate-800">
+                {compressing ? 'Mengoptimalkan Resolusi Gambar...' : 'Mengunggah ke GitHub Media Storage...'}
+              </p>
+              <p className="text-[11px] text-slate-500">
+                Menyimpan berkas foto ke repository dan menyinkronkan CDN global
+              </p>
+            </div>
+          </div>
+        ) : value ? (
           <div className="relative rounded-md overflow-hidden border border-slate-200 bg-slate-50 group">
             <img
               src={previewSrc}

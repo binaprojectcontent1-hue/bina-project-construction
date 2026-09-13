@@ -58,10 +58,24 @@ CREATE TABLE IF NOT EXISTS public.redirects (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 4. Enable Row Level Security (RLS)
+-- 4. Create Leads Table (Dual-Action Inbound Lead Capture & Attribution)
+CREATE TABLE IF NOT EXISTS public.leads (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone VARCHAR(50) NOT NULL,
+    service VARCHAR(100),
+    message TEXT,
+    source_url TEXT,
+    status VARCHAR(50) DEFAULT 'new', -- 'new', 'contacted', 'survey_scheduled', 'deal', 'lost'
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 5. Enable Row Level Security (RLS)
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.articles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.redirects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
 
 -- 5. Row Level Security Policies
 -- Public (anon): READ-only access for website frontend
@@ -114,6 +128,25 @@ CREATE POLICY "Public read redirects"
 
 CREATE POLICY "Admin full access redirects"
     ON public.redirects FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- Leads
+DROP POLICY IF EXISTS "Allow public insert leads" ON public.leads;
+DROP POLICY IF EXISTS "Allow authenticated admin full access leads" ON public.leads;
+DROP POLICY IF EXISTS "Public insert leads" ON public.leads;
+DROP POLICY IF EXISTS "Admin full access leads" ON public.leads;
+
+-- Allow anonymous visitors to insert lead data from contact forms
+CREATE POLICY "Public insert leads"
+    ON public.leads FOR INSERT
+    TO anon, authenticated
+    WITH CHECK (true);
+
+-- Allow only authenticated admins to view/manage leads
+CREATE POLICY "Admin full access leads"
+    ON public.leads FOR ALL
     TO authenticated
     USING (true)
     WITH CHECK (true);

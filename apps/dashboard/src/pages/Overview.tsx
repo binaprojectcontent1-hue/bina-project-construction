@@ -22,6 +22,7 @@ import { resolveDashboardMediaUrl } from '../lib/media';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { Skeleton } from '../components/ui/skeleton';
 
 interface OverviewProps {
   onNewPortfolio: () => void;
@@ -172,9 +173,13 @@ export const Overview: React.FC<OverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
-              {portfolioCount}
-            </span>
+            {loading ? (
+              <Skeleton className="h-9 w-16 my-0.5" />
+            ) : (
+              <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
+                {portfolioCount}
+              </span>
+            )}
             <span className="text-xs text-slate-500 font-medium">total proyek</span>
           </div>
           <div className="mt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
@@ -195,9 +200,13 @@ export const Overview: React.FC<OverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
-              {articleCount}
-            </span>
+            {loading ? (
+              <Skeleton className="h-9 w-16 my-0.5" />
+            ) : (
+              <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
+                {articleCount}
+              </span>
+            )}
             <span className="text-xs text-slate-500 font-medium">total naskah</span>
           </div>
           <div className="mt-2 text-xs text-[#22416D] font-semibold flex items-center gap-1.5">
@@ -282,7 +291,21 @@ export const Overview: React.FC<OverviewProps> = ({
 
           {/* Card Body */}
           <div className="p-4 md:p-5 flex-1 flex flex-col justify-between">
-            {recentProjects.length === 0 ? (
+            {loading ? (
+              <div className="space-y-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="p-3 rounded-xl border border-slate-100 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
+                      <div className="space-y-1.5 flex-1">
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-3 w-1/3" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : recentProjects.length === 0 ? (
               <div className="my-auto py-10 text-center space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#22416D] flex items-center justify-center mx-auto shadow-2xs">
                   <Briefcase className="w-5 h-5" />
@@ -401,7 +424,21 @@ export const Overview: React.FC<OverviewProps> = ({
 
           {/* Card Body */}
           <div className="p-4 md:p-5 flex-1 flex flex-col justify-between">
-            {recentArticles.length === 0 ? (
+            {loading ? (
+              <div className="space-y-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="p-3 rounded-xl border border-slate-100 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
+                      <div className="space-y-1.5 flex-1">
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-3 w-1/3" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : recentArticles.length === 0 ? (
               <div className="my-auto py-10 text-center space-y-3.5">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#22416D] flex items-center justify-center mx-auto shadow-2xs">
                   <PenTool className="w-5 h-5 text-[#22416D]" />

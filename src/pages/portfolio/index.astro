@@ -4,9 +4,28 @@ import Breadcrumb from '@components/Breadcrumb.astro';
 import ProjectCard from '@components/ProjectCard.astro';
 import { getAllProjects } from '@lib/portfolioService';
 import SectionHeader from '@components/SectionHeader.astro';
+import EmptyState from '@components/EmptyState.astro';
 import { Icon } from 'astro-icon/components';
 
 const projects = await getAllProjects();
+
+// Live project counts computed directly from database
+const totalCount = projects.length;
+const interiorCount = projects.filter((p) => {
+  const c = (p.category || '').toLowerCase();
+  const t = (p.title || '').toLowerCase();
+  return c.includes('interior') || t.includes('interior') || c.includes('kitchen') || t.includes('kitchen');
+}).length;
+const konstruksiCount = projects.filter((p) => {
+  const c = (p.category || '').toLowerCase();
+  const t = (p.title || '').toLowerCase();
+  return c.includes('konstruksi') || t.includes('konstruksi');
+}).length;
+const eksteriorCount = projects.filter((p) => {
+  const c = (p.category || '').toLowerCase();
+  const t = (p.title || '').toLowerCase();
+  return c.includes('eksterior') || t.includes('eksterior');
+}).length;
 ---
 
 <BaseLayout
@@ -25,19 +44,50 @@ const projects = await getAllProjects();
         align="center"
       />
 
-      <div class="filter-menu style2 indicator-active filter-menu-active">
-        <button data-filter="*" class="tab-btn active" type="button">Show All Work</button>
-        <button data-filter=".cat1" class="tab-btn" type="button">Eksterior</button>
-        <button data-filter=".cat2" class="tab-btn" type="button">Interior</button>
-        <button data-filter=".cat3" class="tab-btn" type="button">Konstruksi</button>
-        <button data-filter=".cat4" class="tab-btn" type="button">Kitchen Set</button>
+      <!-- Architectural Segmented Island Filter Dock -->
+      <div class="filter-dock-wrapper">
+        <nav class="filter-dock filter-menu style2 indicator-active filter-menu-active" aria-label="Filter Kategori Portofolio">
+          <button data-filter="*" class="filter-tab-pill tab-btn active" type="button">
+            <Icon name="solar:widget-linear" width="16" height="16" class="tab-icon" />
+            <span class="tab-label">Semua Karya</span>
+            <span class="tab-badge">{totalCount}</span>
+          </button>
+          
+          <button data-filter=".cat2" class="filter-tab-pill tab-btn" type="button">
+            <Icon name="solar:armchair-linear" width="16" height="16" class="tab-icon" />
+            <span class="tab-label">Interior</span>
+            <span class="tab-badge">{interiorCount}</span>
+          </button>
+
+          <button data-filter=".cat3" class="filter-tab-pill tab-btn" type="button">
+            <Icon name="solar:buildings-2-linear" width="16" height="16" class="tab-icon" />
+            <span class="tab-label">Konstruksi</span>
+            <span class="tab-badge">{konstruksiCount}</span>
+          </button>
+
+          <button data-filter=".cat1" class="filter-tab-pill tab-btn" type="button">
+            <Icon name="solar:home-smile-linear" width="16" height="16" class="tab-icon" />
+            <span class="tab-label">Eksterior</span>
+            <span class="tab-badge">{eksteriorCount}</span>
+          </button>
+        </nav>
       </div>
 
-      <div class="row gallery-row filter-active gy-4 gx-4">
-        {projects.map((project) => (
-          <ProjectCard project={project} colClass="col-12 col-md-6 col-lg-4 filter-item" />
-        ))}
-      </div>
+      {projects.length > 0 ? (
+        <div class="row gallery-row filter-active gy-4 gx-4">
+          {projects.map((project) => (
+            <ProjectCard project={project} colClass="col-12 col-md-6 col-lg-4 filter-item" />
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          icon="solar:gallery-wide-linear"
+          title="Belum Ada Portofolio Ditampilkan"
+          description="Dokumentasi hasil karya konstruksi bangunan dan interior terbaru sedang dalam tahap kurasi dan pengunggahan oleh tim kami."
+          primaryActionText="Konsultasikan Kebutuhan Anda"
+          primaryActionHref="/contact"
+        />
+      )}
     </div>
   </section>
 
@@ -46,9 +96,8 @@ const projects = await getAllProjects();
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <div class="title-area mb-0 text-center text-lg-start">
-            <span class="sub-title style1 mb-20 text-white">Get Consultation</span>
-            <h2 class="sec-title text-white">Ingin Mewujudkan Proyek Serupa? Konsultasikan Sekarang <span class="text-white">!</span></h2>
+          <div class="title-area title-area--dark mb-0 text-center text-lg-start">
+            <h2 class="sec-title text-white" style="color: #ffffff !important;">Ingin Mewujudkan Proyek Serupa? Konsultasikan Sekarang <span class="text-white">!</span></h2>
           </div>
         </div>
         <div class="col-lg-6">
@@ -85,48 +134,150 @@ const projects = await getAllProjects();
       }
     }
 
-    /* Mobile-first Filter Tabs (Smooth Horizontal Scrollable Pills) */
-    @media (max-width: 575px) {
-      .filter-menu {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        justify-content: flex-start !important;
-        padding: 4px 4px 16px 4px !important;
-        gap: 8px !important;
-        margin-bottom: 30px !important;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
+    /* ==========================================================================
+       Architectural Floating Segmented Filter Dock (Linear & Apple Style)
+       ========================================================================== */
+    .filter-dock-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 44px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .filter-dock {
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 9999px;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+      max-width: 100%;
+    }
+
+    .filter-tab-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      background: transparent;
+      color: #475569;
+      font-size: 13.5px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+      outline: none;
+      white-space: nowrap;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      user-select: none;
+      min-height: 42px;
+    }
+
+    .filter-tab-pill .tab-icon {
+      color: #64748B;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .filter-tab-pill .tab-label {
+      line-height: 1;
+      letter-spacing: 0.2px;
+    }
+
+    .filter-tab-pill .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      transition: all 0.25s ease;
+    }
+
+    /* Hover State on Inactive Tabs */
+    .filter-tab-pill:not(.active):hover {
+      background: #FFFFFF;
+      color: #1E293B;
+      border-color: #E2E8F0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .filter-tab-pill:not(.active):hover .tab-icon {
+      color: #22416D;
+      transform: scale(1.08);
+    }
+
+    .filter-tab-pill:not(.active):hover .tab-badge {
+      background: #EFF6FF;
+      color: #22416D;
+    }
+
+    /* Active Tab State */
+    .filter-tab-pill.active {
+      background: linear-gradient(135deg, #22416D 0%, #162B48 100%) !important;
+      color: #FFFFFF !important;
+      border-color: #22416D !important;
+      box-shadow: 0 4px 16px rgba(34, 65, 109, 0.25), 0 1px 3px rgba(34, 65, 109, 0.15) !important;
+      transform: translateY(0);
+    }
+
+    .filter-tab-pill.active .tab-icon {
+      color: #FFFFFF !important;
+    }
+
+    .filter-tab-pill.active .tab-badge {
+      background: rgba(255, 255, 255, 0.22) !important;
+      color: #FFFFFF !important;
+      backdrop-filter: blur(4px);
+    }
+
+    .filter-tab-pill:before,
+    .filter-tab-pill:after {
+      display: none !important;
+    }
+
+    /* Mobile UX: Horizontal Scrollable Segmented Dock */
+    @media (max-width: 767px) {
+      .filter-dock-wrapper {
+        margin-bottom: 28px;
+        justify-content: flex-start;
+        padding-left: 2px;
+        padding-right: 2px;
       }
 
-      .filter-menu::-webkit-scrollbar {
+      .filter-dock {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 6px;
+        border-radius: 14px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        scroll-snap-type: x mandatory;
+      }
+
+      .filter-dock::-webkit-scrollbar {
         display: none;
       }
 
-      .filter-menu .tab-btn {
-        white-space: nowrap !important;
-        padding: 8px 18px !important;
-        border-radius: 999px !important;
-        background: #F1F5F9 !important;
-        color: #475569 !important;
-        font-size: 13.5px !important;
-        font-weight: 600 !important;
-        min-height: 40px !important;
-        border: 1px solid #E2E8F0 !important;
-        flex-shrink: 0 !important;
-        transition: all 0.2s ease !important;
-      }
-
-      .filter-menu .tab-btn:before,
-      .filter-menu .tab-btn:after {
-        display: none !important;
-      }
-
-      .filter-menu .tab-btn.active {
-        background: #22416D !important;
-        color: #FFFFFF !important;
-        border-color: #22416D !important;
-        box-shadow: 0 4px 14px rgba(34, 65, 109, 0.25) !important;
+      .filter-tab-pill {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        padding: 9px 14px;
+        font-size: 13px;
+        min-height: 40px;
       }
     }
   </style>

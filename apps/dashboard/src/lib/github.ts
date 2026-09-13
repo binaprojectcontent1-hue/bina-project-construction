@@ -80,13 +80,27 @@ export function saveGitHubConfig(config: GitHubStorageConfig): void {
 export function loadGitHubConfig(): GitHubStorageConfig | null {
   try {
     const encrypted = localStorage.getItem(STORAGE_KEY);
-    if (!encrypted) return null;
-
-    return decryptConfig(encrypted);
+    if (encrypted) {
+      const decrypted = decryptConfig(encrypted);
+      if (decrypted && decrypted.token) {
+        return decrypted;
+      }
+    }
   } catch (e) {
     localStorage.removeItem(STORAGE_KEY);
-    return null;
   }
+
+  // Fallback to environment variables from .env if available
+  const owner = import.meta.env.VITE_GITHUB_OWNER;
+  const repo = import.meta.env.VITE_GITHUB_REPO;
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+  const branch = import.meta.env.VITE_GITHUB_BRANCH || 'main';
+
+  if (owner && repo && token) {
+    return { owner, repo, branch, token };
+  }
+
+  return null;
 }
 
 /**

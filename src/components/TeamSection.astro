@@ -1,152 +1,268 @@
 ---
+/**
+ * @file TeamSection.astro
+ * @description Redesigned team showcase without skill checklists, featuring
+ * modern architectural floating cards, role badges, elegant typography,
+ * centered 5-member layout, and a high-converting consultation banner.
+ */
 import { TEAM_MEMBERS } from '@data/team';
 import SectionHeader from '@components/SectionHeader.astro';
 import { Icon } from 'astro-icon/components';
 ---
 
-<section class="space-top space-extra-bottom" id="our-team">
-  <div class="container">
+<section class="team-section" id="our-team">
+
+  <div class="container" style="max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1;">
+    <!-- Section Header -->
     <SectionHeader
-      badge="Profesional Berpengalaman"
+      badge="Tim & Kepemimpinan"
       badgeIcon="solar:users-group-rounded-bold"
-      title="Tim Ahli Bina Project"
-      description="Setiap proyek Bina Project ditangani oleh tim arsitek berlisensi, project manager berpengalaman, dan tenaga ahli terlatih untuk memastikan kualitas dan ketepatan waktu pengerjaan."
+      title="Dedikasi Profesional"
+      titleAccent="Dibalik Setiap Karya"
+      description="Setiap hunian dan ruang komersial yang kami bangun ditangani oleh tim arsitek, project manager, dan tenaga ahli berdedikasi tinggi untuk memastikan standar presisi dan estetika terbaik di Malang & Jawa Timur."
       align="center"
     />
 
-    <div class="row gy-4">
+    <!-- Team Cards (Centered Balanced Layout, Borderless) -->
+    <div class="team-cards-wrap">
       {TEAM_MEMBERS.map((member) => (
-        <div class="col-lg-4 col-md-6">
-          <div class="team-card">
-            <div class="team-img-wrap">
-              <img
-                src={member.image}
-                alt={`${member.name} - ${member.jobTitle} Bina Project`}
-                loading="lazy"
-                decoding="async"
-                width="400"
-                height="400"
-              />
-            </div>
-            <h2 class="team-name">{member.name}</h2>
-            <p class="team-title">{member.jobTitle}</p>
-            <p class="team-desc">{member.description}</p>
-            <div class="team-expertise">
-              <span class="expertise-heading">Keahlian:</span>
-              <ul class="expertise-list">
-                {member.expertise.map((skill) => (
-                  <li class="expertise-item">
-                    <Icon name="solar:check-circle-bold" width="14" height="14" />
-                    <span>{skill}</span>
-                  </li>
-                ))}
-              </ul>
+        <article class="team-card">
+          <!-- Top Card Banner -->
+          <div class="team-card-banner"></div>
+
+          <!-- Avatar Frame (Head & Shoulders Focus) -->
+          <div class="team-avatar-frame">
+            <img
+              src={member.image}
+              alt={`${member.name} - ${member.jobTitle} Bina Project`}
+              loading="lazy"
+              decoding="async"
+              width="110"
+              height="110"
+              class="team-avatar-img"
+              style="width: 110px; height: 110px; max-width: 110px; max-height: 110px; border-radius: 50%; object-fit: cover;"
+            />
+          </div>
+
+          <!-- Card Content -->
+          <div class="team-card-body">
+            <span class="team-role-pill">{member.role}</span>
+            <h3 class="team-name">{member.name}</h3>
+            <p class="team-job-title">{member.jobTitle}</p>
+            <p class="team-bio">{member.description}</p>
+
+            <!-- Card Footer Quick Contact Action -->
+            <div class="team-card-footer">
+              <a
+                href={`https://wa.me/6281335335304?text=${encodeURIComponent(`Halo Bina Project, saya ingin konsultasi proyek konstruksi/interior bersama tim ${member.jobTitle} (${member.name})`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="team-consult-link"
+                title={`Hubungi tim untuk ${member.jobTitle}`}
+              >
+                <Icon name="simple-icons:whatsapp" width="16" height="16" class="team-wa-icon" />
+                <span>Konsultasi Proyek</span>
+                <Icon name="solar:arrow-right-linear" width="14" height="14" class="team-arrow-icon" />
+              </a>
             </div>
           </div>
-        </div>
+        </article>
       ))}
-    </div>
-
-    <div class="team-cta text-center mt-60">
-      <h2 class="mb-3 team-cta-title">Konsultasikan Proyek Anda dengan Tim Profesional Kami</h2>
-      <p class="mb-4 team-cta-text">
-        Setiap proyek mendapat dedikasi penuh dari tim arsitek dan project manager berpengalaman.
-        Hubungi kami untuk diskusi gratis.
-      </p>
     </div>
   </div>
 </section>
 
 <style>
+  /* ==============================================================================
+     TEAM SECTION - REDESIGNED (BORDERLESS & NO-SKILLS CHECKLIST)
+     ============================================================================== */
+  .team-section {
+    position: relative;
+    padding: clamp(60px, 8vw, 100px) 0;
+    background: var(--bina-slate-50, #F8FAFC);
+    overflow: hidden;
+    color: var(--bina-slate-900, #17202A);
+    font-family: var(--font-body, 'Archivo', sans-serif);
+  }
+
+
+  /* ----------------------------------------------------------------------------
+     1. Team Cards Layout (Centered 3 + 2 Grid)
+     ---------------------------------------------------------------------------- */
+  .team-cards-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 0;
+  }
+
+  /* ----------------------------------------------------------------------------
+     2. Individual Team Card (Seamless Floating Design, No Borders)
+     ---------------------------------------------------------------------------- */
   .team-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px;
-    box-shadow: 0 8px 24px rgba(34, 65, 109, 0.08);
+    background: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 4px 24px rgba(34, 65, 109, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 calc(33.333% - 20px);
+    min-width: 320px;
+    max-width: 380px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 36px rgba(34, 65, 109, 0.1);
+  }
+
+  /* Top Card Banner */
+  .team-card-banner {
+    height: 85px;
+    background: linear-gradient(135deg, #182C49 0%, #22416D 70%, #1F3A60 100%);
+    position: relative;
+  }
+
+  /* Avatar Frame (Centered over the banner) */
+  .team-avatar-frame {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin: -55px auto 14px;
+    background: #FFFFFF;
+    padding: 4px;
+    box-shadow: 0 8px 24px rgba(34, 65, 109, 0.16);
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  .team-card:hover .team-avatar-frame {
+    transform: scale(1.06);
+  }
+  .team-avatar-img {
+    width: 100%;
     height: 100%;
-  }
-  .team-img-wrap {
-    text-align: center;
-    margin-bottom: 16px;
-  }
-  .team-img-wrap img {
-    width: 120px;
-    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    background: #eff6ff;
+    object-position: center 25%;
+    transform: scale(1.15);
+    transform-origin: center 30%;
+    display: block;
+    background: #22416D;
   }
+
+  /* Content Area */
+  .team-card-body {
+    padding: 0 24px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+
+  /* Role Tag */
+  .team-role-pill {
+    display: inline-block;
+    padding: 3px 12px;
+    background: rgba(34, 65, 109, 0.08);
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--bina-navy, #22416D);
+    margin-bottom: 10px;
+  }
+
   .team-name {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #17202a;
-    margin-bottom: 4px;
-    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--bina-slate-900, #17202A);
+    margin: 0 0 4px;
+    font-family: var(--font-display, 'Archivo', sans-serif);
   }
-  .team-title {
-    font-size: 0.9rem;
-    color: #22416d;
-    font-weight: 600;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-  .team-desc {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: #475569;
-    margin-bottom: 20px;
-  }
-  .expertise-heading {
+  .team-job-title {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #22416d;
-    display: block;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--bina-navy, #22416D);
+    margin: 0 0 16px;
   }
-  .expertise-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .team-bio {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--bina-slate-500, #475569);
+    margin: 0 0 20px;
+    flex: 1;
   }
-  .expertise-item {
+
+  /* Card Footer Contact Link */
+  .team-card-footer {
+    width: 100%;
+    padding-top: 14px;
+    border-top: 1px solid var(--bina-slate-100, #F1F5F9);
     display: flex;
-    align-items: flex-start;
+    justify-content: center;
+  }
+  .team-consult-link {
+    display: inline-flex;
+    align-items: center;
     gap: 8px;
-    font-size: 0.9rem;
-    color: #334155;
-    margin-bottom: 6px;
-  }
-  .expertise-item svg {
-    flex-shrink: 0;
-    margin-top: 3px;
-    color: #22416d;
-  }
-  .team-cta-title {
-    font-size: 1.5rem;
+    font-size: 12.5px;
     font-weight: 700;
-    color: #17202a;
+    color: var(--bina-navy, #22416D);
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    background: rgba(34, 65, 109, 0.05);
+    transition: all 0.25s ease;
   }
-  .team-cta-text {
-    font-size: 1.05rem;
-    color: #475569;
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
+  .team-consult-link:hover {
+    background: var(--bina-navy, #22416D);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(34, 65, 109, 0.2);
   }
-  
+  .team-wa-icon {
+    color: #25D366;
+    transition: color 0.2s;
+  }
+  .team-consult-link:hover .team-wa-icon {
+    color: #FFFFFF;
+  }
+  .team-arrow-icon {
+    transition: transform 0.2s ease;
+  }
+  .team-consult-link:hover .team-arrow-icon {
+    transform: translateX(3px);
+  }
+
+  /* ----------------------------------------------------------------------------
+     3. Responsive Breakpoints
+     ---------------------------------------------------------------------------- */
   @media (max-width: 991px) {
+    .team-cards-wrap {
+      gap: 20px;
+    }
     .team-card {
-      padding: 24px;
+      flex: 0 1 calc(50% - 15px);
+      max-width: none;
     }
   }
-  
-  @media (max-width: 575px) {
-    .team-cta {
-      display: flex !important;
-      flex-direction: column !important;
-      width: 100% !important;
+
+  @media (max-width: 640px) {
+    .team-card {
+      flex: 0 1 100%;
+      min-width: 0;
+    }
+    .team-card-body {
+      padding: 0 18px 20px;
+    }
+    .team-bio {
+      font-size: 13px;
     }
   }
 </style>

@@ -5,7 +5,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config - reloaded for new favicons
 export default defineConfig({
-  site: import.meta.env.SITE || 'http://localhost:4321', // Auto-detect for local dev
+  site: import.meta.env.SITE || 'https://binaproject.com', // Safe production fallback
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),
@@ -14,9 +14,9 @@ export default defineConfig({
     react(),
   ],
   redirects: {
-    '/portfolio/villa-modern-batu': '/portfolio/villa',
-    '/portfolio/cafe-batu-estetik': '/portfolio/cafe-batu',
-    '/portfolio/kitchen-set-pasuruan': '/portfolio/kitchen-set',
+    '/portfolio/villa-modern-batu': '/portfolio',
+    '/portfolio/cafe-batu-estetik': '/portfolio',
+    '/portfolio/kitchen-set-pasuruan': '/portfolio',
   },
   image: {
     domains: ['cdn.jsdelivr.net', 'images.unsplash.com', 'raw.githubusercontent.com'],

@@ -22,22 +22,27 @@ const {
 const loading = explicitLoading ?? (priority ? 'eager' : 'lazy');
 const fetchpriority = priority || loading === 'eager' ? 'high' : 'auto';
 
-// Determine category filter class
-const catClass = project.category.toLowerCase().includes('eksterior') 
-  ? 'cat1' 
-  : project.category.toLowerCase().includes('interior') 
-  ? 'cat2' 
-  : project.category.toLowerCase().includes('kitchen')
-  ? 'cat4'
-  : 'cat3';
+// Determine category filter classes (a project can match multiple tags, e.g. Kitchen Set is also Interior)
+const catClasses = [];
+const catLower = (project.category || '').toLowerCase();
+const titleLower = (project.title || '').toLowerCase();
+
+if (catLower.includes('eksterior') || titleLower.includes('eksterior')) catClasses.push('cat1');
+if (catLower.includes('interior') || titleLower.includes('interior') || catLower.includes('kitchen') || titleLower.includes('kitchen') || catLower.includes('dapur') || titleLower.includes('dapur')) {
+  catClasses.push('cat2');
+}
+if (catLower.includes('konstruksi') || titleLower.includes('konstruksi')) catClasses.push('cat3');
+if (catClasses.length === 0) catClasses.push('cat3');
+
+const catClass = catClasses.join(' ');
 
 const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/project_1_1.jpg';
 ---
 
 <div class={`${colClass} ${catClass}`}>
   <article class="editorial-card">
-    <!-- Image Media Container (100% Clear & Unshaded) -->
-    <div class="card-media">
+    <!-- Image Media Container (100% Clear & Unshaded with Shimmer Skeleton) -->
+    <div class="card-media skeleton-shimmer">
       <Image
         src={coverUrl}
         alt={`Portofolio ${project.title} - ${project.category} Bina Project`}

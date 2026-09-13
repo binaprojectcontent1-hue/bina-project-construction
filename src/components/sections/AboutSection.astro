@@ -70,9 +70,9 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
               <span class="exp-count">162<span class="exp-plus">+</span></span>
             </div>
             <span class="exp-label">Projek Sukses Selesai</span>
-            <div class="exp-satisfaction-row">
-              <span class="satisfaction-ping"></span>
-              <span class="satisfaction-text">99% Kepuasan Klien</span>
+            <div class="exp-proof-row">
+              <Icon name="solar:verified-check-bold" width="14" height="14" class="exp-verified-icon" />
+              <span class="exp-verified-text">100% Tuntas Sesuai SPK</span>
             </div>
           </div>
         </div>
@@ -251,9 +251,7 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
     position: absolute;
     top: 10px;
     left: -10px;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: #FFFFFF;
     border: none;
     outline: none;
     border-radius: 14px;
@@ -358,27 +356,24 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
     margin-bottom: 8px;
   }
 
-  .exp-satisfaction-row {
+  .exp-proof-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     padding-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
   }
 
-  .satisfaction-ping {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 8px #10B981;
-    display: inline-block;
+  .exp-verified-icon {
+    color: #93C5FD;
+    flex-shrink: 0;
   }
 
-  .satisfaction-text {
+  .exp-verified-text {
     font-size: 11px;
     font-weight: 700;
     color: #F1F5F9;
+    letter-spacing: 0.02em;
   }
 
   /* ========================================================

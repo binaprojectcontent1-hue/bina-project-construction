@@ -20,14 +20,14 @@ const heroSlides: readonly HeroSlide[] = [
     image: optimizedHero1.src,
     subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
     title: 'Jasa Konstruksi & <br /> Desain Interior Malang',
-    desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB, dan pengawasan profesional.',
+    desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB tanpa biaya tersembunyi, dan pengawasan profesional.',
     isH1: true,
   },
   {
     image: optimizedHero2.src,
-    subtitle: 'You Dream It, We Build It',
-    title: 'BINA PROJECT <br /> CONSTRUCTION',
-    desc: 'Penyedia jasa bangun rumah baru, renovasi gedung, kitchen set minimalis, dan developer terpercaya di Malang Raya.',
+    subtitle: 'Standar Mutu SNI & Garansi Pemeliharaan Resmi SPK',
+    title: 'BINA PROJECT <br /> ARCHITECTURE & BUILD',
+    desc: 'Penyedia jasa bangun rumah baru, renovasi bangunan, custom kitchen set, dan developer amanah bergaransi di Malang Raya & sekitarnya.',
     isH1: false,
   },
 ];
@@ -57,11 +57,18 @@ const heroSlides: readonly HeroSlide[] = [
 
               <!-- Centered Action Buttons -->
               <div class="hero-fs-cta-group justify-content-center">
-                <a href="/portfolio" class="hero-fs-btn-primary">
-                  Lihat Portofolio Kami
+                <a
+                  href="https://wa.me/6281335335304?text=Halo%20Tim%20Arsitek%20Bina%20Project,%20saya%20ingin%20konsultasi%20rencana%20proyek%20dan%20estimasi%20biaya"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hero-fs-btn-primary"
+                  onclick="if(typeof window.trackLead==='function') window.trackLead('hero_wa_cta', 'hero_slide');"
+                >
+                  <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" />
+                  Konsultasi Estimasi Biaya
                 </a>
-                <a href="/contact" class="hero-fs-btn-secondary">
-                  Konsultasi Gratis
+                <a href="/portfolio" class="hero-fs-btn-secondary">
+                  Lihat 162+ Portofolio
                 </a>
               </div>
             </div>

@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#22416D"/><circle cx="200" cy="150" r="70" fill="#84ACDF" opacity="0.35"/><circle cx="200" cy="140" r="52" fill="#DBEAFE"/><path d="M200 205c-55 0-95 32-95 80v35h190v-35c0-48-40-80-95-80z" fill="#DBEAFE"/><text x="200" y="365" font-family="Archivo, Arial, sans-serif" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">Faisal Anam</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg-faisal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2F24"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="emerald-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="200" fill="url(#bg-faisal)"/>
+  <circle cx="200" cy="155" r="75" fill="#34D399" opacity="0.3"/>
+  <circle cx="200" cy="148" r="58" fill="#E2E8F0"/>
+  <path d="M200 222c-62 0-105 34-105 88v50h210v-50c0-54-43-88-105-88z" fill="#E2E8F0"/>
+  <circle cx="280" cy="275" r="14" fill="url(#emerald-accent)"/>
+</svg>

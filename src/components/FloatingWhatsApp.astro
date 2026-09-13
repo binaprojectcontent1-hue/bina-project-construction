@@ -1,0 +1,204 @@
+---
+import { Icon } from 'astro-icon/components';
+import { createWhatsAppUrl } from '@utils/whatsapp';
+
+const waUrl = createWhatsAppUrl({
+  customMessage: 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.',
+});
+---
+
+<aside class="floating-wa-wrapper" aria-label="Konsultasi Cepat WhatsApp">
+  <a
+    href={waUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="floating-wa-btn"
+    aria-label="Chat WhatsApp Resmi Bina Project"
+    id="floatingWhatsAppBtn"
+  >
+    <!-- Live Pulse Radar -->
+    <span class="floating-wa-radar" aria-hidden="true"></span>
+    
+    <!-- WhatsApp Official Icon -->
+    <span class="floating-wa-icon-box">
+      <Icon name="simple-icons:whatsapp" width="28" height="28" class="floating-wa-icon" />
+    </span>
+
+    <!-- Text Pill Label (Visible on desktop / large viewports) -->
+    <span class="floating-wa-label">
+      <span class="floating-wa-status-dot"></span>
+      <span>Konsultasi Gratis</span>
+    </span>
+  </a>
+</aside>
+
+<script is:inline>
+  (function () {
+    function setupDynamicFloatingWA() {
+      const btn = document.getElementById('floatingWhatsAppBtn');
+      if (!btn) return;
+
+      const path = window.location.pathname;
+      let customMsg = 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.';
+
+      if (path.startsWith('/portfolio/')) {
+        const pageTitle = document.querySelector('h1, h2.sec-title')?.textContent?.trim();
+        if (pageTitle) {
+          customMsg = `Halo Tim Arsitek Bina Project, saya tertarik dengan portofolio "${pageTitle}" di website dan ingin konsultasi estimasi biaya serta survei.`;
+        }
+      } else if (path.includes('jasa-konstruksi-')) {
+        const citySlug = path.replace(/.*jasa-konstruksi-/, '').replace(/\//g, '');
+        const cityName = citySlug ? citySlug.charAt(0).toUpperCase() + citySlug.slice(1) : 'Jawa Timur';
+        customMsg = `Halo Tim Bina Project, saya ingin konsultasi rencana pembangunan/renovasi di area ${cityName}.`;
+      } else if (path.startsWith('/blog/')) {
+        const articleTitle = document.querySelector('h1.blog-title')?.textContent?.trim();
+        if (articleTitle) {
+          customMsg = `Halo Tim Bina Project, saya baru membaca artikel "${articleTitle}" di website dan ingin konsultasi teknis terkait hal tersebut.`;
+        }
+      }
+
+      const waNumber = '6281335335304';
+      btn.setAttribute('href', `https://wa.me/${waNumber}?text=${encodeURIComponent(customMsg)}`);
+
+      btn.addEventListener('click', function () {
+        if (typeof window.trackLead === 'function') {
+          window.trackLead('floating_whatsapp', path);
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupDynamicFloatingWA);
+    } else {
+      setupDynamicFloatingWA();
+    }
+  })();
+</script>
+
+<style>
+  .floating-wa-wrapper {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    pointer-events: auto;
+  }
+
+  .floating-wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25D366;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    padding: 10px 18px 10px 12px;
+    border-radius: 9999px;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .floating-wa-btn:hover {
+    background: #20BA56;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5), 0 4px 12px rgba(0, 0, 0, 0.16);
+    color: #FFFFFF !important;
+  }
+
+  /* Pulse Animation Ring */
+  .floating-wa-radar {
+    position: absolute;
+    top: 50%;
+    left: 26px;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #25D366;
+    animation: waPulse 2.2s infinite cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+  }
+
+  @keyframes waPulse {
+    0% {
+      transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0.9;
+    }
+    60% {
+      transform: translate(-50%, -50%) scale(1.6);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.7);
+      opacity: 0;
+    }
+  }
+
+  .floating-wa-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .floating-wa-icon {
+    width: 28px;
+    height: 28px;
+    color: #FFFFFF;
+  }
+
+  .floating-wa-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+
+  .floating-wa-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 767px) {
+    .floating-wa-wrapper {
+      bottom: 24px;
+      right: 20px;
+    }
+
+    .floating-wa-btn {
+      padding: 12px;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      justify-content: center;
+    }
+
+    .floating-wa-radar {
+      left: 26px;
+    }
+
+    .floating-wa-label {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-wa-radar {
+      animation: none;
+      display: none;
+    }
+    .floating-wa-btn {
+      transition: none;
+    }
+  }
+</style>
