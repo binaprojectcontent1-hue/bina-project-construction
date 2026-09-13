@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Map as LeafletMap, Marker as LeafletMarker } from 'leaflet';
 import type { LiveProject } from '../types/liveProject';
 import { FALLBACK_LIVE_PROJECTS } from '../data/liveProjects';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
 import { getMediaUrl } from '../lib/cdn';
 import 'leaflet/dist/leaflet.css';
 import '@styles/coverage.css';
@@ -18,29 +18,30 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
   const [projects, setProjects] = useState<LiveProject[]>(FALLBACK_LIVE_PROJECTS);
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Fetch live projects from Supabase or fallback
   useEffect(() => {
     let isMounted = true;
 
     async function loadProjects() {
-      const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
-      const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-      if (supabaseUrl && supabaseAnonKey) {
+      if (supabase) {
         try {
-          const supabase = createClient(supabaseUrl, supabaseAnonKey);
-          const { data, error } = await supabase
+          const fetchPromise = supabase
             .from('live_projects')
             .select('*')
             .eq('is_active', true)
             .order('progress', { ascending: false });
 
+          const timeoutPromise = new Promise<{ data: null; error: Error }>((resolve) =>
+            setTimeout(() => resolve({ data: null, error: new Error('timeout') }), 2500)
+          );
+
+          const { data, error } = (await Promise.race([fetchPromise, timeoutPromise])) as any;
+
           if (!error && data && data.length > 0) {
             if (isMounted) {
               setProjects(data as LiveProject[]);
-              setIsLoading(false);
               return;
             }
           }
@@ -51,7 +52,6 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
       if (isMounted) {
         setProjects(FALLBACK_LIVE_PROJECTS);
-        setIsLoading(false);
       }
     }
 
@@ -137,11 +137,11 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
       const latLng: [number, number] = [proj.lat, proj.lng];
       bounds.extend(latLng);
 
-      // Minimalist Elegant Architectural Pin (clean brand navy theme, no pulsing radar)
+      // Minimalist Elegant Architectural Pin (clean brand navy theme, pointer needle & white text)
       const markerHtml = `
         <div class="live-project-pin-container">
           <div class="live-project-pin-badge">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="live-project-pin-icon">
               <path d="M3 21h18"/>
               <path d="M5 21V7l8-4v18"/>
               <path d="M19 21V11l-6-4"/>
@@ -152,16 +152,17 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
             </svg>
             <span class="live-project-pin-pct">${proj.progress}%</span>
           </div>
-          <div class="live-project-pin-stem"></div>
+          <div class="live-project-pin-pointer"></div>
+          <div class="live-project-pin-anchor"></div>
         </div>
       `;
 
       const customIcon = L.divIcon({
         html: markerHtml,
         className: 'live-project-marker-wrapper',
-        iconSize: [64, 40],
-        iconAnchor: [32, 38],
-        popupAnchor: [0, -38],
+        iconSize: [70, 44],
+        iconAnchor: [35, 42],
+        popupAnchor: [0, -42],
       });
 
       const marker = L.marker(latLng, { icon: customIcon }).addTo(map);
@@ -392,38 +393,60 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           flex-direction: column;
           align-items: center;
           cursor: pointer;
-          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+          filter: drop-shadow(0 4px 10px rgba(11, 23, 44, 0.38));
         }
 
         .live-project-pin-container:hover {
-          transform: translateY(-4px) scale(1.06);
+          transform: translateY(-4px) scale(1.08);
+          filter: drop-shadow(0 8px 18px rgba(11, 23, 44, 0.52));
         }
 
         .live-project-pin-badge {
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;
-          padding: 0.32rem 0.6rem;
-          background: #0E1E38;
+          padding: 0.32rem 0.65rem;
+          background: linear-gradient(135deg, #183158 0%, #0B172C 100%);
           color: #FFFFFF;
           border-radius: 9999px;
-          font-size: 0.75rem;
-          font-weight: 700;
-          border: 1.5px solid #22416D;
-          box-shadow: 0 4px 12px rgba(14, 30, 56, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
+          border: 1.5px solid rgba(255, 255, 255, 0.28);
+          box-shadow: 0 4px 12px rgba(11, 23, 44, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+          white-space: nowrap;
+        }
+
+        .live-project-pin-icon {
+          color: #FFFFFF;
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+          flex-shrink: 0;
         }
 
         .live-project-pin-pct {
-          color: #F59E0B;
+          color: #FFFFFF;
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          font-size: 0.75rem;
           font-weight: 800;
+          letter-spacing: 0.01em;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+          line-height: 1;
         }
 
-        .live-project-pin-stem {
-          width: 2px;
-          height: 8px;
-          background: #22416D;
-          border-radius: 1px;
+        .live-project-pin-pointer {
+          width: 0;
+          height: 0;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 7px solid #0B172C;
+          margin-top: -1px;
+        }
+
+        .live-project-pin-anchor {
+          width: 5px;
+          height: 5px;
+          background: #FFFFFF;
+          border-radius: 50%;
+          box-shadow: 0 0 0 2px #0B172C, 0 2px 4px rgba(0, 0, 0, 0.4);
+          margin-top: 1px;
         }
 
         /* Popup Card Styling */

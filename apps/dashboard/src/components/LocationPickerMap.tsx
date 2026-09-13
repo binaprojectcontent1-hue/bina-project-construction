@@ -55,25 +55,26 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({ lat, lng, 
         }
       ).addTo(map);
 
-      // Custom Clean Architectural Pin
+      // Custom Clean Architectural Pin (Pointer needle, white text, rich navy gradient)
       const pinHtml = `
-        <div style="display:flex;flex-direction:column;align-items:center;cursor:grab;">
-          <div style="background:#0F172A;color:#FFFFFF;border:2px solid #E67E22;border-radius:9999px;padding:4px 8px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;box-shadow:0 4px 10px rgba(0,0,0,0.25);">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <div style="display:flex;flex-direction:column;align-items:center;cursor:grab;filter:drop-shadow(0 4px 10px rgba(11,23,44,0.4));">
+          <div style="background:linear-gradient(135deg, #183158 0%, #0B172C 100%);color:#FFFFFF;border:1.5px solid rgba(255,255,255,0.28);border-radius:9999px;padding:4px 10px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:5px;box-shadow:0 4px 12px rgba(11,23,44,0.4), inset 0 1px 0 rgba(255,255,255,0.25);letter-spacing:0.01em;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4));">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
-            <span>Pin Proyek</span>
+            <span style="color:#FFFFFF;text-shadow:0 1px 2px rgba(0,0,0,0.5);">Pin Proyek</span>
           </div>
-          <div style="width:2px;height:8px;background:#E67E22;"></div>
+          <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid #0B172C;margin-top:-1px;"></div>
+          <div style="width:5px;height:5px;background:#FFFFFF;border-radius:50%;box-shadow:0 0 0 2px #0B172C, 0 2px 4px rgba(0,0,0,0.4);margin-top:1px;"></div>
         </div>
       `;
 
       const customIcon = L.divIcon({
         html: pinHtml,
         className: 'location-picker-pin',
-        iconSize: [80, 36],
-        iconAnchor: [40, 34],
+        iconSize: [88, 44],
+        iconAnchor: [44, 42],
       });
 
       const marker = L.marker([initialLat, initialLng], {
