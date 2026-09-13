@@ -128,7 +128,7 @@ export function App() {
       </div>
 
       {/* Main Content Card with Scroll View */}
-      <div className="content-scroll">
+      <div className="content-scroll w-full flex justify-center">
         <BioCard settings={settings} links={links} loading={loading} />
       </div>
     </div>

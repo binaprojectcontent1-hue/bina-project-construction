@@ -109,7 +109,15 @@ function getIcon(iconName: string): React.ComponentType<{ className?: string }> 
 }
 
 export function LinkButton({ link }: LinkButtonProps) {
-  const Icon = getIcon(link.icon);
+  let Icon = getIcon(link.icon);
+  if (link.url?.includes('maps') && (!link.icon || link.icon === 'globe')) {
+    Icon = MapPin;
+  }
+
+  // Ensure title has proper spacing
+  const displayTitle = (link.title || '')
+    .replace(/WebsiteBina/g, 'Website Bina')
+    .trim();
 
   const handleClick = () => {
     // Non-blocking fire-and-forget atomic click tracking
@@ -129,14 +137,18 @@ export function LinkButton({ link }: LinkButtonProps) {
       onClick={handleClick}
       size="default"
       className="w-full group"
-      contentClassName="flex items-center gap-4 w-full px-7 py-4"
-      aria-label={link.title}
+      contentClassName="relative flex items-center justify-center w-full px-5 py-4 min-h-[58px]"
+      aria-label={displayTitle}
     >
-      <div className="link-button-icon-wrapper">
-        <Icon className="link-button-icon" />
+      <div className="absolute left-5 flex items-center justify-center pointer-events-none">
+        <Icon className="w-5 h-5 text-white shrink-0 transition-transform duration-200 group-hover:scale-110" />
       </div>
-      <span className="link-button-text flex-1 text-left">{link.title}</span>
-      <ArrowUpRight className="link-button-arrow" />
+      <span className="font-semibold text-[15px] text-white tracking-normal select-none text-center px-8">
+        {displayTitle}
+      </span>
+      <div className="absolute right-5 flex items-center justify-center pointer-events-none">
+        <ArrowUpRight className="w-4 h-4 text-white/60 shrink-0 transition-transform duration-200 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </div>
     </GlassButton>
   );
 }
