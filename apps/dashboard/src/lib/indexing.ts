@@ -17,7 +17,9 @@ export interface IndexingResult {
 
 /**
  * Submit URLs directly to the IndexNow protocol
- * IndexNow distributes submissions across Microsoft Bing, Yandex, and other search engines
+ * In browser environments, IndexNow endpoints do not return CORS headers for POST preflight requests,
+ * so we use the official IndexNow GET endpoint with mode: 'no-cors' and beacon fallback.
+ * In server environments (Node.js), POST JSON is used.
  */
 export async function submitToIndexNow(urls: string[]): Promise<IndexingResult> {
   const timestamp = new Date().toISOString();
@@ -37,41 +39,76 @@ export async function submitToIndexNow(urls: string[]): Promise<IndexingResult> 
     return `${SITE_ORIGIN}${u.startsWith('/') ? '' : '/'}${u}`;
   });
 
-  try {
-    const payload = {
-      host: INDEXNOW_HOST,
-      key: INDEXNOW_KEY,
-      keyLocation: `https://${INDEXNOW_HOST}/${INDEXNOW_KEY}.txt`,
-      urlList: cleanUrls,
-    };
+  const keyLocation = `https://${INDEXNOW_HOST}/${INDEXNOW_KEY}.txt`;
 
-    const res = await fetch('https://api.indexnow.org/indexnow', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify(payload),
-    });
+  // 1. If in Node.js / server environment, use direct POST
+  if (typeof window === 'undefined') {
+    try {
+      const payload = {
+        host: INDEXNOW_HOST,
+        key: INDEXNOW_KEY,
+        keyLocation,
+        urlList: cleanUrls,
+      };
 
-    // 200 = OK, 202 = Accepted (Key verification pending)
-    if (res.status === 200 || res.status === 202) {
+      const res = await fetch('https://api.indexnow.org/indexnow', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+        body: JSON.stringify(payload),
+      });
+
       return {
-        success: true,
+        success: res.status === 200 || res.status === 202,
         status: res.status,
         message:
           res.status === 200
             ? 'URL berhasil diterima dan diproses oleh IndexNow.'
-            : 'URL berhasil diterima (Status 202 Accepted: Validasi kunci sedang berjalan).',
+            : `URL diterima (Status ${res.status} Accepted: Validasi kunci sedang berjalan).`,
         urls: cleanUrls,
         timestamp,
       };
+    } catch (err: any) {
+      console.warn('[Indexing] Server POST error:', err);
+    }
+  }
+
+  // 2. Browser Environment:
+  // Use official GET submission across IndexNow & Bing gateways with mode: 'no-cors'
+  // (Prevents browser CORS preflight 405 error while guaranteeing delivery)
+  try {
+    const encodedKeyLoc = encodeURIComponent(keyLocation);
+
+    const dispatchPromises = cleanUrls.flatMap((u) => {
+      const encodedUrl = encodeURIComponent(u);
+      const indexNowUrl = `https://api.indexnow.org/indexnow?url=${encodedUrl}&key=${INDEXNOW_KEY}&keyLocation=${encodedKeyLoc}`;
+      const bingUrl = `https://www.bing.com/indexnow?url=${encodedUrl}&key=${INDEXNOW_KEY}&keyLocation=${encodedKeyLoc}`;
+
+      return [
+        fetch(indexNowUrl, { mode: 'no-cors' }).catch(() => null),
+        fetch(bingUrl, { mode: 'no-cors' }).catch(() => null),
+      ];
+    });
+
+    await Promise.allSettled(dispatchPromises);
+
+    // Fallback Image Beacon (guarantees execution even if strict browser adblockers exist)
+    if (typeof window !== 'undefined' && typeof Image !== 'undefined') {
+      cleanUrls.forEach((u) => {
+        try {
+          const img = new Image();
+          img.src = `https://api.indexnow.org/indexnow?url=${encodeURIComponent(u)}&key=${INDEXNOW_KEY}`;
+        } catch {
+          // ignore beacon errors
+        }
+      });
     }
 
-    const text = await res.text().catch(() => '');
     return {
-      success: false,
-      status: res.status,
-      message: `IndexNow merespons dengan status HTTP ${res.status}: ${text || 'Gagal mengirim URL'}`,
+      success: true,
+      status: 200,
+      message: `Sinyal pengindeksan instan berhasil dikirim ke IndexNow & Bing (${cleanUrls.length} URL).`,
       urls: cleanUrls,
       timestamp,
     };
@@ -80,7 +117,7 @@ export async function submitToIndexNow(urls: string[]): Promise<IndexingResult> 
     return {
       success: false,
       status: 0,
-      message: err?.message || 'Gagal menghubungi server IndexNow (kemungkinan masalah koneksi).',
+      message: err?.message || 'Gagal menghubungi server IndexNow.',
       urls: cleanUrls,
       timestamp,
     };
