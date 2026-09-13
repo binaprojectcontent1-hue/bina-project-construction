@@ -45,6 +45,7 @@ export const portfolioFormSchema = z.object({
     .max(160, 'Meta Description Google disarankan di bawah 160 karakter.')
     .optional()
     .or(z.literal('')),
+  og_image_type: z.enum(['branded', 'raw_cover']).default('branded').optional(),
 });
 
 export type PortfolioFormData = z.infer<typeof portfolioFormSchema>;

@@ -16,6 +16,7 @@ export interface Project {
   meta_title?: string;
   meta_description?: string;
   alt_cover_image?: string;
+  og_image_type?: 'branded' | 'raw_cover';
   status?: PublishStatus;
   published_at?: string;
   created_at?: string;
@@ -37,6 +38,7 @@ export interface Article {
   meta_description?: string;
   focus_keyword?: string;
   alt_cover_image?: string;
+  og_image_type?: 'branded' | 'raw_cover';
   status?: PublishStatus;
   reading_time?: number;
   published_at?: string;

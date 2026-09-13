@@ -47,6 +47,7 @@ export const articleFormSchema = z.object({
     .or(z.literal('')),
   focus_keyword: z.string().trim().optional().or(z.literal('')),
   author: z.string().trim().optional().or(z.literal('')),
+  og_image_type: z.enum(['branded', 'raw_cover']).default('branded').optional(),
   is_published: z.boolean().default(true),
   is_featured: z.boolean().default(false),
 });
