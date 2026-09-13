@@ -47,7 +47,7 @@ export const FAQS: readonly FaqItem[] = [
   {
     question: 'Apakah ada paket hemat untuk renovasi rumah kecil di bawah 100 m2?',
     answer:
-      'Ya, kami menyediakan quotation fleksibel untuk renovasi parsial. Untuk rumah di bawah 100 m2, kami dapat fokus pada area prioritas seperti fasad, kitchen set, atau kamar mandi dengan budget yang disesuaikan. Hubungi +62 813-3533-5304 untuk konsultasi gratis dan perhitungan RAB custom.',
+      'Ya, kami menyediakan quotation fleksibel untuk renovasi parsial. Untuk rumah di bawah 100 m2, kami dapat fokus pada area prioritas seperti fasad, kitchen set, atau kamar mandi dengan budget yang disesuaikan. Hubungi +62 81-335-335-304 untuk konsultasi gratis dan perhitungan RAB custom.',
     category: 'biaya',
   },
   {
@@ -65,7 +65,7 @@ export const FAQS: readonly FaqItem[] = [
   {
     question: 'Berapa biaya kitchen set 3 meter untuk finishing HPL standar?',
     answer:
-      'Biaya kitchen set dihitung per meter lari tergantung spesifikasi: jenis HPL, hardware (engsel biasa atau slow-motion), top table (granit atau solid surface), dan kompleksitas desain. Untuk kitchen set 3 meter dengan HPL standar, hubungi +62 813-3533-5304 untuk quote detail sesuai kebutuhan Anda.',
+      'Biaya kitchen set dihitung per meter lari tergantung spesifikasi: jenis HPL, hardware (engsel biasa atau slow-motion), top table (granit atau solid surface), dan kompleksitas desain. Untuk kitchen set 3 meter dengan HPL standar, hubungi +62 81-335-335-304 untuk quote detail sesuai kebutuhan Anda.',
     category: 'biaya',
   },
   {
@@ -131,7 +131,7 @@ export const FAQS: readonly FaqItem[] = [
   {
     question: 'Bagaimana prosedur klaim garansi jika ada kebocoran setelah serah terima?',
     answer:
-      'Hubungi +62 813-3533-5304 via WhatsApp dengan foto atau video dokumentasi kebocoran. Tim kami akan menjadwalkan inspeksi ke lokasi dalam 1-3 hari kerja. Jika terverifikasi kebocoran akibat aplikasi waterproofing, kami lakukan perbaikan gratis sesuai garansi tertulis di SPK dalam 3-7 hari kerja.',
+      'Hubungi +62 81-335-335-304 via WhatsApp dengan foto atau video dokumentasi kebocoran. Tim kami akan menjadwalkan inspeksi ke lokasi dalam 1-3 hari kerja. Jika terverifikasi kebocoran akibat aplikasi waterproofing, kami lakukan perbaikan gratis sesuai garansi tertulis di SPK dalam 3-7 hari kerja.',
     category: 'garansi',
   },
 ] as const;

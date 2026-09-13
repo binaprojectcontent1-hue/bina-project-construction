@@ -4,13 +4,17 @@
  */
 
 /**
- * Format a phone number into readable format +62 813-3533-5304
+ * Format a phone number into readable format +62 81-335-335-304
  */
 export function formatPhoneNumber(phone: string): string {
   const cleaned = phone.replace(/\D/g, '');
   if (cleaned.startsWith('62')) {
     const rest = cleaned.slice(2);
-    return `+62 ${rest.slice(0, 3)}-${rest.slice(3, 7)}-${rest.slice(7)}`;
+    return `+62 ${rest.slice(0, 2)}-${rest.slice(2, 5)}-${rest.slice(5, 8)}-${rest.slice(8)}`;
+  }
+  if (cleaned.startsWith('0')) {
+    const rest = cleaned.slice(1);
+    return `+62 ${rest.slice(0, 2)}-${rest.slice(2, 5)}-${rest.slice(5, 8)}-${rest.slice(8)}`;
   }
   return phone;
 }

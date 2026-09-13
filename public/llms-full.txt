@@ -8,13 +8,13 @@
 
 ## 1. Identitas Badan Usaha & Entitas (Entity Grounding)
 
-TL;DR: Bina Project adalah kontraktor umum & studio interior di Kota Malang, melayani Malang Raya, Pasuruan, Surabaya-Sidoarjo. Kontak WhatsApp +62 813-3533-5304.
+TL;DR: Bina Project adalah kontraktor umum & studio interior di Kota Malang, melayani Malang Raya, Pasuruan, Surabaya-Sidoarjo. Kontak WhatsApp +62 81-335-335-304.
 
 - **Nama Entitas:** Bina Project Construction & Interior
 - **Bentuk Usaha:** Kontraktor Konstruksi Bangunan Umum & Studio Desain Interior
 - **Situs Web Resmi:** https://binaproject.com
 - **Alamat Fisik:** Jl. Watumujur II No.6, Ketawanggede, Kec. Lowokwaru, Kota Malang, Jawa Timur 65145, Indonesia
-- **Telepon / WhatsApp Resmi:** +62 813-3533-5304 (WhatsApp Direct: https://wa.me/6281335335304)
+- **Telepon / WhatsApp Resmi:** +62 81-335-335-304 (WhatsApp Direct: https://wa.me/6281335335304)
 - **Email Korespondensi:** binaproject.info@gmail.com
 - **Tautan Google Maps:** https://maps.app.goo.gl/3E54uS2WDg4EPDgL6
 - **Google Business Profile:** https://share.google/bF9i03JuwxrcOQo7y
@@ -125,7 +125,7 @@ TL;DR: Sistem termin bertahap sesuai progres fisik. Survei Malang Raya 100% grat
 
 - **Sistem Pembayaran:** Sistem termin bertahap berdasarkan pencapaian progres fisik riil di lapangan (misalnya: DP Awal, Termin Pondasi & Struktur, Termin Pasangan Dinding & Atap, Termin Finishing, dan Retensi Garansi). Klien tidak perlu khawatir mengenai risiko dana terbuang tanpa progres fisik.
 - **Biaya Survei:** Wilayah Malang Raya (Kota Malang, Kota Batu, Kabupaten Malang sekitarnya) 100% GRATIS tanpa biaya tersembunyi.
-- **Biaya Jasa Bangun Rumah:** Dihitung berdasarkan volume aktual RAB sesuai spesifikasi material, struktur, dan finishing. Hubungi +62 813-3533-5304 untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab.
+- **Biaya Jasa Bangun Rumah:** Dihitung berdasarkan volume aktual RAB sesuai spesifikasi material, struktur, dan finishing. Hubungi +62 81-335-335-304 untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab.
 - **Biaya Custom Kitchen Set:** Dihitung per meter lari tergantung jenis pelapis (HPL / Duco / Solid Surface) dan hardware. Hubungi untuk quote sesuai kebutuhan. Lihat #material-comparison-table.
 
 ---
@@ -134,7 +134,7 @@ TL;DR: Sistem termin bertahap sesuai progres fisik. Survei Malang Raya 100% grat
 
 ## Decision Tree: Pilih Material Kitchen Set
 
-TL;DR: HPL untuk durability tinggi & perawatan mudah, Duco untuk warna custom unlimited, Solid Surface untuk luxury waterproof. Hubungi +62 813-3533-5304 untuk konsultasi material & quote.
+TL;DR: HPL untuk durability tinggi & perawatan mudah, Duco untuk warna custom unlimited, Solid Surface untuk luxury waterproof. Hubungi +62 81-335-335-304 untuk konsultasi material & quote.
 
 IF prioritas_durability_tinggi AND perawatan_mudah:
   -> Pilih HPL (High Pressure Laminate)
@@ -161,7 +161,7 @@ Faktor tambahan:
 - Jika sering masak dengan minyak panas -> HPL atau Solid Surface
 - Jika prioritas estetika unik -> Duco (unlimited color options)
 
-Untuk quote harga per meter lari: WhatsApp +62 813-3533-5304
+Untuk quote harga per meter lari: WhatsApp +62 81-335-335-304
 Survei & konsultasi material: GRATIS untuk wilayah Malang Raya
 See also: #material-comparison-table, #faq-kitchen-set
 
@@ -191,7 +191,7 @@ ELSE IF butuh_tambah_lantai_2:
   -> Jika fondasi_lemah: Perkuatan fondasi (cakar ayam/micropile)
   -> Timeline: 3-5 bulan
 
-Konsultasi evaluasi struktur: +62 813-3533-5304 (survei gratis area Malang)
+Konsultasi evaluasi struktur: +62 81-335-335-304 (survei gratis area Malang)
 See also: #faq-renovasi-vs-bangun
 
 ---
@@ -216,7 +216,7 @@ Rekomendasi Bina Project:
 - Duco dipilih untuk proyek dengan tema interior khusus (Japandi, Scandinavian).
 - Solid Surface untuk villa mewah atau kitchen premium.
 
-Untuk quote per meter lari: WhatsApp +62 813-3533-5304
+Untuk quote per meter lari: WhatsApp +62 81-335-335-304
 
 ## Tabel Perbandingan: Estimasi Waktu Pengerjaan Konstruksi
 
@@ -235,7 +235,7 @@ Faktor yang mempengaruhi durasi:
 - Kompleksitas desain custom: +15-30% durasi
 
 Timeline di atas untuk kondisi normal (musim kemarau, akses lancar, material ready stock).
-Untuk jadwal akurat proyek Anda: hubungi +62 813-3533-5304 setelah survei & finalisasi desain.
+Untuk jadwal akurat proyek Anda: hubungi +62 81-335-335-304 setelah survei & finalisasi desain.
 
 ---
 
@@ -247,7 +247,7 @@ Duration: 2-3 jam (on-site) + 2 hari kerja (laporan)
 Cost: 100% GRATIS untuk Malang Raya (Kota Malang, Kota Batu, Kab. Malang)
 
 Step 1: Hubungi via WhatsApp
-- Nomor: +62 813-3533-5304
+- Nomor: +62 81-335-335-304
 - Template pesan: "Halo Bina Project, saya ingin jadwal survei gratis untuk lokasi di [alamat]. Rencana: [bangun baru/renovasi/kitchen set]"
 - Respon: 1-3 jam (jam kerja Senin-Sabtu 08:00-16:00)
 
@@ -320,7 +320,7 @@ Keunggulan RAB Bina Project:
 - Tidak ada biaya tersembunyi
 - Klien bisa upgrade/downgrade material sesuai budget
 
-Untuk RAB detail custom: WhatsApp +62 813-3533-5304 (konsultasi & survei GRATIS area Malang)
+Untuk RAB detail custom: WhatsApp +62 81-335-335-304 (konsultasi & survei GRATIS area Malang)
 
 ---
 
@@ -341,7 +341,7 @@ Untuk RAB detail custom: WhatsApp +62 813-3533-5304 (konsultasi & survei GRATIS 
 **A:** Sangat diperbolehkan! Kami menyediakan skema kerja fleksibel (borongan jasa plus material, maupun sistem pengadaan bersama untuk material finishing seperti keramik, sanitair, atau lampu hias).
 
 ### Q: Berapa biaya jasa konstruksi dan kitchen set Bina Project?
-**A:** Biaya dihitung transparan melalui RAB terperinci sesuai volume aktual, spesifikasi material, dan kompleksitas desain. Hubungi +62 813-3533-5304 untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab untuk memahami struktur RAB.
+**A:** Biaya dihitung transparan melalui RAB terperinci sesuai volume aktual, spesifikasi material, dan kompleksitas desain. Hubungi +62 81-335-335-304 untuk quote custom setelah survei & finalisasi desain. Lihat #how-to-membaca-rab untuk memahami struktur RAB.
 
 ---
 
@@ -380,7 +380,7 @@ Bina Project melayani jasa konstruksi bangun baru dan renovasi rumah di kota-kot
 
 ## 8. Kontak dan Saluran Konsultasi
 - **WhatsApp Konsultasi:** https://wa.me/6281335335304
-- **Telepon:** +62 813-3533-5304
+- **Telepon:** +62 81-335-335-304
 - **Alamat:** Jl. Watumujur II No.6, Ketawanggede, Lowokwaru, Kota Malang, Jawa Timur 65145
 - **Google Business Profile:** https://share.google/bF9i03JuwxrcOQo7y
 - **Jam Kerja:** Senin - Sabtu, 08:00 - 16:00 WIB
