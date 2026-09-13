@@ -281,10 +281,10 @@ const connectedSchemaGraph = {
     <!-- Google Fonts (Optimized Subset & Non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700&display=swap"
-    />
+    <Fragment set:html={`
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Titillium+Web:wght@400;600;700&display=swap" /></noscript>
+    `} />
 
     <!-- LCP Critical Image Preload (Hero / Featured Media) -->
     {preloadImage && (
@@ -314,11 +314,15 @@ const connectedSchemaGraph = {
       }
     </style>
 
-    <!-- Stylesheets (Core Grid Synchronous, Plugins Non-Blocking) -->
+    <!-- Stylesheets (Core Grid Minified, Plugins Non-Blocking) -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" />
-    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/style.min.css" />
+    <Fragment set:html={`
+      <link rel="preload" as="style" href="/assets/css/magnific-popup.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="/assets/css/magnific-popup.min.css" /></noscript>
+      <link rel="preload" as="style" href="/assets/css/swiper-bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" /></noscript>
+    `} />
 
     <!-- Schema.org Connected Knowledge Graph JSON-LD -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(connectedSchemaGraph)} />
@@ -369,6 +373,6 @@ const connectedSchemaGraph = {
     <script is:inline src="/assets/js/imagesloaded.pkgd.min.js" defer></script>
     <script is:inline src="/assets/js/gsap.min.js" defer></script>
     <script is:inline src="/assets/js/ScrollTrigger.min.js" defer></script>
-    <script is:inline src="/assets/js/main.js" defer></script>
+    <script is:inline src="/assets/js/main.min.js" defer></script>
   </body>
 </html>
