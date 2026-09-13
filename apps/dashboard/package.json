@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.8.0",
     "@supabase/supabase-js": "^2.48.1",
     "@tiptap/extension-link": "^3.31.3",
     "@tiptap/pm": "^3.31.3",
