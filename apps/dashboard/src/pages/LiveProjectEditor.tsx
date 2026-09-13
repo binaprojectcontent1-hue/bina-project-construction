@@ -3,6 +3,7 @@ import { ArrowLeft, Save, RefreshCw, AlertCircle, Check, MapPin, Eye, EyeOff, Im
 import { supabase } from '../lib/supabase';
 import { liveProjectFormSchema } from '../schemas/liveProjectSchema';
 import { LocationPickerMap } from '../components/LocationPickerMap';
+import { LiveProjectImageUploader } from '../components/LiveProjectImageUploader';
 import { FALLBACK_LIVE_PROJECTS } from '../../../../src/data/liveProjects';
 import { Button } from '../components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
@@ -469,56 +470,21 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
           <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-bold text-slate-900">
-                Foto Dokumentasi (Rasio 1:1)
+                Foto Dokumentasi Lapangan
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
-                Tampilan visual pengerjaan di lapangan (rasio persegi 1:1).
+                Unggah foto dokumentasi proyek langsung ke GitHub Media via jsDelivr CDN (rasio 1:1).
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div>
-                <label className="text-xs font-bold text-slate-800 block mb-1.5 uppercase tracking-wider">
-                  URL Foto Lapangan (Opsional)
-                </label>
-                <Input
-                  pill
-                  value={imageUrl}
-                  onChange={(e) => {
-                    setImageUrl(e.target.value);
-                    setImgError(false);
-                    setIsDirty(true);
-                  }}
-                  placeholder="https://images.unsplash.com/... atau URL foto"
-                  className="text-xs placeholder:text-slate-400 border-slate-200"
-                />
-              </div>
-
-              {/* 1:1 Ratio Preview Box */}
-              <div className="space-y-1.5">
-                <p className="text-[11px] font-semibold text-slate-500">Pratinjau Foto Persegi (1:1):</p>
-                <div className="w-full aspect-square rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 relative shadow-2xs flex items-center justify-center">
-                  {imageUrl && !imgError ? (
-                    <img
-                      src={imageUrl}
-                      alt={title || 'Dokumentasi Proyek'}
-                      className="w-full h-full object-cover"
-                      onError={() => setImgError(true)}
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center gap-2 text-slate-400 p-4 text-center">
-                      <ImageIcon className="w-10 h-10 stroke-[1.5] text-slate-300" />
-                      <p className="text-xs font-medium">
-                        {imgError ? 'Foto tidak dapat dimuat dari URL ini.' : 'Belum ada foto dokumentasi.'}
-                      </p>
-                      <p className="text-[10px] text-slate-400">
-                        {imgError
-                          ? 'Periksa kembali tautan gambar Anda.'
-                          : 'Masukkan tautan URL foto di atas untuk menampilkan thumbnail 1:1.'}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
+            <CardContent>
+              <LiveProjectImageUploader
+                value={imageUrl}
+                onChange={(url) => {
+                  setImageUrl(url);
+                  setIsDirty(true);
+                }}
+                folder="live-projects"
+              />
             </CardContent>
           </Card>
 
