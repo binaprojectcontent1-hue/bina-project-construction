@@ -6,11 +6,11 @@ function cn(...inputs: (string | undefined | null | false)[]): string {
 }
 
 const glassButtonVariants = cva(
-  "relative isolate cursor-pointer rounded-2xl transition-all w-full",
+  "relative isolate cursor-pointer rounded-full transition-all w-full",
   {
     variants: {
       size: {
-        default: "text-[15px] font-semibold min-h-[56px]",
+        default: "text-[15px] font-semibold min-h-[58px]",
         sm: "text-sm font-medium min-h-[44px]",
         lg: "text-lg font-medium min-h-[64px]",
         icon: "h-10 w-10 min-h-[40px]",
@@ -54,7 +54,7 @@ const GlassButton = React.forwardRef<HTMLElement, GlassButtonProps>(
     return (
       <div
         className={cn(
-          "glass-button-wrap cursor-pointer rounded-2xl",
+          "glass-button-wrap cursor-pointer rounded-full",
           className
         )}
       >
@@ -75,7 +75,7 @@ const GlassButton = React.forwardRef<HTMLElement, GlassButtonProps>(
             {children}
           </span>
         </Comp>
-        <div className="glass-button-shadow rounded-2xl"></div>
+        <div className="glass-button-shadow rounded-full"></div>
       </div>
     );
   }
