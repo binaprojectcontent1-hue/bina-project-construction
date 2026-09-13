@@ -70,7 +70,7 @@ export function BioCard({ settings, links, loading = false }: BioCardProps) {
       </div>
 
       {/* Social Media Bar */}
-      <SocialBar />
+      <SocialBar socials={settings?.social_links} />
 
       {/* Footer & Copyright */}
       <footer className="bio-footer">

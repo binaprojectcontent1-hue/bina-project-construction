@@ -82,7 +82,7 @@ export function App() {
             .order('sort_order', { ascending: true }),
           supabase
             .from('biolink_settings')
-            .select('id, profile_name, tagline, avatar_url')
+            .select('*')
             .limit(1)
             .maybeSingle(),
         ]);
@@ -92,7 +92,26 @@ export function App() {
             setLinks(linksRes.data);
           }
           if (settingsRes.data) {
-            setSettings(settingsRes.data);
+            let loadedSocials = settingsRes.data.social_links;
+            if (!loadedSocials || !Array.isArray(loadedSocials)) {
+              const localSaved = localStorage.getItem('biolink_social_links');
+              if (localSaved) {
+                try {
+                  loadedSocials = JSON.parse(localSaved);
+                } catch {
+                  // ignore
+                }
+              }
+            }
+            if (Array.isArray(loadedSocials)) {
+              loadedSocials = loadedSocials.filter(
+                (s: any) => s.platform?.toLowerCase() !== 'youtube' && s.icon?.toLowerCase() !== 'youtube'
+              );
+            }
+            setSettings({
+              ...settingsRes.data,
+              social_links: loadedSocials || undefined,
+            });
           }
         }
       } catch (err) {

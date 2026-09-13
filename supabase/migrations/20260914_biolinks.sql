@@ -79,3 +79,12 @@ BEGIN
     WHERE id = link_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 4. Social Links JSONB on biolink_settings (Without YouTube)
+ALTER TABLE public.biolink_settings 
+ADD COLUMN IF NOT EXISTS social_links JSONB DEFAULT '[
+  {"platform": "WhatsApp", "url": "https://wa.me/6281335335304", "icon": "whatsapp", "is_active": true},
+  {"platform": "Instagram", "url": "https://www.instagram.com/binaproject.id", "icon": "instagram", "is_active": true},
+  {"platform": "TikTok", "url": "https://www.tiktok.com/@binaproject.id", "icon": "tiktok", "is_active": true},
+  {"platform": "Google Maps & Review", "url": "https://share.google/bF9i03JuwxrcOQo7y", "icon": "google", "is_active": true}
+]'::jsonb;

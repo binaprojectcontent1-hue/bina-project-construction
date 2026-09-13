@@ -10,10 +10,18 @@ export interface BioLink {
   updated_at?: string;
 }
 
+export interface BioSocialLink {
+  platform: string;
+  url: string;
+  icon: string;
+  is_active: boolean;
+}
+
 export interface BioLinkSettings {
   id: string;
   profile_name: string;
   tagline: string;
   avatar_url: string | null;
+  social_links?: BioSocialLink[];
   updated_at?: string;
 }
