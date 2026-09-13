@@ -12,6 +12,7 @@ dist/
 dist-test/
 .astro/
 apps/dashboard/dist/
+apps/biolink/dist/
 
 # Environment variables (SECRETS - NEVER COMMIT)
 .env
@@ -21,6 +22,8 @@ apps/dashboard/dist/
 .env.production.local
 apps/dashboard/.env
 apps/dashboard/.env.local
+apps/biolink/.env
+apps/biolink/.env.local
 
 # IDE & Editor
 .vscode/

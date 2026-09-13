@@ -17,6 +17,9 @@
     "dev:dash": "npm --prefix apps/dashboard run dev",
     "build:dash": "npm --prefix apps/dashboard run build",
     "typecheck:dash": "npm --prefix apps/dashboard run typecheck",
+    "dev:bio": "npm --prefix apps/biolink run dev",
+    "build:bio": "npm --prefix apps/biolink run build",
+    "typecheck:bio": "npm --prefix apps/biolink run typecheck",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug"
