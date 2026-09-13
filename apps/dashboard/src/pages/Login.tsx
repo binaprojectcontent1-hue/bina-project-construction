@@ -85,17 +85,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#080E18] text-slate-100 flex items-center justify-center p-4 sm:p-6 md:p-10 relative overflow-hidden selection:bg-[#22416D] selection:text-white">
+    <div className="min-h-screen bg-[#080E18] text-slate-100 flex items-center justify-center p-4 sm:p-6 md:p-10 py-6 sm:py-10 relative overflow-x-hidden selection:bg-[#22416D] selection:text-white">
       {/* Ambient background soft glow effects aligned with Bina Navy & subtle Gold */}
       <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-[#22416D]/30 via-[#152B49]/20 to-transparent rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute -bottom-40 -right-40 w-[650px] h-[650px] bg-gradient-to-tl from-[#0E1E38]/40 via-[#1A3356]/20 to-transparent rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#F68A0A]/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Main Unified Dual-Tone Card */}
-      <div className="w-full max-w-[1060px] min-h-[620px] bg-[#0B1528] rounded-[36px] sm:rounded-[44px] shadow-2xl shadow-black/90 border border-slate-700/50 overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative z-10 backdrop-blur-sm">
+      <div className="w-full max-w-[440px] lg:max-w-[1060px] min-h-0 lg:min-h-[620px] bg-[#0B1528] rounded-[28px] sm:rounded-[36px] lg:rounded-[44px] shadow-2xl shadow-black/90 border border-slate-700/50 overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative z-10 backdrop-blur-sm">
         
-        {/* ================= LEFT PANEL: Deep Bina Navy Brand Visual Showcase ================= */}
-        <div className="lg:col-span-6 xl:col-span-7 bg-gradient-to-b from-[#0E1E38] via-[#0B172C] to-[#07101E] relative flex flex-col justify-between p-8 sm:p-10 lg:p-12 overflow-hidden select-none border-b lg:border-b-0 lg:border-r border-slate-700/50">
+        {/* ================= LEFT PANEL: Deep Bina Navy Brand Visual Showcase (Hidden on Mobile, Visible on lg+) ================= */}
+        <div className="hidden lg:flex lg:col-span-6 xl:col-span-7 bg-gradient-to-b from-[#0E1E38] via-[#0B172C] to-[#07101E] relative flex-col justify-between p-8 sm:p-10 lg:p-12 overflow-hidden select-none border-b lg:border-b-0 lg:border-r border-slate-700/50">
           
           {/* Concentric radar circles in subtle Bina Navy tone */}
           <div className="absolute top-[46%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] rounded-full border border-blue-400/[0.07] pointer-events-none" />
@@ -249,7 +249,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         </div>
 
         {/* ================= RIGHT PANEL: Clean Rounded White Form ================= */}
-        <div className="lg:col-span-6 xl:col-span-5 bg-white lg:rounded-l-[36px] p-8 sm:p-10 lg:p-12 flex flex-col justify-between text-slate-800 z-10 shadow-[-12px_0_35px_rgba(0,0,0,0.18)]">
+        <div className="lg:col-span-6 xl:col-span-5 bg-white lg:rounded-l-[36px] p-6 sm:p-8 lg:p-12 flex flex-col justify-between text-slate-800 z-10 shadow-[-12px_0_35px_rgba(0,0,0,0.18)]">
           
           {/* Top Row: Brand Monogram & Website Link */}
           <div className="flex items-center justify-between">
@@ -272,7 +272,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               href="https://binaproject.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-slate-500 hover:text-[#22416D] flex items-center gap-1.5 transition-colors font-medium group py-1.5 px-3 rounded-full hover:bg-slate-100 border border-slate-200/80"
+              className="text-xs text-slate-500 hover:text-[#22416D] flex items-center gap-1.5 transition-colors font-medium group py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-full hover:bg-slate-100 border border-slate-200/80"
             >
               <span>Web Publik</span>
               <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#22416D] transition-colors" />
@@ -280,7 +280,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           </div>
 
           {/* Center: Sign In Form */}
-          <div className="my-8 sm:my-auto">
+          <div className="my-6 sm:my-auto">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
               Sign In
             </h1>
