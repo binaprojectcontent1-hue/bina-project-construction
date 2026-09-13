@@ -96,12 +96,17 @@ const imageGallerySchema =
         image: galleryImageSchemas,
       }
     : null;
+
+const ogImageUrl =
+  project.og_image_type === 'raw_cover' && coverUrl
+    ? coverUrl
+    : `${siteConfig.siteUrl}/og/portfolio/${project.slug}.png`;
 ---
 
 <BaseLayout
   title={pageTitle}
   description={pageDescription}
-  ogImage={coverUrl}
+  ogImage={ogImageUrl}
   canonicalUrl={canonicalSlugUrl}
   preloadImage={coverUrl}
 >

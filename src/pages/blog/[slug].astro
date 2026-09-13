@@ -66,12 +66,17 @@ const articleSchema = {
 import { formatAndSanitizeArticleContent } from '@lib/formatContent';
 
 const sanitizedContent = formatAndSanitizeArticleContent(article.content);
+
+const ogImageUrl =
+  article.og_image_type === 'raw_cover' && coverUrl
+    ? coverUrl
+    : `${siteConfig.siteUrl}/og/blog/${article.slug}.png`;
 ---
 
 <BaseLayout
   title={pageTitle}
   description={pageDescription}
-  ogImage={coverUrl}
+  ogImage={ogImageUrl}
   canonicalUrl={canonicalSlugUrl}
   type="article"
   preloadImage={coverUrl}
