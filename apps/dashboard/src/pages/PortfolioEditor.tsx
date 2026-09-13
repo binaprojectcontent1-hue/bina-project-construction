@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Save, ArrowLeft, Globe, Check, AlertCircle, RefreshCw, Rocket, Sparkles, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { generateSlug, checkSlugAvailability, record301Redirect } from '../utils/slug';
+import { portfolioFormSchema } from '../schemas/portfolioSchema';
 import { GoogleSerpPreview } from '../components/GoogleSerpPreview';
 import { ImageUploader } from '../components/ImageUploader';
 import { GalleryUploader } from '../components/GalleryUploader';
@@ -112,21 +113,40 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
     setSlugAvailable(isAvail);
   };
 
+  // Guard against accidental loss of unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (title.trim() || description.trim()) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [title, description]);
+
   const handleSave = async (autoDeploy = false) => {
-    if (!title.trim()) {
-      setError('Judul proyek wajib diisi.');
-      return;
-    }
-    if (!slug.trim()) {
-      setError('Slug URL wajib diisi.');
-      return;
-    }
-    if (!coverImage) {
-      setError('Foto utama portofolio wajib diunggah.');
-      return;
-    }
-    if (!altCoverImage.trim()) {
-      setError('Alt text foto wajib diisi untuk Google Image SEO.');
+    // Validate with centralized Zod Schema
+    const validation = portfolioFormSchema.safeParse({
+      title,
+      slug,
+      category,
+      location,
+      projectDate,
+      client,
+      description,
+      coverImage,
+      altCoverImage,
+      galleryImages,
+      featured,
+      status,
+      metaTitle,
+      metaDescription,
+    });
+
+    if (!validation.success) {
+      setError(validation.error.issues[0].message);
       return;
     }
 

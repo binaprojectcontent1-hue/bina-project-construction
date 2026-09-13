@@ -21,12 +21,19 @@ const {
 const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : siteConfig.siteUrl.replace(/\/$/, '');
 const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
 
-const itemListElement: any[] = [
+interface BreadcrumbItem {
+  "@type": "ListItem";
+  position: number;
+  name: string;
+  item: string;
+}
+
+const itemListElement: BreadcrumbItem[] = [
   {
     "@type": "ListItem",
-    "position": 1,
-    "name": "Beranda",
-    "item": `${siteUrl}/`
+    position: 1,
+    name: "Beranda",
+    item: `${siteUrl}/`
   }
 ];
 

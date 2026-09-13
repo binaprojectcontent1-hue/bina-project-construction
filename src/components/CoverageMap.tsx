@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import type { Map as LeafletMap, Marker as LeafletMarker, TileLayer as LeafletTileLayer } from 'leaflet';
 import type { ServiceLocation } from '@types';
 import { SERVICE_LOCATIONS } from '@data/coverage';
 import 'leaflet/dist/leaflet.css';
 import '@styles/coverage.css';
+
+interface CustomLeafletMap extends LeafletMap {
+  _customLightTiles?: LeafletTileLayer;
+  _customSatTiles?: LeafletTileLayer;
+}
 
 // Peta difokuskan pada titik lokasi layanan (tanpa garis koridor tol)
 interface CoverageMapProps {
@@ -15,8 +21,8 @@ export default function CoverageMap({
   onSelectCity,
 }: CoverageMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const markersRef = useRef<{ [key: string]: any }>({});
+  const mapInstanceRef = useRef<CustomLeafletMap | null>(null);
+  const markersRef = useRef<Record<string, LeafletMarker>>({});
   
   const [activeCity, setActiveCity] = useState<ServiceLocation>(
     SERVICE_LOCATIONS.find((l) => l.id === initialCityId) || SERVICE_LOCATIONS[0]
@@ -70,8 +76,9 @@ export default function CoverageMap({
 
       // Default to architectural voyager tiles
       lightTiles.addTo(map);
-      (map as any)._customLightTiles = lightTiles;
-      (map as any)._customSatTiles = satTiles;
+      const customMap = map as CustomLeafletMap;
+      customMap._customLightTiles = lightTiles;
+      customMap._customSatTiles = satTiles;
 
       // Add Custom Glowing Markers for Each Location
       SERVICE_LOCATIONS.forEach((loc) => {

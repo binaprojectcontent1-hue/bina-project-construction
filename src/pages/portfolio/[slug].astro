@@ -21,8 +21,8 @@ export async function getStaticPaths() {
 const { project: initialProject } = Astro.props;
 const { slug } = Astro.params;
 
-// Fetch project or fallback to props
-const project = initialProject || (slug ? await getProjectBySlug(slug) : undefined);
+// Prioritize fresh data by slug (for real-time dev synchronization), fallback to build-time props
+const project = (slug ? await getProjectBySlug(slug) : undefined) || initialProject;
 
 if (!project) {
   return Astro.redirect('/404');

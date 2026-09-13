@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { TabType } from './components/Sidebar';
+import type { Session } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
@@ -14,17 +15,102 @@ import { Login } from './pages/Login';
 import { sessionManager } from './lib/session-manager';
 import ErrorBoundary from './components/ErrorBoundary';
 
+interface RouteState {
+  tab: TabType;
+  portfolioId?: string;
+  articleId?: string;
+}
+
+function parseHash(rawHash: string): RouteState {
+  const hash = (rawHash || '').replace(/^#\/?/, '').trim();
+  if (!hash) return { tab: 'overview' };
+
+  const [path, queryString] = hash.split('?');
+  const params = new URLSearchParams(queryString || '');
+
+  if (path === 'article-edit') {
+    return {
+      tab: 'article-new',
+      articleId: params.get('id') || undefined,
+    };
+  }
+
+  if (path === 'portfolio-edit') {
+    return {
+      tab: 'portfolio-new',
+      portfolioId: params.get('id') || undefined,
+    };
+  }
+
+  const validTabs: TabType[] = [
+    'overview',
+    'portfolio',
+    'portfolio-new',
+    'articles',
+    'article-new',
+    'redirects',
+    'settings',
+  ];
+
+  if (validTabs.includes(path as TabType)) {
+    return {
+      tab: path as TabType,
+      portfolioId: params.get('portfolioId') || undefined,
+      articleId: params.get('articleId') || undefined,
+    };
+  }
+
+  return { tab: 'overview' };
+}
+
+function buildHash(tab: TabType, portfolioId?: string, articleId?: string): string {
+  if (tab === 'article-new' && articleId) {
+    return `#article-edit?id=${encodeURIComponent(articleId)}`;
+  }
+  if (tab === 'portfolio-new' && portfolioId) {
+    return `#portfolio-edit?id=${encodeURIComponent(portfolioId)}`;
+  }
+  return `#${tab}`;
+}
+
 export function App() {
-  const [session, setSession] = useState<any>(null);
+  const initialRoute = parseHash(typeof window !== 'undefined' ? window.location.hash : '');
+  const [session, setSession] = useState<Session | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>(initialRoute.tab);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [editingPortfolioId, setEditingPortfolioId] = useState<string | undefined>(undefined);
-  const [editingArticleId, setEditingArticleId] = useState<string | undefined>(undefined);
+  const [editingPortfolioId, setEditingPortfolioId] = useState<string | undefined>(initialRoute.portfolioId);
+  const [editingArticleId, setEditingArticleId] = useState<string | undefined>(initialRoute.articleId);
 
   // Counts
   const [portfolioCount, setPortfolioCount] = useState(0);
   const [articleCount, setArticleCount] = useState(0);
+
+  // Sync state to URL Hash
+  const syncRouteToHash = useCallback((tab: TabType, pId?: string, aId?: string) => {
+    const targetHash = buildHash(tab, pId, aId);
+    if (window.location.hash !== targetHash) {
+      window.history.replaceState(null, '', targetHash);
+    }
+  }, []);
+
+  // Listen to browser Back/Forward (hashchange)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const route = parseHash(window.location.hash);
+      setActiveTab(route.tab);
+      setEditingPortfolioId(route.portfolioId);
+      setEditingArticleId(route.articleId);
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Update hash when tab or IDs change
+  useEffect(() => {
+    syncRouteToHash(activeTab, editingPortfolioId, editingArticleId);
+  }, [activeTab, editingPortfolioId, editingArticleId, syncRouteToHash]);
 
   // Initialize session management when user logs in
   useEffect(() => {
@@ -80,17 +166,50 @@ export function App() {
     }
   };
 
+  const handleEditPortfolio = (id: string) => {
+    setEditingPortfolioId(id);
+    setActiveTab('portfolio-new');
+  };
+
+  const handleNewPortfolio = () => {
+    setEditingPortfolioId(undefined);
+    setActiveTab('portfolio-new');
+  };
+
+  const handleEditArticle = (id: string) => {
+    setEditingArticleId(id);
+    setActiveTab('article-new');
+  };
+
+  const handleNewArticle = () => {
+    setEditingArticleId(undefined);
+    setActiveTab('article-new');
+  };
+
   const handlePortfolioSave = () => {
+    setEditingPortfolioId(undefined);
     setActiveTab('portfolio');
+    refreshCounts();
   };
 
   const handleArticleSave = () => {
+    setEditingArticleId(undefined);
     setActiveTab('articles');
+    refreshCounts();
   };
 
-  const handleLoginSuccess = async (newSession: any) => {
+  const handleNavigate = (tab: TabType) => {
+    if (tab === 'portfolio' || tab === 'portfolio-new') {
+      setEditingPortfolioId(undefined);
+    }
+    if (tab === 'articles' || tab === 'article-new') {
+      setEditingArticleId(undefined);
+    }
+    setActiveTab(tab);
+  };
+
+  const handleLoginSuccess = async (newSession: Session | null) => {
     setSession(newSession);
-    // sessionManager.startSession(newSession.user.id);
     await refreshCounts();
   };
 
@@ -121,9 +240,9 @@ export function App() {
     const titles: Record<TabType, string> = {
       'overview': 'Beranda & Ringkasan - Bina Project Studio',
       'portfolio': 'Portofolio Proyek - Bina Project Studio',
-      'portfolio-new': 'Editor Portofolio - Bina Project Studio',
+      'portfolio-new': editingPortfolioId ? 'Edit Portofolio Proyek - Bina Project Studio' : 'Tambah Portofolio Baru - Bina Project Studio',
       'articles': 'Artikel & Berita - Bina Project Studio',
-      'article-new': 'Editor Artikel - Bina Project Studio',
+      'article-new': editingArticleId ? 'Edit Artikel - Bina Project Studio' : 'Tulis Artikel Baru - Bina Project Studio',
       'redirects': 'Pengalihan Tautan (301) - Bina Project Studio',
       'settings': 'Pengaturan & Publikasi - Bina Project Studio',
     };
@@ -133,7 +252,7 @@ export function App() {
     } else {
       document.title = titles[activeTab] || 'Bina Project Studio - Panel Manajemen';
     }
-  }, [activeTab, session, isSupabaseConfigured]);
+  }, [activeTab, session, isSupabaseConfigured, editingPortfolioId, editingArticleId]);
 
   // Show loading state while checking auth
   if (!authChecked) {
@@ -154,21 +273,85 @@ export function App() {
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <Overview portfolioCount={portfolioCount} articleCount={articleCount} onNewPortfolio={() => setActiveTab('portfolio-new')} onNewArticle={() => setActiveTab('article-new')} onEditPortfolio={setEditingPortfolioId} onEditArticle={setEditingArticleId} onViewAllPortfolios={() => setActiveTab('portfolio')} onViewAllArticles={() => setActiveTab('articles')} />;
+        return (
+          <Overview
+            portfolioCount={portfolioCount}
+            articleCount={articleCount}
+            onNewPortfolio={handleNewPortfolio}
+            onNewArticle={handleNewArticle}
+            onEditPortfolio={handleEditPortfolio}
+            onEditArticle={handleEditArticle}
+            onViewAllPortfolios={() => {
+              setEditingPortfolioId(undefined);
+              setActiveTab('portfolio');
+            }}
+            onViewAllArticles={() => {
+              setEditingArticleId(undefined);
+              setActiveTab('articles');
+            }}
+          />
+        );
       case 'portfolio':
-        return <PortfolioList onEdit={setEditingPortfolioId} />;
-        case 'portfolio-new':
-          return <PortfolioEditor projectId={undefined} onBack={() => setActiveTab('portfolio')} onSave={handleArticleSave} />;
-        case 'articles':
-          return <ArticleList onEdit={setEditingArticleId} />;
-        case 'article-new':
-          return <ArticleEditor articleId={undefined} onBack={() => setActiveTab('articles')} onSave={handleArticleSave} />;
+        return (
+          <PortfolioList
+            onEdit={handleEditPortfolio}
+            onNew={handleNewPortfolio}
+          />
+        );
+      case 'portfolio-new':
+        return (
+          <PortfolioEditor
+            key={editingPortfolioId || 'new-portfolio'}
+            projectId={editingPortfolioId}
+            onBack={() => {
+              setEditingPortfolioId(undefined);
+              setActiveTab('portfolio');
+            }}
+            onSave={handlePortfolioSave}
+          />
+        );
+      case 'articles':
+        return (
+          <ArticleList
+            onEdit={handleEditArticle}
+            onNew={handleNewArticle}
+          />
+        );
+      case 'article-new':
+        return (
+          <ArticleEditor
+            key={editingArticleId || 'new-article'}
+            articleId={editingArticleId}
+            onBack={() => {
+              setEditingArticleId(undefined);
+              setActiveTab('articles');
+            }}
+            onSave={handleArticleSave}
+          />
+        );
       case 'redirects':
         return <RedirectsList />;
       case 'settings':
         return <Settings user={session?.user} />;
       default:
-        return <Overview portfolioCount={portfolioCount} articleCount={articleCount} onNewPortfolio={() => setActiveTab('portfolio-new')} onNewArticle={() => setActiveTab('article-new')} onEditPortfolio={setEditingPortfolioId} onEditArticle={setEditingArticleId} onViewAllPortfolios={() => setActiveTab('portfolio')} onViewAllArticles={() => setActiveTab('articles')} />;
+        return (
+          <Overview
+            portfolioCount={portfolioCount}
+            articleCount={articleCount}
+            onNewPortfolio={handleNewPortfolio}
+            onNewArticle={handleNewArticle}
+            onEditPortfolio={handleEditPortfolio}
+            onEditArticle={handleEditArticle}
+            onViewAllPortfolios={() => {
+              setEditingPortfolioId(undefined);
+              setActiveTab('portfolio');
+            }}
+            onViewAllArticles={() => {
+              setEditingArticleId(undefined);
+              setActiveTab('articles');
+            }}
+          />
+        );
     }
   };
 
@@ -186,7 +369,7 @@ export function App() {
           <div className="flex flex-1 overflow-hidden">
             <Sidebar
               activeTab={activeTab}
-              onNavigate={setActiveTab}
+              onNavigate={handleNavigate}
               mobileOpen={mobileNavOpen}
               onCloseMobile={() => setMobileNavOpen(false)}
               portfolioCount={portfolioCount}

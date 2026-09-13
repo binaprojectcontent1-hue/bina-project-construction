@@ -21,6 +21,7 @@ export interface Article {
 }
 import { supabase } from '../lib/supabase';
 import { generateSlug, checkSlugAvailability, record301Redirect } from '../utils/slug';
+import { articleFormSchema } from '../schemas/articleSchema';
 import { GoogleSerpPreview } from '../components/GoogleSerpPreview';
 import { ImageUploader } from '../components/ImageUploader';
 import { RichTextEditor } from '../components/RichTextEditor';
@@ -148,6 +149,19 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
     setSlugAvailable(isAvail);
   };
 
+  // Guard against accidental loss of unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (title.trim() || content.trim()) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [title, content]);
+
   const handleContentChange = (val: string) => {
     setContent(val);
     const words = val.trim().split(/\s+/).length;
@@ -156,28 +170,25 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   };
 
   const handleSave = async (autoDeploy = false) => {
-    if (!title.trim()) {
-      setError('Judul artikel wajib diisi.');
-      return;
-    }
-    if (!slug.trim()) {
-      setError('Slug URL wajib diisi.');
-      return;
-    }
-    if (!excerpt.trim()) {
-      setError('Ringkasan / Excerpt artikel wajib diisi.');
-      return;
-    }
-    if (!content.trim()) {
-      setError('Isi konten artikel wajib diisi.');
-      return;
-    }
-    if (!coverImage) {
-      setError('Cover artikel wajib diunggah.');
-      return;
-    }
-    if (!altCoverImage.trim()) {
-      setError('Alt text cover wajib diisi untuk Google Image SEO.');
+    // Validate with centralized Zod Schema
+    const validation = articleFormSchema.safeParse({
+      title,
+      slug,
+      category,
+      excerpt,
+      content,
+      cover_image: coverImage,
+      alt_cover_image: altCoverImage,
+      meta_title: metaTitle,
+      meta_description: metaDescription,
+      focus_keyword: focusKeyword,
+      author,
+      is_published: status === 'published',
+      is_featured: false,
+    });
+
+    if (!validation.success) {
+      setError(validation.error.issues[0].message);
       return;
     }
 
