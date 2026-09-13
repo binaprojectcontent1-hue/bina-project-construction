@@ -29,7 +29,7 @@ const {
   title = `${siteConfig.legalName} - ${siteConfig.tagline}`,
   description = siteConfig.description,
   keywords = 'jasa konstruksi malang, desain interior malang, kontraktor rumah batu, kitchen set kediri, bina project construction, arsitek malang',
-  ogImage = '/assets/img/normal/about_1.jpg',
+  ogImage = '/assets/img/og-image.webp',
   canonicalUrl = new URL(Astro.url.pathname, siteUrl).href,
   type = 'website',
   noindex = false,
@@ -243,6 +243,10 @@ const connectedSchemaGraph = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:secure_url" content={resolvedOgImage} />
+    <meta property="og:image:type" content={resolvedOgImage.endsWith('.webp') ? 'image/webp' : 'image/jpeg'} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Bina Project" />
