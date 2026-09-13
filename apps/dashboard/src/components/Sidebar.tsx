@@ -11,12 +11,14 @@ import {
   X,
   ExternalLink,
   Link2,
+  MapPin,
 } from 'lucide-react';
 
 export type TabType =
   | 'overview'
   | 'portfolio'
   | 'articles'
+  | 'live-projects'
   | 'biolink'
   | 'redirects'
   | 'settings'
@@ -176,6 +178,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
               >
                 {portfolioCount}
               </span>
+            </button>
+
+            {/* Proyek Berjalan */}
+            <button
+              type="button"
+              onClick={() => handleSelect('live-projects')}
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === 'live-projects'
+                  ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <MapPin className={`w-5 h-5 shrink-0 ${activeTab === 'live-projects' ? 'text-white' : 'text-blue-300/70'}`} />
+                <span className="truncate">Proyek Berjalan</span>
+              </div>
             </button>
 
             {/* Artikel Blog */}

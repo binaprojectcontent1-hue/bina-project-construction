@@ -12,6 +12,7 @@ import { ArticleEditor } from './pages/ArticleEditor';
 import { RedirectsList } from './pages/RedirectsList';
 import { Settings } from './pages/Settings';
 import { BioLinkEditor } from './pages/BioLinkEditor';
+import { LiveProjectsManager } from './pages/LiveProjectsManager';
 import { Login } from './pages/Login';
 import { sessionManager } from './lib/session-manager';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -50,6 +51,7 @@ function parseHash(rawHash: string): RouteState {
     'portfolio-new',
     'articles',
     'article-new',
+    'live-projects',
     'biolink',
     'redirects',
     'settings',
@@ -261,6 +263,7 @@ export function App() {
       'portfolio-new': editingPortfolioId ? 'Edit Portofolio Proyek - Bina Project Studio' : 'Tambah Portofolio Baru - Bina Project Studio',
       'articles': 'Artikel & Berita - Bina Project Studio',
       'article-new': editingArticleId ? 'Edit Artikel - Bina Project Studio' : 'Tulis Artikel Baru - Bina Project Studio',
+      'live-projects': 'Peta Proyek Berjalan - Bina Project Studio',
       'biolink': 'Bio Link Manager - Bina Project Studio',
       'redirects': 'Pengalihan Tautan (301) - Bina Project Studio',
       'settings': 'Pengaturan & Publikasi - Bina Project Studio',
@@ -350,6 +353,8 @@ export function App() {
         );
       case 'biolink':
         return <BioLinkEditor />;
+      case 'live-projects':
+        return <LiveProjectsManager />;
       case 'redirects':
         return <RedirectsList />;
       case 'settings':
