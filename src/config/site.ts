@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
   legalName: 'Bina Project Construction & Interior',
   tagline: 'Jasa Konstruksi & Desain Interior Malang',
   description:
-    'Bina Project menyediakan jasa konstruksi bangunan, renovasi rumah, desain interior, kitchen set, waterproofing, dan developer terpercaya di Malang & Jawa Timur.',
+    'Jasa konstruksi, renovasi rumah, desain interior & kitchen set di Malang & Jawa Timur. Pengerjaan profesional, bergaransi & gratis survei lokasi.',
   siteUrl: 'https://binaproject.com',
 
   contact: {

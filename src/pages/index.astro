@@ -14,21 +14,18 @@ import TestimonialSection from '@components/TestimonialSection.astro';
 import FaqSection from '@components/sections/FaqSection.astro';
 import ContactSection from '@components/sections/ContactSection.astro';
 import { getAllProjects } from '@lib/portfolioService';
-import { generateFaqSchema } from '@data/faqs';
 import { getImage } from 'astro:assets';
 import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
 
 const optimizedHero1 = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
 const projects = await getAllProjects();
-const faqSchema = generateFaqSchema();
 ---
 
 <BaseLayout
-  title="Bina Project Construction - Jasa Konstruksi & Desain Interior Malang"
-  description="Bina Project melayani jasa konstruksi, renovasi rumah, desain interior, kitchen set, waterproofing, developer, dan pembuatan maket profesional di Malang & Jawa Timur."
+  title="Bina Project - Jasa Konstruksi & Desain Interior Malang"
+  description="Jasa konstruksi, renovasi rumah, desain interior & kitchen set di Malang & Jawa Timur. Pengerjaan profesional, bergaransi & gratis survei lokasi."
   preloadImage={optimizedHero1.src}
 >
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <HeroSection />
   <TextTickerRibbon variant="dark" speed={28} />
