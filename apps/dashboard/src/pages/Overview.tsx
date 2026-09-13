@@ -115,13 +115,13 @@ export const Overview: React.FC<OverviewProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* 1. Executive Header (Compact, High-Hierarchy & Functional) */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-[28px] shadow-sm border border-slate-200/80">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
               Selamat Datang di Studio 👋
             </h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Sistem Publikasi Normal
             </span>
@@ -137,7 +137,7 @@ export const Overview: React.FC<OverviewProps> = ({
             type="button"
             onClick={fetchData}
             title="Segarkan Data"
-            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors shadow-2xs"
+            className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors shadow-2xs cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -145,7 +145,7 @@ export const Overview: React.FC<OverviewProps> = ({
           <button
             type="button"
             onClick={onNewArticle}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors shadow-2xs"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors shadow-2xs cursor-pointer"
           >
             <PenTool className="w-3.5 h-3.5 text-[#22416D]" />
             <span>+ Tulis Artikel</span>
@@ -154,7 +154,7 @@ export const Overview: React.FC<OverviewProps> = ({
           <button
             type="button"
             onClick={onNewPortfolio}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold transition-all shadow-md shadow-[#22416D]/20 cursor-pointer active:scale-95"
           >
             <FolderPlus className="w-3.5 h-3.5" />
             <span>+ Tambah Proyek</span>
@@ -165,7 +165,7 @@ export const Overview: React.FC<OverviewProps> = ({
       {/* 2. 4-Grid Balanced KPI Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Portfolio */}
-        <Card className="p-5 shadow-sm rounded-2xl hover:shadow-md transition-shadow">
+        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Portofolio Proyek</span>
             <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
@@ -192,7 +192,7 @@ export const Overview: React.FC<OverviewProps> = ({
         </Card>
 
         {/* KPI 2: Articles */}
-        <Card className="p-5 shadow-sm rounded-2xl hover:shadow-md transition-shadow">
+        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Artikel & Edukasi</span>
             <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
@@ -209,8 +209,8 @@ export const Overview: React.FC<OverviewProps> = ({
             )}
             <span className="text-xs text-slate-500 font-medium">total naskah</span>
           </div>
-          <div className="mt-2 text-xs text-[#22416D] font-semibold flex items-center gap-1.5">
-            <TrendingUp className="w-3.5 h-3.5 text-[#22416D] flex-shrink-0" />
+          <div className="mt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
             <span>{articlePublishedCount} Live Google</span>
             {articleCount - articlePublishedCount > 0 && (
               <span className="text-slate-400 font-normal">• {articleCount - articlePublishedCount} Draft</span>
@@ -218,8 +218,8 @@ export const Overview: React.FC<OverviewProps> = ({
           </div>
         </Card>
 
-        {/* KPI 3: Server Status */}
-        <Card className="p-5 shadow-sm rounded-2xl hover:shadow-md transition-shadow">
+        {/* KPI 3: Cloudflare Server Status */}
+        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Server Publikasi</span>
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shadow-2xs">
@@ -227,16 +227,16 @@ export const Overview: React.FC<OverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-emerald-700 tracking-tight">100% Online</span>
+            <span className="text-2xl font-extrabold text-emerald-600 tracking-tight">100% Online</span>
           </div>
           <div className="mt-2 text-xs text-slate-500 font-medium flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span>Cloudflare Edge Global</span>
           </div>
         </Card>
 
-        {/* KPI 4: 301 Redirect Protection */}
-        <Card className="p-5 shadow-sm rounded-2xl hover:shadow-md transition-shadow">
+        {/* KPI 4: URL Protection */}
+        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Proteksi URL (301)</span>
             <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
@@ -253,19 +253,19 @@ export const Overview: React.FC<OverviewProps> = ({
         </Card>
       </div>
 
-      {/* 3. Two Column Section: Recent Projects & Recent Articles */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-        {/* Column 1: Recent Projects */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 flex flex-col overflow-hidden">
-          {/* Card Header Bar */}
-          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
+      {/* 3. Recent Dual Feeds */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left Column: Recent Portfolios */}
+        <Card className="border-slate-200/80 shadow-sm rounded-[28px] overflow-hidden flex flex-col">
+          {/* Card Header */}
+          <div className="p-5 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#22416D] flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                <Briefcase className="w-4 h-4 text-[#22416D]" />
+              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center flex-shrink-0 shadow-2xs">
+                <Briefcase className="w-4.5 h-4.5" />
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold text-slate-900 tracking-tight">
+                  <h2 className="text-sm font-bold text-slate-900 truncate">
                     Portofolio Proyek Terkini
                   </h2>
                   <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-slate-200/70 text-slate-700">
@@ -281,8 +281,9 @@ export const Overview: React.FC<OverviewProps> = ({
             <Button
               variant="outline"
               size="sm"
+              pill
               onClick={onViewAllPortfolios}
-              className="text-xs font-semibold h-8 px-3 gap-1.5 text-slate-700 hover:text-[#22416D] hover:bg-slate-100/80 rounded-lg shrink-0 border-slate-200"
+              className="text-xs font-semibold h-8 px-4 gap-1.5 text-slate-700 hover:text-[#22416D] hover:bg-slate-100/80 shrink-0 border-slate-200 rounded-full"
             >
               <span>Lihat Semua</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -319,7 +320,7 @@ export const Overview: React.FC<OverviewProps> = ({
                 <button
                   type="button"
                   onClick={onNewPortfolio}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#22416D] hover:bg-[#1A3356] transition-colors shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white bg-[#22416D] hover:bg-[#1A3356] transition-colors shadow-xs cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Tambah Proyek Pertama</span>
@@ -374,7 +375,7 @@ export const Overview: React.FC<OverviewProps> = ({
                         <button
                           type="button"
                           onClick={() => onEditPortfolio(p.id)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-[#22416D] hover:border-[#22416D] hover:text-white transition-all shadow-2xs"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-[#22416D] hover:border-[#22416D] hover:text-white transition-all shadow-2xs cursor-pointer"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                           <span>Edit</span>
@@ -386,19 +387,19 @@ export const Overview: React.FC<OverviewProps> = ({
               </div>
             )}
           </div>
-        </div>
+        </Card>
 
-        {/* Column 2: Recent Articles */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 flex flex-col overflow-hidden">
-          {/* Card Header Bar */}
-          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
+        {/* Right Column: Recent Articles */}
+        <Card className="border-slate-200/80 shadow-sm rounded-[28px] overflow-hidden flex flex-col">
+          {/* Card Header */}
+          <div className="p-5 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#22416D] flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                <BookOpen className="w-4 h-4 text-[#22416D]" />
+              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center flex-shrink-0 shadow-2xs">
+                <BookOpen className="w-4.5 h-4.5" />
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold text-slate-900 tracking-tight">
+                  <h2 className="text-sm font-bold text-slate-900 truncate">
                     Artikel Blog Terkini
                   </h2>
                   <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-slate-200/70 text-slate-700">
@@ -414,8 +415,9 @@ export const Overview: React.FC<OverviewProps> = ({
             <Button
               variant="outline"
               size="sm"
+              pill
               onClick={onViewAllArticles}
-              className="text-xs font-semibold h-8 px-3 gap-1.5 text-slate-700 hover:text-[#22416D] hover:bg-slate-100/80 rounded-lg shrink-0 border-slate-200"
+              className="text-xs font-semibold h-8 px-4 gap-1.5 text-slate-700 hover:text-[#22416D] hover:bg-slate-100/80 shrink-0 border-slate-200 rounded-full"
             >
               <span>Lihat Semua</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -505,7 +507,7 @@ export const Overview: React.FC<OverviewProps> = ({
               </div>
             )}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

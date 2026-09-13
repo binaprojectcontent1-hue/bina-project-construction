@@ -143,7 +143,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={onNew} className="gap-2 shadow-xs bg-[#22416D] hover:bg-[#1A3356] text-white font-bold h-10 px-4 text-xs">
+          <Button onClick={onNew} pill className="gap-2 shadow-xs bg-[#22416D] hover:bg-[#1A3356] text-white font-bold h-10 px-5 text-xs">
             <Plus className="w-4 h-4" />
             <span>Tambah Proyek Baru</span>
           </Button>
@@ -152,10 +152,10 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
 
       {/* Stats Metric Cards Row */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-5 shadow-sm rounded-2xl">
+        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Total Portofolio</p>
-            <div className="p-2 rounded-lg bg-slate-100 text-slate-600">
+            <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
               <FileText className="w-4 h-4" />
             </div>
           </div>
@@ -165,10 +165,10 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           <p className="text-xs text-slate-500 mt-1 font-medium">Tersimpan di database</p>
         </Card>
 
-        <Card className="p-5 shadow-sm rounded-2xl">
+        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Terpublikasi (Live)</p>
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600">
+            <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
@@ -178,10 +178,10 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           <p className="text-xs text-slate-500 mt-1 font-medium">Aktif tampil di website publik</p>
         </Card>
 
-        <Card className="p-5 shadow-sm rounded-2xl">
+        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Draft Tersimpan</p>
-            <div className="p-2 rounded-lg bg-amber-50 text-amber-600">
+            <div className="p-2 rounded-xl bg-amber-50 text-amber-600">
               <Clock className="w-4 h-4" />
             </div>
           </div>
@@ -193,24 +193,25 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl shadow-sm">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-[28px] border border-slate-200/80 shadow-xs">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
           <div className="relative w-full sm:max-w-xs">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <Input
+              pill
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari judul proyek, kota lokasi..."
-              className="pl-9.5 h-10 text-xs placeholder:text-slate-400 border-slate-200"
+              className="pl-10 text-xs placeholder:text-slate-400 border-slate-200"
             />
           </div>
 
           {/* Quick Status Filter Tabs */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-full border border-slate-200/80">
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                 statusFilter === 'all'
                   ? 'bg-white text-slate-900 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -221,7 +222,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
             <button
               type="button"
               onClick={() => setStatusFilter('published')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 statusFilter === 'published'
                   ? 'bg-emerald-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -233,7 +234,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
             <button
               type="button"
               onClick={() => setStatusFilter('draft')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 statusFilter === 'draft'
                   ? 'bg-amber-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -249,7 +250,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="h-10 px-3.5 text-xs font-semibold border border-slate-200 rounded-lg bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-950 shadow-xs"
+            className="h-11 px-4 text-xs font-semibold border border-slate-200 rounded-full bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30 shadow-xs"
           >
             <option value="all">Semua Kategori</option>
             <option value="Konstruksi">Konstruksi</option>
@@ -260,11 +261,11 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           </select>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center border border-slate-200 rounded-lg p-1 bg-slate-50">
+          <div className="flex items-center border border-slate-200 rounded-full p-1 bg-slate-50">
             <button
               type="button"
               onClick={() => setViewMode('table')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
                 viewMode === 'table' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -273,7 +274,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
             <button
               type="button"
               onClick={() => setViewMode('cards')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
                 viewMode === 'cards' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -284,7 +285,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           <button
             type="button"
             onClick={fetchProjects}
-            className="p-2.5 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors shadow-xs"
+            className="w-10 h-10 flex items-center justify-center border border-slate-200 rounded-full hover:bg-slate-50 text-slate-600 transition-colors shadow-xs cursor-pointer"
             title="Segarkan Data"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -331,7 +332,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           </div>
         )
       ) : filteredProjects.length === 0 ? (
-        <Card className="p-12 text-center space-y-4 rounded-xl">
+        <Card className="p-12 text-center space-y-4 rounded-[28px] border-slate-200/80 bg-white">
           <Globe className="w-12 h-12 text-slate-300 mx-auto" />
           <div>
             <h4 className="text-base font-bold text-slate-800">Tidak ada proyek yang sesuai</h4>
@@ -341,13 +342,13 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
                 : 'Mulai tambahkan proyek baru dengan foto jernih dan deskripsi pengerjaan yang menarik.'}
             </p>
           </div>
-          <Button onClick={onNew} size="sm" className="text-xs font-bold bg-[#22416D]">
+          <Button onClick={onNew} pill size="sm" className="text-xs font-bold bg-[#22416D] px-5">
             Tambah Proyek Baru
           </Button>
         </Card>
       ) : viewMode === 'table' ? (
         /* DATA TABLE VIEW */
-        <Card className="overflow-hidden shadow-sm rounded-2xl">
+        <Card className="overflow-hidden shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
@@ -462,7 +463,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
         /* CARD GRID VIEW */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredProjects.map((item) => (
-            <Card key={item.id} className="overflow-hidden flex flex-col justify-between group shadow-sm rounded-2xl hover:shadow-md transition-all">
+            <Card key={item.id} className="overflow-hidden flex flex-col justify-between group shadow-xs rounded-[28px] border border-slate-200/80 hover:shadow-md transition-all bg-white">
               <div>
                 <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
                   <img
@@ -471,7 +472,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute top-2.5 left-2.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-950/80 text-white backdrop-blur-xs">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-950/80 text-white backdrop-blur-xs">
                       {item.category}
                     </span>
                   </div>
@@ -479,7 +480,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
                     <button
                       type="button"
                       onClick={() => handleToggleStatus(item)}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold backdrop-blur-md cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm ${
                         item.status === 'published' || !item.status
                           ? 'bg-emerald-600 text-white'
                           : 'bg-white/95 text-amber-800 border border-amber-200'
@@ -529,7 +530,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
                   <button
                     type="button"
                     onClick={() => onEdit && onEdit(item.id)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-colors"
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-colors cursor-pointer"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                     <span>Edit</span>

@@ -143,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3.5 h-9 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-xl transition-colors shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 h-9 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full transition-colors shadow-xs cursor-pointer"
             title="Lihat website publik di tab baru"
           >
             <span>Lihat Web Publik</span>
@@ -156,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           type="button"
           onClick={handleDeploy}
           disabled={deploying}
-          className="inline-flex items-center gap-2 h-9 px-3.5 bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold rounded-xl shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+          className="inline-flex items-center gap-2 h-9 px-4 bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold rounded-full shadow-md shadow-[#22416D]/20 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
           title="Publikasikan semua perubahan data terbaru langsung ke website live"
         >
           {deploying ? (

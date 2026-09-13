@@ -512,13 +512,13 @@ export const BioLinkEditor: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/90 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-[28px] border border-slate-200/90 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">
               Bio Link Manager
             </h1>
-            <Badge variant="outline" className="text-xs font-semibold bg-blue-50 text-[#22416D] border-blue-200">
+            <Badge variant="outline" className="text-xs font-semibold bg-blue-50 text-[#22416D] border-blue-200 rounded-full px-2.5">
               bio.binaproject.com
             </Badge>
           </div>
@@ -529,11 +529,12 @@ export const BioLinkEditor: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <Button
+            pill
             variant="outline"
             size="sm"
             onClick={fetchData}
             title="Muat Ulang Data"
-            className="flex items-center gap-1.5"
+            className="flex items-center gap-1.5 px-4"
           >
             <RefreshCw className="w-4 h-4 text-slate-500" />
             <span>Segarkan</span>
@@ -543,7 +544,7 @@ export const BioLinkEditor: React.FC = () => {
             href="https://bio.binaproject.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 h-9 rounded-md px-3 text-xs font-semibold bg-[#22416D] text-white hover:bg-[#1A3356] transition-colors shadow-xs"
+            className="inline-flex items-center justify-center gap-1.5 h-10 rounded-full px-4.5 text-xs font-bold bg-[#22416D] text-white hover:bg-[#1A3356] transition-colors shadow-xs cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>Buka bio.binaproject.com</span>
@@ -553,33 +554,33 @@ export const BioLinkEditor: React.FC = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-5 flex items-center gap-4 bg-white border-slate-200">
-          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
+        <Card className="p-5 flex items-center gap-4 bg-white border border-slate-200/80 rounded-[24px] shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700">
             <Link2 className="w-6 h-6" />
           </div>
           <div>
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Tautan</p>
-            <p className="text-2xl font-black text-slate-900 mt-0.5">{links.length}</p>
+            <p className="text-2xl font-black text-slate-900 mt-0.5 font-mono">{links.length}</p>
           </div>
         </Card>
 
-        <Card className="p-5 flex items-center gap-4 bg-white border-slate-200">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+        <Card className="p-5 flex items-center gap-4 bg-white border border-slate-200/80 rounded-[24px] shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <Eye className="w-6 h-6" />
           </div>
           <div>
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tautan Aktif</p>
-            <p className="text-2xl font-black text-emerald-600 mt-0.5">{activeCount}</p>
+            <p className="text-2xl font-black text-emerald-600 mt-0.5 font-mono">{activeCount}</p>
           </div>
         </Card>
 
-        <Card className="p-5 flex items-center gap-4 bg-white border-slate-200">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-[#F68A0A] flex items-center justify-center">
+        <Card className="p-5 flex items-center gap-4 bg-white border border-slate-200/80 rounded-[24px] shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-[#F68A0A] flex items-center justify-center">
             <BarChart3 className="w-6 h-6" />
           </div>
           <div>
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Klik</p>
-            <p className="text-2xl font-black text-[#F68A0A] mt-0.5">{totalClicks}</p>
+            <p className="text-2xl font-black text-[#F68A0A] mt-0.5 font-mono">{totalClicks}</p>
           </div>
         </Card>
       </div>
@@ -589,7 +590,7 @@ export const BioLinkEditor: React.FC = () => {
         {/* Left Column: Management Controls (8 cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Profile & Branding Settings */}
-          <Card className="border-slate-200 bg-white">
+          <Card className="border border-slate-200/80 bg-white rounded-[28px] shadow-xs overflow-hidden">
             <CardHeader className="pb-4 border-b border-slate-100">
               <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#F68A0A]" />
@@ -603,10 +604,10 @@ export const BioLinkEditor: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-700">Nama Profil / Brand</label>
                 <Input
+                  pill
                   value={editProfileName}
                   onChange={(e) => setEditProfileName(e.target.value)}
                   placeholder="Contoh: Bina Project"
-                  className="h-10"
                 />
               </div>
 
@@ -620,16 +621,17 @@ export const BioLinkEditor: React.FC = () => {
                   onChange={(e) => setEditTagline(e.target.value)}
                   placeholder="Contoh:&#10;Jasa Konstruksi & Interior Terpercaya&#10;Melayani Area Malang & Sekitarnya"
                   rows={3}
-                  className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#22416D] focus:border-[#22416D] transition-colors resize-y leading-relaxed font-sans"
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30 focus:border-[#22416D] transition-all resize-y leading-relaxed font-sans shadow-xs"
                 />
               </div>
 
               <div className="flex justify-end pt-1">
                 <Button
+                  pill
                   onClick={handleSaveSettings}
                   disabled={saving}
                   size="sm"
-                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold"
+                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold px-5"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>{saving ? 'Menyimpan...' : 'Simpan Profil'}</span>
@@ -639,7 +641,7 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
 
           {/* Links Management Card */}
-          <Card className="border-slate-200 bg-white">
+          <Card className="border border-slate-200/80 bg-white rounded-[28px] shadow-xs overflow-hidden">
             <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -653,9 +655,10 @@ export const BioLinkEditor: React.FC = () => {
 
               {!showAddForm && (
                 <Button
+                  pill
                   onClick={() => setShowAddForm(true)}
                   size="sm"
-                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold shadow-xs"
+                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold shadow-xs px-4"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Tambah Link</span>
@@ -666,7 +669,7 @@ export const BioLinkEditor: React.FC = () => {
             <CardContent className="pt-4 space-y-4">
               {/* Form Tambah Link Baru */}
               {showAddForm && (
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3.5 animate-fadeIn">
+                <div className="p-4.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3.5 animate-fadeIn">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                       <Plus className="w-3.5 h-3.5 text-[#22416D]" />
@@ -675,7 +678,7 @@ export const BioLinkEditor: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowAddForm(false)}
-                      className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200"
+                      className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -685,20 +688,22 @@ export const BioLinkEditor: React.FC = () => {
                     <div>
                       <label className="text-xs font-bold text-slate-600 block mb-1">Judul Tombol</label>
                       <Input
+                        pill
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
                         placeholder="Contoh: Konsultasi Gratis via WhatsApp"
-                        className="h-9 bg-white"
+                        className="bg-white"
                       />
                     </div>
 
                     <div>
                       <label className="text-xs font-bold text-slate-600 block mb-1">Tujuan URL</label>
                       <Input
+                        pill
                         value={newUrl}
                         onChange={(e) => setNewUrl(e.target.value)}
                         placeholder="Contoh: https://wa.me/6281335335304"
-                        className="h-9 bg-white"
+                        className="bg-white"
                       />
                     </div>
 
@@ -713,7 +718,7 @@ export const BioLinkEditor: React.FC = () => {
                               key={p.id}
                               type="button"
                               onClick={() => setNewIcon(p.id)}
-                              className={`flex items-center gap-1.5 p-2 rounded-lg text-xs font-semibold border transition-all text-left ${
+                              className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all text-left ${
                                 isSelected
                                   ? 'bg-[#22416D] text-white border-[#22416D] shadow-xs'
                                   : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
@@ -729,6 +734,7 @@ export const BioLinkEditor: React.FC = () => {
 
                     <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200/80">
                       <Button
+                        pill
                         variant="outline"
                         size="sm"
                         onClick={() => {
@@ -736,14 +742,16 @@ export const BioLinkEditor: React.FC = () => {
                           setNewTitle('');
                           setNewUrl('');
                         }}
+                        className="px-4 text-xs font-semibold"
                       >
                         Batal
                       </Button>
                       <Button
+                        pill
                         size="sm"
                         onClick={handleAddLink}
                         disabled={saving || !newTitle.trim() || !newUrl.trim()}
-                        className="bg-[#22416D] hover:bg-[#1A3356] text-white font-bold"
+                        className="bg-[#22416D] hover:bg-[#1A3356] text-white font-bold px-4"
                       >
                         {saving ? 'Menyimpan...' : 'Simpan Tautan'}
                       </Button>
@@ -765,7 +773,7 @@ export const BioLinkEditor: React.FC = () => {
                       onDragEnter={() => handleDragEnter(index)}
                       onDragEnd={handleDragEnd}
                       onDragOver={(e) => e.preventDefault()}
-                      className={`group flex items-center gap-3 p-3.5 rounded-xl border transition-all ${
+                      className={`group flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${
                         isEditing
                           ? 'bg-blue-50/50 border-[#22416D] shadow-xs'
                           : link.is_active
@@ -807,17 +815,19 @@ export const BioLinkEditor: React.FC = () => {
                             <div>
                               <label className="text-[11px] font-bold text-slate-600 block mb-1">Judul</label>
                               <Input
+                                pill
                                 value={editTitle}
                                 onChange={(e) => setEditTitle(e.target.value)}
-                                className="h-8 text-xs bg-white"
+                                className="bg-white"
                               />
                             </div>
                             <div>
                               <label className="text-[11px] font-bold text-slate-600 block mb-1">URL</label>
                               <Input
+                                pill
                                 value={editUrl}
                                 onChange={(e) => setEditUrl(e.target.value)}
-                                className="h-8 text-xs bg-white"
+                                className="bg-white"
                               />
                             </div>
                           </div>
@@ -833,7 +843,7 @@ export const BioLinkEditor: React.FC = () => {
                                     key={p.id}
                                     type="button"
                                     onClick={() => setEditIcon(p.id)}
-                                    className={`px-2 py-1 rounded-md text-[11px] font-medium border flex items-center gap-1 ${
+                                    className={`px-3 py-1 rounded-full text-[11px] font-medium border flex items-center gap-1 ${
                                       isSelected
                                         ? 'bg-[#22416D] text-white border-[#22416D]'
                                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
@@ -849,18 +859,20 @@ export const BioLinkEditor: React.FC = () => {
 
                           <div className="flex justify-end gap-1.5 pt-1">
                             <Button
+                              pill
                               variant="outline"
                               size="sm"
                               onClick={() => setEditingId(null)}
-                              className="h-7 px-2 text-xs"
+                              className="h-8 px-3 text-xs font-semibold"
                             >
                               <X className="w-3 h-3 mr-1" /> Batal
                             </Button>
                             <Button
+                              pill
                               size="sm"
                               onClick={handleSaveEdit}
                               disabled={saving || !editTitle.trim() || !editUrl.trim()}
-                              className="h-7 px-2.5 text-xs bg-[#22416D] text-white"
+                              className="h-8 px-3 text-xs bg-[#22416D] text-white font-bold"
                             >
                               <Check className="w-3 h-3 mr-1" /> Simpan
                             </Button>
@@ -874,7 +886,7 @@ export const BioLinkEditor: React.FC = () => {
                                 {link.title}
                               </span>
                               {!link.is_active && (
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">
                                   Nonaktif
                                 </span>
                               )}
@@ -884,7 +896,7 @@ export const BioLinkEditor: React.FC = () => {
 
                           {/* Stats Badge */}
                           <div className="shrink-0 text-right">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-50 text-[#F68A0A] border border-amber-200/60">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-50 text-[#F68A0A] border border-amber-200/60">
                               {link.click_count || 0} klik
                             </span>
                           </div>
@@ -929,16 +941,17 @@ export const BioLinkEditor: React.FC = () => {
                 })}
 
                 {links.length === 0 && !showAddForm && (
-                  <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-slate-200">
+                  <div className="text-center py-12 px-4 rounded-2xl border-2 border-dashed border-slate-200">
                     <Link2 className="w-8 h-8 text-slate-300 mx-auto mb-2" />
                     <p className="text-sm font-bold text-slate-700">Belum ada tautan bio</p>
                     <p className="text-xs text-slate-400 mt-1 mb-4">
                       Tambahkan tautan WhatsApp, Website, atau Portofolio untuk bio profil Anda.
                     </p>
                     <Button
+                      pill
                       size="sm"
                       onClick={() => setShowAddForm(true)}
-                      className="bg-[#22416D] text-white font-bold"
+                      className="bg-[#22416D] text-white font-bold px-4"
                     >
                       <Plus className="w-3.5 h-3.5 mr-1" /> Tambah Tautan Pertama
                     </Button>
@@ -949,7 +962,7 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
 
           {/* Social Media Links Card */}
-          <Card className="border-slate-200 bg-white">
+          <Card className="border border-slate-200/80 bg-white rounded-[28px] shadow-xs overflow-hidden">
             <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -963,10 +976,11 @@ export const BioLinkEditor: React.FC = () => {
 
               {!showAddSocial && (
                 <Button
+                  pill
                   onClick={() => setShowAddSocial(true)}
                   size="sm"
                   variant="outline"
-                  className="text-xs flex items-center gap-1 font-semibold"
+                  className="text-xs flex items-center gap-1 font-semibold px-4"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Tambah Akun</span>
@@ -977,7 +991,7 @@ export const BioLinkEditor: React.FC = () => {
             <CardContent className="pt-4 space-y-4">
               {/* Form Tambah Social Baru */}
               {showAddSocial && (
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 animate-fadeIn">
+                <div className="p-4.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 animate-fadeIn">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Tambah Akun Media Sosial
@@ -985,7 +999,7 @@ export const BioLinkEditor: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowAddSocial(false)}
-                      className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200"
+                      className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -995,10 +1009,11 @@ export const BioLinkEditor: React.FC = () => {
                     <div>
                       <label className="text-xs font-bold text-slate-600 block mb-1">Nama Platform</label>
                       <Input
+                        pill
                         value={newSocialPlatform}
                         onChange={(e) => setNewSocialPlatform(e.target.value)}
                         placeholder="Contoh: WhatsApp, Instagram"
-                        className="h-9 bg-white"
+                        className="bg-white"
                       />
                     </div>
                     <div>
@@ -1006,7 +1021,7 @@ export const BioLinkEditor: React.FC = () => {
                       <select
                         value={newSocialIcon}
                         onChange={(e) => setNewSocialIcon(e.target.value)}
-                        className="w-full h-9 rounded-md border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#22416D]"
+                        className="w-full h-11 rounded-full border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30"
                       >
                         <option value="whatsapp">WhatsApp</option>
                         <option value="instagram">Instagram</option>
@@ -1020,26 +1035,29 @@ export const BioLinkEditor: React.FC = () => {
                   <div>
                     <label className="text-xs font-bold text-slate-600 block mb-1">URL Profil / Kontak</label>
                     <Input
+                      pill
                       value={newSocialUrl}
                       onChange={(e) => setNewSocialUrl(e.target.value)}
                       placeholder="https://wa.me/6281335335304"
-                      className="h-9 bg-white"
+                      className="bg-white"
                     />
                   </div>
 
                   <div className="flex justify-end gap-2 pt-1">
                     <Button
+                      pill
                       variant="outline"
                       size="sm"
                       onClick={() => setShowAddSocial(false)}
-                      className="h-8 text-xs"
+                      className="px-4 text-xs font-semibold"
                     >
                       Batal
                     </Button>
                     <Button
+                      pill
                       size="sm"
                       onClick={handleAddSocial}
-                      className="h-8 text-xs bg-[#22416D] text-white font-bold"
+                      className="px-4 text-xs bg-[#22416D] text-white font-bold"
                     >
                       Tambahkan
                     </Button>
@@ -1052,13 +1070,13 @@ export const BioLinkEditor: React.FC = () => {
                 {socials.map((s, idx) => (
                   <div
                     key={s.platform + idx}
-                    className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                    className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${
                       s.is_active
                         ? 'bg-white border-slate-200 shadow-xs'
                         : 'bg-slate-50/70 border-dashed border-slate-200 opacity-60'
                     }`}
                   >
-                    <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <div className="w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-xs">
                       <SocialPreviewIcon name={s.icon} className="w-4 h-4 text-white fill-white" />
                     </div>
 
@@ -1066,16 +1084,17 @@ export const BioLinkEditor: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-slate-900">{s.platform}</span>
                         {!s.is_active && (
-                          <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-200 text-slate-600">
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">
                             Nonaktif
                           </span>
                         )}
                       </div>
                       <Input
+                        pill
                         value={s.url}
                         onChange={(e) => handleUpdateSocialUrl(idx, e.target.value)}
                         placeholder="https://..."
-                        className="h-7 text-xs bg-slate-50/50"
+                        className="bg-slate-50/50"
                       />
                     </div>
 
@@ -1106,10 +1125,11 @@ export const BioLinkEditor: React.FC = () => {
 
               <div className="flex justify-end pt-2 border-t border-slate-100">
                 <Button
+                  pill
                   onClick={handleSaveSocials}
                   disabled={savingSocials}
                   size="sm"
-                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold"
+                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold px-5"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>{savingSocials ? 'Menyimpan...' : 'Simpan Media Sosial'}</span>
@@ -1121,7 +1141,7 @@ export const BioLinkEditor: React.FC = () => {
 
         {/* Right Column: Live Mobile Mockup Preview (1:1 with Bio Link) */}
         <div className="lg:col-span-5 sticky top-6">
-          <Card className="border-slate-200 bg-white overflow-hidden shadow-sm">
+          <Card className="border border-slate-200/80 bg-white overflow-hidden shadow-xs rounded-[28px]">
             <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
               <div className="flex items-center gap-2">
                 <Smartphone className="w-4 h-4 text-[#22416D]" />

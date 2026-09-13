@@ -384,7 +384,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
             variant="outline"
             size="icon"
             onClick={handleBack}
-            className="h-9 w-9 rounded-xl text-slate-600 hover:bg-white shadow-xs cursor-pointer shrink-0"
+            className="h-9 w-9 rounded-full text-slate-600 hover:bg-white shadow-xs cursor-pointer shrink-0"
             title="Kembali ke Daftar Artikel"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -408,9 +408,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           <Button
             variant="outline"
             size="sm"
+            pill
             onClick={() => handleSave(false)}
             disabled={saving || deploying}
-            className="text-xs font-bold gap-1.5 h-9 px-3.5 rounded-xl border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
+            className="text-xs font-bold gap-1.5 h-9 px-4 rounded-full border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
             title="Simpan draf artikel tanpa langsung memicu perubahan di website publik"
           >
             <Save className="w-3.5 h-3.5 text-slate-500" />
@@ -419,9 +420,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
           <Button
             size="sm"
+            pill
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="text-xs font-bold gap-2 h-9 px-4 rounded-xl bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            className="text-xs font-bold gap-2 h-9 px-5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white shadow-md shadow-[#22416D]/20 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
             title="Simpan artikel dan publikasikan langsung ke website live"
           >
             {deploying ? (
@@ -451,7 +453,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Content */}
         <div className="lg:col-span-7 space-y-6">
-          <Card>
+          <Card className="rounded-[28px] shadow-xs">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold text-slate-900">
                 Konten & Naskah Artikel
@@ -467,6 +469,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   Judul Artikel <span className="text-rose-500">*</span>
                 </label>
                 <Input
+                  pill
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="Contoh: 7 Tips Memilih Kontraktor Bangunan Terpercaya di Malang"
@@ -479,7 +482,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-800 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22416D]/30 focus-visible:border-[#22416D]"
+                    className="flex h-11 w-full rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-800 shadow-xs focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#22416D]/15 focus-visible:border-[#22416D]"
                   >
                     <option value="Interior">Interior</option>
                     <option value="Konstruksi">Konstruksi</option>
@@ -491,6 +494,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                 <div className="space-y-1.5">
                   <label className="text-sm font-bold text-slate-800 block">Penulis (Author)</label>
                   <Input
+                    pill
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
                     placeholder="Bina Project Editorial"
@@ -538,7 +542,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         {/* Right Column: SEO Configuration */}
         <div className="lg:col-span-5 space-y-6">
           {/* Smart Slug Engine with Padlock */}
-          <Card className="shadow-xs rounded-2xl">
+          <Card className="shadow-xs rounded-[28px]">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm flex items-center gap-1.5 font-semibold text-slate-900">
@@ -564,7 +568,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <button
                     type="button"
                     onClick={() => setIsSlugLocked((prev) => !prev)}
-                    className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg border transition-colors cursor-pointer ${
+                    className={`flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full border transition-colors cursor-pointer ${
                       isSlugLocked
                         ? 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                         : 'border-amber-200 bg-amber-50 text-amber-800'
@@ -594,10 +598,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
             <CardContent className="pt-2 space-y-3">
               <div className="space-y-1.5">
-                <div className={`flex rounded-xl border shadow-xs transition-all overflow-hidden ${
-                  isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#22416D] ring-2 ring-[#22416D]/10'
+                <div className={`flex rounded-full border shadow-xs transition-all overflow-hidden ${
+                  isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#22416D] ring-4 ring-[#22416D]/10'
                 }`}>
-                  <span className="inline-flex items-center px-3 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
+                  <span className="inline-flex items-center px-4 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
                     /blog/
                   </span>
                   <input
@@ -606,7 +610,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                     readOnly={isSlugLocked}
                     onChange={(e) => handleSlugChange(e.target.value)}
                     placeholder="tips-memilih-kontraktor-malang"
-                    className={`flex-1 px-3 py-2 text-xs font-mono focus:outline-none ${
+                    className={`flex-1 px-4 py-2.5 text-xs font-mono focus:outline-none ${
                       isSlugLocked ? 'text-slate-600 bg-slate-50/80 cursor-not-allowed' : 'text-slate-900 bg-white'
                     }`}
                   />
@@ -637,24 +641,24 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <HelpTooltip content="Kata atau kalimat pencarian yang sering diketikkan orang di Google saat mencari topik ini (misal: 'biaya bangun rumah di malang')." />
                 </label>
                 <Input
+                  pill
                   value={focusKeyword}
                   onChange={(e) => setFocusKeyword(e.target.value)}
                   placeholder="Contoh: kontraktor rumah malang"
-                  className="rounded-xl h-10 text-xs"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Visibility & Status Card */}
-          <Card>
+          <Card className="shadow-xs rounded-[28px]">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold text-slate-900">
                 Status Publikasi
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
                 <div>
                   <label className="text-xs font-medium text-slate-700 block flex items-center">
                     Status Publikasi
@@ -664,12 +668,12 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                     {status === 'published' ? '🟢 Live di Website & Google' : '📝 Draft Tersimpan'}
                   </span>
                 </div>
-                <div className="flex items-center p-0.5 bg-slate-100 rounded-lg">
+                <div className="flex items-center p-1 bg-white rounded-full shadow-xs">
                   <button
                     type="button"
                     onClick={() => setStatus('draft')}
-                    className={`px-3 py-1 text-xs font-medium rounded transition-all ${
-                      status === 'draft' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500'
+                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
+                      status === 'draft' ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-500'
                     }`}
                   >
                     Draft
@@ -677,8 +681,8 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <button
                     type="button"
                     onClick={() => setStatus('published')}
-                    className={`px-3 py-1 text-xs font-medium rounded transition-all ${
-                      status === 'published' ? 'bg-[#22416D] text-white shadow-xs' : 'text-slate-500'
+                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
+                      status === 'published' ? 'bg-[#22416D] text-white font-semibold shadow-xs' : 'text-slate-500'
                     }`}
                   >
                     Published
@@ -689,7 +693,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           </Card>
 
           {/* Custom Meta Tag Card */}
-          <Card>
+          <Card className="shadow-xs rounded-[28px]">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-1.5">
                 <CardTitle className="text-sm font-semibold text-slate-900">
@@ -709,6 +713,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <HelpTooltip content="Judul biru yang tampil di hasil pencarian Google. Disarankan 50-60 karakter." />
                 </label>
                 <Input
+                  pill
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   placeholder="Contoh: 7 Tips Kontraktor Rumah Malang Terbaik (Panduan 2026)"
