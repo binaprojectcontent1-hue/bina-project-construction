@@ -67,25 +67,44 @@ const projectTypes = [...SERVICE_OPTIONS, 'Konsultasi Lainnya'] as const;
     white-space: nowrap !important;
     border: 0 !important;
   }
-  .form-control, .form-select {
+  .contact-form2 .form-control,
+  .contact-form2 .form-select,
+  .form-control,
+  .form-select {
     font-size: 16px;
     border-radius: 12px;
-    border: 1.5px solid #E2E8F0;
+    border: 1.5px solid #CBD5E1;
     transition: all 0.3s ease;
-    background-color: var(--bina-slate-50, #F8FAFC);
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
   }
-  .form-control:focus, .form-select:focus {
-    background-color: #FFFFFF;
-    border-color: var(--theme-color, #22416D);
-    box-shadow: 0 0 0 4px rgba(34, 65, 109, 0.08);
-    outline: none;
+  .contact-form2 .form-control:focus,
+  .contact-form2 .form-select:focus,
+  .form-control:focus,
+  .form-select:focus {
+    background-color: #FFFFFF !important;
+    border-color: #22416D !important;
+    box-shadow: 0 0 0 4px rgba(34, 65, 109, 0.12) !important;
+    outline: none !important;
+    color: #0F172A !important;
+  }
+  /* High-Contrast Form Placeholders (WCAG AAA Compliant: > 7:1) */
+  .contact-form2 .form-control::placeholder,
+  .contact-form2 textarea::placeholder,
+  .contact-form2 input::placeholder,
+  .form-control::placeholder,
+  .form-select::placeholder,
+  textarea::placeholder,
+  input::placeholder {
+    color: #334155 !important;
+    opacity: 1 !important;
   }
   .form-icon {
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: #475569;
+    color: #334155;
     pointer-events: none;
   }
   textarea ~ .form-icon {

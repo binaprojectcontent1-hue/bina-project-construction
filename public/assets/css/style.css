@@ -91,7 +91,7 @@ Version: 1.0.0
   --smoke-color2: #F3F4F6;
   --black-color: #000000;
   --black-color2: #080E1C;
-  --gray-color: #888c97;
+  --gray-color: #475569;
   --white-color: #ffffff;
   --light-color: #bdbdbd;
   --yellow-color: #FFB539;
@@ -1804,7 +1804,7 @@ textarea.is-invalid {
   line-height: var(--btn-size, 43px);
   font-size: var(--btn-font-size, 18px);
   background-color: transparent;
-  border: 2px solid #888C97;
+  border: 2px solid #475569;
   color: var(--title-color);
   text-align: center;
   border-radius: 99px;
@@ -6072,7 +6072,7 @@ ol.wp-block-rss {
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  color: #888c97;
+  color: #475569;
   line-height: 26px;
   padding: 0 0 0 35px;
   max-width: 277px;
@@ -6689,7 +6689,7 @@ ol.wp-block-rss {
   content: '';
   height: 14px;
   width: 1px;
-  background-color: #888C97;
+  background-color: #475569;
   position: absolute;
   top: 5px;
   right: -32px;
@@ -6876,7 +6876,7 @@ ol.wp-block-rss {
   content: '';
   height: 14px;
   width: 1px;
-  background-color: #888C97;
+  background-color: #475569;
   position: absolute;
   top: 5px;
   right: -32px;
@@ -10046,7 +10046,7 @@ ul.comment-list:has(> .th-comment-item ~ .th-comment-item):first-child > .th-pos
 
 .hero-style2 .hero-text {
   max-width: 488px;
-  color: #888C97;
+  color: #475569;
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
@@ -13706,7 +13706,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .contact-form i {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form textarea.form-control,
@@ -13742,7 +13742,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .contact-form2 .form-group i {
-  color: #888C97;
+  color: #475569;
   font-weight: 300;
 }
 
@@ -13753,7 +13753,7 @@ span.select2-selection.select2-selection--single:focus {
 .contact-form2 input {
   background-color: #F8F8F8;
   border: 1px solid #E4E4E4;
-  color: #888C97;
+  color: #475569;
   border-radius: 0px;
 }
 
@@ -13762,7 +13762,7 @@ span.select2-selection.select2-selection--single:focus {
 .contact-form2 .form-select::-moz-placeholder,
 .contact-form2 textarea::-moz-placeholder,
 .contact-form2 input::-moz-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select::-webkit-input-placeholder,
@@ -13770,7 +13770,7 @@ span.select2-selection.select2-selection--single:focus {
 .contact-form2 .form-select::-webkit-input-placeholder,
 .contact-form2 textarea::-webkit-input-placeholder,
 .contact-form2 input::-webkit-input-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select:-ms-input-placeholder,
@@ -13778,23 +13778,23 @@ span.select2-selection.select2-selection--single:focus {
 .contact-form2 .form-select:-ms-input-placeholder,
 .contact-form2 textarea:-ms-input-placeholder,
 .contact-form2 input:-ms-input-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select::-webkit-input-placeholder, .contact-form2 .form-control::-webkit-input-placeholder, .contact-form2 .form-select::-webkit-input-placeholder, .contact-form2 textarea::-webkit-input-placeholder, .contact-form2 input::-webkit-input-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select::-moz-placeholder, .contact-form2 .form-control::-moz-placeholder, .contact-form2 .form-select::-moz-placeholder, .contact-form2 textarea::-moz-placeholder, .contact-form2 input::-moz-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select:-ms-input-placeholder, .contact-form2 .form-control:-ms-input-placeholder, .contact-form2 .form-select:-ms-input-placeholder, .contact-form2 textarea:-ms-input-placeholder, .contact-form2 input:-ms-input-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select::-ms-input-placeholder, .contact-form2 .form-control::-ms-input-placeholder, .contact-form2 .form-select::-ms-input-placeholder, .contact-form2 textarea::-ms-input-placeholder, .contact-form2 input::-ms-input-placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 select::placeholder,
@@ -13802,7 +13802,7 @@ span.select2-selection.select2-selection--single:focus {
 .contact-form2 .form-select::placeholder,
 .contact-form2 textarea::placeholder,
 .contact-form2 input::placeholder {
-  color: #888C97;
+  color: #475569;
 }
 
 .contact-form2 .nice-select .option {
@@ -13829,8 +13829,8 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .contact-form2 .nice-select:after {
-  border-bottom: 1.5px solid #888C97;
-  border-right: 1.5px solid #888C97;
+  border-bottom: 1.5px solid #475569;
+  border-right: 1.5px solid #475569;
 }
 
 .contact-form2 textarea.form-control,
@@ -20305,7 +20305,7 @@ span.select2-selection.select2-selection--single:focus {
   color: var(--theme-color);
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #888C97;
+  -webkit-text-stroke-color: #475569;
 }
 
 .marquee-wrapper .marquee .marquee-group .text img {
@@ -21738,7 +21738,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .service-accordion {
-  border-top: 1px solid #888C97;
+  border-top: 1px solid #475569;
   /* Medium devices */
 }
 
@@ -21749,7 +21749,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .service-accordion-content {
-  border-left: 1px solid #888C97;
+  border-left: 1px solid #475569;
   padding-left: 67px;
   padding-top: 20px;
   margin-left: 47px;
@@ -22106,7 +22106,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .process-content .sec-text {
-  color: #888C97;
+  color: #475569;
   margin-bottom: 35px;
 }
 
@@ -23509,7 +23509,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .choose-text {
-  color: #888C97;
+  color: #475569;
 }
 
 .mission-content .checklist li {

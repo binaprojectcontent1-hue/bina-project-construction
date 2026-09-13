@@ -400,11 +400,19 @@ textarea:focus,
   outline: none !important;
 }
 
-/* 4. High-Contrast Form Placeholders (WCAG AA Compliance) */
+/* 4. High-Contrast Form Placeholders (WCAG AAA Compliance: > 7:1) */
 ::placeholder,
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
 .form-control::placeholder,
-.form-select::placeholder {
-  color: var(--bina-slate-500, #475569) !important;
+.form-select::placeholder,
+.contact-form2 select::placeholder,
+.contact-form2 .form-control::placeholder,
+.contact-form2 .form-select::placeholder,
+.contact-form2 textarea::placeholder,
+.contact-form2 input::placeholder {
+  color: #334155 !important;
   opacity: 1 !important;
 }
 
