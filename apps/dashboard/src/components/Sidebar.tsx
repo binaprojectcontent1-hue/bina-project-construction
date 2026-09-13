@@ -10,12 +10,14 @@ import {
   CheckCircle2,
   X,
   ExternalLink,
+  Link2,
 } from 'lucide-react';
 
 export type TabType =
   | 'overview'
   | 'portfolio'
   | 'articles'
+  | 'biolink'
   | 'redirects'
   | 'settings'
   | 'portfolio-new'
@@ -195,6 +197,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }`}
               >
                 {articleCount}
+              </span>
+            </button>
+
+            {/* Bio Link (Linktree) */}
+            <button
+              type="button"
+              onClick={() => handleSelect('biolink')}
+              className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 h-11 text-sm font-semibold transition-colors ${
+                activeTab === 'biolink'
+                  ? 'bg-[#22416D] text-white shadow-xs'
+                  : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <Link2 className={`w-5 h-5 shrink-0 ${activeTab === 'biolink' ? 'text-white' : 'text-slate-500'}`} />
+                <span className="truncate">Bio Link (Linktree)</span>
+              </div>
+              <span
+                className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${
+                  activeTab === 'biolink' ? 'bg-white/20 text-white' : 'bg-blue-50 text-[#22416D]'
+                }`}
+              >
+                Baru
               </span>
             </button>
           </div>
