@@ -129,7 +129,7 @@ export function LinkButton({ link }: LinkButtonProps) {
       onClick={handleClick}
       size="default"
       className="w-full group"
-      contentClassName="flex items-center gap-4 w-full px-5 py-4"
+      contentClassName="flex items-center gap-4 w-full px-7 py-4"
       aria-label={link.title}
     >
       <div className="link-button-icon-wrapper">

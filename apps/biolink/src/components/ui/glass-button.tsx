@@ -6,14 +6,14 @@ function cn(...inputs: (string | undefined | null | false)[]): string {
 }
 
 const glassButtonVariants = cva(
-  "relative isolate all-unset cursor-pointer rounded-full transition-all",
+  "relative isolate cursor-pointer rounded-full transition-all w-full",
   {
     variants: {
       size: {
-        default: "text-base font-medium",
-        sm: "text-sm font-medium",
-        lg: "text-lg font-medium",
-        icon: "h-10 w-10",
+        default: "text-[15px] font-semibold min-h-[58px]",
+        sm: "text-sm font-medium min-h-[44px]",
+        lg: "text-lg font-medium min-h-[64px]",
+        icon: "h-10 w-10 min-h-[40px]",
       },
     },
     defaultVariants: {
@@ -23,13 +23,13 @@ const glassButtonVariants = cva(
 );
 
 const glassButtonTextVariants = cva(
-  "glass-button-text relative block select-none tracking-tighter",
+  "glass-button-text relative block select-none tracking-normal",
   {
     variants: {
       size: {
-        default: "px-6 py-3.5",
-        sm: "px-4 py-2",
-        lg: "px-8 py-4",
+        default: "px-7 py-3.5",
+        sm: "px-5 py-2",
+        lg: "px-9 py-4",
         icon: "flex h-10 w-10 items-center justify-center",
       },
     },
