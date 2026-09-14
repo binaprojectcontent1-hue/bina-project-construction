@@ -23,7 +23,7 @@ export const ui = {
     'nav.contact': 'Kontak Kami',
 
     // Call To Action
-    'cta.consultation': 'KONSULTASI GRATIS',
+    'cta.consultation': 'Konsultasi & Kerjasama',
     'cta.contactUs': 'Hubungi Kami',
     'cta.viewAllProjects': 'Lihat Semua Proyek',
     'cta.askSimilarProject': 'Konsultasi Proyek Serupa',
@@ -299,13 +299,13 @@ export const ui = {
     'footer.quickLinks': 'Tautan Cepat',
     'footer.services': 'Layanan Konstruksi',
     'footer.rights': 'Seluruh Hak Cipta Dilindungi.',
-    'footer.ctaTitle': 'Siap Mewujudkan Bangunan & Interior Impian Anda?',
+    'footer.ctaTitle': 'Siap Mewujudkan Ruang Impian Anda?',
     'footer.ctaDesc':
-      'Diskusikan konsep desain, survei lokasi lahan, dan estimasi anggaran biaya (RAB) tanpa komitmen di awal bersama arsitek kami.',
+      'Diskusikan konsep desain, survei lokasi lahan, dan estimasi biaya tanpa komitmen di awal bersama tim kami.',
     'footer.ctaButton': 'KONSULTASI VIA WHATSAPP',
-    'footer.officeHoursTitle': 'Jam Operasional Kantor',
+    'footer.officeHoursTitle': 'Jam Operasional',
     'footer.officeHoursDays': 'Senin - Sabtu: 08.00 - 16.00 WIB',
-    'footer.officeHoursHolidays': 'Minggu & Hari Libur: Sesuai Perjanjian',
+    'footer.officeHoursHolidays': 'Minggu / Tanggal Merah: Libur',
   },
   en: {
     // Navigation
@@ -317,7 +317,7 @@ export const ui = {
     'nav.contact': 'Contact Us',
 
     // Call To Action
-    'cta.consultation': 'FREE CONSULTATION',
+    'cta.consultation': 'Consultation & Cooperation',
     'cta.contactUs': 'Contact Us',
     'cta.viewAllProjects': 'View All Projects',
     'cta.askSimilarProject': 'Inquire Similar Project',
@@ -593,13 +593,13 @@ export const ui = {
     'footer.quickLinks': 'Quick Links',
     'footer.services': 'Construction Services',
     'footer.rights': 'All Rights Reserved.',
-    'footer.ctaTitle': 'Ready to Bring Your Architectural & Interior Vision to Life?',
+    'footer.ctaTitle': 'Ready to Bring Your Dream Space to Life?',
     'footer.ctaDesc':
-      'Discuss design concepts, site surveys, and cost estimations (BOQ/RAB) with zero initial commitment alongside our lead architects.',
+      'Discuss design concepts, site surveys, and cost estimations with zero initial commitment alongside our team.',
     'footer.ctaButton': 'WHATSAPP CONSULTATION',
-    'footer.officeHoursTitle': 'Studio Business Hours',
+    'footer.officeHoursTitle': 'Business Hours',
     'footer.officeHoursDays': 'Monday - Saturday: 08:00 - 16:00 WIB',
-    'footer.officeHoursHolidays': 'Sunday & Holidays: By Appointment',
+    'footer.officeHoursHolidays': 'Sunday & Holidays: Closed',
   },
 } as const;
 

@@ -7,9 +7,11 @@ import Preloader from '@components/Preloader.astro';
 import SmoothScroll from '@components/SmoothScroll.astro';
 import CustomCursor from '@components/CustomCursor.astro';
 import FloatingWhatsApp from '@components/FloatingWhatsApp.astro';
-import { siteConfig } from '@config/site';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { MASTER_SERVICES } from '@data/services';
 import '@styles/global.css';
+
+const siteConfig = await getSiteSettings();
 
 interface Props {
   title?: string;

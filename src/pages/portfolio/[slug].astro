@@ -6,6 +6,7 @@ import { getMediaUrl } from '@lib/cdn';
 import { Icon } from 'astro-icon/components';
 import { siteConfig } from '@config/site';
 import { createWhatsAppUrl } from '@utils/whatsapp';
+import BeforeAfterSlider from '@components/BeforeAfterSlider.astro';
 
 // Explicitly declare prerender for clarity (optional in static mode)
 export const prerender = true;
@@ -162,6 +163,26 @@ const ogImageUrl =
             </p>
           </div>
         </div>
+
+        <!-- Conditional Before-After Transformation Comparison (Controlled via Admin Panel) -->
+        {project.enable_before_after && project.before_image && (
+          <div class="mt-40 mb-30">
+            <BeforeAfterSlider
+              beforeImage={getMediaUrl(project.before_image)}
+              afterImage={project.after_image ? getMediaUrl(project.after_image) : coverUrl}
+              beforeAlt={`Kondisi Sebelum Renovasi - ${project.title}`}
+              afterAlt={`Hasil Pengerjaan Bina Project - ${project.title}`}
+              title={`Transformasi Renovasi: ${project.title}`}
+              subtitle="Perbandingan visual kondisi sebelum renovasi vs hasil pengerjaan Bina Project"
+              location={project.location}
+              duration={project.renovation_duration || 'Sesuai Kontrak SPK'}
+              scope={project.transformation_scope || project.category}
+              ctaText="Konsultasi Proyek Serupa"
+              ctaMessage={`Halo Tim Arsitek Bina Project, saya tertarik dengan transformasi proyek "${project.title}" (${project.category}) dan ingin konsultasi renovasi properti saya.`}
+              id={`detailBeforeAfter_${project.slug}`}
+            />
+          </div>
+        )}
 
         <!-- Project Photo Gallery -->
         {project.gallery_images && project.gallery_images.length > 0 && (

@@ -1,9 +1,10 @@
 ---
-import { siteConfig } from '@config/site';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
 import { createWhatsAppUrl } from '@utils/whatsapp';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
 
+const siteConfig = await getSiteSettings();
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 const currentYear = new Date().getFullYear();
@@ -51,7 +52,7 @@ const waFooterMessage = currentLang === 'en'
           </div>
           <div class="col-lg-auto">
             <a
-              href={createWhatsAppUrl({ customMessage: waFooterMessage })}
+              href={createWhatsAppUrl({ customMessage: waFooterMessage, whatsappNumber: siteConfig.contact.whatsappNumber })}
               target="_blank"
               rel="noopener noreferrer"
               class="footer-cta-btn"
@@ -134,7 +135,7 @@ const waFooterMessage = currentLang === 'en'
         <!-- Col 4: Informasi Kontak & Status -->
         <div class="col-lg-3 col-md-6">
           <div class="footer-col">
-            <h4 class="footer-col-title mb-25">{currentLang === 'en' ? 'Contact & Studio' : 'Kontak & Workshop'}</h4>
+            <h4 class="footer-col-title mb-25">{currentLang === 'en' ? 'Contact Us' : 'Kontak Kami'}</h4>
             <div class="footer-contact-cards">
               <!-- Address -->
               <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="footer-contact-card">
@@ -142,7 +143,7 @@ const waFooterMessage = currentLang === 'en'
                   <Icon name="solar:map-point-linear" width="16" height="16" />
                 </div>
                 <div>
-                  <span class="contact-card-label">{currentLang === 'en' ? 'Studio & Office' : 'Studio & Kantor'}</span>
+                  <span class="contact-card-label">{currentLang === 'en' ? 'Office' : 'Kantor'}</span>
                   <p class="contact-card-value mb-0">{siteConfig.contact.address}</p>
                 </div>
               </a>
@@ -153,7 +154,7 @@ const waFooterMessage = currentLang === 'en'
                   <Icon name="simple-icons:whatsapp" width="16" height="16" />
                 </div>
                 <div>
-                  <span class="contact-card-label">WhatsApp Hotline</span>
+                  <span class="contact-card-label">WhatsApp</span>
                   <p class="contact-card-value mb-0">{siteConfig.contact.phoneDisplay}</p>
                 </div>
               </a>
@@ -164,7 +165,7 @@ const waFooterMessage = currentLang === 'en'
                   <Icon name="solar:letter-linear" width="16" height="16" />
                 </div>
                 <div>
-                  <span class="contact-card-label">{currentLang === 'en' ? 'Official Email' : 'Email Resmi'}</span>
+                  <span class="contact-card-label">Email</span>
                   <p class="contact-card-value mb-0">{siteConfig.contact.email}</p>
                 </div>
               </a>
@@ -193,7 +194,7 @@ const waFooterMessage = currentLang === 'en'
     <div class="container">
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
         <p class="copyright-text mb-0">
-          &copy; {currentYear} <strong>{siteConfig.legalName}</strong>. {t('footer.rights')}
+          &copy; {currentYear} Bina Project
         </p>
         <div class="copyright-links d-flex align-items-center gap-4">
           <a href={getLocalizedPath('/syarat-ketentuan', currentLang)} class="bottom-link">

@@ -3,8 +3,10 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Breadcrumb from '@components/Breadcrumb.astro';
 import ContactForm from '@components/ContactForm.astro';
 import SectionHeader from '@components/SectionHeader.astro';
-import { siteConfig } from '@config/site';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
+
+const siteConfig = await getSiteSettings();
 ---
 
 <BaseLayout
@@ -19,73 +21,73 @@ import { Icon } from 'astro-icon/components';
       <SectionHeader
         badge="Informasi Kontak Resmi"
         badgeIcon="solar:user-id-bold"
-        title="Mari Terhubung Bersama Kami"
-        description="Tim arsitek dan tenaga ahli konstruksi kami siap membantu mewujudkan hunian dan bangunan impian Anda dengan standar kualitas terbaik."
+        title="Terhubung Bersama Kami"
+        description="Kenali kami lebih dekat. Kami siap menjadi solusi aman dan amanah dalam membangun ruang impian Anda."
         align="center"
       />
 
       <div class="row gy-4">
-        <!-- Card 1: Studio & Kantor -->
-        <div class="col-xl-3 col-md-6">
-          <div class="contact-bento-card">
-            <div class="contact-bento-icon">
-              <Icon name="solar:map-point-linear" width="24" height="24" />
-            </div>
-            <h3 class="contact-bento-title">Studio & Kantor</h3>
-            <p class="contact-bento-desc">
-              {siteConfig.contact.address}
-            </p>
-            <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
-              Petunjuk Rute Maps <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 2: WhatsApp Konsultasi -->
-        <div class="col-xl-3 col-md-6">
+        <!-- Card 1: Konsultasi Gratis & Kerjasama -->
+        <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="simple-icons:whatsapp" width="24" height="24" />
             </div>
-            <h3 class="contact-bento-title">WhatsApp Konsultasi</h3>
+            <h3 class="contact-bento-title">Konsultasi Gratis & Kerjasama</h3>
             <p class="contact-bento-desc">
-              Layanan respons cepat untuk diskusi konsep proyek, estimasi biaya, dan jadwal survei lahan.
+              Layanan respons cepat untuk konsultasi gratis dan kerjasama B2B melalui WhatsApp resmi tim kami.
             </p>
-            <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
-              {siteConfig.contact.phoneDisplay} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
-            </a>
+            <div class="contact-bento-footer mt-auto">
+              <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
+                <span>{siteConfig.contact.phoneDisplay}</span>
+                <Icon name="solar:arrow-right-up-linear" width="15" height="15" class="ms-1" />
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Card 3: Email Resmi -->
-        <div class="col-xl-3 col-md-6">
+        <!-- Card 2: Email -->
+        <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="solar:letter-linear" width="24" height="24" />
             </div>
-            <h3 class="contact-bento-title">Email Resmi</h3>
+            <h3 class="contact-bento-title">Email</h3>
             <p class="contact-bento-desc">
-              Kirimkan berkas TOR, denah tanah, atau dokumen tender proyek Anda kepada tim manajemen kami.
+              Kirimkan dokumen pendukung atau berkas rencana proyek Anda langsung kepada tim manajemen kami.
             </p>
-            <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
-              {siteConfig.contact.email} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
-            </a>
+            <div class="contact-bento-footer mt-auto">
+              <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
+                <span>{siteConfig.contact.email}</span>
+                <Icon name="solar:arrow-right-up-linear" width="15" height="15" class="ms-1" />
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Card 4: Jam Operasional -->
-        <div class="col-xl-3 col-md-6">
+        <!-- Card 3: Jam Operasional -->
+        <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="solar:clock-circle-linear" width="24" height="24" />
             </div>
             <h3 class="contact-bento-title">Jam Operasional</h3>
-            <p class="contact-bento-desc mb-2">
-              {siteConfig.contact.openingHoursDetail}
-            </p>
-            <span class="contact-status-badge">
-              <span class="status-indicator"></span> Pelayanan Aktif
-            </span>
+            <div class="contact-schedule-list">
+              <div class="schedule-item">
+                <span class="schedule-days">Senin – Sabtu:</span>
+                <span class="schedule-hours">08:00 – 16:00 WIB</span>
+              </div>
+              <div class="schedule-item holiday">
+                <span class="schedule-days">Minggu / Tgl Merah:</span>
+                <span class="schedule-hours">Libur</span>
+              </div>
+            </div>
+            <div class="contact-bento-footer mt-auto">
+              <span class="contact-status-chip">
+                <Icon name="solar:check-circle-bold" width="15" height="15" class="me-1 text-success" />
+                Respon Cepat Tim Arsitek
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -120,7 +122,7 @@ import { Icon } from 'astro-icon/components';
                   <Icon name="solar:map-point-wave-linear" width="22" height="22" />
                 </div>
                 <div>
-                  <h3 class="map-title mb-0">Lokasi Kantor & Workshop</h3>
+                  <h3 class="map-title mb-0">Lokasi Kantor</h3>
                   <p class="map-subtitle mb-0">{siteConfig.contact.city}, {siteConfig.contact.province}</p>
                 </div>
               </div>
@@ -157,8 +159,8 @@ import { Icon } from 'astro-icon/components';
                 <Icon name="solar:calculator-linear" width="24" height="24" />
               </div>
               <div>
-                <h3 class="trust-title">100% Gratis Konsultasi & RAB</h3>
-                <p class="trust-text mb-0">Diskusi konsep desain dan kalkulasi anggaran biaya transparan tanpa biaya komitmen di awal.</p>
+                <h3 class="trust-title">100% Konsultasi Gratis</h3>
+                <p class="trust-text mb-0">Diskusi konsep desain dan kalkulasi anggaran transparan tanpa biaya komitmen di awal.</p>
               </div>
             </div>
           </div>
@@ -219,22 +221,23 @@ import { Icon } from 'astro-icon/components';
     position: relative;
     background: #FFFFFF;
     border: none;
-    border-radius: 20px;
-    padding: 32px 24px;
+    border-radius: 24px;
+    padding: 32px 28px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 20px rgba(13, 59, 102, 0.05);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 20px rgba(13, 25, 43, 0.05);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
 
   .contact-bento-card:hover {
-    box-shadow: 0 10px 30px rgba(13, 59, 102, 0.1);
+    box-shadow: 0 12px 32px rgba(13, 25, 43, 0.09);
+    transform: translateY(-2px);
   }
 
   .contact-bento-icon {
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
     border-radius: 14px;
     background: #EFF6FF;
     color: var(--theme-color, #22416D);
@@ -243,7 +246,7 @@ import { Icon } from 'astro-icon/components';
     justify-content: center;
     font-size: 22px;
     margin-bottom: 20px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   .contact-bento-card:hover .contact-bento-icon {
@@ -254,16 +257,56 @@ import { Icon } from 'astro-icon/components';
   .contact-bento-title {
     font-size: 19px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: var(--title-color, #17202A);
   }
 
   .contact-bento-desc {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
     color: var(--bina-slate-700, #334155);
-    flex-grow: 1;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+  }
+
+  .contact-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #E2E8F0;
+  }
+
+  .schedule-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .schedule-days {
+    color: #64748B;
+    font-weight: 500;
+  }
+
+  .schedule-hours {
+    color: #0F172A;
+    font-weight: 600;
+  }
+
+  .schedule-item.holiday .schedule-hours {
+    color: #DC2626;
+  }
+
+  .contact-bento-footer {
+    display: flex;
+    align-items: center;
+    padding-top: 8px;
   }
 
   .contact-bento-action {
@@ -272,38 +315,23 @@ import { Icon } from 'astro-icon/components';
     color: var(--theme-color, #22416D);
     display: inline-flex;
     align-items: center;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
   }
 
   .contact-bento-action:hover {
     color: #345F99;
+    transform: translateX(2px);
   }
 
-  .contact-status-badge {
+  .contact-status-chip {
     display: inline-flex;
     align-items: center;
-    padding: 5px 12px;
+    padding: 6px 12px;
     background: #ECFDF5;
     color: #059669;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
-    align-self: flex-start;
-  }
-
-  .status-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #10B981;
-    margin-right: 6px;
-    animation: pulseGlow 2s infinite;
-  }
-
-  @keyframes pulseGlow {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.8; }
   }
 
   /* Form & Map Section */
@@ -360,7 +388,16 @@ import { Icon } from 'astro-icon/components';
   .map-container {
     flex-grow: 1;
     height: 100%;
-    min-height: 420px;
+    min-height: 480px;
+    position: relative;
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    border: 0;
+    display: block;
   }
 
   /* Trust Strip */

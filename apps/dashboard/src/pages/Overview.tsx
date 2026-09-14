@@ -6,7 +6,6 @@ import {
   ExternalLink,
   Globe,
   Clock,
-  Sparkles,
   ArrowRight,
   Edit3,
   CheckCircle2,
@@ -115,17 +114,11 @@ export const Overview: React.FC<OverviewProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* 1. Executive Header (Compact, High-Hierarchy & Functional) */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-[28px] shadow-sm border border-slate-200/80">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Selamat Datang di Studio 👋
-            </h1>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Sistem Publikasi Normal
-            </span>
-          </div>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-[28px] shadow-sm border-0">
+        <div className="space-y-1">
+          <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Selamat Datang di Studio
+          </h1>
           <p className="text-xs md:text-sm text-slate-500 font-medium">
             {todayFormatted} • Pantau portofolio bangunan dan naskah artikel edukasi Bina Project.
           </p>
@@ -256,7 +249,7 @@ export const Overview: React.FC<OverviewProps> = ({
       {/* 3. Recent Dual Feeds */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column: Recent Portfolios */}
-        <Card className="border-slate-200/80 shadow-sm rounded-[28px] overflow-hidden flex flex-col">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-shadow rounded-[28px] overflow-hidden flex flex-col bg-white">
           {/* Card Header */}
           <div className="p-5 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
             <div className="flex items-center gap-3 min-w-0">
@@ -268,7 +261,7 @@ export const Overview: React.FC<OverviewProps> = ({
                   <h2 className="text-sm font-bold text-slate-900 truncate">
                     Portofolio Proyek Terkini
                   </h2>
-                  <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-slate-200/70 text-slate-700">
+                  <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
                     {portfolioCount}
                   </span>
                 </div>
@@ -350,7 +343,7 @@ export const Overview: React.FC<OverviewProps> = ({
                             {p.title}
                           </div>
                           <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                            <span className="font-semibold text-[#22416D] bg-blue-50 px-2 py-0.5 rounded-md text-[11px]">
+                            <span className="font-semibold text-[#22416D] bg-blue-50 px-2.5 py-0.5 rounded-md text-xs">
                               {p.category}
                             </span>
                             <span>•</span>
@@ -364,7 +357,7 @@ export const Overview: React.FC<OverviewProps> = ({
 
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span
-                          className={`hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                          className={`hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                             p.status === 'published'
                               ? 'bg-emerald-50 text-emerald-700'
                               : 'bg-slate-100 text-slate-600'
@@ -375,7 +368,7 @@ export const Overview: React.FC<OverviewProps> = ({
                         <button
                           type="button"
                           onClick={() => onEditPortfolio(p.id)}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-[#22416D] hover:border-[#22416D] hover:text-white transition-all shadow-2xs cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-all cursor-pointer"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                           <span>Edit</span>
@@ -390,7 +383,7 @@ export const Overview: React.FC<OverviewProps> = ({
         </Card>
 
         {/* Right Column: Recent Articles */}
-        <Card className="border-slate-200/80 shadow-sm rounded-[28px] overflow-hidden flex flex-col">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-shadow rounded-[28px] overflow-hidden flex flex-col bg-white">
           {/* Card Header */}
           <div className="p-5 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
             <div className="flex items-center gap-3 min-w-0">
@@ -402,7 +395,7 @@ export const Overview: React.FC<OverviewProps> = ({
                   <h2 className="text-sm font-bold text-slate-900 truncate">
                     Artikel Blog Terkini
                   </h2>
-                  <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-slate-200/70 text-slate-700">
+                  <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
                     {articleCount}
                   </span>
                 </div>
@@ -484,7 +477,7 @@ export const Overview: React.FC<OverviewProps> = ({
                             {a.title}
                           </div>
                           <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                            <span className="font-semibold text-[#22416D] bg-blue-50 px-2 py-0.5 rounded-md text-[11px]">
+                            <span className="font-semibold text-[#22416D] bg-blue-50 px-2.5 py-0.5 rounded-md text-xs">
                               {a.category}
                             </span>
                             <span>•</span>
@@ -496,7 +489,7 @@ export const Overview: React.FC<OverviewProps> = ({
                       <button
                         type="button"
                         onClick={() => onEditArticle(a.id)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-[#22416D] hover:border-[#22416D] hover:text-white transition-all shadow-2xs shrink-0"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-all shrink-0 cursor-pointer"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                         <span>Edit</span>

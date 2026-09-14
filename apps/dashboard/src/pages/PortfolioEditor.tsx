@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, ArrowLeft, Globe, Check, AlertCircle, RefreshCw, Rocket, Sparkles, Star, Lock, Unlock } from 'lucide-react';
+import { Save, ArrowLeft, Globe, Check, AlertCircle, RefreshCw, Rocket, Sparkles, Star, Lock, Unlock, SlidersHorizontal } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { generateSlug, checkSlugAvailability, record301Redirect } from '../utils/slug';
 import { portfolioFormSchema } from '../schemas/portfolioSchema';
@@ -54,6 +54,13 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
   const [isSlugLocked, setIsSlugLocked] = useState(Boolean(projectId));
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
 
+  // Before & After Transformation Fields
+  const [enableBeforeAfter, setEnableBeforeAfter] = useState(false);
+  const [beforeImage, setBeforeImage] = useState('');
+  const [afterImage, setAfterImage] = useState('');
+  const [renovationDuration, setRenovationDuration] = useState('');
+  const [transformationScope, setTransformationScope] = useState('');
+
   useEffect(() => {
     if (!projectId || !supabase) return;
 
@@ -84,6 +91,11 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           setMetaTitle(data.meta_title || '');
           setMetaDescription(data.meta_description || '');
           setOgImageType(data.og_image_type || 'branded');
+          setEnableBeforeAfter(Boolean(data.enable_before_after));
+          setBeforeImage(data.before_image || '');
+          setAfterImage(data.after_image || '');
+          setRenovationDuration(data.renovation_duration || '');
+          setTransformationScope(data.transformation_scope || '');
           setAutoSlug(false);
           setIsSlugLocked(true);
         }
@@ -215,10 +227,27 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
         gallery_images: galleryImages,
         featured,
         status,
+        enable_before_after: enableBeforeAfter,
+        before_image: beforeImage || null,
+        after_image: afterImage || null,
+        renovation_duration: renovationDuration || null,
+        transformation_scope: transformationScope || null,
         meta_title: metaTitle || null,
         meta_description: metaDescription || null,
         og_image_type: ogImageType,
         updated_at: new Date().toISOString(),
+      };
+
+      // Helper to strip newer columns if SQL migration is pending
+      const stripPendingColumns = (targetPayload: Record<string, any>, errMsg: string) => {
+        if (errMsg.includes('og_image_type')) delete targetPayload.og_image_type;
+        if (errMsg.includes('before_after') || errMsg.includes('before_image') || errMsg.includes('after_image')) {
+          delete targetPayload.enable_before_after;
+          delete targetPayload.before_image;
+          delete targetPayload.after_image;
+          delete targetPayload.renovation_duration;
+          delete targetPayload.transformation_scope;
+        }
       };
 
       if (projectId) {
@@ -226,8 +255,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           .from('projects')
           .update(payload)
           .eq('id', projectId);
-        if (updateErr && updateErr.message?.includes('og_image_type')) {
-          delete payload.og_image_type;
+        if (updateErr && (updateErr.message?.includes('og_image_type') || updateErr.message?.includes('before_'))) {
+          stripPendingColumns(payload, updateErr.message);
           const retry = await supabase.from('projects').update(payload).eq('id', projectId);
           updateErr = retry.error;
         }
@@ -238,8 +267,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           published_at: status === 'published' ? new Date().toISOString() : null,
         };
         let { error: insertErr } = await supabase.from('projects').insert([insertData]);
-        if (insertErr && insertErr.message?.includes('og_image_type')) {
-          delete insertData.og_image_type;
+        if (insertErr && (insertErr.message?.includes('og_image_type') || insertErr.message?.includes('before_'))) {
+          stripPendingColumns(insertData, insertErr.message);
           const retry = await supabase.from('projects').insert([insertData]);
           insertErr = retry.error;
         }
@@ -545,6 +574,107 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 />
               </div>
             </CardContent>
+          </Card>
+
+          {/* Before & After Transformation Slider Card */}
+          <Card className="shadow-xs border-slate-200">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <SlidersHorizontal className="w-4 h-4 text-sky-500" />
+                    Perbandingan Sebelum & Sesudah (Before-After Slider)
+                  </CardTitle>
+                  <CardDescription>
+                    Tampilkan slider interaktif split-screen untuk membandingkan foto sebelum vs sesudah renovasi.
+                  </CardDescription>
+                </div>
+                {/* Custom Accessible Toggle Switch */}
+                <button
+                  type="button"
+                  onClick={() => setEnableBeforeAfter(!enableBeforeAfter)}
+                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                    enableBeforeAfter ? 'bg-[#22416D]' : 'bg-slate-300'
+                  }`}
+                  role="switch"
+                  aria-checked={enableBeforeAfter}
+                  title={enableBeforeAfter ? 'Nonaktifkan fitur Sebelum & Sesudah' : 'Aktifkan fitur Sebelum & Sesudah'}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                      enableBeforeAfter ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+            </CardHeader>
+            {enableBeforeAfter && (
+              <CardContent className="space-y-4 pt-0 border-t border-slate-100 mt-2">
+                <div className="p-3 bg-sky-50 rounded-xl text-xs text-sky-800 flex items-start gap-2 mt-4">
+                  <span className="font-semibold text-sky-900 shrink-0">ℹ️ Info:</span>
+                  <span>
+                    Fitur perbandingan ini akan ditampilkan di halaman detail proyek (<code>/portfolio/{slug || 'nama-slug'}</code>) tepat di bawah deskripsi dan di atas galeri foto.
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Before Image */}
+                  <div>
+                    <ImageUploader
+                      label="Foto Kondisi Sebelum (Before Image)"
+                      value={beforeImage}
+                      onChange={setBeforeImage}
+                      altText={`Foto sebelum renovasi - ${title}`}
+                      onAltChange={() => {}}
+                      bucket="media"
+                      folder="portfolio"
+                      requiredAlt={false}
+                    />
+                  </div>
+
+                  {/* After Image */}
+                  <div>
+                    <ImageUploader
+                      label="Foto Hasil Sesudah (After Image - Opsional)"
+                      value={afterImage}
+                      onChange={setAfterImage}
+                      altText={`Foto hasil renovasi - ${title}`}
+                      onAltChange={() => {}}
+                      bucket="media"
+                      folder="portfolio"
+                      requiredAlt={false}
+                    />
+                    <p className="text-[11px] text-slate-500 mt-1">
+                      Kosongkan jika ingin otomatis memakai <strong>Foto Utama (Cover)</strong> proyek.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Durasi Pengerjaan Renovasi
+                    </label>
+                    <Input
+                      value={renovationDuration}
+                      onChange={(e) => setRenovationDuration(e.target.value)}
+                      placeholder="Contoh: 60 Hari Kalender"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Lingkup Pekerjaan / Transformasi
+                    </label>
+                    <Input
+                      value={transformationScope}
+                      onChange={(e) => setTransformationScope(e.target.value)}
+                      placeholder="Contoh: Fasad Eksterior & Pagar Modern"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            )}
           </Card>
         </div>
 

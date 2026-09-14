@@ -22,13 +22,15 @@ export interface WhatsAppUrlOptions {
   };
   /** Direct custom message override */
   customMessage?: string;
+  /** Optional custom WhatsApp number override */
+  whatsappNumber?: string;
 }
 
 /**
  * Creates a fully-encoded, valid WhatsApp URL based on structured options.
  */
 export function createWhatsAppUrl(options: WhatsAppUrlOptions = {}): string {
-  const number = siteConfig.contact.whatsappNumber;
+  const number = options.whatsappNumber || siteConfig.contact.whatsappNumber;
 
   if (options.customMessage) {
     return `https://wa.me/${number}?text=${encodeURIComponent(options.customMessage)}`;

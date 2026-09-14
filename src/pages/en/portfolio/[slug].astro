@@ -7,6 +7,7 @@ import { Icon } from 'astro-icon/components';
 import { siteConfig } from '@config/site';
 import { createWhatsAppUrl } from '@utils/whatsapp';
 import { getCategoryLabel } from '@i18n/utils';
+import BeforeAfterSlider from '@components/BeforeAfterSlider.astro';
 
 // Explicitly declare prerender for static output
 export const prerender = true;
@@ -167,6 +168,26 @@ const ogImageUrl =
             </p>
           </div>
         </div>
+
+        <!-- Conditional Before-After Transformation Comparison (Controlled via Admin Panel) -->
+        {project.enable_before_after && project.before_image && (
+          <div class="mt-40 mb-30">
+            <BeforeAfterSlider
+              beforeImage={getMediaUrl(project.before_image)}
+              afterImage={project.after_image ? getMediaUrl(project.after_image) : coverUrl}
+              beforeAlt={`Pre-renovation condition - ${project.title}`}
+              afterAlt={`Completed architectural renovation by Bina Project - ${project.title}`}
+              title={`Renovation Transformation: ${project.title}`}
+              subtitle="Interactive visual comparison between original condition and finished architecture"
+              location={project.location}
+              duration={project.renovation_duration || 'Official Contract Period'}
+              scope={project.transformation_scope || project.category}
+              ctaText="Consult Similar Project"
+              ctaMessage={`Hello Bina Project Architects, I viewed the renovation transformation of "${project.title}" (${project.category}) and would like to consult on my property.`}
+              id={`detailBeforeAfter_${project.slug}`}
+            />
+          </div>
+        )}
 
         <!-- Project Photo Gallery -->
         {project.gallery_images && project.gallery_images.length > 0 && (

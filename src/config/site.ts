@@ -30,7 +30,7 @@ export const siteConfig: SiteConfig = {
     googleMapsEmbedUrl:
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.4746073810625!2d112.60884237591145!3d-7.94980687920362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7883eadea01223%3A0x3bf7f69bb74761e0!2sBina%20Project%20%7C%20Jasa%20Konstruksi%20dan%20Interior!5e0!3m2!1sid!2sid!4v1737646658910!5m2!1sid!2sid',
     openingHours: 'Senin - Sabtu: 08:00 - 16:00 WIB',
-    openingHoursDetail: 'Senin - Sabtu: 08:00 - 16:00 WIB | Minggu / Libur: Khusus Janji Temu',
+    openingHoursDetail: 'Senin - Sabtu: 08:00 - 16:00 WIB | Minggu / Tanggal Merah: Libur',
   },
 
   socials: [

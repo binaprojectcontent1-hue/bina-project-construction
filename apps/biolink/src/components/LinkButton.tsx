@@ -1,5 +1,5 @@
-import React from 'react';
 import {
+  icons,
   Globe,
   MessageCircle,
   Briefcase,
@@ -105,7 +105,22 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 function getIcon(iconName: string): React.ComponentType<{ className?: string }> {
   if (!iconName) return Globe;
   const normalized = iconName.trim().toLowerCase();
-  return ICON_MAP[normalized] || Globe;
+  if (ICON_MAP[normalized]) return ICON_MAP[normalized];
+
+  const iconObj = icons as Record<string, React.ComponentType<{ className?: string }>>;
+  if (iconObj[iconName]) return iconObj[iconName];
+
+  const pascal = iconName
+    .split(/[-_]/)
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
+    .join('');
+  if (iconObj[pascal]) return iconObj[pascal];
+
+  const stripped = normalized.replace(/[-_]/g, '');
+  const foundKey = Object.keys(iconObj).find((k) => k.toLowerCase() === stripped);
+  if (foundKey && iconObj[foundKey]) return iconObj[foundKey];
+
+  return Link2;
 }
 
 export function LinkButton({ link }: LinkButtonProps) {

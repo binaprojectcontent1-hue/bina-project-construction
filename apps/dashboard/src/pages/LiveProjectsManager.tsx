@@ -246,7 +246,7 @@ create policy "Authenticated users have full access to live projects" on public.
 
       {/* Stats Metric Cards Row (Unified Theme) */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
+        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Total Proyek Berjalan</p>
             <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
@@ -259,7 +259,7 @@ create policy "Authenticated users have full access to live projects" on public.
           <p className="text-xs text-slate-500 mt-1 font-medium">Aktif maupun arsip tersimpan</p>
         </Card>
 
-        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
+        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Rata-rata Progres</p>
             <div className="p-2 rounded-xl bg-amber-50 text-amber-600">
@@ -272,7 +272,7 @@ create policy "Authenticated users have full access to live projects" on public.
           <p className="text-xs text-slate-500 mt-1 font-medium">Akumulasi pengerjaan lapangan</p>
         </Card>
 
-        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
+        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Tayang di Peta Website</p>
             <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
@@ -287,7 +287,7 @@ create policy "Authenticated users have full access to live projects" on public.
       </div>
 
       {/* Filter Toolbar (Unified Theme) */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-[28px] border border-slate-200/80 shadow-xs">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-[28px] border-0 shadow-sm">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
           <div className="relative w-full sm:max-w-xs">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -301,7 +301,7 @@ create policy "Authenticated users have full access to live projects" on public.
           </div>
 
           {/* Quick Status Filter Tabs */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-full border border-slate-200/80">
+          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-full">
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
@@ -379,7 +379,7 @@ create policy "Authenticated users have full access to live projects" on public.
 
       {/* Loading Skeletons */}
       {loading ? (
-        <Card className="p-6 rounded-[28px] border border-slate-200/80 bg-white space-y-4 shadow-xs">
+        <Card className="p-6 rounded-[28px] border-0 bg-white space-y-4 shadow-sm">
           <Skeleton className="h-6 w-48 rounded-lg" />
           <div className="space-y-3">
             <Skeleton className="h-14 w-full rounded-2xl" />
@@ -388,7 +388,7 @@ create policy "Authenticated users have full access to live projects" on public.
           </div>
         </Card>
       ) : filteredProjects.length === 0 ? (
-        <Card className="p-12 text-center space-y-4 rounded-[28px] border-slate-200/80 bg-white shadow-xs">
+        <Card className="p-12 text-center space-y-4 rounded-[28px] border-0 bg-white shadow-sm">
           <Globe className="w-12 h-12 text-slate-300 mx-auto" />
           <div>
             <h4 className="text-base font-bold text-slate-800">Tidak ada proyek yang sesuai</h4>
@@ -404,7 +404,7 @@ create policy "Authenticated users have full access to live projects" on public.
         </Card>
       ) : viewMode === 'table' ? (
         /* TABLE VIEW (With 1:1 image thumbnails) */
-        <Card className="overflow-hidden shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+        <Card className="overflow-hidden shadow-sm rounded-[28px] border-0 bg-white">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
@@ -520,7 +520,7 @@ create policy "Authenticated users have full access to live projects" on public.
           {filteredProjects.map((item) => (
             <Card
               key={item.id}
-              className="overflow-hidden shadow-xs rounded-[24px] border border-slate-200/80 bg-white hover:shadow-md transition-all flex flex-col justify-between"
+              className="overflow-hidden shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
                 {/* 1:1 Ratio Thumbnail Box */}
@@ -534,16 +534,16 @@ create policy "Authenticated users have full access to live projects" on public.
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1">
                       <ImageIcon className="w-8 h-8 text-slate-300" />
-                      <span className="text-[11px] font-medium">Belum ada foto</span>
+                      <span className="text-xs font-medium">Belum ada foto</span>
                     </div>
                   )}
-                  <span className="absolute top-3 left-3 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22416D] text-white shadow-sm">
+                  <span className="absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22416D] text-white shadow-sm">
                     {item.category}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleToggleActive(item)}
-                    className={`absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-sm backdrop-blur-md cursor-pointer transition-all ${
+                    className={`absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-xs font-bold shadow-sm backdrop-blur-md cursor-pointer transition-all ${
                       item.is_active
                         ? 'bg-emerald-600 text-white'
                         : 'bg-amber-600 text-white'
@@ -565,7 +565,7 @@ create policy "Authenticated users have full access to live projects" on public.
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+                  <div className="p-2.5 rounded-xl bg-slate-50 border-0 space-y-1.5">
                     <div className="flex justify-between items-center text-[11px]">
                       <span className="text-slate-500 font-medium">Tahap:</span>
                       <span className="font-mono font-extrabold text-amber-600">{item.progress}%</span>

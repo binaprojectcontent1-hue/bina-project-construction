@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Link2,
   MapPin,
+  Building2,
 } from 'lucide-react';
 
 export type TabType =
@@ -20,6 +21,7 @@ export type TabType =
   | 'articles'
   | 'live-projects'
   | 'biolink'
+  | 'site-settings'
   | 'redirects'
   | 'settings'
   | 'portfolio-new'
@@ -84,9 +86,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span className="block truncate font-bold text-white text-sm">
                   Bina Project Studio
                 </span>
-                <span className="truncate text-xs text-blue-200/60 font-medium flex items-center gap-1.5 mt-0.5">
-                  <span className="w-2 h-2 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Panel Admin Online</span>
+                <span className="truncate text-xs text-blue-200/70 font-medium flex items-center gap-1.5 mt-0.5">
+                  <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-blue-300" />
+                  <span>Admin Workspace</span>
                 </span>
               </div>
             </div>
@@ -133,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Navigation Section 1: Dashboard */}
           <div className="space-y-1">
-            <div className="px-4 py-1 text-[10px] font-bold text-blue-200/40 uppercase tracking-wider">
+            <div className="px-4 py-1 text-xs font-semibold text-blue-200/50 uppercase tracking-wider">
               Menu Utama
             </div>
 
@@ -155,7 +157,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Navigation Section 2: Content Management */}
           <div className="space-y-1">
-            <div className="px-4 py-1 text-[10px] font-bold text-blue-200/40 uppercase tracking-wider">
+            <div className="px-4 py-1 text-xs font-semibold text-blue-200/50 uppercase tracking-wider">
               Kelola Konten Website
             </div>
 
@@ -236,18 +238,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span className="truncate">Bio Link (Linktree)</span>
               </div>
               <span
-                className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                className={`text-xs font-medium px-2.5 py-0.5 rounded-full shrink-0 ${
                   activeTab === 'biolink' ? 'bg-white/25 text-white' : 'bg-blue-500/20 text-blue-300'
                 }`}
               >
                 Aktif
               </span>
             </button>
+
+            {/* Profil & Kontak Bisnis */}
+            <button
+              type="button"
+              onClick={() => handleSelect('site-settings')}
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === 'site-settings'
+                  ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <Building2 className={`w-5 h-5 shrink-0 ${activeTab === 'site-settings' ? 'text-white' : 'text-blue-300/70'}`} />
+                <span className="truncate">Profil & Kontak</span>
+              </div>
+            </button>
           </div>
 
           {/* Navigation Section 3: Settings & Tools */}
           <div className="space-y-1">
-            <div className="px-4 py-1 text-[10px] font-bold text-blue-200/40 uppercase tracking-wider">
+            <div className="px-4 py-1 text-xs font-semibold text-blue-200/50 uppercase tracking-wider">
               Sistem & Pengaturan
             </div>
 

@@ -1,8 +1,10 @@
 ---
-import { siteConfig } from '@config/site';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
 import LanguageSwitcher from '@components/LanguageSwitcher.astro';
+
+const siteConfig = await getSiteSettings();
 
 const currentPath = Astro.url.pathname;
 const currentLang = getLangFromUrl(Astro.url);
@@ -40,16 +42,6 @@ const navItems = [
                 <span>{siteConfig.contact.phoneDisplay}</span>
               </a>
             </li>
-            <li class="separator">|</li>
-            <li class="d-none d-xl-inline-flex align-items-center">
-              <Icon name="solar:map-point-linear" width="16" height="16" class="text-theme me-2" />
-              <span>{siteConfig.contact.address}</span>
-            </li>
-            <li class="separator d-none d-xl-inline">|</li>
-            <li>
-              <Icon name="solar:letter-linear" width="16" height="16" class="text-theme me-2" />
-              <a href={`mailto:${siteConfig.contact.email}`} class="top-link">{siteConfig.contact.email}</a>
-            </li>
           </ul>
         </div>
         <div class="top-bar-right">
@@ -81,9 +73,9 @@ const navItems = [
   </div>
 
   <!--============================== Main Glassmorphism Navbar ==============================-->
-  <div class="main-navbar-sticky">
+  <div class="main-navbar-sticky" id="mainNavbarSticky">
     <div class="container">
-      <div class="d-flex align-items-center justify-content-between py-2">
+      <div class="d-flex align-items-center justify-content-between py-2 navbar-inner">
         <!-- Logo -->
         <div class="navbar-logo">
           <a href={getLocalizedPath('/', currentLang)} class="d-flex align-items-center">
@@ -251,16 +243,34 @@ const navItems = [
     transform: translateY(-10px);
   }
 
-  /* Main Sticky Navbar with Glassmorphism */
+  /* Main Sticky Navbar with Apple Glassmorphism */
   .main-navbar-sticky {
     position: sticky;
     top: 0;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.85);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s ease;
     z-index: 100;
+  }
+
+  .navbar-inner {
+    transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .main-navbar-sticky.is-scrolled {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 30px rgba(13, 25, 43, 0.08);
+    border-bottom-color: rgba(226, 232, 240, 0.9);
+  }
+
+  .main-navbar-sticky.is-scrolled .navbar-inner {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
   }
 
   .navbar-logo img {
@@ -269,6 +279,12 @@ const navItems = [
     max-width: 100%;
     aspect-ratio: 195 / 68;
     display: block;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: left center;
+  }
+
+  .main-navbar-sticky.is-scrolled .navbar-logo img {
+    transform: scale(0.94);
   }
 
   /* Pill Navigation Dock */
@@ -386,22 +402,63 @@ const navItems = [
 
 <script>
   // Top Bar Close Functionality
-  document.addEventListener('DOMContentLoaded', () => {
+  function initHeaderTopBar() {
     const closeBtn = document.getElementById('closeTopBar');
     const topBar = document.getElementById('headerTopBar');
     
     if (closeBtn && topBar) {
       closeBtn.addEventListener('click', () => {
         topBar.classList.add('hidden');
-        
-        // Save preference to localStorage
         localStorage.setItem('topBarHidden', 'true');
       });
       
-      // Check if user has previously closed the top bar
       if (localStorage.getItem('topBarHidden') === 'true') {
         topBar.classList.add('hidden');
       }
     }
-  });
+  }
+
+  // Sticky Navbar Scroll Condensation Effect (Apple Fluid)
+  function initStickyNavbar() {
+    const navbar = document.getElementById('mainNavbarSticky');
+    if (!navbar) return;
+
+    let ticking = false;
+    const updateNavbar = () => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      if (scrollY > 20) {
+        navbar.classList.add('is-scrolled');
+      } else {
+        navbar.classList.remove('is-scrolled');
+      }
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateNavbar);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Sync with Lenis if active
+    if ((window as any).lenis) {
+      (window as any).lenis.on('scroll', updateNavbar);
+    }
+
+    updateNavbar();
+  }
+
+  function initHeader() {
+    initHeaderTopBar();
+    initStickyNavbar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeader);
+  } else {
+    initHeader();
+  }
+
+  document.addEventListener('astro:page-load', initHeader);
 </script>

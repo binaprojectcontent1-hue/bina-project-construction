@@ -15,9 +15,9 @@ import FaqSection from '@components/sections/FaqSection.astro';
 import ContactSection from '@components/sections/ContactSection.astro';
 import { getAllProjects } from '@lib/portfolioService';
 import { getImage } from 'astro:assets';
-import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
+import heroArchitectural from '@assets/images/hero/hero_architectural.png';
 
-const optimizedHero1 = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
+const optimizedHero1 = await getImage({ src: heroArchitectural, format: 'webp', quality: 90, width: 1920 });
 const projects = await getAllProjects();
 ---
 

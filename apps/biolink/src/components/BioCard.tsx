@@ -74,8 +74,7 @@ export function BioCard({ settings, links, loading = false }: BioCardProps) {
 
       {/* Footer & Copyright */}
       <footer className="bio-footer">
-        <p>© {new Date().getFullYear()} Bina Project Construction & Interior</p>
-        <span className="bio-footer-sub">All Rights Reserved</span>
+        <p>© 2026 Bina Project</p>
       </footer>
     </div>
   );

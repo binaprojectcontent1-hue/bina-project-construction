@@ -29,6 +29,7 @@ import {
   Smartphone,
   Sparkles,
   Share2,
+  Building2,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
@@ -36,6 +37,7 @@ import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { useToast } from '../components/ui/Toast';
+import { IconPickerModal, resolveLucideIcon } from '../components/IconPickerModal';
 
 export interface BioLink {
   id: string;
@@ -112,8 +114,7 @@ const PRESET_ICONS = [
 ];
 
 const getPreviewIcon = (iconName: string) => {
-  const match = PRESET_ICONS.find((p) => p.id === iconName);
-  return match ? match.icon : Link2;
+  return resolveLucideIcon(iconName);
 };
 
 export const BioLinkEditor: React.FC = () => {
@@ -142,6 +143,10 @@ export const BioLinkEditor: React.FC = () => {
   const [editTitle, setEditTitle] = useState('');
   const [editUrl, setEditUrl] = useState('');
   const [editIcon, setEditIcon] = useState('globe');
+
+  // Icon Picker Modal state (1,800+ Lucide Icons)
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerTarget, setPickerTarget] = useState<'new' | 'edit'>('new');
 
   // Settings form state
   const [editProfileName, setEditProfileName] = useState('Bina Project');
@@ -554,7 +559,7 @@ export const BioLinkEditor: React.FC = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-5 flex items-center gap-4 bg-white border border-slate-200/80 rounded-[24px] shadow-xs">
+        <Card className="p-5 flex items-center gap-4 bg-white border-0 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
           <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700">
             <Link2 className="w-6 h-6" />
           </div>
@@ -564,7 +569,7 @@ export const BioLinkEditor: React.FC = () => {
           </div>
         </Card>
 
-        <Card className="p-5 flex items-center gap-4 bg-white border border-slate-200/80 rounded-[24px] shadow-xs">
+        <Card className="p-5 flex items-center gap-4 bg-white border-0 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <Eye className="w-6 h-6" />
           </div>
@@ -574,7 +579,7 @@ export const BioLinkEditor: React.FC = () => {
           </div>
         </Card>
 
-        <Card className="p-5 flex items-center gap-4 bg-white border border-slate-200/80 rounded-[24px] shadow-xs">
+        <Card className="p-5 flex items-center gap-4 bg-white border-0 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
           <div className="w-12 h-12 rounded-2xl bg-amber-50 text-[#F68A0A] flex items-center justify-center">
             <BarChart3 className="w-6 h-6" />
           </div>
@@ -590,10 +595,10 @@ export const BioLinkEditor: React.FC = () => {
         {/* Left Column: Management Controls (8 cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Profile & Branding Settings */}
-          <Card className="border border-slate-200/80 bg-white rounded-[28px] shadow-xs overflow-hidden">
+          <Card className="border-0 bg-white rounded-[28px] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
             <CardHeader className="pb-4 border-b border-slate-100">
               <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#F68A0A]" />
+                <Building2 className="w-4 h-4 text-[#22416D]" />
                 Pengaturan Profil & Identitas Brand
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
@@ -640,8 +645,8 @@ export const BioLinkEditor: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Links Management Card */}
-          <Card className="border border-slate-200/80 bg-white rounded-[28px] shadow-xs overflow-hidden">
+          {/* Links Management Panel */}
+          <Card className="border-0 bg-white rounded-[28px] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
             <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -708,7 +713,42 @@ export const BioLinkEditor: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-slate-600 block mb-1">Pilih Ikon</label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs font-bold text-slate-700">Pilih Ikon</label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPickerTarget('new');
+                            setPickerOpen(true);
+                          }}
+                          className="text-xs font-bold text-[#22416D] hover:underline flex items-center gap-1 cursor-pointer"
+                        >
+                          <span>Buka 1.800+ Ikon Lucide →</span>
+                        </button>
+                      </div>
+
+                      {/* Selected Icon Trigger Display */}
+                      <div className="flex items-center gap-2.5 mb-2.5 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div className="w-8 h-8 rounded-xl bg-[#22416D] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                          {React.createElement(resolveLucideIcon(newIcon), { className: 'w-4 h-4' })}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-bold text-slate-900 truncate">Ikon Terpilih: {newIcon}</p>
+                          <p className="text-xs text-slate-500 font-medium">Klik preset cepat atau jelajahi katalog 1.800+ ikon</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPickerTarget('new');
+                            setPickerOpen(true);
+                          }}
+                          className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer shadow-2xs"
+                        >
+                          Cari Ikon
+                        </button>
+                      </div>
+
+                      {/* Quick Presets */}
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
                         {PRESET_ICONS.map((p) => {
                           const IconCmp = p.icon;
@@ -718,7 +758,7 @@ export const BioLinkEditor: React.FC = () => {
                               key={p.id}
                               type="button"
                               onClick={() => setNewIcon(p.id)}
-                              className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all text-left ${
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all text-left cursor-pointer ${
                                 isSelected
                                   ? 'bg-[#22416D] text-white border-[#22416D] shadow-xs'
                                   : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
@@ -833,7 +873,41 @@ export const BioLinkEditor: React.FC = () => {
                           </div>
 
                           <div>
-                            <label className="text-[11px] font-bold text-slate-600 block mb-1">Pilih Ikon</label>
+                            <div className="flex items-center justify-between mb-1.5">
+                              <label className="text-xs font-bold text-slate-700">Pilih Ikon</label>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPickerTarget('edit');
+                                  setPickerOpen(true);
+                                }}
+                                className="text-xs font-bold text-[#22416D] hover:underline flex items-center gap-1 cursor-pointer"
+                              >
+                                <span>Katalog 1.800+ Ikon →</span>
+                              </button>
+                            </div>
+
+                            {/* Active Icon Display */}
+                            <div className="flex items-center gap-2.5 mb-2 p-2 rounded-xl bg-slate-50 border border-slate-200">
+                              <div className="w-7 h-7 rounded-lg bg-[#22416D] text-white flex items-center justify-center shrink-0">
+                                {React.createElement(resolveLucideIcon(editIcon), { className: 'w-3.5 h-3.5' })}
+                              </div>
+                              <span className="text-xs font-bold text-slate-800 flex-1 truncate">
+                                {editIcon}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPickerTarget('edit');
+                                  setPickerOpen(true);
+                                }}
+                                className="px-3 py-1 rounded-full text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer"
+                              >
+                                Ganti
+                              </button>
+                            </div>
+
+                            {/* Quick Presets */}
                             <div className="flex flex-wrap gap-1">
                               {PRESET_ICONS.map((p) => {
                                 const IconCmp = p.icon;
@@ -843,7 +917,7 @@ export const BioLinkEditor: React.FC = () => {
                                     key={p.id}
                                     type="button"
                                     onClick={() => setEditIcon(p.id)}
-                                    className={`px-3 py-1 rounded-full text-[11px] font-medium border flex items-center gap-1 ${
+                                    className={`px-3 py-1 rounded-full text-xs font-medium border flex items-center gap-1 cursor-pointer ${
                                       isSelected
                                         ? 'bg-[#22416D] text-white border-[#22416D]'
                                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
@@ -962,7 +1036,7 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
 
           {/* Social Media Links Card */}
-          <Card className="border border-slate-200/80 bg-white rounded-[28px] shadow-xs overflow-hidden">
+          <Card className="border-0 bg-white rounded-[28px] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
             <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -1141,15 +1215,14 @@ export const BioLinkEditor: React.FC = () => {
 
         {/* Right Column: Live Mobile Mockup Preview (1:1 with Bio Link) */}
         <div className="lg:col-span-5 sticky top-6">
-          <Card className="border border-slate-200/80 bg-white overflow-hidden shadow-xs rounded-[28px]">
+          <Card className="border-0 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow rounded-[28px]">
             <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
               <div className="flex items-center gap-2">
                 <Smartphone className="w-4 h-4 text-[#22416D]" />
                 <CardTitle className="text-sm font-bold text-slate-900">Live Preview 1:1</CardTitle>
               </div>
-              <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Presisi 1:1
+              <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+                Pratinjau Mobile
               </span>
             </CardHeader>
 
@@ -1269,11 +1342,8 @@ export const BioLinkEditor: React.FC = () => {
                 </div>
 
                 {/* 1:1 Phone Footer */}
-                <div className="z-10 text-center text-[9.5px] text-white/50 pt-3 pb-1">
-                  <p>© {new Date().getFullYear()} Bina Project Construction & Interior</p>
-                  <span className="text-[8px] text-white/30 tracking-wider uppercase block mt-0.5">
-                    All Rights Reserved
-                  </span>
+                <div className="z-10 text-center text-xs text-white/50 pt-3 pb-1">
+                  <p>© 2026 Bina Project</p>
                 </div>
 
                 {/* Home Indicator bar */}
@@ -1283,6 +1353,20 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
         </div>
       </div>
+
+      {/* Universal 1,800+ Lucide Icon Picker Modal */}
+      <IconPickerModal
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        selectedIcon={pickerTarget === 'new' ? newIcon : editIcon}
+        onSelectIcon={(iconId) => {
+          if (pickerTarget === 'new') {
+            setNewIcon(iconId);
+          } else {
+            setEditIcon(iconId);
+          }
+        }}
+      />
     </div>
   );
 };

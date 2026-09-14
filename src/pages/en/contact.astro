@@ -7,8 +7,10 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Breadcrumb from '@components/Breadcrumb.astro';
 import ContactForm from '@components/ContactForm.astro';
 import SectionHeader from '@components/SectionHeader.astro';
-import { siteConfig } from '@config/site';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
+
+const siteConfig = await getSiteSettings();
 ---
 
 <BaseLayout
@@ -30,24 +32,8 @@ import { Icon } from 'astro-icon/components';
       />
 
       <div class="row gy-4">
-        <!-- Card 1: Studio & Office -->
-        <div class="col-xl-3 col-md-6">
-          <div class="contact-bento-card">
-            <div class="contact-bento-icon">
-              <Icon name="solar:map-point-linear" width="24" height="24" />
-            </div>
-            <h3 class="contact-bento-title">Studio & Office</h3>
-            <p class="contact-bento-desc">
-              {siteConfig.contact.address}
-            </p>
-            <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
-              Google Maps Route <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 2: WhatsApp Consultation -->
-        <div class="col-xl-3 col-md-6">
+        <!-- Card 1: WhatsApp Consultation -->
+        <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="simple-icons:whatsapp" width="24" height="24" />
@@ -62,13 +48,13 @@ import { Icon } from 'astro-icon/components';
           </div>
         </div>
 
-        <!-- Card 3: Official Email -->
-        <div class="col-xl-3 col-md-6">
+        <!-- Card 2: Official Email -->
+        <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="solar:letter-linear" width="24" height="24" />
             </div>
-            <h3 class="contact-bento-title">Official Email</h3>
+            <h3 class="contact-bento-title">Email</h3>
             <p class="contact-bento-desc">
               Submit your project brief, floor plans, or tender documentation directly to our management team.
             </p>
@@ -78,15 +64,15 @@ import { Icon } from 'astro-icon/components';
           </div>
         </div>
 
-        <!-- Card 4: Operating Hours -->
-        <div class="col-xl-3 col-md-6">
+        <!-- Card 3: Operating Hours -->
+        <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="solar:clock-circle-linear" width="24" height="24" />
             </div>
             <h3 class="contact-bento-title">Business Hours</h3>
             <p class="contact-bento-desc mb-2">
-              Monday - Saturday: 08:00 - 16:00 WIB<br />Sunday & Holidays: By Appointment
+              Monday - Saturday: 08:00 - 16:00 WIB<br />Sunday & Holidays: Closed
             </p>
             <span class="contact-status-badge">
               <span class="status-indicator"></span> Active Studio

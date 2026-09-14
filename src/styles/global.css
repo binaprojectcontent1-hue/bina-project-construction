@@ -486,4 +486,171 @@ textarea:focus,
   }
 }
 
+/* ==============================================================================
+   6. APPLE-GRADE FLUID UI ANIMATION SYSTEM
+   ============================================================================== */
+:root {
+  --apple-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --apple-ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --apple-ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  --apple-glass-backdrop: saturate(180%) blur(20px);
+}
+
+/* 6.1 Tactile Button Dynamics (Apple Spring Depression & Elevation) */
+button:not(:disabled),
+.th-btn,
+.btn-primary,
+.btn-secondary,
+.shadcn-cta-btn,
+.hero-pill-btn-primary,
+.hero-pill-btn-secondary,
+.action-icon-btn,
+.social-circle {
+  transition: transform 0.3s var(--apple-ease-out),
+              box-shadow 0.3s var(--apple-ease-out),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              color 0.2s ease !important;
+  will-change: transform;
+}
+
+button:not(:disabled):active,
+.th-btn:active,
+.btn-primary:active,
+.btn-secondary:active,
+.shadcn-cta-btn:active,
+.hero-pill-btn-primary:active,
+.hero-pill-btn-secondary:active,
+.action-icon-btn:active,
+.social-circle:active {
+  transform: scale(0.97) translateY(1px) !important;
+  transition: transform 0.12s var(--apple-ease-spring) !important;
+}
+
+/* 6.2 Apple Glass Cards & Smooth Elevation */
+.service-card,
+.project-card,
+.feature-card,
+.why-card,
+.testimonial-card,
+.blog-card,
+.pricing-card {
+  transition: transform 0.45s var(--apple-ease-out),
+              box-shadow 0.45s var(--apple-ease-out),
+              border-color 0.3s ease !important;
+  will-change: transform, box-shadow;
+}
+
+.service-card:hover,
+.project-card:hover,
+.feature-card:hover,
+.why-card:hover,
+.testimonial-card:hover,
+.blog-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 20px 40px -12px rgba(13, 25, 43, 0.12) !important;
+}
+
+/* Smooth Image Zoom with High Inertia inside Cards */
+.project-card img,
+.service-card img,
+.blog-card img {
+  transition: transform 0.8s var(--apple-ease-smooth) !important;
+  will-change: transform;
+}
+
+.project-card:hover img,
+.service-card:hover img,
+.blog-card:hover img {
+  transform: scale(1.04) !important;
+}
+
+/* 6.3 Progressive Blur-Reveal Scroll Utility */
+.apple-reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(24px);
+  transition: opacity 0.85s var(--apple-ease-out),
+              transform 0.85s var(--apple-ease-out),
+              filter 0.85s var(--apple-ease-out);
+  will-change: opacity, transform, filter;
+}
+
+.apple-reveal.is-in-view {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+
+.apple-reveal-delay-1 { transition-delay: 0.12s; }
+.apple-reveal-delay-2 { transition-delay: 0.24s; }
+.apple-reveal-delay-3 { transition-delay: 0.36s; }
+.apple-reveal-delay-4 { transition-delay: 0.48s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .apple-reveal {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==============================================================================
+   7. ARCHITECTURAL METERAN CURSOR (Brand Experience)
+   Replaces default hand pointer with custom meteran/tape-measure cursor
+   ============================================================================== */
+:root {
+  --bina-cursor-meteran: url('/meteran-cursor.png?v=2') 7 2, url('/assets/img/meteran-cursor.png?v=2') 7 2, pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a,
+  a *,
+  button,
+  button *,
+  [role="button"],
+  [role="button"] *,
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  select,
+  summary,
+  summary *,
+  label[for],
+  .th-btn,
+  .th-btn *,
+  .nav-pill-item,
+  .nav-pill-item *,
+  .social-circle,
+  .social-circle *,
+  .action-icon-btn,
+  .action-icon-btn *,
+  .shadcn-cta-btn,
+  .shadcn-cta-btn *,
+  .sideMenuToggler,
+  .sideMenuToggler *,
+  .th-menu-toggle,
+  .th-menu-toggle *,
+  .cursor-pointer,
+  .cursor-pointer *,
+  .custom-leaflet-pin-wrapper,
+  .swiper-button-next,
+  .swiper-button-prev,
+  .modern-close-btn,
+  .top-bar-close-btn,
+  .faq-btn,
+  .city-pill-btn,
+  .tool-btn,
+  .clean-city-tab,
+  .popup-wa-cta,
+  .coverage-simple-wa-btn,
+  [style*="cursor: pointer"],
+  [style*="cursor:pointer"],
+  [style*="cursor: pointer"] *,
+  [style*="cursor:pointer"] * {
+    cursor: var(--bina-cursor-meteran) !important;
+  }
+}
+
 

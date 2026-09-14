@@ -15,6 +15,12 @@ CREATE TABLE IF NOT EXISTS public.projects (
     cover_image TEXT NOT NULL,
     gallery_images TEXT[] DEFAULT '{}',
     featured BOOLEAN DEFAULT false,
+    -- Before-After Transformation Slider
+    enable_before_after BOOLEAN DEFAULT false,
+    before_image TEXT,
+    after_image TEXT,
+    renovation_duration VARCHAR(100),
+    transformation_scope VARCHAR(255),
     -- Google SEO Fields & Publishing Status
     meta_title VARCHAR(70),
     meta_description VARCHAR(160),

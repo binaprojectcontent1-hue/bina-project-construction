@@ -12,6 +12,12 @@ export interface Project {
   cover_image: string;
   gallery_images: string[];
   featured?: boolean;
+  // Transformation Before-After Fields
+  enable_before_after?: boolean;
+  before_image?: string;
+  after_image?: string;
+  renovation_duration?: string;
+  transformation_scope?: string;
   // Google SEO Fields & Publishing Status
   meta_title?: string;
   meta_description?: string;

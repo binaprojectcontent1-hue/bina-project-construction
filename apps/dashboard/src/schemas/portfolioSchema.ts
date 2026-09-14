@@ -33,6 +33,12 @@ export const portfolioFormSchema = z.object({
   galleryImages: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
   status: z.enum(['published', 'draft']).default('published'),
+  // Before-After Transformation Fields
+  enable_before_after: z.boolean().default(false).optional(),
+  before_image: z.string().trim().optional().or(z.literal('')),
+  after_image: z.string().trim().optional().or(z.literal('')),
+  renovation_duration: z.string().trim().optional().or(z.literal('')),
+  transformation_scope: z.string().trim().optional().or(z.literal('')),
   metaTitle: z
     .string()
     .trim()

@@ -1,19 +1,20 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { getImage } from 'astro:assets';
+import heroArchitectural from '@assets/images/hero/hero_architectural.png';
 import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
-import heroBg2 from '@assets/images/hero/hero_bg_1_2.jpg';
 import { getLangFromUrl, getLocalizedPath } from '@i18n/utils';
 
 const currentLang = getLangFromUrl(Astro.url);
 
-const optimizedHero1 = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
-const optimizedHero2 = await getImage({ src: heroBg2, format: 'webp', quality: 85, width: 1920 });
+const optimizedHeroMain = await getImage({ src: heroArchitectural, format: 'webp', quality: 90, width: 1920 });
+const optimizedHeroAlt = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
 
 export interface HeroSlide {
   image: string;
   subtitle: string;
-  title: string;
+  titlePart1: string;
+  titlePart2: string;
   desc: string;
   isH1: boolean;
 }
@@ -21,33 +22,37 @@ export interface HeroSlide {
 const heroSlides: readonly HeroSlide[] = currentLang === 'en'
   ? [
       {
-        image: optimizedHero1.src,
-        subtitle: 'Trusted Architects & General Contractors in East Java',
-        title: 'Architectural Construction & <br /> Interior Design Malang',
-        desc: 'Turn your dream residence and commercial spaces into reality with modern architectural precision, transparent cost estimation, and dedicated engineering.',
+        image: optimizedHeroMain.src,
+        subtitle: 'Certified SNI Quality Standards & Official SPK Warranty',
+        titlePart1: 'BINA PROJECT',
+        titlePart2: 'ARCHITECTURE & BUILD',
+        desc: 'Turnkey residential building contractor, architectural renovation, bespoke kitchen sets, and trustworthy development in Greater Malang & East Java.',
         isH1: true,
       },
       {
-        image: optimizedHero2.src,
-        subtitle: 'Certified SNI Quality Standards & Official SPK Warranty',
-        title: 'BINA PROJECT <br /> ARCHITECTURE & BUILD',
-        desc: 'Turnkey residential building contractor, architectural renovation, bespoke kitchen sets, and trustworthy development in Greater Malang & East Java.',
+        image: optimizedHeroAlt.src,
+        subtitle: 'Trusted Architects & General Contractors in East Java',
+        titlePart1: 'ARCHITECTURAL CONSTRUCTION &',
+        titlePart2: 'INTERIOR DESIGN MALANG',
+        desc: 'Turn your dream residence and commercial spaces into reality with modern architectural precision, transparent cost estimation, and dedicated engineering.',
         isH1: false,
       },
     ]
   : [
       {
-        image: optimizedHero1.src,
-        subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
-        title: 'Jasa Konstruksi & <br /> Desain Interior Malang',
-        desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB tanpa biaya tersembunyi, dan pengawasan profesional.',
+        image: optimizedHeroMain.src,
+        subtitle: 'Standar Mutu SNI & Garansi Pemeliharaan Resmi SPK',
+        titlePart1: 'BINA PROJECT',
+        titlePart2: 'ARCHITECTURE & BUILD',
+        desc: 'Penyedia jasa bangun rumah baru, renovasi bangunan, custom kitchen set, dan developer amanah bergaransi di Malang Raya & sekitarnya.',
         isH1: true,
       },
       {
-        image: optimizedHero2.src,
-        subtitle: 'Standar Mutu SNI & Garansi Pemeliharaan Resmi SPK',
-        title: 'BINA PROJECT <br /> ARCHITECTURE & BUILD',
-        desc: 'Penyedia jasa bangun rumah baru, renovasi bangunan, custom kitchen set, dan developer amanah bergaransi di Malang Raya & sekitarnya.',
+        image: optimizedHeroAlt.src,
+        subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
+        titlePart1: 'JASA KONSTRUKSI &',
+        titlePart2: 'DESAIN INTERIOR MALANG',
+        desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB tanpa biaya tersembunyi, dan pengawasan profesional.',
         isH1: false,
       },
     ];
@@ -61,35 +66,84 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
           <!-- Fullscreen Background Image -->
           <div class="hero-fs-bg" style={`background-image: url('${slide.image}');`}></div>
 
-          <!-- Deep Navy Architectural Overlay for High Legibility -->
-          <div class="hero-fs-overlay"></div>
+          <!-- Architectural Dark Blue Gradient Vignette (Left-focused for maximum contrast) -->
+          <div class="hero-architectural-overlay" aria-hidden="true"></div>
 
-          <!-- Centered Content Container -->
-          <div class="container h-100 position-relative d-flex align-items-center justify-content-center">
-            <div class="hero-fs-content hero-fs-centered">
-              <span class="hero-fs-eyebrow">{slide.subtitle}</span>
+          <!-- Left-Aligned Content Container -->
+          <div class="container h-100 position-relative d-flex align-items-center">
+            <div class="hero-left-content">
+              <!-- Eyebrow Subtitle -->
+              <span class="hero-eyebrow" data-original-text={slide.subtitle}>{slide.subtitle}</span>
+
+              <!-- Dynamic Heading -->
               {slide.isH1 ? (
-                <h1 class="hero-fs-title" set:html={slide.title} />
+                <h1 class="hero-main-title">
+                  <span class="hero-title-white">{slide.titlePart1}</span>
+                  <span class="hero-title-cyan">{slide.titlePart2}</span>
+                </h1>
               ) : (
-                <h2 class="hero-fs-title" set:html={slide.title} />
+                <h2 class="hero-main-title">
+                  <span class="hero-title-white">{slide.titlePart1}</span>
+                  <span class="hero-title-cyan">{slide.titlePart2}</span>
+                </h2>
               )}
-              <p class="hero-fs-desc">{slide.desc}</p>
 
-              <!-- Centered Action Buttons -->
-              <div class="hero-fs-cta-group justify-content-center">
+              <!-- Description Text -->
+              <p class="hero-description">{slide.desc}</p>
+
+              <!-- Pill CTA Action Buttons -->
+              <div class="hero-cta-buttons">
                 <a
                   href={`https://wa.me/6281335335304?text=${encodeURIComponent(currentLang === 'en' ? 'Hello Bina Project, I would like to consult my project and cost estimation.' : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek dan estimasi biaya')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="hero-fs-btn-primary"
+                  class="hero-pill-btn-primary"
                   onclick="if(typeof window.trackLead==='function') window.trackLead('hero_wa_cta', 'hero_slide');"
                 >
-                  <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" />
-                  {currentLang === 'en' ? 'Free Cost Consultation' : 'Konsultasi Estimasi Biaya'}
+                  <Icon name="simple-icons:whatsapp" width="18" height="18" class="btn-icon" />
+                  <span>{currentLang === 'en' ? 'Free Cost Consultation' : 'Konsultasi Estimasi Biaya'}</span>
                 </a>
-                <a href={getLocalizedPath('/portfolio', currentLang)} class="hero-fs-btn-secondary">
-                  {currentLang === 'en' ? 'View 162+ Projects' : 'Lihat 162+ Portofolio'}
+
+                <a href={getLocalizedPath('/portfolio', currentLang)} class="hero-pill-btn-secondary">
+                  <Icon name="solar:document-text-linear" width="18" height="18" class="btn-icon" />
+                  <span>{currentLang === 'en' ? 'View 162+ Projects' : 'Lihat 162+ Portofolio'}</span>
+                  <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="btn-arrow" />
                 </a>
+              </div>
+
+              <!-- 4 Trust Badges Horizontal Strip -->
+              <div class="hero-trust-badges-grid">
+                <div class="hero-badge-card">
+                  <div class="badge-icon-box">
+                    <Icon name="solar:shield-check-linear" width="22" height="22" />
+                  </div>
+                  <div class="badge-title">{currentLang === 'en' ? 'Experienced' : 'Berpengalaman'}</div>
+                  <div class="badge-sub">{currentLang === 'en' ? 'Professional Team' : 'Tim Profesional'}</div>
+                </div>
+
+                <div class="hero-badge-card">
+                  <div class="badge-icon-box">
+                    <Icon name="solar:shield-check-linear" width="22" height="22" />
+                  </div>
+                  <div class="badge-title">{currentLang === 'en' ? 'Quality Material' : 'Material Berkualitas'}</div>
+                  <div class="badge-sub">{currentLang === 'en' ? 'Long Lasting' : 'Tahan Lama'}</div>
+                </div>
+
+                <div class="hero-badge-card">
+                  <div class="badge-icon-box">
+                    <Icon name="solar:home-smile-linear" width="22" height="22" />
+                  </div>
+                  <div class="badge-title">{currentLang === 'en' ? 'Modern Design' : 'Desain Modern'}</div>
+                  <div class="badge-sub">{currentLang === 'en' ? 'Customized' : 'Sesuai Kebutuhan'}</div>
+                </div>
+
+                <div class="hero-badge-card">
+                  <div class="badge-icon-box">
+                    <Icon name="solar:hand-shake-linear" width="22" height="22" />
+                  </div>
+                  <div class="badge-title">{currentLang === 'en' ? 'Work Warranty' : 'Garansi Pekerjaan'}</div>
+                  <div class="badge-sub">{currentLang === 'en' ? 'Hassle Free' : 'Anti Ribet'}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -97,18 +151,26 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
       ))}
     </div>
 
-    <!-- Sleek Minimalist Slider Controls -->
+    <!-- Minimalist Slider Controls (Pill Cluster) -->
     <div class="hero-fs-controls-bottom">
       <div class="hero-fs-nav-cluster">
         <button type="button" class="hero-fs-nav-btn prev" id="heroSlidePrev" aria-label="Slide Sebelumnya">
           <Icon name="solar:alt-arrow-left-linear" width="13" height="13" />
         </button>
-        <div class="hero-fs-pagination" id="heroFsPagination"></div>
+        <div class="hero-custom-pagination" id="heroCustomPagination"></div>
         <button type="button" class="hero-fs-nav-btn next" id="heroSlideNext" aria-label="Slide Berikutnya">
           <Icon name="solar:alt-arrow-right-linear" width="13" height="13" />
         </button>
       </div>
     </div>
+
+    <!-- Bottom Right Scroll Down Indicator -->
+    <a href="#about-sec" class="hero-scroll-indicator d-none d-lg-flex" aria-label={currentLang === 'en' ? 'Scroll down' : 'Scroll ke bawah'}>
+      <div class="scroll-circle">
+        <Icon name="solar:arrow-down-linear" width="15" height="15" />
+      </div>
+      <span class="scroll-text">{currentLang === 'en' ? 'Scroll down' : 'Scroll ke bawah'}</span>
+    </a>
   </div>
 </section>
 
@@ -129,7 +191,6 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
         return;
       }
 
-      // Avoid re-initialization if swiper instance already exists
       if (sliderEl.swiper) {
         sliderEl.swiper.destroy(true, true);
       }
@@ -144,9 +205,9 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
         slidesPerView: 1,
         spaceBetween: 0,
         loop: true,
-        speed: 1000,
+        speed: 1200,
         autoplay: {
-          delay: 6000,
+          delay: 7000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         },
@@ -155,10 +216,14 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
           nextEl: '#heroSlideNext',
         },
         pagination: {
-          el: '#heroFsPagination',
+          el: '#heroCustomPagination',
           clickable: true,
+          bulletClass: 'hero-nav-dot',
+          bulletActiveClass: 'hero-nav-dot-active',
+          bulletsClass: 'hero-dots-wrap',
+          horizontalClass: 'hero-dots-h',
           renderBullet: function (index, className) {
-            return '<span class="' + className + '" role="button" tabindex="0" aria-label="Slide ' + (index + 1) + '"><span class="bullet-bar"></span></span>';
+            return '<span class="' + className + '" role="button" tabindex="0" aria-label="Slide ' + (index + 1) + '"><span class="hero-dot-fill"></span></span>';
           },
         },
         on: {
@@ -168,6 +233,14 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
           },
           slideChangeTransitionStart: function (swiper) {
             triggerScramble(swiper);
+            setTimeout(() => {
+              const activeDot = heroSec?.querySelector('.hero-nav-dot-active .hero-dot-fill');
+              if (activeDot) {
+                activeDot.style.animation = 'none';
+                void activeDot.offsetWidth;
+                activeDot.style.animation = '';
+              }
+            }, 10);
           },
         },
       });
@@ -176,7 +249,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
         if (!swiper || !swiper.slides) return;
         const activeSlide = swiper.slides[swiper.activeIndex];
         if (!activeSlide) return;
-        const eyebrow = activeSlide.querySelector('.hero-fs-eyebrow');
+        const eyebrow = activeSlide.querySelector('.hero-eyebrow');
         if (eyebrow) {
           scrambleText(eyebrow);
         }
@@ -230,15 +303,13 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
 
 <style is:global>
   /* ========================================================
-     Fullscreen Hero Slider (Clean Architectural & Fade)
+     Modern Architectural Hero Section (Reference Design)
      ======================================================== */
   .hero-fs-sec {
     position: relative !important;
     width: 100% !important;
-    height: calc(100vh - 138px) !important;
-    min-height: 580px !important;
-    max-height: 880px !important;
-    background-color: #0D192B !important;
+    height: clamp(660px, 92vh, 900px) !important;
+    background-color: #081426 !important;
     overflow: hidden !important;
   }
 
@@ -264,282 +335,368 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     width: 100% !important;
     height: 100% !important;
     background-size: cover !important;
-    background-position: center !important;
+    background-position: center right !important;
     background-repeat: no-repeat !important;
-    transform: scale(1);
-    transition: transform 7s ease-out;
+    transform: scale(1.01);
+    transition: transform 14s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
     z-index: 0 !important;
   }
 
   .hero-fs-sec .swiper-slide-active .hero-fs-bg {
-    transform: scale(1.04);
+    transform: scale(1.07);
   }
 
-  .hero-fs-sec .hero-fs-overlay {
+  /* Left Architectural Dark Vignette Overlay for High Legibility */
+  .hero-fs-sec .hero-architectural-overlay {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    background: 
-      radial-gradient(ellipse at center, rgba(10, 34, 57, 0.65) 0%, rgba(10, 34, 57, 0.88) 100%),
-      linear-gradient(180deg, rgba(10, 34, 57, 0.4) 0%, rgba(10, 34, 57, 0.85) 100%) !important;
-    pointer-events: none !important;
+    background: linear-gradient(
+      90deg,
+      rgba(8, 20, 38, 0.96) 0%,
+      rgba(8, 20, 38, 0.88) 32%,
+      rgba(8, 20, 38, 0.65) 48%,
+      rgba(8, 20, 38, 0.25) 64%,
+      rgba(8, 20, 38, 0.05) 80%,
+      rgba(8, 20, 38, 0) 100%
+    ) !important;
     z-index: 1 !important;
+    pointer-events: none !important;
   }
 
-  .hero-fs-sec .hero-fs-content {
+  /* Left Aligned Content */
+  .hero-fs-sec .hero-left-content {
     position: relative !important;
     z-index: 3 !important;
-    max-width: 840px !important;
-    padding: 30px 20px 65px 20px !important;
-    margin: 0 auto !important;
-    text-align: center !important;
+    max-width: 680px !important;
+    padding: 60px 0 65px 0 !important;
+    text-align: left !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
+    align-items: flex-start !important;
   }
 
   /* ========================================================
-     Staggered Text Motion Animation on Slide Transition
+     Apple Cinematic Progressive Blur-Fade Transitions
      ======================================================== */
-  .hero-fs-sec .hero-fs-eyebrow,
-  .hero-fs-sec .hero-fs-title,
-  .hero-fs-sec .hero-fs-desc,
-  .hero-fs-sec .hero-fs-cta-group,
-  .hero-fs-sec .hero-fs-trust-strip {
+  .hero-fs-sec .hero-eyebrow,
+  .hero-fs-sec .hero-main-title,
+  .hero-fs-sec .hero-description,
+  .hero-fs-sec .hero-cta-buttons,
+  .hero-fs-sec .hero-trust-badges-grid {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    will-change: opacity, transform;
+    filter: blur(10px);
+    transform: translateY(26px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
   }
 
-  /* Active Slide Cascading In */
-  .hero-fs-sec .swiper-slide-active .hero-fs-eyebrow {
+  /* Active Slide Cascading In - Apple Soft Deceleration */
+  .hero-fs-sec .swiper-slide-active .hero-eyebrow {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
-    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.15s;
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.12s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-fs-title {
+  .hero-fs-sec .swiper-slide-active .hero-main-title {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
-    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.30s;
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.24s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-fs-desc {
+  .hero-fs-sec .swiper-slide-active .hero-description {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
-    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.45s;
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.38s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-fs-cta-group {
+  .hero-fs-sec .swiper-slide-active .hero-cta-buttons {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
-    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.60s;
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.52s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-fs-trust-strip {
+  .hero-fs-sec .swiper-slide-active .hero-trust-badges-grid {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
-    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.75s;
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.66s;
   }
 
-  /* Fallback before Swiper is fully loaded / initialized */
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-eyebrow,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-title,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-desc,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-cta-group,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-fs-trust-strip {
+  /* Uninitialized Fallback */
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-eyebrow,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-main-title,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-description,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-cta-buttons,
+  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-trust-badges-grid {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
   }
 
-  .hero-fs-sec .hero-fs-eyebrow {
+  /* Eyebrow */
+  .hero-fs-sec .hero-eyebrow {
     display: inline-block !important;
     font-family: 'Archivo', sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    letter-spacing: 2.5px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
     text-transform: uppercase !important;
-    color: #FFFFFF !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 18px !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Main Title H1 / H2 */
+  .hero-fs-sec .hero-main-title {
+    font-family: 'Titillium Web', 'Archivo', sans-serif !important;
+    font-size: clamp(34px, 4.4vw, 56px) !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.01em !important;
     margin-bottom: 20px !important;
-    text-align: center !important;
+    text-transform: uppercase !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
-  .hero-fs-sec .hero-fs-title {
-    font-size: clamp(34px, 5.2vw, 56px) !important;
-    font-weight: 600 !important;
+  .hero-fs-sec .hero-title-white {
     color: #FFFFFF !important;
-    line-height: 1.22 !important;
-    letter-spacing: -0.02em !important;
-    margin-bottom: 22px !important;
-    text-align: center !important;
-    max-width: 800px !important;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
   }
 
-  .hero-fs-sec .hero-fs-desc {
+  .hero-fs-sec .hero-title-cyan {
+    background: linear-gradient(90deg, #38BDF8 0%, #00D2FF 50%, #60A5FA 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    filter: drop-shadow(0 4px 16px rgba(0, 210, 255, 0.35)) !important;
+  }
+
+  /* Description */
+  .hero-fs-sec .hero-description {
+    font-family: 'Archivo', sans-serif !important;
     font-size: 16px !important;
     font-weight: 400 !important;
     color: #CBD5E1 !important;
-    line-height: 1.75 !important;
-    margin-bottom: 36px !important;
-    max-width: 640px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
+    line-height: 1.7 !important;
+    margin-bottom: 34px !important;
+    max-width: 580px !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
   }
 
-  .hero-fs-sec .hero-fs-cta-group {
+  /* CTA Buttons */
+  .hero-fs-sec .hero-cta-buttons {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
     gap: 16px !important;
     flex-wrap: wrap !important;
-    margin-bottom: 38px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-bottom: 42px !important;
   }
 
-  .hero-fs-sec .hero-fs-btn-primary {
-    background: #22416D !important;
+  .hero-fs-sec .hero-pill-btn-primary {
+    background: linear-gradient(135deg, #0099FF 0%, #0077EE 100%) !important;
     color: #FFFFFF !important;
-    font-size: 14px !important;
+    font-family: 'Archivo', sans-serif !important;
+    font-size: 14.5px !important;
     font-weight: 600 !important;
-    padding: 13px 32px !important;
-    border-radius: 8px !important;
+    padding: 13px 28px !important;
+    border-radius: 999px !important;
     display: inline-flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    gap: 10px !important;
     text-decoration: none !important;
-    white-space: nowrap !important;
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease !important;
-    box-shadow: 0 4px 16px rgba(34, 65, 109, 0.4) !important;
+    box-shadow: 0 6px 20px rgba(0, 136, 255, 0.45) !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s ease !important;
+    will-change: transform, box-shadow;
   }
 
-  .hero-fs-sec .hero-fs-btn-primary:hover {
-    background: #345F99 !important;
+  .hero-fs-sec .hero-pill-btn-primary:hover {
+    background: linear-gradient(135deg, #1aa3ff 0%, #0084ff 100%) !important;
     color: #FFFFFF !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 22px rgba(34, 65, 109, 0.5) !important;
+    box-shadow: 0 10px 28px rgba(0, 136, 255, 0.6) !important;
   }
 
-  .hero-fs-sec .hero-fs-btn-secondary {
-    background: rgba(255, 255, 255, 0.08) !important;
+  .hero-fs-sec .hero-pill-btn-primary:active {
+    transform: scale(0.96) translateY(1px) !important;
+    box-shadow: 0 3px 12px rgba(0, 136, 255, 0.4) !important;
+    transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .hero-fs-sec .hero-pill-btn-secondary {
+    background: rgba(13, 25, 43, 0.55) !important;
     color: #FFFFFF !important;
     border: 1px solid rgba(255, 255, 255, 0.35) !important;
-    font-size: 14px !important;
+    font-family: 'Archivo', sans-serif !important;
+    font-size: 14.5px !important;
     font-weight: 600 !important;
-    padding: 12px 32px !important;
-    border-radius: 8px !important;
+    padding: 12px 26px !important;
+    border-radius: 999px !important;
     display: inline-flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    gap: 10px !important;
     text-decoration: none !important;
-    white-space: nowrap !important;
-    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s ease,
+                border-color 0.3s ease !important;
+    will-change: transform, box-shadow;
   }
 
-  .hero-fs-sec .hero-fs-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
+  .hero-fs-sec .hero-pill-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
     border-color: #FFFFFF !important;
     color: #FFFFFF !important;
     transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
   }
 
-  .hero-fs-sec .hero-fs-trust-strip {
+  .hero-fs-sec .hero-pill-btn-secondary:active {
+    transform: scale(0.96) translateY(1px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25) !important;
+    transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .hero-fs-sec .btn-arrow {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .hero-fs-sec .hero-pill-btn-secondary:hover .btn-arrow {
+    transform: translate(2px, -2px) !important;
+  }
+
+  /* 4 Trust Badges Horizontal Grid */
+  .hero-fs-sec .hero-trust-badges-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, auto) !important;
+    gap: 24px !important;
+    align-items: start !important;
+    padding-top: 10px !important;
+  }
+
+  .hero-fs-sec .hero-badge-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 3px !important;
+  }
+
+  .hero-fs-sec .badge-icon-box {
+    color: #38BDF8 !important;
+    margin-bottom: 6px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 18px !important;
-    flex-wrap: wrap !important;
-    padding-top: 22px !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
   }
 
-  .hero-fs-sec .fs-trust-item {
-    display: flex !important;
-    align-items: baseline !important;
-    gap: 6px !important;
-  }
-
-  .hero-fs-sec .fs-trust-val {
+  .hero-fs-sec .badge-title {
     font-family: 'Archivo', sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
     color: #FFFFFF !important;
+    line-height: 1.25 !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
   }
 
-  .hero-fs-sec .fs-trust-lbl {
-    font-size: 13px !important;
+  .hero-fs-sec .badge-sub {
+    font-family: 'Archivo', sans-serif !important;
+    font-size: 12px !important;
     font-weight: 400 !important;
     color: #94A3B8 !important;
-  }
-
-  .hero-fs-sec .fs-trust-sep {
-    color: rgba(255, 255, 255, 0.25) !important;
-    font-size: 14px !important;
-    user-select: none !important;
+    line-height: 1.3 !important;
   }
 
   /* ========================================================
-     Sleek Minimalist Slider Controls (Simple & Compact)
+     Minimalist Slider Controls (Pill Cluster - Completely Custom)
      ======================================================== */
   .hero-fs-sec .hero-fs-controls-bottom {
     position: absolute !important;
-    bottom: 24px !important;
-    left: 0 !important;
-    right: 0 !important;
+    bottom: 28px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     z-index: 10 !important;
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
     pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
   }
 
   .hero-fs-sec .hero-fs-nav-cluster {
     display: inline-flex !important;
     flex-direction: row !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 4px !important;
+    justify-content: center !important;
+    gap: 12px !important;
     pointer-events: auto !important;
-    background: rgba(13, 25, 43, 0.45) !important;
-    padding: 3px 8px !important;
+    background: rgba(8, 20, 38, 0.8) !important;
+    padding: 6px 16px !important;
     border-radius: 999px !important;
-    border: none !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+    box-sizing: border-box !important;
+    height: 38px !important;
+    line-height: 1 !important;
   }
 
   .hero-fs-sec .hero-fs-nav-btn {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
-    min-height: 26px !important;
-    max-height: none !important;
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
     border-radius: 50% !important;
     border: none !important;
     background: transparent !important;
     background-color: transparent !important;
-    color: rgba(255, 255, 255, 0.65) !important;
-    display: flex !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
     padding: 0 !important;
     margin: 0 !important;
-    line-height: 1 !important;
     box-shadow: none !important;
     transition: all 0.2s ease !important;
+    line-height: 1 !important;
+  }
+
+  .hero-fs-sec .hero-fs-nav-btn:hover {
+    color: #FFFFFF !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
   }
 
   .hero-fs-sec .hero-fs-nav-btn:before,
@@ -548,187 +705,231 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     content: none !important;
   }
 
-  .hero-fs-sec .hero-fs-nav-btn:hover {
-    color: #FFFFFF !important;
-    background: rgba(255, 255, 255, 0.15) !important;
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    transform: none !important;
-  }
-
-  .hero-fs-sec .hero-fs-nav-btn:active {
-    transform: scale(0.92) !important;
-  }
-
-  .hero-fs-sec .hero-fs-pagination,
-  .hero-fs-sec .swiper-pagination-bullets.swiper-pagination-horizontal {
-    position: static !important;
-    bottom: auto !important;
-    left: auto !important;
-    width: auto !important;
-    min-width: auto !important;
-    min-height: auto !important;
-    display: flex !important;
+  .hero-fs-sec .hero-custom-pagination,
+  .hero-fs-sec #heroCustomPagination {
+    display: inline-flex !important;
     flex-direction: row !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
-    padding: 0 4px !important;
+    gap: 8px !important;
+    padding: 0 !important;
     margin: 0 !important;
-    transform: none !important;
-  }
-
-  .hero-fs-sec .swiper-pagination-bullet {
+    height: auto !important;
+    line-height: 1 !important;
+    position: static !important;
+    width: auto !important;
+    border: none !important;
     background: transparent !important;
     background-color: transparent !important;
-    opacity: 1 !important;
-    width: auto !important;
-    height: auto !important;
-    min-height: auto !important;
-    min-width: auto !important;
-    box-sizing: content-box !important;
-    margin: 0 !important;
-    padding: 5px 2px !important;
+  }
+
+  .hero-fs-sec .hero-nav-dot {
+    position: relative !important;
+    display: inline-block !important;
+    width: 14px !important;
+    height: 4px !important;
+    min-width: 14px !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.35) !important;
     border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
     cursor: pointer !important;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.25s ease !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .hero-fs-sec .hero-dot-fill {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: inherit !important;
+    background: #00D2FF !important;
+    transform-origin: left center !important;
+    transform: scaleX(0) !important;
+  }
+
+  .hero-fs-sec .hero-nav-dot:before,
+  .hero-fs-sec .hero-nav-dot:after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+  }
+
+  .hero-fs-sec .hero-nav-dot:hover {
+    background: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  .hero-fs-sec .hero-nav-dot.hero-nav-dot-active {
+    width: 36px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .hero-fs-sec .hero-nav-dot.hero-nav-dot-active .hero-dot-fill {
+    transform: scaleX(1) !important;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.85) !important;
+    animation: heroAutoplayFill 7s linear forwards !important;
+  }
+
+  .hero-fs-sec .hero-fs-slider:hover .hero-dot-fill {
+    animation-play-state: paused !important;
+  }
+
+  @keyframes heroAutoplayFill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Scroll Down Indicator */
+  .hero-fs-sec .hero-scroll-indicator {
+    position: absolute !important;
+    bottom: 30px !important;
+    right: 48px !important;
+    z-index: 10 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: none !important;
+    font-family: 'Archivo', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    transition: color 0.25s ease, transform 0.25s ease !important;
+  }
+
+  .hero-fs-sec .hero-scroll-indicator:hover {
+    color: #FFFFFF !important;
+    transform: translateY(3px) !important;
+  }
+
+  .hero-fs-sec .scroll-circle {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    background: rgba(8, 20, 38, 0.5) !important;
+    backdrop-filter: blur(4px) !important;
+    transition: border-color 0.25s ease, background-color 0.25s ease !important;
   }
 
-  .hero-fs-sec .swiper-pagination-bullet:before,
-  .hero-fs-sec .swiper-pagination-bullet:after {
-    display: none !important;
-    content: none !important;
+  .hero-fs-sec .hero-scroll-indicator:hover .scroll-circle {
+    border-color: #38BDF8 !important;
+    background-color: rgba(0, 136, 255, 0.25) !important;
+    color: #38BDF8 !important;
   }
 
-  .hero-fs-sec .bullet-bar {
-    display: block !important;
-    width: 14px !important;
-    height: 2.5px !important;
-    border-radius: 2px !important;
-    background-color: rgba(255, 255, 255, 0.35) !important;
-    transition: width 0.3s ease, background-color 0.25s ease !important;
-  }
-
-  .hero-fs-sec .swiper-pagination-bullet:hover .bullet-bar {
-    background-color: rgba(255, 255, 255, 0.7) !important;
-  }
-
-  .hero-fs-sec .swiper-pagination-bullet.swiper-pagination-bullet-active .bullet-bar {
-    width: 24px !important;
-    background-color: #84ACDF !important;
-    box-shadow: none !important;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-fs-sec .hero-fs-eyebrow,
-    .hero-fs-sec .hero-fs-title,
-    .hero-fs-sec .hero-fs-desc,
-    .hero-fs-sec .hero-fs-cta-group,
-    .hero-fs-sec .hero-fs-trust-strip,
-    .hero-fs-sec .hero-fs-bg,
-    .hero-fs-sec .hero-fs-btn-primary,
-    .hero-fs-sec .hero-fs-btn-secondary,
-    .hero-fs-sec .hero-fs-nav-btn {
-      transition: none !important;
-      transform: none !important;
-      opacity: 1 !important;
+  /* ========================================================
+     Responsive Media Queries
+     ======================================================== */
+  @media (max-width: 1199px) {
+    .hero-fs-sec .hero-trust-badges-grid {
+      gap: 18px !important;
     }
   }
 
   @media (max-width: 991px) {
     .hero-fs-sec {
-      height: calc(100vh - 80px) !important;
-      height: calc(100svh - 80px) !important;
-      min-height: 560px !important;
-      max-height: none !important;
-      padding: 0 !important;
-      padding-bottom: 0 !important;
-      background-color: #0D192B !important;
-      overflow: hidden !important;
+      height: auto !important;
+      min-height: 640px !important;
     }
-    .hero-fs-sec .hero-fs-slider {
+    .hero-fs-sec .hero-architectural-overlay {
+      background: linear-gradient(
+        180deg,
+        rgba(8, 20, 38, 0.85) 0%,
+        rgba(8, 20, 38, 0.92) 50%,
+        rgba(8, 20, 38, 0.98) 100%
+      ) !important;
+    }
+    .hero-fs-sec .hero-left-content {
+      max-width: 100% !important;
+      padding: 50px 15px 70px 15px !important;
+    }
+    .hero-fs-sec .hero-trust-badges-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 18px 24px !important;
       width: 100% !important;
-      height: 100% !important;
-      position: relative !important;
-    }
-    .hero-fs-sec .swiper-wrapper {
-      width: 100% !important;
-      height: 100% !important;
-    }
-    .hero-fs-sec .hero-fs-slide {
-      width: 100% !important;
-      height: 100% !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      overflow: hidden !important;
-    }
-    .hero-fs-sec .hero-fs-bg {
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      background-size: cover !important;
-      background-position: center !important;
-    }
-    .hero-fs-sec .hero-fs-overlay {
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-    }
-    .hero-fs-sec .hero-fs-content {
-      padding: 35px 15px 65px 15px !important;
+      max-width: 480px !important;
     }
     .hero-fs-sec .hero-fs-controls-bottom {
-      bottom: 16px !important;
+      bottom: 20px !important;
     }
   }
 
   @media (max-width: 575px) {
     .hero-fs-sec {
-      min-height: 540px !important;
+      min-height: 620px !important;
     }
-    .hero-fs-sec .hero-fs-eyebrow {
-      font-size: 12px !important;
+    .hero-fs-sec .hero-eyebrow {
+      font-size: 11.5px !important;
       letter-spacing: 1.5px !important;
       margin-bottom: 12px !important;
     }
-    .hero-fs-sec .hero-fs-title {
-      font-size: clamp(26px, 7vw, 34px) !important;
-      line-height: 1.25 !important;
-      margin-bottom: 14px !important;
+    .hero-fs-sec .hero-main-title {
+      font-size: clamp(28px, 8vw, 36px) !important;
+      line-height: 1.2 !important;
+      margin-bottom: 16px !important;
     }
-    .hero-fs-sec .hero-fs-desc {
+    .hero-fs-sec .hero-description {
       font-size: 14px !important;
       line-height: 1.6 !important;
-      margin-bottom: 24px !important;
+      margin-bottom: 26px !important;
     }
-    .hero-fs-sec .hero-fs-cta-group {
+    .hero-fs-sec .hero-cta-buttons {
       flex-direction: column !important;
       width: 100% !important;
       max-width: 320px !important;
-      gap: 10px !important;
-      margin-bottom: 0 !important;
+      gap: 12px !important;
+      margin-bottom: 30px !important;
     }
-    .hero-fs-sec .hero-fs-btn-primary,
-    .hero-fs-sec .hero-fs-btn-secondary {
+    .hero-fs-sec .hero-pill-btn-primary,
+    .hero-fs-sec .hero-pill-btn-secondary {
       width: 100% !important;
       justify-content: center !important;
       padding: 12px 20px !important;
-      font-size: 13.5px !important;
+      font-size: 14px !important;
     }
-    .hero-fs-sec .hero-fs-content {
-      padding: 25px 15px 60px 15px !important;
+    .hero-fs-sec .hero-trust-badges-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 14px 16px !important;
     }
-    .hero-fs-sec .hero-fs-controls-bottom {
-      bottom: 14px !important;
+    .hero-fs-sec .badge-title {
+      font-size: 12.5px !important;
+    }
+    .hero-fs-sec .badge-sub {
+      font-size: 11px !important;
+    }
+    .hero-fs-sec .hero-left-content {
+      padding: 40px 15px 65px 15px !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fs-sec .hero-eyebrow,
+    .hero-fs-sec .hero-main-title,
+    .hero-fs-sec .hero-description,
+    .hero-fs-sec .hero-cta-buttons,
+    .hero-fs-sec .hero-trust-badges-grid,
+    .hero-fs-sec .hero-fs-bg,
+    .hero-fs-sec .hero-pill-btn-primary,
+    .hero-fs-sec .hero-pill-btn-secondary {
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
     }
   }
 </style>
-

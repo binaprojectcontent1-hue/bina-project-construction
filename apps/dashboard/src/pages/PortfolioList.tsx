@@ -152,7 +152,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
 
       {/* Stats Metric Cards Row */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
+        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Total Portofolio</p>
             <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
@@ -165,7 +165,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           <p className="text-xs text-slate-500 mt-1 font-medium">Tersimpan di database</p>
         </Card>
 
-        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
+        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Terpublikasi (Live)</p>
             <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
@@ -178,7 +178,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           <p className="text-xs text-slate-500 mt-1 font-medium">Aktif tampil di website publik</p>
         </Card>
 
-        <Card className="p-5 shadow-xs rounded-[24px] border border-slate-200/80 bg-white">
+        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-600">Draft Tersimpan</p>
             <div className="p-2 rounded-xl bg-amber-50 text-amber-600">
@@ -193,7 +193,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-[28px] border border-slate-200/80 shadow-xs">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-[28px] border-0 shadow-sm">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
           <div className="relative w-full sm:max-w-xs">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -207,7 +207,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
           </div>
 
           {/* Quick Status Filter Tabs */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-full border border-slate-200/80">
+          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-full">
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
@@ -348,7 +348,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
         </Card>
       ) : viewMode === 'table' ? (
         /* DATA TABLE VIEW */
-        <Card className="overflow-hidden shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+        <Card className="overflow-hidden shadow-sm rounded-[28px] border-0 bg-white">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
@@ -463,7 +463,7 @@ export function PortfolioList({ onEdit, onNew, onDelete: onDeleteProp }: Portfol
         /* CARD GRID VIEW */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredProjects.map((item) => (
-            <Card key={item.id} className="overflow-hidden flex flex-col justify-between group shadow-xs rounded-[28px] border border-slate-200/80 hover:shadow-md transition-all bg-white">
+            <Card key={item.id} className="overflow-hidden flex flex-col justify-between group shadow-sm rounded-[28px] border-0 hover:shadow-md transition-all bg-white">
               <div>
                 <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
                   <img

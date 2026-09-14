@@ -1,8 +1,10 @@
 ---
-import { siteConfig } from '@config/site';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
 import { SERVICE_OPTIONS } from '@data/services';
 import { getLangFromUrl } from '@i18n/utils';
+
+const siteConfig = await getSiteSettings();
 
 interface Props {
   lang?: 'id' | 'en';

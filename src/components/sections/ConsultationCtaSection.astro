@@ -5,12 +5,15 @@ import SectionHeader from '@components/SectionHeader.astro';
 import consultationImg from '@assets/images/normal/consultation_img.jpg';
 import consultationThumb from '@assets/images/normal/image.png';
 import { createWhatsAppUrl } from '@utils/whatsapp';
+import { getSiteSettings } from '@lib/siteSettingsService';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
 
+const siteConfig = await getSiteSettings();
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 
 const waConsultationUrl = createWhatsAppUrl({
+  whatsappNumber: siteConfig.contact.whatsappNumber,
   customMessage: currentLang === 'en'
     ? 'Hello Bina Project Team, I would like to consult on architectural construction/interior plans and request a free cost estimate.'
     : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek konstruksi/interior dan estimasi RAB gratis.',

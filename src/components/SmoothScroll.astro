@@ -1,5 +1,5 @@
 ---
-// SmoothScroll.astro - Modern Lenis Smooth Scroll with GSAP Sync & Reduced Motion Support
+// SmoothScroll.astro - Modern Lenis Smooth Scroll with GSAP Sync & Progressive Apple Reveal Engine
 ---
 
 <script>
@@ -11,19 +11,19 @@
 
   if (!prefersReducedMotion) {
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.2,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.3,
     });
 
-    // Sync with GSAP ScrollTrigger if present (robust against deferred script loading)
+    // Sync with GSAP ScrollTrigger if present
     let isGsapSynced = false;
     let attempts = 0;
-    const maxAttempts = 30; // 3 seconds max polling
+    const maxAttempts = 30;
 
     const trySyncGsap = () => {
       // @ts-ignore
@@ -42,7 +42,6 @@
       return false;
     };
 
-    // Standard RAF loop as default or fallback
     function fallbackRaf(time: number) {
       if (!isGsapSynced) {
         lenis.raf(time);
@@ -65,8 +64,66 @@
       window.addEventListener('DOMContentLoaded', pollGsap);
     }
 
-    // Expose globally for interactive components (e.g. scroll to anchor, modals)
     // @ts-ignore
     window.lenis = lenis;
+
+    // Progressive Apple Scroll Reveal Engine
+    function initAppleScrollReveal() {
+      // Automatically assign stagger delay to card siblings in grids/rows
+      document.querySelectorAll('.row, .grid, [class*="grid-"]').forEach((container) => {
+        const cards = container.querySelectorAll(
+          '.service-card, .project-card, .feature-card, .why-card, .testimonial-card, .blog-card'
+        );
+        cards.forEach((card, index) => {
+          const delayClass = `apple-reveal-delay-${(index % 4) + 1}`;
+          if (
+            !card.classList.contains('apple-reveal-delay-1') &&
+            !card.classList.contains('apple-reveal-delay-2') &&
+            !card.classList.contains('apple-reveal-delay-3') &&
+            !card.classList.contains('apple-reveal-delay-4')
+          ) {
+            card.classList.add(delayClass);
+          }
+        });
+      });
+
+      const candidates = document.querySelectorAll(
+        '.sec-title, .sec-text, .service-card, .project-card, .feature-card, .why-card, .testimonial-card, .blog-card, .apple-reveal'
+      );
+
+      if (!candidates.length) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in-view');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px',
+        }
+      );
+
+      candidates.forEach((el) => {
+        if (!el.classList.contains('apple-reveal')) {
+          el.classList.add('apple-reveal');
+        }
+        observer.observe(el);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAppleScrollReveal);
+    } else {
+      initAppleScrollReveal();
+    }
+
+    document.addEventListener('astro:page-load', () => {
+      initAppleScrollReveal();
+    });
   }
 </script>
