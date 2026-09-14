@@ -9,8 +9,10 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/sync-media.mjs",
     "build": "astro build",
     "postbuild": "node scripts/ping-sitemap.mjs",
+    "prepreview": "node scripts/sync-media.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",

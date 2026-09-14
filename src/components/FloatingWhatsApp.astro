@@ -109,7 +109,7 @@ const waUrl = createWhatsAppUrl({
     align-items: center;
     gap: 10px;
     background: #25D366;
-    color: #FFFFFF !important;
+    color: #052E16 !important;
     text-decoration: none;
     padding: 10px 18px 10px 12px;
     border-radius: 9999px;
@@ -122,7 +122,7 @@ const waUrl = createWhatsAppUrl({
     background: #20BA56;
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5), 0 4px 12px rgba(0, 0, 0, 0.16);
-    color: #FFFFFF !important;
+    color: #052E16 !important;
   }
 
   /* Pulse Animation Ring */
@@ -136,6 +136,7 @@ const waUrl = createWhatsAppUrl({
     border-radius: 50%;
     border: 2px solid #25D366;
     animation: waPulse 2.2s infinite cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform, opacity;
     pointer-events: none;
   }
 
@@ -166,7 +167,7 @@ const waUrl = createWhatsAppUrl({
   .floating-wa-icon {
     width: 28px;
     height: 28px;
-    color: #FFFFFF;
+    color: #052E16;
   }
 
   .floating-wa-label {
@@ -178,14 +179,15 @@ const waUrl = createWhatsAppUrl({
     font-weight: 700;
     letter-spacing: 0.2px;
     white-space: nowrap;
+    color: #052E16;
   }
 
   .floating-wa-status-dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background-color: #FFFFFF;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    background-color: #052E16;
+    box-shadow: 0 0 0 2px rgba(5, 46, 22, 0.25);
   }
 
   /* Mobile Responsive */

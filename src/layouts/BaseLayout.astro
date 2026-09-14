@@ -340,11 +340,20 @@ const connectedSchemaGraph = {
       }
     </style>
 
-    <!-- Stylesheets -->
+    <!-- Stylesheets (Minified & Optimized) -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" />
-    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <Fragment set:html={`
+      <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" media="print" onload="this.media='all'" />
+      <noscript><link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" /></noscript>
+    `} />
+    <Fragment set:html={`
+      <link rel="preload" as="style" href="/assets/css/style.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="/assets/css/style.min.css" /></noscript>
+    `} />
+    <Fragment set:html={`
+      <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" media="print" onload="this.media='all'" />
+      <noscript><link rel="stylesheet" href="/assets/css/magnific-popup.min.css" /></noscript>
+    `} />
 
     <!-- Schema.org Connected Knowledge Graph JSON-LD -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(connectedSchemaGraph)} />
@@ -355,8 +364,7 @@ const connectedSchemaGraph = {
       const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID || import.meta.env.VITE_META_PIXEL_ID || '';
       return (
         <>
-          {/* Google Analytics 4 */}
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+          {/* Google Analytics 4 (Non-blocking & Idle / Interaction Triggered) */}
           <script is:inline set:html={`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -366,6 +374,31 @@ const connectedSchemaGraph = {
               anonymize_ip: true,
               transport_type: 'beacon'
             });
+
+            (function() {
+              var gaLoaded = false;
+              function initGA() {
+                if (gaLoaded) return;
+                gaLoaded = true;
+                var s = document.createElement('script');
+                s.async = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=${gaId}';
+                document.head.appendChild(s);
+              }
+
+              var events = ['scroll', 'pointerdown', 'keydown', 'touchstart'];
+              var triggerGA = function() {
+                initGA();
+                events.forEach(function(e) { window.removeEventListener(e, triggerGA, { passive: true }); });
+              };
+              events.forEach(function(e) { window.addEventListener(e, triggerGA, { passive: true, once: true }); });
+
+              if ('requestIdleCallback' in window) {
+                requestIdleCallback(function() { setTimeout(initGA, 2500); });
+              } else {
+                setTimeout(initGA, 3000);
+              }
+            })();
           `} />
 
           {/* Meta Pixel (Facebook & Instagram Ads) */}
@@ -437,13 +470,10 @@ const connectedSchemaGraph = {
 
     <!-- Scripts (Optimized Core Scripts, Deferred) -->
     <script is:inline src="/assets/js/vendor/jquery-3.6.0.min.js" defer></script>
-    <script is:inline src="/assets/js/bootstrap.min.js" defer></script>
     <script is:inline src="/assets/js/swiper-bundle.min.js" defer></script>
     <script is:inline src="/assets/js/jquery.magnific-popup.min.js" defer></script>
-    <script is:inline src="/assets/js/jquery.counterup.min.js" defer></script>
-    <script is:inline src="/assets/js/imagesloaded.pkgd.min.js" defer></script>
     <script is:inline src="/assets/js/gsap.min.js" defer></script>
     <script is:inline src="/assets/js/ScrollTrigger.min.js" defer></script>
-    <script is:inline src="/assets/js/main.js" defer></script>
+    <script is:inline src="/assets/js/main.min.js" defer></script>
   </body>
 </html>

@@ -7,12 +7,13 @@ node_modules/
 .pnp
 .pnp.js
 
-# Build output
+# Build output & local media cache
 dist/
 dist-test/
 .astro/
 apps/dashboard/dist/
 apps/biolink/dist/
+public/media/
 
 # Environment variables (SECRETS - NEVER COMMIT)
 .env

@@ -48,13 +48,13 @@ const waConsultationUrl = createWhatsAppUrl({
             variant="dark"
             class="mb-30"
           />
-          <div class="d-flex flex-wrap gap-3">
+          <div class="d-flex flex-wrap gap-3 consultation-cta-actions">
             <a
               href={waConsultationUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="th-btn style1 th-icon d-inline-flex align-items-center"
-              style="background-color: #25D366; border-color: #25D366; color: #FFFFFF; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);"
+              style="background-color: #008069; border-color: #008069; color: #FFFFFF; box-shadow: 0 4px 15px rgba(0, 128, 105, 0.4);"
               onclick="if(typeof window.trackLead==='function') window.trackLead('consultation_sec_wa', 'homepage');"
             >
               <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" />
@@ -83,3 +83,16 @@ const waConsultationUrl = createWhatsAppUrl({
     </div>
   </div>
 </section>
+
+<style>
+  @media (max-width: 575px) {
+    .consultation-cta-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    .consultation-cta-actions .th-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

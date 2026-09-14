@@ -653,4 +653,64 @@ button:not(:disabled):active,
   }
 }
 
+/* ==============================================================================
+   7. MOBILE TOUCH TARGET SIZING (WCAG 2.5.5 / 2.5.8 & Lighthouse 100)
+   ============================================================================== */
+@media (max-width: 768px) {
+  /* Language Switcher */
+  .lang-switcher a {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px !important;
+  }
 
+  /* Header action buttons */
+  .top-bar-close-btn,
+  .action-icon-btn,
+  .th-menu-toggle {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Media Zoom Lightbox Button */
+  .media-zoom-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Slider Navigation Buttons */
+  .custom-nav-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* FAQ Filter and Interactive Buttons */
+  .faq-cat-pill,
+  .faq-cat-btn,
+  .faq-btn,
+  .faq-action-btn,
+  .faq-feedback-btn,
+  .faq-copy-btn,
+  .faq-toggle-all {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Footer Navigation Links */
+  .footer-links a,
+  .footer-menu a,
+  .footer-link-list a {
+    display: inline-flex !important;
+    align-items: center;
+    min-height: 40px;
+    padding: 4px 0;
+  }
+}

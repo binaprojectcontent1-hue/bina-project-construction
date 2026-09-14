@@ -4,6 +4,5 @@
  */
 
 export * from './site';
-export * from './coverage';
 export * from './services';
 export * from './database';

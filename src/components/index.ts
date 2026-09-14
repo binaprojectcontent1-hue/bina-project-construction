@@ -12,13 +12,11 @@ export { default as Breadcrumb } from './Breadcrumb.astro';
 
 // Common UI
 export { default as Preloader } from './Preloader.astro';
-export { default as ScrollToTop } from './ScrollToTop.astro';
 export { default as ContactForm } from './ContactForm.astro';
 export { default as BrandMarquee } from './BrandMarquee.astro';
 export { default as TestimonialSection } from './TestimonialSection.astro';
 export { default as BlogCard } from './BlogCard.astro';
 export { default as ProjectCard } from './ProjectCard.astro';
-export { default as CoverageMap } from './CoverageMap';
 
 // Page Sections
 export { default as HeroSection } from './sections/HeroSection.astro';

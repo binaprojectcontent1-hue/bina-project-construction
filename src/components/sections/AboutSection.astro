@@ -34,11 +34,11 @@ const t = useTranslations(currentLang);
               alt={currentLang === 'en' ? 'Architectural construction and building project by Bina Project' : 'Proyek Konstruksi dan Pembangunan Arsitektur Bina Project'}
               loading="lazy"
               decoding="async"
-              width={540}
-              height={580}
+              width={428}
+              height={420}
               class="main-arch-img"
               format="webp"
-              quality={85}
+              quality={80}
             />
           </div>
 
@@ -650,16 +650,17 @@ const t = useTranslations(currentLang);
     if (!section) return;
 
     // Revert existing context on hot reload or page navigation
-    if (aboutMatchMediaCtx) {
+    if (aboutMatchMediaCtx && typeof aboutMatchMediaCtx.revert === 'function') {
       aboutMatchMediaCtx.revert();
     }
 
-    aboutMatchMediaCtx = gsap.matchMedia();
+    if (typeof gsap !== 'undefined' && typeof gsap.matchMedia === 'function') {
+      aboutMatchMediaCtx = gsap.matchMedia();
 
-    // =========================================================================
-    // Desktop & Tablet (> 768px): Full Multi-layer Parallax Scrub + Reveal
-    // =========================================================================
-    aboutMatchMediaCtx.add('(min-width: 769px)', () => {
+      // =========================================================================
+      // Desktop & Tablet (> 768px): Full Multi-layer Parallax Scrub + Reveal
+      // =========================================================================
+      aboutMatchMediaCtx.add('(min-width: 769px)', () => {
       const mainPhoto = section.querySelector('.main-photo-frame');
       const insetPhoto = section.querySelector('.inset-photo-frame');
       const topBadge = section.querySelector('.floating-proof-card.top-card');
@@ -899,6 +900,7 @@ const t = useTranslations(currentLang);
       }
     });
   }
+}
 
   // Initialize on page load and view transitions
   if (document.readyState === 'complete' || document.readyState === 'interactive') {

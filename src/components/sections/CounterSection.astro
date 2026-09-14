@@ -54,9 +54,9 @@ const STATS = [
     />
 
     <!-- 4 Frameless Architectural Bento Stat Cards (Zero Outline / Zero Stroke) -->
-    <div class="row g-4 justify-content-center">
+    <div class="row g-3 g-md-4 justify-content-center">
       {STATS.map((stat) => (
-        <div class="col-xl-3 col-md-6 col-12">
+        <div class="col-xl-3 col-md-6 col-6">
           <div class="stat-card">
             <div class="stat-icon-box">
               <Icon name={stat.icon} width="28" height="28" />
@@ -217,23 +217,66 @@ const STATS = [
     }
 
     .counter-header-mb {
-      margin-bottom: 30px !important;
+      margin-bottom: 28px !important;
     }
 
     .stat-card {
-      padding: 18px 18px;
-      gap: 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px 14px;
+      gap: 12px;
+      border-radius: 14px;
+      border-left-width: 2px !important;
+    }
+
+    .stat-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+
+    .stat-icon-box :global(svg) {
+      width: 22px;
+      height: 22px;
     }
 
     .counter-number {
-      font-size: 2.1rem;
+      font-size: 1.75rem;
     }
 
-    .stat-label,
-    .stat-detail {
+    .stat-plus {
+      font-size: 1.05rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
       white-space: normal;
+      line-height: 1.25;
+      margin-bottom: 2px;
     }
 
+    .stat-detail {
+      font-size: 0.72rem;
+      opacity: 0.85;
+      white-space: normal;
+      line-height: 1.35;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .stat-card {
+      padding: 14px 10px;
+      gap: 10px;
+    }
+    .counter-number {
+      font-size: 1.5rem;
+    }
+    .stat-label {
+      font-size: 0.8125rem;
+    }
+    .stat-detail {
+      font-size: 0.68rem;
+    }
   }
 </style>
 

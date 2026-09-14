@@ -457,14 +457,15 @@ import TeamSection from '@components/TeamSection.astro';
     const section = document.querySelector('#about-sec');
     if (!section) return;
 
-    if (aboutPageMatchMediaCtx) {
+    if (aboutPageMatchMediaCtx && typeof aboutPageMatchMediaCtx.revert === 'function') {
       aboutPageMatchMediaCtx.revert();
     }
 
-    aboutPageMatchMediaCtx = gsap.matchMedia();
+    if (typeof gsap !== 'undefined' && typeof gsap.matchMedia === 'function') {
+      aboutPageMatchMediaCtx = gsap.matchMedia();
 
-    // Desktop (> 768px): Parallax Scrub + Stagger Reveal
-    aboutPageMatchMediaCtx.add('(min-width: 769px)', () => {
+      // Desktop (> 768px): Parallax Scrub + Stagger Reveal
+      aboutPageMatchMediaCtx.add('(min-width: 769px)', () => {
       const imgBox = section.querySelector('.img-box3 .img1');
       if (imgBox) {
         gsap.to(imgBox, {
@@ -565,6 +566,7 @@ import TeamSection from '@components/TeamSection.astro';
       }
     });
   }
+}
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initAboutPageScrollTrigger();

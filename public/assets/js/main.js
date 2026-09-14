@@ -39,7 +39,7 @@
     }, 400);
 
     // $('select').niceSelect(); 
-    if ($('.nice-select').length) {
+    if ($('.nice-select').length && $.fn.niceSelect) {
         $('.nice-select').niceSelect();
     }
 
@@ -264,7 +264,7 @@
                 el: paginationEl.get(0),
                 clickable: true,
                 renderBullet: function (index, className) {
-                    return '<span class="' + className + '" aria-label="Go to Slide ' + (index + 1) + '"></span>';
+                    return '<button type="button" class="' + className + '" aria-label="Go to Slide ' + (index + 1) + '"></button>';
                 },
             },
         };
@@ -585,26 +585,28 @@
 
 
     /*----------- 11. Magnific Popup ----------*/
-    /* magnificPopup img view */
-    $(".popup-image").magnificPopup({
-        type: "image",
-        mainClass: 'mfp-zoom-in',
-        removalDelay: 260,
-        gallery: {
-            enabled: true,
-        },
-    });
+    if ($.fn.magnificPopup) {
+        /* magnificPopup img view */
+        $(".popup-image").magnificPopup({
+            type: "image",
+            mainClass: 'mfp-zoom-in',
+            removalDelay: 260,
+            gallery: {
+                enabled: true,
+            },
+        });
 
-    /* magnificPopup video view */
-    $(".popup-video").magnificPopup({
-        type: "iframe",
-    });
+        /* magnificPopup video view */
+        $(".popup-video").magnificPopup({
+            type: "iframe",
+        });
 
-    /* magnificPopup video view */
-    $(".popup-content").magnificPopup({
-        type: "inline",
-        midClick: true,
-    });
+        /* magnificPopup video view */
+        $(".popup-content").magnificPopup({
+            type: "inline",
+            midClick: true,
+        });
+    }
 
     function content_ready_scripts() {
         const boxes = gsap.utils.toArray('.global-image');
@@ -716,9 +718,13 @@
 
     var postionHandler = "[data-sec-pos]";
     if ($(postionHandler).length) {
-        $(postionHandler).imagesLoaded(function () {
+        if ($.fn.imagesLoaded) {
+            $(postionHandler).imagesLoaded(function () {
+                $(postionHandler).sectionPosition("data-sec-pos", "data-pos-for");
+            });
+        } else {
             $(postionHandler).sectionPosition("data-sec-pos", "data-pos-for");
-        });
+        }
     }
 
     /*---------- 22. Circle Progress ----------*/
@@ -777,81 +783,13 @@
     animateElements();
     $(window).scroll(animateElements);
 
-    /*----------- 14.1 Filter ----------*/
-    $(".filter-active").imagesLoaded(function () {
-        var $filter = ".filter-active",
-            $filterItem = ".filter-item",
-            $filterMenu = ".filter-menu-active";
-
-        if ($($filter).length > 0) {
-            var $grid = $($filter).isotope({
-                itemSelector: $filterItem,
-                filter: "*",
-                masonry: {
-                    // use outer width of grid-sizer for columnWidth
-                    columnWidth: 1,
-                },
-            });
-
-            // filter items on button click
-            $($filterMenu).on("click", "button", function () {
-                var filterValue = $(this).attr("data-filter");
-                $grid.isotope({
-                    filter: filterValue,
-                });
-            });
-
-            // Menu Active Class
-            $($filterMenu).on("click", "button", function (event) {
-                event.preventDefault();
-                $(this).addClass("active");
-                $(this).siblings(".active").removeClass("active");
-            });
-        }
-    });
-
-    $(".masonary-active").imagesLoaded(function () {
-        var $filter = ".masonary-active",
-            $filterItem = ".filter-item";
-
-        if ($($filter).length > 0) {
-            $($filter).isotope({
-                itemSelector: $filterItem,
-                filter: "*",
-                masonry: {
-                    // use outer width of grid-sizer for columnWidth
-                    columnWidth: 1,
-                },
-            });
-        }
-    });
-
-    $(".masonary-active, .woocommerce-Reviews .comment-list").imagesLoaded(function () {
-        var $filter = ".masonary-active, .woocommerce-Reviews .comment-list",
-            $filterItem = ".filter-item, .woocommerce-Reviews .comment-list li";
-
-        if ($($filter).length > 0) {
-            $($filter).isotope({
-                itemSelector: $filterItem,
-                filter: "*",
-                masonry: {
-                    // use outer width of grid-sizer for columnWidth
-                    columnWidth: 1,
-                },
-            });
-        }
-        $('[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-            $($filter).isotope({
-                filter: "*",
-            });
-        });
-    });
-
     /*----------- 14. Counter Up ----------*/
-    $(".counter-number").counterUp({
-        delay: 10,
-        time: 1000,
-    });
+    if ($.fn.counterUp) {
+        $(".counter-number").counterUp({
+            delay: 10,
+            time: 1000,
+        });
+    }
 
     /*----------- 15. Shape Mockup ----------*/
     $.fn.shapeMockup = function () {
@@ -883,14 +821,16 @@
     }
 
     /*----------- 16. Progress Bar Animation ----------*/
-    $('.progress-bar').waypoint(function () {
-        $('.progress-bar').css({
-            animation: "animate-positive 1.8s",
-            opacity: "1"
+    if ($('.progress-bar').length && $.fn.waypoint) {
+        $('.progress-bar').waypoint(function () {
+            $('.progress-bar').css({
+                animation: "animate-positive 1.8s",
+                opacity: "1"
+            });
+        }, {
+            offset: '75%'
         });
-    }, {
-        offset: '75%'
-    });
+    }
 
     /*----------- 17. Countdown ----------*/
 

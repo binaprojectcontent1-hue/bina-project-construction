@@ -128,8 +128,6 @@ const projectTypes = currentLang === 'en'
 </style>
 
 <script>
-  import { submitLead } from '@lib/leadsService';
-
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('formStatus') as HTMLElement | null;
   const sendBtn = document.getElementById('sendButton') as HTMLButtonElement | null;
@@ -281,6 +279,7 @@ const projectTypes = currentLang === 'en'
 
       // 2. Dual-Action: Persist lead to Supabase Database with strict timeout fallback
       try {
+        const { submitLead } = await import('@lib/leadsService');
         await submitLead({
           name,
           email,

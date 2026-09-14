@@ -22,7 +22,7 @@ const t = useTranslations(currentLang);
     </div>
 
     <div class="slider-area">
-      <div class="swiper th-slider has-shadow" id="serviceSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":1},"768":{"slidesPerView":2},"992":{"slidesPerView":2},"1200":{"slidesPerView":3}}}'>
+      <div class="swiper th-slider has-shadow" id="serviceSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1.18,"spaceBetween":16},"576":{"slidesPerView":1.3,"spaceBetween":20},"768":{"slidesPerView":2,"spaceBetween":24},"992":{"slidesPerView":2,"spaceBetween":24},"1200":{"slidesPerView":3,"spaceBetween":24}}}'>
         <div class="swiper-wrapper">
           <div class="swiper-slide">
             <div class="service-box">
@@ -246,6 +246,29 @@ const t = useTranslations(currentLang);
 
   #serviceSlider1 .service-box:hover .service-content {
     border-bottom-color: rgba(255, 255, 255, 0.18) !important;
+  }
+
+  @media (max-width: 575px) {
+    #serviceSlider1 .service-box {
+      padding: 24px 20px !important;
+      border-radius: 14px !important;
+    }
+    #serviceSlider1 .service-box .box-title {
+      font-size: 18px !important;
+      margin-bottom: 10px !important;
+    }
+    #serviceSlider1 .service-box .service-box_text {
+      font-size: 13.5px !important;
+      line-height: 1.6 !important;
+    }
+    #serviceSlider1 .service-content {
+      padding-bottom: 16px !important;
+      margin-bottom: 16px !important;
+    }
+    #serviceSlider1 .service-box_icon img {
+      width: 48px !important;
+      height: 48px !important;
+    }
   }
 </style>
 

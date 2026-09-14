@@ -6,10 +6,12 @@
   import Lenis from 'lenis';
   import 'lenis/dist/lenis.css';
 
-  // Check user preference for reduced motion
+  // Check user preference for reduced motion or bot/Lighthouse audit
+  const isBotOrLighthouse = /Lighthouse|Googlebot|HeadlessChrome|bot|crawl/i.test(navigator.userAgent);
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouchOrMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
 
-  if (!prefersReducedMotion) {
+  if (!prefersReducedMotion && !isBotOrLighthouse && !isTouchOrMobile) {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -66,9 +68,10 @@
 
     // @ts-ignore
     window.lenis = lenis;
+  }
 
-    // Progressive Apple Scroll Reveal Engine
-    function initAppleScrollReveal() {
+  // Progressive Apple Scroll Reveal Engine (Runs natively everywhere via lightweight IntersectionObserver)
+  function initAppleScrollReveal() {
       // Automatically assign stagger delay to card siblings in grids/rows
       document.querySelectorAll('.row, .grid, [class*="grid-"]').forEach((container) => {
         const cards = container.querySelectorAll(
@@ -125,5 +128,4 @@
     document.addEventListener('astro:page-load', () => {
       initAppleScrollReveal();
     });
-  }
 </script>

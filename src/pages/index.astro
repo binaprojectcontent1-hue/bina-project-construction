@@ -17,7 +17,7 @@ import { getAllProjects } from '@lib/portfolioService';
 import { getImage } from 'astro:assets';
 import heroArchitectural from '@assets/images/hero/hero_architectural.png';
 
-const optimizedHero1 = await getImage({ src: heroArchitectural, format: 'webp', quality: 90, width: 1920 });
+const optimizedHero1 = await getImage({ src: heroArchitectural, format: 'webp', quality: 68, width: 1200 });
 const projects = await getAllProjects();
 ---
 

@@ -1544,17 +1544,6 @@ textarea.is-invalid {
 .logo-preloader img {
   width: 200px; /* Ukuran logo bisa disesuaikan */
   height: auto;
-  animation: rotateLogo 2s linear infinite; /* Efek rotasi pada logo */
-}
-
-/* Animasi logo berputar */
-@keyframes rotateLogo {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
 }
 
 /* Fade-out efek saat preloader selesai */

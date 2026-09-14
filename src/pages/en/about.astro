@@ -248,12 +248,12 @@ import TeamSection from '@components/TeamSection.astro';
   }
   .about-cta-btn--primary {
     background: #25D366;
-    color: #FFFFFF;
+    color: #064E3B;
     box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.4);
   }
   .about-cta-btn--primary:hover {
     background: #20BA5A;
-    color: #FFFFFF;
+    color: #064E3B;
     transform: translateY(-2px);
   }
   .about-cta-btn--secondary {
@@ -317,14 +317,15 @@ import TeamSection from '@components/TeamSection.astro';
     const section = document.querySelector('#about-sec');
     if (!section) return;
 
-    if (enAboutPageMatchMediaCtx) {
+    if (enAboutPageMatchMediaCtx && typeof enAboutPageMatchMediaCtx.revert === 'function') {
       enAboutPageMatchMediaCtx.revert();
     }
 
-    enAboutPageMatchMediaCtx = gsap.matchMedia();
+    if (typeof gsap !== 'undefined' && typeof gsap.matchMedia === 'function') {
+      enAboutPageMatchMediaCtx = gsap.matchMedia();
 
-    // Desktop (> 768px): Parallax Scrub + Stagger Reveal
-    enAboutPageMatchMediaCtx.add('(min-width: 769px)', () => {
+      // Desktop (> 768px): Parallax Scrub + Stagger Reveal
+      enAboutPageMatchMediaCtx.add('(min-width: 769px)', () => {
       const imgBox = section.querySelector('.img-box3 .img1');
       if (imgBox) {
         gsap.to(imgBox, {
@@ -425,6 +426,7 @@ import TeamSection from '@components/TeamSection.astro';
       }
     });
   }
+}
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initEnAboutPageScrollTrigger();

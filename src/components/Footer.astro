@@ -264,7 +264,7 @@ const waFooterMessage = currentLang === 'en'
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #25D366;
+    background-color: #008069;
     color: #FFFFFF !important;
     font-weight: 700;
     font-size: 14px;
@@ -273,12 +273,13 @@ const waFooterMessage = currentLang === 'en'
     border-radius: var(--radius-full, 9999px);
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+    box-shadow: 0 4px 20px rgba(0, 128, 105, 0.35);
   }
 
   .footer-cta-btn:hover {
+    background-color: #075E54;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 128, 105, 0.5);
     color: #FFFFFF !important;
   }
 
@@ -326,8 +327,10 @@ const waFooterMessage = currentLang === 'en'
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -353,6 +356,7 @@ const waFooterMessage = currentLang === 'en'
   .footer-link {
     display: inline-flex;
     align-items: center;
+    min-height: 36px;
     color: #94A3B8;
     font-size: 14px;
     text-decoration: none;
@@ -449,6 +453,10 @@ const waFooterMessage = currentLang === 'en'
     color: #64748B;
     text-decoration: none;
     transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 4px 6px;
   }
 
   .bottom-link:hover {
