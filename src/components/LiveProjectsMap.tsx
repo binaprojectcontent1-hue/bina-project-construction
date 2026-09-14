@@ -168,7 +168,7 @@ export default function LiveProjectsMap({ initialCategory = 'all', lang = 'id' }
       const marker = L.marker(latLng, { icon: customIcon }).addTo(map);
 
       const localizedCategory = lang === 'en'
-        ? (proj.category === 'konstruksi' ? 'New Construction' : proj.category === 'renovasi' ? 'Renovation' : proj.category === 'interior' ? 'Interior' : proj.category)
+        ? (proj.category === 'Konstruksi' ? 'New Construction' : proj.category === 'Renovasi' ? 'Renovation' : proj.category === 'Interior' ? 'Interior' : proj.category)
         : proj.category;
       const stageLabel = lang === 'en' ? 'Work Phase:' : 'Tahap Pekerjaan:';
 

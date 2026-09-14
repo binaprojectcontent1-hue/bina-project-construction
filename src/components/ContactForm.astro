@@ -2,8 +2,17 @@
 import { siteConfig } from '@config/site';
 import { Icon } from 'astro-icon/components';
 import { SERVICE_OPTIONS } from '@data/services';
+import { getLangFromUrl } from '@i18n/utils';
 
-const projectTypes = [...SERVICE_OPTIONS, 'Konsultasi Lainnya'] as const;
+interface Props {
+  lang?: 'id' | 'en';
+}
+
+const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
+
+const projectTypes = currentLang === 'en'
+  ? ['New Construction', 'Home Renovation', 'Interior & Kitchen Set', 'Waterproofing & Roof', 'Architecture & BOQ', 'Commercial Building', 'Other Consultations']
+  : [...SERVICE_OPTIONS, 'Konsultasi Lainnya'];
 ---
 
 <form
@@ -18,37 +27,37 @@ const projectTypes = [...SERVICE_OPTIONS, 'Konsultasi Lainnya'] as const;
 
   <div class="row g-3">
     <div class="form-group col-md-6 position-relative">
-      <label for="name" class="visually-hidden">Nama Lengkap</label>
-      <input type="text" class="form-control" name="name" id="name" placeholder="Nama Lengkap *" aria-label="Nama Lengkap" maxlength="100" required />
+      <label for="name" class="visually-hidden">{currentLang === 'en' ? 'Full Name' : 'Nama Lengkap'}</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder={currentLang === 'en' ? 'Full Name *' : 'Nama Lengkap *'} aria-label={currentLang === 'en' ? 'Full Name' : 'Nama Lengkap'} maxlength="100" required />
       <Icon name="solar:user-linear" width="18" height="18" class="form-icon" />
     </div>
     <div class="form-group col-md-6 position-relative">
-      <label for="email" class="visually-hidden">Alamat Email</label>
-      <input type="email" class="form-control" name="email" id="email" placeholder="Alamat Email *" aria-label="Alamat Email" maxlength="254" required />
+      <label for="email" class="visually-hidden">{currentLang === 'en' ? 'Email Address' : 'Alamat Email'}</label>
+      <input type="email" class="form-control" name="email" id="email" placeholder={currentLang === 'en' ? 'Email Address *' : 'Alamat Email *'} aria-label={currentLang === 'en' ? 'Email Address' : 'Alamat Email'} maxlength="254" required />
       <Icon name="solar:letter-linear" width="18" height="18" class="form-icon" />
     </div>
     <div class="form-group col-md-6 position-relative">
-      <label for="number" class="visually-hidden">Nomor Telepon atau WhatsApp</label>
-      <input type="tel" class="form-control" name="number" id="number" placeholder="Nomor Telepon / WhatsApp *" aria-label="Nomor Telepon atau WhatsApp" maxlength="20" required />
+      <label for="number" class="visually-hidden">{currentLang === 'en' ? 'Phone or WhatsApp Number' : 'Nomor Telepon atau WhatsApp'}</label>
+      <input type="tel" class="form-control" name="number" id="number" placeholder={currentLang === 'en' ? 'Phone / WhatsApp *' : 'Nomor Telepon / WhatsApp *'} aria-label={currentLang === 'en' ? 'Phone or WhatsApp Number' : 'Nomor Telepon atau WhatsApp'} maxlength="20" required />
       <Icon name="solar:phone-linear" width="18" height="18" class="form-icon" />
     </div>
     <div class="form-group col-md-6">
-      <label for="subject" class="visually-hidden">Jenis Layanan Proyek</label>
-      <select name="subject" id="subject" class="form-select" aria-label="Pilih Jenis Proyek" required style="height: 56px; border-radius: 12px; border: 1.5px solid #E2E8F0; padding-left: 18px; color: #17202A; font-size: 16px;">
-        <option value="" disabled selected hidden>Pilih Jenis Proyek *</option>
+      <label for="subject" class="visually-hidden">{currentLang === 'en' ? 'Project Service Type' : 'Jenis Layanan Proyek'}</label>
+      <select name="subject" id="subject" class="form-select" aria-label={currentLang === 'en' ? 'Select Project Type' : 'Pilih Jenis Proyek'} required style="height: 56px; border-radius: 12px; border: 1.5px solid #E2E8F0; padding-left: 18px; color: #17202A; font-size: 16px;">
+        <option value="" disabled selected hidden>{currentLang === 'en' ? 'Select Project Type *' : 'Pilih Jenis Proyek *'}</option>
         {projectTypes.map((type) => (
           <option value={type}>{type}</option>
         ))}
       </select>
     </div>
     <div class="form-group col-12 position-relative">
-      <label for="message" class="visually-hidden">Detail Rencana Proyek</label>
-      <textarea name="message" id="message" cols="30" rows="4" class="form-control" placeholder="Tuliskan detail rencana proyek, lokasi, atau pertanyaan Anda..." aria-label="Detail Rencana Proyek" maxlength="1000" required style="border-radius: 12px; font-size: 16px;"></textarea>
+      <label for="message" class="visually-hidden">{currentLang === 'en' ? 'Project Brief & Details' : 'Detail Rencana Proyek'}</label>
+      <textarea name="message" id="message" cols="30" rows="4" class="form-control" placeholder={currentLang === 'en' ? 'Describe your project plans, estimated location, or questions...' : 'Tuliskan detail rencana proyek, lokasi, atau pertanyaan Anda...'} aria-label={currentLang === 'en' ? 'Project Brief & Details' : 'Detail Rencana Proyek'} maxlength="1000" required style="border-radius: 12px; font-size: 16px;"></textarea>
       <Icon name="solar:pen-linear" width="18" height="18" class="form-icon" />
     </div>
     <div class="form-btn col-12">
       <button type="submit" class="th-btn w-100 d-flex align-items-center justify-content-center" id="sendButton" style="padding: 16px 28px; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; border-radius: 12px;">
-        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> KIRIM PESAN KE WHATSAPP KONSULTASI
+        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> {currentLang === 'en' ? 'SEND INQUIRY TO WHATSAPP' : 'KIRIM PESAN KE WHATSAPP KONSULTASI'}
       </button>
     </div>
   </div>

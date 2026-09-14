@@ -1,0 +1,73 @@
+---
+/**
+ * @file index.astro (English)
+ * @description English Homepage for Bina Project Construction & Interior
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import HeroSection from '@components/sections/HeroSection.astro';
+import AboutSection from '@components/sections/AboutSection.astro';
+import ServicesSection from '@components/sections/ServicesSection.astro';
+import ProcessSection from '@components/sections/ProcessSection.astro';
+import TextTickerRibbon from '@components/TextTickerRibbon.astro';
+import ConsultationCtaSection from '@components/sections/ConsultationCtaSection.astro';
+import CounterSection from '@components/sections/CounterSection.astro';
+import ProjectSliderSection from '@components/sections/ProjectSliderSection.astro';
+import WhyChooseUsSection from '@components/sections/WhyChooseUsSection.astro';
+import BrandMarquee from '@components/BrandMarquee.astro';
+import TestimonialSection from '@components/TestimonialSection.astro';
+import FaqSection from '@components/sections/FaqSection.astro';
+import ContactSection from '@components/sections/ContactSection.astro';
+import { getAllProjects } from '@lib/portfolioService';
+import { getImage } from 'astro:assets';
+import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
+
+const optimizedHero1 = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
+const projects = await getAllProjects();
+---
+
+<BaseLayout
+  lang="en"
+  title="Bina Project - Architectural Construction & Interior Design Malang"
+  description="Premier architectural construction, residential renovations, bespoke interior design & custom kitchen sets in Malang & East Java. Fully guaranteed with free on-site survey."
+  preloadImage={optimizedHero1.src}
+>
+  <HeroSection />
+  <TextTickerRibbon variant="dark" speed={28} />
+  <AboutSection />
+  <ServicesSection />
+  <ProjectSliderSection projects={projects} />
+  <CounterSection />
+  <WhyChooseUsSection />
+  <ProcessSection />
+  <ConsultationCtaSection />
+  <TestimonialSection />
+  <BrandMarquee />
+  <FaqSection />
+  <ContactSection />
+</BaseLayout>
+
+<style is:global>
+  .project-sec-compact {
+    padding-top: 70px !important;
+    padding-bottom: 30px !important;
+  }
+  .why-area-spacing {
+    padding-top: 60px;
+    padding-bottom: 85px;
+  }
+  @media (max-width: 767px) {
+    .project-sec-compact {
+      padding-top: 45px !important;
+      padding-bottom: 20px !important;
+    }
+    .why-area-spacing {
+      padding-top: 40px;
+      padding-bottom: 50px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .consultation-thumb {
+      display: block !important;
+    }
+  }
+</style>

@@ -1,4 +1,4 @@
-import { ui, defaultLang } from '../src/i18n/ui.js';
+import { ui } from '../src/i18n/ui.js';
 
 // Test UI keys
 console.log('Testing dictionary keys...');

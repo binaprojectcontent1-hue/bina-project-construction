@@ -3,6 +3,9 @@ import { Icon } from 'astro-icon/components';
 import { getImage } from 'astro:assets';
 import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
 import heroBg2 from '@assets/images/hero/hero_bg_1_2.jpg';
+import { getLangFromUrl, getLocalizedPath } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
 
 const optimizedHero1 = await getImage({ src: heroBg1, format: 'webp', quality: 85, width: 1920 });
 const optimizedHero2 = await getImage({ src: heroBg2, format: 'webp', quality: 85, width: 1920 });
@@ -15,22 +18,39 @@ export interface HeroSlide {
   isH1: boolean;
 }
 
-const heroSlides: readonly HeroSlide[] = [
-  {
-    image: optimizedHero1.src,
-    subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
-    title: 'Jasa Konstruksi & <br /> Desain Interior Malang',
-    desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB tanpa biaya tersembunyi, dan pengawasan profesional.',
-    isH1: true,
-  },
-  {
-    image: optimizedHero2.src,
-    subtitle: 'Standar Mutu SNI & Garansi Pemeliharaan Resmi SPK',
-    title: 'BINA PROJECT <br /> ARCHITECTURE & BUILD',
-    desc: 'Penyedia jasa bangun rumah baru, renovasi bangunan, custom kitchen set, dan developer amanah bergaransi di Malang Raya & sekitarnya.',
-    isH1: false,
-  },
-];
+const heroSlides: readonly HeroSlide[] = currentLang === 'en'
+  ? [
+      {
+        image: optimizedHero1.src,
+        subtitle: 'Trusted Architects & General Contractors in East Java',
+        title: 'Architectural Construction & <br /> Interior Design Malang',
+        desc: 'Turn your dream residence and commercial spaces into reality with modern architectural precision, transparent cost estimation, and dedicated engineering.',
+        isH1: true,
+      },
+      {
+        image: optimizedHero2.src,
+        subtitle: 'Certified SNI Quality Standards & Official SPK Warranty',
+        title: 'BINA PROJECT <br /> ARCHITECTURE & BUILD',
+        desc: 'Turnkey residential building contractor, architectural renovation, bespoke kitchen sets, and trustworthy development in Greater Malang & East Java.',
+        isH1: false,
+      },
+    ]
+  : [
+      {
+        image: optimizedHero1.src,
+        subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
+        title: 'Jasa Konstruksi & <br /> Desain Interior Malang',
+        desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB tanpa biaya tersembunyi, dan pengawasan profesional.',
+        isH1: true,
+      },
+      {
+        image: optimizedHero2.src,
+        subtitle: 'Standar Mutu SNI & Garansi Pemeliharaan Resmi SPK',
+        title: 'BINA PROJECT <br /> ARCHITECTURE & BUILD',
+        desc: 'Penyedia jasa bangun rumah baru, renovasi bangunan, custom kitchen set, dan developer amanah bergaransi di Malang Raya & sekitarnya.',
+        isH1: false,
+      },
+    ];
 ---
 
 <section class="hero-fs-sec" id="hero">
@@ -58,17 +78,17 @@ const heroSlides: readonly HeroSlide[] = [
               <!-- Centered Action Buttons -->
               <div class="hero-fs-cta-group justify-content-center">
                 <a
-                  href="https://wa.me/6281335335304?text=Halo%20Tim%20Arsitek%20Bina%20Project,%20saya%20ingin%20konsultasi%20rencana%20proyek%20dan%20estimasi%20biaya"
+                  href={`https://wa.me/6281335335304?text=${encodeURIComponent(currentLang === 'en' ? 'Hello Bina Project, I would like to consult my project and cost estimation.' : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek dan estimasi biaya')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="hero-fs-btn-primary"
                   onclick="if(typeof window.trackLead==='function') window.trackLead('hero_wa_cta', 'hero_slide');"
                 >
                   <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" />
-                  Konsultasi Estimasi Biaya
+                  {currentLang === 'en' ? 'Free Cost Consultation' : 'Konsultasi Estimasi Biaya'}
                 </a>
-                <a href="/portfolio" class="hero-fs-btn-secondary">
-                  Lihat 162+ Portofolio
+                <a href={getLocalizedPath('/portfolio', currentLang)} class="hero-fs-btn-secondary">
+                  {currentLang === 'en' ? 'View 162+ Projects' : 'Lihat 162+ Portofolio'}
                 </a>
               </div>
             </div>
