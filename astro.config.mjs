@@ -7,6 +7,14 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: import.meta.env.SITE || 'https://binaproject.com', // Safe production fallback
   compressHTML: true,
+  i18n: {
+    defaultLocale: 'id',
+    locales: ['id', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: false,
+    },
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),
