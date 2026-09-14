@@ -9,9 +9,10 @@ import '@styles/coverage.css';
 
 interface LiveProjectsMapProps {
   initialCategory?: string;
+  lang?: 'id' | 'en';
 }
 
-export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProjectsMapProps) {
+export default function LiveProjectsMap({ initialCategory = 'all', lang = 'id' }: LiveProjectsMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<LeafletMap | null>(null);
   const markersRef = useRef<LeafletMarker[]>([]);
@@ -166,6 +167,11 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
       const marker = L.marker(latLng, { icon: customIcon }).addTo(map);
 
+      const localizedCategory = lang === 'en'
+        ? (proj.category === 'konstruksi' ? 'New Construction' : proj.category === 'renovasi' ? 'Renovation' : proj.category === 'interior' ? 'Interior' : proj.category)
+        : proj.category;
+      const stageLabel = lang === 'en' ? 'Work Phase:' : 'Tahap Pekerjaan:';
+
       // Minimalist architectural popup card with 1:1 ratio image and no CTA button
       const popupHtml = `
         <div class="live-project-popup-card">
@@ -173,9 +179,9 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
             proj.image_url
               ? `<div class="live-project-popup-thumb-1to1">
                   <img src="${getMediaUrl(proj.image_url)}" alt="${proj.title}" class="live-project-popup-img" />
-                  <span class="live-project-popup-category">${proj.category}</span>
+                  <span class="live-project-popup-category">${localizedCategory}</span>
                 </div>`
-              : `<div class="live-project-popup-category-bar"><span class="live-project-popup-category">${proj.category}</span></div>`
+              : `<div class="live-project-popup-category-bar"><span class="live-project-popup-category">${localizedCategory}</span></div>`
           }
           <div class="live-project-popup-body">
             <h4 class="live-project-popup-title">${proj.title}</h4>
@@ -186,7 +192,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
 
             <div class="live-project-progress-wrap">
               <div class="live-project-progress-header">
-                <span class="live-project-stage-label">Tahap Pekerjaan:</span>
+                <span class="live-project-stage-label">${stageLabel}</span>
                 <span class="live-project-progress-num">${proj.progress}%</span>
               </div>
               <p class="live-project-stage-desc">${proj.stage}</p>
@@ -213,10 +219,10 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
   };
 
   const categories = [
-    { id: 'all', label: 'Semua Proyek' },
-    { id: 'konstruksi', label: 'Konstruksi Baru' },
-    { id: 'renovasi', label: 'Renovasi' },
-    { id: 'interior', label: 'Interior' },
+    { id: 'all', label: lang === 'en' ? 'All Projects' : 'Semua Proyek' },
+    { id: 'konstruksi', label: lang === 'en' ? 'New Construction' : 'Konstruksi Baru' },
+    { id: 'renovasi', label: lang === 'en' ? 'Renovation' : 'Renovasi' },
+    { id: 'interior', label: lang === 'en' ? 'Interior' : 'Interior' },
   ];
 
   return (
@@ -229,7 +235,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
             <span className="live-indicator-title">LIVE ON-GOING PROJECTS</span>
           </div>
           <p className="live-projects-count-desc">
-            {filteredProjects.length} Titik Proyek Aktif Sedang Berjalan
+            {filteredProjects.length} {lang === 'en' ? 'Active Projects In Progress' : 'Titik Proyek Aktif Sedang Berjalan'}
           </p>
         </div>
 
@@ -257,7 +263,7 @@ export default function LiveProjectsMap({ initialCategory = 'all' }: LiveProject
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
         </svg>
-        <span>Titik peta merepresentasikan perkiraan kawasan proyek demi menjaga privasi & kenyamanan pemilik hunian.</span>
+        <span>{lang === 'en' ? 'Map pins represent approximate project areas to protect client privacy & residence comfort.' : 'Titik peta merepresentasikan perkiraan kawasan proyek demi menjaga privasi & kenyamanan pemilik hunian.'}</span>
       </div>
 
       <style>{`
