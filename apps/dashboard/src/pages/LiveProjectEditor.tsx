@@ -5,7 +5,7 @@ import { liveProjectFormSchema } from '../schemas/liveProjectSchema';
 import { LocationPickerMap } from '../components/LocationPickerMap';
 import { LiveProjectImageUploader } from '../components/LiveProjectImageUploader';
 import { resolveDashboardMediaUrl } from '../lib/media';
-import { FALLBACK_LIVE_PROJECTS } from '../../../../src/data/liveProjects';
+import { FALLBACK_LIVE_PROJECTS } from '../data/liveProjects';
 import { Button } from '../components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';

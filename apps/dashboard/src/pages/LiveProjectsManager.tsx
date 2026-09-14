@@ -25,7 +25,7 @@ import { Input } from '../components/ui/input';
 import { Skeleton } from '../components/ui/skeleton';
 import { useToast } from '../components/ui/Toast';
 import { resolveDashboardMediaUrl } from '../lib/media';
-import { FALLBACK_LIVE_PROJECTS } from '../../../../src/data/liveProjects';
+import { FALLBACK_LIVE_PROJECTS } from '../data/liveProjects';
 
 export interface LiveProjectRecord {
   id: string;
