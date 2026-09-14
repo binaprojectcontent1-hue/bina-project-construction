@@ -29,9 +29,16 @@ const navItems = [
       <div class="d-flex justify-content-between align-items-center position-relative">
         <div class="top-bar-left">
           <ul class="top-info-list mb-0">
-            <li>
-              <Icon name="solar:phone-calling-linear" width="16" height="16" class="text-theme me-2" />
-              <a href={siteConfig.contact.phoneTel} class="top-link">{siteConfig.contact.phoneDisplay}</a>
+            <li class="d-inline-flex align-items-center">
+              <a 
+                href={siteConfig.contact.whatsappUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="top-link d-inline-flex align-items-center"
+              >
+                <Icon name="simple-icons:whatsapp" width="16" height="16" class="text-theme me-2" />
+                <span>{siteConfig.contact.phoneDisplay}</span>
+              </a>
             </li>
             <li class="separator">|</li>
             <li class="d-none d-xl-inline-flex align-items-center">
