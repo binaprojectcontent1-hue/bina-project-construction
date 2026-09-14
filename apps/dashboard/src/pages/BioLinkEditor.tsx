@@ -1175,7 +1175,7 @@ export const BioLinkEditor: React.FC = () => {
                     alt="Logo"
                     className="w-[84px] h-[60px] object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)]"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/favicon.svg';
+                      (e.target as HTMLImageElement).src = '/assets/img/favicons/favicon.ico';
                     }}
                   />
                 </div>
