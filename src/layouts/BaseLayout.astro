@@ -20,17 +20,24 @@ interface Props {
   type?: string;
   noindex?: boolean;
   preloadImage?: string;
+  lang?: 'id' | 'en';
 }
 
 const siteUrl = Astro.site ? Astro.site.href : siteConfig.siteUrl;
 const cleanSiteUrl = siteUrl.replace(/\/$/, '');
+
+const currentLang = Astro.props.lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'id');
+const cleanPath = Astro.url.pathname.replace(/^\/en/, '') || '/';
+const idCanonical = `${cleanSiteUrl}${cleanPath === '/' ? '' : cleanPath}`;
+const enCanonical = `${cleanSiteUrl}/en${cleanPath === '/' ? '' : cleanPath}`;
+const activeCanonical = currentLang === 'en' ? enCanonical : idCanonical;
 
 const {
   title = `${siteConfig.name} - ${siteConfig.tagline}`,
   description = siteConfig.description,
   keywords = 'jasa konstruksi malang, desain interior malang, kontraktor rumah batu, kitchen set kediri, bina project construction, arsitek malang',
   ogImage = '/assets/img/og-image.webp',
-  canonicalUrl = new URL(Astro.url.pathname, siteUrl).href,
+  canonicalUrl = activeCanonical,
   type = 'website',
   noindex = false,
   preloadImage,
@@ -198,7 +205,7 @@ const connectedSchemaGraph = {
 ---
 
 <!doctype html>
-<html class="no-js" lang="id">
+<html class="no-js" lang={currentLang}>
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -224,8 +231,9 @@ const connectedSchemaGraph = {
     
     <!-- Canonical & Alternate Links -->
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="id" href={canonicalUrl} />
-    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+    <link rel="alternate" hreflang="id" href={idCanonical} />
+    <link rel="alternate" hreflang="en" href={enCanonical} />
+    <link rel="alternate" hreflang="x-default" href={idCanonical} />
 
     <!-- LLM and AI Agent Context Discovery (GEO Protocol) -->
     <link rel="alternate" type="text/plain" href={`${cleanSiteUrl}/llms.txt`} title="LLM Context Protocol" />
@@ -260,7 +268,7 @@ const connectedSchemaGraph = {
     )}
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Bina Project" />
-    <meta property="og:locale" content="id_ID" />
+    <meta property="og:locale" content={currentLang === 'en' ? 'en_US' : 'id_ID'} />
 
     <!-- Twitter Card Meta -->
     <meta name="twitter:card" content="summary_large_image" />
