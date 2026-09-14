@@ -1,6 +1,10 @@
 ---
 // Services Section with Swiper Carousel
 import SectionHeader from '@components/SectionHeader.astro';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <section class="service-area overflow-hidden space" id="service-sec" data-bg-src="/assets/img/bg/service_bg_1.jpg">
@@ -8,10 +12,10 @@ import SectionHeader from '@components/SectionHeader.astro';
     <div class="row">
       <div class="col-lg-8 offset-lg-2">
         <SectionHeader
-          badge="Layanan Kami"
+          badge={t('servicesSection.badge')}
           badgeIcon="solar:widget-2-bold"
-          title="Pelayanan Terbaik Untuk Anda"
-          description="Solusi lengkap konstruksi dan interior dari perencanaan hingga eksekusi, dengan standar profesional dan jaminan kualitas."
+          title={t('servicesSection.title')}
+          description={t('servicesSection.desc')}
           align="center"
         />
       </div>
@@ -28,9 +32,9 @@ import SectionHeader from '@components/SectionHeader.astro';
                 </div>
                 <div class="service-box_number">01</div>
               </div>
-              <h3 class="box-title">Konstruksi</h3>
+              <h3 class="box-title">{t('servicesSection.s1Title')}</h3>
               <p class="service-box_text">
-                Pembangunan rumah tinggal, gedung kantor, pergudangan, sekolah, hingga klinik kesehatan dengan pengawasan profesional.
+                {t('servicesSection.s1Desc')}
               </p>
             </div>
           </div>
@@ -43,9 +47,9 @@ import SectionHeader from '@components/SectionHeader.astro';
                 </div>
                 <div class="service-box_number">02</div>
               </div>
-              <h3 class="box-title">Interior</h3>
+              <h3 class="box-title">{t('servicesSection.s2Title')}</h3>
               <p class="service-box_text">
-                Desain dan pembuatan kitchen set, backdrop, kabinet, wardrobe, plafond, hingga custom furniture sesuai kebutuhan.
+                {t('servicesSection.s2Desc')}
               </p>
             </div>
           </div>
@@ -58,9 +62,9 @@ import SectionHeader from '@components/SectionHeader.astro';
                 </div>
                 <div class="service-box_number">03</div>
               </div>
-              <h3 class="box-title">Developer</h3>
+              <h3 class="box-title">{t('servicesSection.s3Title')}</h3>
               <p class="service-box_text">
-                Perencanaan dan pembangunan cluster hunian terintegrasi di Malang Raya dengan struktur berstandar SNI dan legalitas terjamin.
+                {t('servicesSection.s3Desc')}
               </p>
             </div>
           </div>
@@ -73,9 +77,9 @@ import SectionHeader from '@components/SectionHeader.astro';
                 </div>
                 <div class="service-box_number">04</div>
               </div>
-              <h3 class="box-title">Desain Perencanaan</h3>
+              <h3 class="box-title">{t('servicesSection.s4Title')}</h3>
               <p class="service-box_text">
-                Gambar kerja presisi (Denah, Fasad, DED, 3D Rendering) sebagai panduan kontraktor yang efektif dan terarah.
+                {t('servicesSection.s4Desc')}
               </p>
             </div>
           </div>
@@ -88,9 +92,9 @@ import SectionHeader from '@components/SectionHeader.astro';
                 </div>
                 <div class="service-box_number">05</div>
               </div>
-              <h3 class="box-title">Maket</h3>
+              <h3 class="box-title">{currentLang === 'en' ? 'Architectural Model & Scale Maquette' : 'Maket'}</h3>
               <p class="service-box_text">
-                Miniatur 3D berskala akurat untuk visualisasi arsitektur, kawasan perumahan, dan fasilitas publik secara nyata.
+                {currentLang === 'en' ? 'Accurate scale models for architectural visualization, residential developments, and commercial planning.' : 'Miniatur 3D berskala akurat untuk visualisasi arsitektur, kawasan perumahan, dan fasilitas publik secara nyata.'}
               </p>
             </div>
           </div>
@@ -103,9 +107,9 @@ import SectionHeader from '@components/SectionHeader.astro';
                 </div>
                 <div class="service-box_number">06</div>
               </div>
-              <h3 class="box-title">Waterproofing</h3>
+              <h3 class="box-title">{t('servicesSection.s6Title')}</h3>
               <p class="service-box_text">
-                Perlindungan struktur bangunan dari rembesan air, dak bocor, dan kelembaban dengan material berstandar tinggi.
+                {t('servicesSection.s6Desc')}
               </p>
             </div>
           </div>

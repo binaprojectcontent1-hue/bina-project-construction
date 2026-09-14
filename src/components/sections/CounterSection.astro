@@ -1,35 +1,39 @@
 ---
 import { Icon } from 'astro-icon/components';
 import SectionHeader from '@components/SectionHeader.astro';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
 const STATS = [
   {
     icon: 'solar:buildings-2-bold',
     number: 162,
     plus: '+',
-    label: 'Proyek Selesai',
-    detail: 'Rumah, Villa & Gedung Komersial',
+    label: t('counterSection.stat1Label'),
+    detail: t('counterSection.stat1Detail'),
   },
   {
     icon: 'solar:medal-ribbons-star-bold',
     number: 10,
-    plus: '+ Thn',
-    label: 'Dedikasi & Pengalaman',
-    detail: 'Arsitektur & Teknik Sipil Mandiri',
+    plus: currentLang === 'en' ? '+ Yrs' : '+ Thn',
+    label: t('counterSection.stat2Label'),
+    detail: t('counterSection.stat2Detail'),
   },
   {
     icon: 'solar:shield-check-bold',
     number: 100,
     plus: '%',
-    label: 'Legalitas & SPK Resmi',
-    detail: 'Transparansi RAB & Garansi BAST',
+    label: t('counterSection.stat3Label'),
+    detail: t('counterSection.stat3Detail'),
   },
   {
     icon: 'solar:chart-2-bold',
     number: 16,
     plus: '+',
-    label: 'Proyek Berjalan',
-    detail: 'Aktif di Malang & Jawa Timur',
+    label: t('counterSection.stat4Label'),
+    detail: t('counterSection.stat4Detail'),
   },
 ];
 ---
@@ -39,11 +43,11 @@ const STATS = [
   <div class="container position-relative">
     <!-- Standard Harmonized Section Header -->
     <SectionHeader
-      badge="Rekam Jejak & Kapabilitas"
+      badge={t('counterSection.badge')}
       badgeIcon="solar:diploma-verified-bold"
-      title="Dedikasi Konstruksi dalam"
-      titleAccent="Angka Nyata"
-      description="Bukti rekam jejak profesionalisme, ketepatan estimasi RAB, dan jaminan mutu konstruksi bergaransi resmi di Malang dan seluruh Jawa Timur."
+      title={t('counterSection.title')}
+      titleAccent={t('counterSection.titleAccent')}
+      description={t('counterSection.desc')}
       align="center"
       variant="dark"
       class="counter-header-mb"

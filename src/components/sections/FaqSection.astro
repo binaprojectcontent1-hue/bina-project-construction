@@ -8,24 +8,33 @@
  */
 import { Icon } from 'astro-icon/components';
 import SectionHeader from '@components/SectionHeader.astro';
-import { FAQS, FAQ_CATEGORIES, generateFaqSchema } from '@data/faqs';
+import { getFaqs, FAQ_CATEGORIES, generateFaqSchema } from '@data/faqs';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
-const faqs = FAQS;
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+const isEn = currentLang === 'en';
+
+const faqs = getFaqs(currentLang);
 const faqSchema = generateFaqSchema(faqs);
-const categories = Object.entries(FAQ_CATEGORIES) as [string, { label: string; icon: string }][];
+const categories = (Object.entries(FAQ_CATEGORIES) as [string, { label: string; icon: string }][]).map(([key, item]) => {
+  let label = item.label;
+  if (isEn) {
+    if (key === 'biaya') label = 'Cost & Payments';
+    else if (key === 'proses') label = 'Process & Timeline';
+    else if (key === 'material') label = 'Materials & Tech';
+    else if (key === 'garansi') label = 'Warranty & Services';
+  }
+  return [key, { ...item, label }] as [string, { label: string; icon: string }];
+});
 
 // Popular questions for quick jump
 const popularFaqs = faqs.slice(0, 4);
 
 // Suggested quick search keyword chips
-const quickSearchChips = [
-  'Estimasi RAB',
-  'Survei Gratis',
-  'Sistem Termin',
-  'Garansi',
-  'Kitchen Set',
-  'Waterproofing',
-];
+const quickSearchChips = isEn
+  ? ['Cost Estimate', 'Free Survey', 'Milestone Terms', 'Warranty', 'Kitchen Set', 'Waterproofing']
+  : ['Estimasi RAB', 'Survei Gratis', 'Sistem Termin', 'Garansi', 'Kitchen Set', 'Waterproofing'];
 ---
 
 <section class="faq-section" id="faq-sec">
@@ -35,11 +44,11 @@ const quickSearchChips = [
   <div class="faq-container">
     <!-- Section Header -->
     <SectionHeader
-      badge="Pusat Bantuan & Tanya Jawab"
+      badge={t('faq.badge')}
       badgeIcon="solar:chat-round-dots-linear"
-      title="Pertanyaan yang"
-      titleAccent="Sering Diajukan"
-      description="Jawaban transparan & lengkap seputar estimasi biaya RAB, tahapan proyek, spesifikasi material, dan garansi resmi layanan Bina Project di Malang & Jawa Timur."
+      title={t('faq.title')}
+      titleAccent={t('faq.titleAccent')}
+      description={t('faq.desc')}
       align="center"
     />
 
@@ -51,22 +60,22 @@ const quickSearchChips = [
           type="text"
           id="faq-search-input"
           class="faq-search-input"
-          placeholder="Ketik kata kunci... contoh: RAB, survei, garansi, kitchen set"
+          placeholder={t('faq.searchPlaceholder')}
           autocomplete="off"
-          aria-label="Cari pertanyaan FAQ"
+          aria-label={isEn ? "Search FAQ questions" : "Cari pertanyaan FAQ"}
         />
         <div class="faq-search-meta">
-          <span id="faq-search-count" class="faq-search-count">{faqs.length} Pertanyaan</span>
-          <button type="button" id="faq-search-clear" class="faq-search-clear" aria-label="Hapus pencarian" style="display: none;">
+          <span id="faq-search-count" class="faq-search-count">{faqs.length} {t('faq.questionsCount')}</span>
+          <button type="button" id="faq-search-clear" class="faq-search-clear" aria-label={isEn ? "Clear search" : "Hapus pencarian"} style="display: none;">
             <Icon name="solar:close-circle-linear" width="18" height="18" />
           </button>
-          <span class="faq-search-kbd" title="Tekan Esc untuk reset">ESC</span>
+          <span class="faq-search-kbd" title={isEn ? "Press Esc to reset" : "Tekan Esc untuk reset"}>ESC</span>
         </div>
       </div>
 
       <!-- Quick Chips -->
       <div class="faq-quick-chips">
-        <span class="faq-quick-label">Topik Populer:</span>
+        <span class="faq-quick-label">{isEn ? 'Popular Topics:' : 'Topik Populer:'}</span>
         <div class="faq-chips-list">
           {quickSearchChips.map((chip) => (
             <button type="button" class="faq-chip-btn" data-chip={chip}>
@@ -79,10 +88,10 @@ const quickSearchChips = [
 
     <!-- Segmented Floating Category Dock (Borderless) -->
     <div class="faq-dock-container">
-      <div class="faq-dock" role="tablist" aria-label="Filter Kategori FAQ">
+      <div class="faq-dock" role="tablist" aria-label={isEn ? "FAQ Category Filter" : "Filter Kategori FAQ"}>
         <button class="faq-dock-tab faq-dock-tab--active" data-category="all" role="tab" aria-selected="true">
           <Icon name="solar:widget-linear" width="18" height="18" class="faq-dock-icon" />
-          <span>Semua Topik</span>
+          <span>{isEn ? 'All Topics' : 'Semua Topik'}</span>
           <span class="faq-dock-badge">{faqs.length}</span>
         </button>
         {categories.map(([key, { label, icon }]) => {
@@ -107,41 +116,45 @@ const quickSearchChips = [
           <div class="faq-consult-header">
             <span class="faq-live-pill">
               <span class="faq-live-dot"></span>
-              Online Sekarang
+              {isEn ? 'Online Now' : 'Online Sekarang'}
             </span>
-            <span class="faq-consult-speed">Respon &lt; 15 Mnt</span>
+            <span class="faq-consult-speed">{isEn ? 'Response < 15 Mins' : 'Respon < 15 Mnt'}</span>
           </div>
 
           <div class="faq-consult-body">
-            <h3 class="faq-consult-title">Konsultasi Langsung via WhatsApp</h3>
+            <h3 class="faq-consult-title">{isEn ? 'Direct WhatsApp Consultation' : 'Konsultasi Langsung via WhatsApp'}</h3>
             <p class="faq-consult-desc">
-              Punya kebutuhan denah custom, pertanyaan teknis, atau ingin estimasi RAB awal? Arsitek kami siap membantu tanpa biaya.
+              {isEn
+                ? 'Have custom floor plan requirements, technical questions, or need a preliminary BOQ estimate? Our architects are ready to assist with no upfront fee.'
+                : 'Punya kebutuhan denah custom, pertanyaan teknis, atau ingin estimasi RAB awal? Arsitek kami siap membantu tanpa biaya.'}
             </p>
           </div>
 
           <a
-            href="https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20mengenai%20proyek%20konstruksi/interior"
+            href={isEn
+              ? "https://wa.me/6281335335304?text=Hello%20Bina%20Project,%20I%20would%20like%20to%20consult%20regarding%20construction/interior%20projects"
+              : "https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20mengenai%20proyek%20konstruksi/interior"}
             target="_blank"
             rel="noopener noreferrer"
             class="faq-consult-btn"
           >
             <Icon name="simple-icons:whatsapp" width="18" height="18" />
-            <span>Chat Arsitek Kami</span>
+            <span>{isEn ? 'Chat Our Architect' : 'Chat Arsitek Kami'}</span>
             <Icon name="solar:arrow-right-linear" width="16" height="16" class="faq-consult-arrow" />
           </a>
         </div>
 
         <!-- 2. Trust Pillars Card (Borderless) -->
         <div class="faq-card-trust">
-          <h4 class="faq-trust-title">Jaminan Layanan Bina</h4>
+          <h4 class="faq-trust-title">{isEn ? 'Bina Service Guarantees' : 'Jaminan Layanan Bina'}</h4>
           <ul class="faq-trust-list">
             <li class="faq-trust-item">
               <div class="faq-trust-icon-box faq-trust-icon-box--blue">
                 <Icon name="solar:shield-check-bold" width="16" height="16" />
               </div>
               <div class="faq-trust-text">
-                <strong>100% Transparan</strong>
-                <span>RAB mendalam tanpa biaya tersembunyi</span>
+                <strong>{isEn ? '100% Transparent' : '100% Transparan'}</strong>
+                <span>{isEn ? 'Itemized BOQ with zero hidden fees' : 'RAB mendalam tanpa biaya tersembunyi'}</span>
               </div>
             </li>
             <li class="faq-trust-item">
@@ -149,8 +162,8 @@ const quickSearchChips = [
                 <Icon name="solar:shield-check-bold" width="16" height="16" />
               </div>
               <div class="faq-trust-text">
-                <strong>Garansi Resmi Tertulis</strong>
-                <span>Hingga 5 tahun struktur & dak beton</span>
+                <strong>{isEn ? 'Official Written Warranty' : 'Garansi Resmi Tertulis'}</strong>
+                <span>{isEn ? 'Up to 5 years for structural & concrete deck' : 'Hingga 5 tahun struktur & dak beton'}</span>
               </div>
             </li>
             <li class="faq-trust-item">
@@ -158,8 +171,8 @@ const quickSearchChips = [
                 <Icon name="solar:check-circle-bold" width="16" height="16" />
               </div>
               <div class="faq-trust-text">
-                <strong>Survei Fisik Gratis</strong>
-                <span>Khusus Kota Malang, Batu & sekitarnya</span>
+                <strong>{isEn ? 'Free Physical Survey' : 'Survei Fisik Gratis'}</strong>
+                <span>{isEn ? 'Covering Malang, Batu & surrounding areas' : 'Khusus Kota Malang, Batu & sekitarnya'}</span>
               </div>
             </li>
           </ul>
@@ -169,7 +182,7 @@ const quickSearchChips = [
         <div class="faq-card-popular">
           <h4 class="faq-popular-title">
             <Icon name="solar:star-bold" width="16" height="16" class="faq-popular-star" />
-            Pertanyaan Populer
+            {isEn ? 'Popular Questions' : 'Pertanyaan Populer'}
           </h4>
           <div class="faq-popular-list">
             {popularFaqs.map((faq, i) => (
@@ -188,10 +201,10 @@ const quickSearchChips = [
         <!-- Results Status Bar -->
         <div class="faq-status-bar">
           <span class="faq-status-text">
-            Menampilkan <strong id="faq-count-live">{faqs.length}</strong> pertanyaan
+            {isEn ? 'Showing' : 'Menampilkan'} <strong id="faq-count-live">{faqs.length}</strong> {isEn ? 'questions' : 'pertanyaan'}
           </span>
           <button type="button" id="faq-expand-all" class="faq-expand-all-btn">
-            Buka Semua
+            {isEn ? 'Expand All' : 'Buka Semua'}
           </button>
         </div>
 
@@ -223,19 +236,21 @@ const quickSearchChips = [
                   <p class="faq-item__answer">{faq.answer}</p>
 
                   <!-- Contextual CTA for items mentioning WhatsApp or consultation -->
-                  {(faq.answer.includes('WhatsApp') || faq.answer.includes('+62 81-335-335-304') || faq.answer.includes('RAB')) && (
+                  {(faq.answer.includes('WhatsApp') || faq.answer.includes('+62 81-335-335-304') || faq.answer.includes('RAB') || faq.answer.includes('BOQ')) && (
                     <div class="faq-item__cta-box">
                       <div class="faq-item__cta-content">
                         <Icon name="simple-icons:whatsapp" width="18" height="18" class="faq-item__cta-wa-icon" />
-                        <span>Konsultasi topik ini langsung dengan tim kami via WhatsApp</span>
+                        <span>{isEn ? 'Consult on this topic directly with our team via WhatsApp' : 'Konsultasi topik ini langsung dengan tim kami via WhatsApp'}</span>
                       </div>
                       <a
-                        href={`https://wa.me/6281335335304?text=${encodeURIComponent(`Halo Bina Project, saya ingin konsultasi mengenai pertanyaan: "${faq.question}"`)}`}
+                        href={isEn
+                          ? `https://wa.me/6281335335304?text=${encodeURIComponent(`Hello Bina Project, I would like to consult regarding: "${faq.question}"`)}`
+                          : `https://wa.me/6281335335304?text=${encodeURIComponent(`Halo Bina Project, saya ingin konsultasi mengenai pertanyaan: "${faq.question}"`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="faq-item__cta-link"
                       >
-                        Hubungi WhatsApp &rarr;
+                        {isEn ? 'Contact WhatsApp →' : 'Hubungi WhatsApp →'}
                       </a>
                     </div>
                   )}
@@ -243,12 +258,12 @@ const quickSearchChips = [
                   <!-- Micro-interaction footer: Feedback & Share -->
                   <div class="faq-item__footer">
                     <div class="faq-feedback-wrap">
-                      <span class="faq-feedback-label">Apakah ini membantu?</span>
-                      <button type="button" class="faq-vote-btn" data-vote="yes" title="Ya, membantu">
-                        👍 Ya
+                      <span class="faq-feedback-label">{isEn ? 'Was this helpful?' : 'Apakah ini membantu?'}</span>
+                      <button type="button" class="faq-vote-btn" data-vote="yes" title={isEn ? 'Yes, helpful' : 'Ya, membantu'}>
+                        👍 {isEn ? 'Yes' : 'Ya'}
                       </button>
-                      <button type="button" class="faq-vote-btn" data-vote="no" title="Kurang membantu">
-                        👎 Kurang
+                      <button type="button" class="faq-vote-btn" data-vote="no" title={isEn ? 'Not helpful' : 'Kurang membantu'}>
+                        👎 {isEn ? 'No' : 'Kurang'}
                       </button>
                     </div>
 
@@ -257,10 +272,10 @@ const quickSearchChips = [
                       class="faq-share-btn"
                       data-question={faq.question}
                       data-index={index}
-                      title="Salin tautan pertanyaan ini"
+                      title={isEn ? 'Copy link to this question' : 'Salin tautan pertanyaan ini'}
                     >
                       <Icon name="solar:document-text-linear" width="15" height="15" />
-                      <span>Salin Pertanyaan</span>
+                      <span>{isEn ? 'Copy Question' : 'Salin Pertanyaan'}</span>
                     </button>
                   </div>
                 </div>
@@ -274,23 +289,27 @@ const quickSearchChips = [
           <div class="faq-empty__icon-wrap">
             <Icon name="solar:magnifer-zoom-in-linear" width="44" height="44" class="faq-empty__icon" />
           </div>
-          <h3 class="faq-empty__title">Pertanyaan Tidak Ditemukan</h3>
+          <h3 class="faq-empty__title">{isEn ? 'No Matching Questions Found' : 'Pertanyaan Tidak Ditemukan'}</h3>
           <p class="faq-empty__desc">
-            Tidak ada jawaban yang cocok dengan kata kunci <span id="faq-empty-query" class="faq-empty-query"></span>.
-            Silakan coba kata kunci lain atau diskusikan langsung dengan arsitek kami.
+            {isEn ? 'No answers matched keyword' : 'Tidak ada jawaban yang cocok dengan kata kunci'} <span id="faq-empty-query" class="faq-empty-query"></span>.
+            {isEn
+              ? 'Please try another keyword or discuss directly with our architect.'
+              : 'Silakan coba kata kunci lain atau diskusikan langsung dengan arsitek kami.'}
           </p>
           <div class="faq-empty__actions">
             <button type="button" id="faq-reset-search" class="faq-empty-btn faq-empty-btn--reset">
-              Reset Pencarian
+              {isEn ? 'Reset Search' : 'Reset Pencarian'}
             </button>
             <a
-              href="https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20bertanya%20seputar%20layanan"
+              href={isEn
+                ? "https://wa.me/6281335335304?text=Hello%20Bina%20Project,%20I%20have%20a%20question%20regarding%20services"
+                : "https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20bertanya%20seputar%20layanan"}
               target="_blank"
               rel="noopener noreferrer"
               class="faq-empty-btn faq-empty-btn--wa"
             >
               <Icon name="simple-icons:whatsapp" width="16" height="16" />
-              <span>Tanya Langsung via WhatsApp</span>
+              <span>{isEn ? 'Ask on WhatsApp' : 'Tanya Langsung via WhatsApp'}</span>
             </a>
           </div>
         </div>
@@ -302,17 +321,25 @@ const quickSearchChips = [
       <div class="faq-bento-content">
         <div class="faq-bento-badge">
           <Icon name="solar:chat-round-call-bold" width="16" height="16" />
-          <span>Layanan Konsultasi Bina Project</span>
+          <span>{isEn ? 'Bina Project Advisory Services' : 'Layanan Konsultasi Bina Project'}</span>
         </div>
-        <h3 class="faq-bento-title">Masih Ada Pertanyaan atau Ragu Seputar Proyek Anda?</h3>
+        <h3 class="faq-bento-title">
+          {isEn
+            ? 'Still Have Questions or Doubts About Your Project?'
+            : 'Masih Ada Pertanyaan atau Ragu Seputar Proyek Anda?'}
+        </h3>
         <p class="faq-bento-desc">
-          Diskusikan denah, kebutuhan renovasi, spesifikasi material, dan jadwal survei lokasi langsung dengan tim arsitek & estimator kami.
+          {isEn
+            ? 'Discuss floor plans, renovation needs, material specifications, and schedule an on-site survey directly with our lead architects & estimators.'
+            : 'Diskusikan denah, kebutuhan renovasi, spesifikasi material, dan jadwal survei lokasi langsung dengan tim arsitek & estimator kami.'}
         </p>
       </div>
 
       <div class="faq-bento-actions">
         <a
-          href="https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20proyek"
+          href={isEn
+            ? "https://wa.me/6281335335304?text=Hello%20Bina%20Project,%20I%20would%20like%20to%20consult%20on%20a%20project"
+            : "https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20proyek"}
           target="_blank"
           rel="noopener noreferrer"
           class="faq-bento-btn faq-bento-btn--wa"
@@ -322,10 +349,10 @@ const quickSearchChips = [
         </a>
         <a href="tel:+6281335335304" class="faq-bento-btn faq-bento-btn--phone">
           <Icon name="solar:phone-calling-linear" width="18" height="18" />
-          <span>Telepon Kantor</span>
+          <span>{isEn ? 'Studio Office Phone' : 'Telepon Kantor'}</span>
         </a>
-        <a href="/contact" class="faq-bento-btn faq-bento-btn--outline">
-          <span>Jadwalkan Survei Gratis</span>
+        <a href={isEn ? '/en/contact' : '/contact'} class="faq-bento-btn faq-bento-btn--outline">
+          <span>{isEn ? 'Schedule Free Survey' : 'Jadwalkan Survei Gratis'}</span>
           <Icon name="solar:arrow-right-linear" width="16" height="16" />
         </a>
       </div>
@@ -1595,6 +1622,8 @@ const quickSearchChips = [
       });
     }
 
+    const isEnglish = window.location.pathname.startsWith('/en') || document.documentElement.lang === 'en';
+
     // Toggle expand / collapse all
     if (expandAllBtn) {
       expandAllBtn.addEventListener('click', () => {
@@ -1608,7 +1637,9 @@ const quickSearchChips = [
             }
           }
         });
-        expandAllBtn.textContent = allExpanded ? 'Tutup Semua' : 'Buka Semua';
+        expandAllBtn.textContent = allExpanded
+          ? (isEnglish ? 'Collapse All' : 'Tutup Semua')
+          : (isEnglish ? 'Expand All' : 'Buka Semua');
       });
     }
 
@@ -1656,10 +1687,10 @@ const quickSearchChips = [
 
         if (navigator.clipboard) {
           navigator.clipboard.writeText(textToCopy).then(() => {
-            showToast('Tautan pertanyaan berhasil disalin!');
+            showToast(isEnglish ? 'Question link copied to clipboard!' : 'Tautan pertanyaan berhasil disalin!');
           });
         } else {
-          showToast('Pertanyaan: ' + question);
+          showToast(isEnglish ? 'Question: ' + question : 'Pertanyaan: ' + question);
         }
       });
     });
@@ -1673,8 +1704,10 @@ const quickSearchChips = [
           parent.querySelectorAll('.faq-vote-btn').forEach((b) => b.classList.remove('faq-vote-btn--voted'));
         }
         btn.classList.add('faq-vote-btn--voted');
-        const vote = btn.dataset.vote === 'yes' ? 'membantu' : 'masukan dicatat';
-        showToast(`Terima kasih! Umpan balik Anda (${vote}) telah kami simpan.`);
+        const voteFeedback = isEnglish
+          ? (btn.dataset.vote === 'yes' ? 'helpful' : 'feedback noted')
+          : (btn.dataset.vote === 'yes' ? 'membantu' : 'masukan dicatat');
+        showToast(isEnglish ? `Thank you! Your feedback (${voteFeedback}) has been recorded.` : `Terima kasih! Umpan balik Anda (${voteFeedback}) telah kami simpan.`);
       });
     });
   });

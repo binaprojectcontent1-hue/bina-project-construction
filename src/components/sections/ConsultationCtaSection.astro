@@ -5,9 +5,15 @@ import SectionHeader from '@components/SectionHeader.astro';
 import consultationImg from '@assets/images/normal/consultation_img.jpg';
 import consultationThumb from '@assets/images/normal/image.png';
 import { createWhatsAppUrl } from '@utils/whatsapp';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
 const waConsultationUrl = createWhatsAppUrl({
-  customMessage: 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek konstruksi/interior dan estimasi RAB gratis.',
+  customMessage: currentLang === 'en'
+    ? 'Hello Bina Project Team, I would like to consult on architectural construction/interior plans and request a free cost estimate.'
+    : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek konstruksi/interior dan estimasi RAB gratis.',
 });
 ---
 
@@ -17,7 +23,7 @@ const waConsultationUrl = createWhatsAppUrl({
     <div class="shape_2"></div>
     <Image
       src={consultationImg}
-      alt="Konsultasi Desain & Konstruksi Bangunan Bina Project"
+      alt={currentLang === 'en' ? 'Architectural Design & Construction Consultation Bina Project' : 'Konsultasi Desain & Konstruksi Bangunan Bina Project'}
       loading="lazy"
       decoding="async"
       width={580}
@@ -31,10 +37,10 @@ const waConsultationUrl = createWhatsAppUrl({
       <div class="col-md-8">
         <div class="consultation-title-area">
           <SectionHeader
-            badge="Konsultasi & Estimasi RAB"
+            badge={t('consultationCta.badge')}
             badgeIcon="solar:chat-round-call-bold"
-            title="Rencanakan Bangunan Impian Tanpa Khawatir Biaya Membengkak"
-            description="Konsultasikan desain 3D, pemilihan material SNI, serta estimasi anggaran biaya (RAB) terbuka langsung bersama tim arsitek & project manager Bina Project."
+            title={t('consultationCta.title')}
+            description={t('consultationCta.desc')}
             align="left"
             variant="dark"
             class="mb-30"
@@ -49,10 +55,10 @@ const waConsultationUrl = createWhatsAppUrl({
               onclick="if(typeof window.trackLead==='function') window.trackLead('consultation_sec_wa', 'homepage');"
             >
               <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" />
-              Konsultasi Cepat via WhatsApp
+              {t('consultationCta.btnWa')}
             </a>
-            <a href="/contact" class="th-btn style3 th-icon d-inline-flex align-items-center">
-              Jadwalkan Survei Lokasi <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+            <a href={getLocalizedPath('/contact', currentLang)} class="th-btn style3 th-icon d-inline-flex align-items-center">
+              {t('consultationCta.btnSurvey')} <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
             </a>
           </div>
         </div>

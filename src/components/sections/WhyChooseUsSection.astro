@@ -5,6 +5,10 @@ import SectionHeader from '@components/SectionHeader.astro';
 import whyImg1 from '@assets/images/normal/why_img_1.jpg';
 import whyImg2 from '@assets/images/normal/why_img_2.jpg';
 import whyImg3 from '@assets/images/normal/why_img_3.jpg';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <section class="why-area space overflow-hidden" id="why-sec">
@@ -12,10 +16,10 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
     <div class="row">
       <div class="col-lg-8 offset-lg-2">
         <SectionHeader
-          badge="Kenapa Memilih Kami"
+          badge={t('whyUs.badge')}
           badgeIcon="solar:shield-check-bold"
-          title="Kenapa Harus Kami?"
-          description="Dedikasi kami mengutamakan transparansi anggaran, legalitas kontrak resmi, dan standar mutu arsitektural untuk keamanan investasi Anda."
+          title={t('whyUs.title')}
+          description={t('whyUs.desc')}
           align="center"
         />
       </div>
@@ -33,8 +37,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
               </div>
               <div class="why-box_number">01</div>
             </div>
-            <h3 class="box-title">Berpengalaman</h3>
-            <p class="why-box_text">Ditangani tim berpengalaman lebih dari 10 Tahun dengan track record 162+ proyek sukses.</p>
+            <h3 class="box-title">{t('whyUs.card1Title')}</h3>
+            <p class="why-box_text">{t('whyUs.card1Desc')}</p>
           </div>
 
           <div class="why-box">
@@ -44,8 +48,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
               </div>
               <div class="why-box_number">02</div>
             </div>
-            <h3 class="box-title">Solutif & Presisi</h3>
-            <p class="why-box_text">Eksplorasi desain fungsional yang adaptif terhadap iklim tropis lokal dan kebutuhan riil tata ruang keluarga Anda.</p>
+            <h3 class="box-title">{t('whyUs.card2Title')}</h3>
+            <p class="why-box_text">{t('whyUs.card2Desc')}</p>
           </div>
 
           <div class="why-box">
@@ -55,8 +59,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
               </div>
               <div class="why-box_number">03</div>
             </div>
-            <h3 class="box-title">Amanah & Transparan</h3>
-            <p class="why-box_text">Terbukti menyelesaikan 162+ proyek di Malang Raya tanpa sengketa, dengan laporan progres berkala dan rincian RAB terbuka.</p>
+            <h3 class="box-title">{t('whyUs.card3Title')}</h3>
+            <p class="why-box_text">{t('whyUs.card3Desc')}</p>
           </div>
 
           <div class="why-box">
@@ -66,8 +70,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
               </div>
               <div class="why-box_number">04</div>
             </div>
-            <h3 class="box-title">Bertanggung Jawab</h3>
-            <p class="why-box_text">Tanggung jawab penuh atas pengerjaan dengan kontrak SPK resmi dan garansi tertulis.</p>
+            <h3 class="box-title">{t('whyUs.card4Title')}</h3>
+            <p class="why-box_text">{t('whyUs.card4Desc')}</p>
           </div>
         </div>
 
@@ -83,8 +87,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
                     </div>
                     <div class="why-box_number">01</div>
                   </div>
-                  <h3 class="box-title">Berpengalaman</h3>
-                  <p class="why-box_text">Ditangani tim berpengalaman lebih dari 10 Tahun dengan track record 162+ proyek sukses.</p>
+                  <h3 class="box-title">{t('whyUs.card1Title')}</h3>
+                  <p class="why-box_text">{t('whyUs.card1Desc')}</p>
                 </div>
               </div>
 
@@ -96,8 +100,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
                     </div>
                     <div class="why-box_number">02</div>
                   </div>
-                  <h3 class="box-title">Solutif & Presisi</h3>
-                  <p class="why-box_text">Eksplorasi desain fungsional yang adaptif terhadap iklim tropis lokal dan kebutuhan riil tata ruang keluarga Anda.</p>
+                  <h3 class="box-title">{t('whyUs.card2Title')}</h3>
+                  <p class="why-box_text">{t('whyUs.card2Desc')}</p>
                 </div>
               </div>
 
@@ -109,8 +113,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
                     </div>
                     <div class="why-box_number">03</div>
                   </div>
-                  <h3 class="box-title">Amanah & Transparan</h3>
-                  <p class="why-box_text">Terbukti menyelesaikan 162+ proyek di Malang Raya tanpa sengketa, dengan laporan progres berkala dan rincian RAB terbuka.</p>
+                  <h3 class="box-title">{t('whyUs.card3Title')}</h3>
+                  <p class="why-box_text">{t('whyUs.card3Desc')}</p>
                 </div>
               </div>
 
@@ -122,8 +126,8 @@ import whyImg3 from '@assets/images/normal/why_img_3.jpg';
                     </div>
                     <div class="why-box_number">04</div>
                   </div>
-                  <h3 class="box-title">Bertanggung Jawab</h3>
-                  <p class="why-box_text">Tanggung jawab penuh atas pengerjaan dengan kontrak SPK resmi dan garansi tertulis.</p>
+                  <h3 class="box-title">{t('whyUs.card4Title')}</h3>
+                  <p class="why-box_text">{t('whyUs.card4Desc')}</p>
                 </div>
               </div>
             </div>

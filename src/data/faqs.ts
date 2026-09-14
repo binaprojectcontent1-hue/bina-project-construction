@@ -136,6 +136,133 @@ export const FAQS: readonly FaqItem[] = [
   },
 ] as const;
 
+export const FAQS_EN: readonly FaqItem[] = [
+  {
+    question: 'What is the estimated cost of home construction and renovation services in Malang?',
+    answer:
+      'Construction and renovation costs at Bina Project are calculated transparently through an itemized Bill of Quantities (BOQ/RAB) according to material specifications, building area, and architectural complexity. We provide flexible options ranging from budget-efficient, standard, to premium packages.',
+    category: 'biaya',
+  },
+  {
+    question: 'Is there any fee for on-site land survey and initial design consultation?',
+    answer:
+      'No! Physical site surveys and initial consultations across Malang City, Batu, and surrounding areas are 100% FREE with zero commitment alongside our architects.',
+    category: 'biaya',
+  },
+  {
+    question: 'How long does custom kitchen set and interior design fabrication take?',
+    answer:
+      'The 3D visualization design stage typically takes 3-7 business days. Once approved, fabrication in our workshop takes 2-4 weeks depending on dimensions and finishing materials (HPL/Duco/Solid Surface).',
+    category: 'proses',
+  },
+  {
+    question: 'Do all construction and interior works come with an official warranty?',
+    answer:
+      'Yes, Bina Project provides a written post-handover maintenance warranty covering roof/concrete deck waterproofing leaks, structural integrity, and interior hardware/hinges functionality.',
+    category: 'garansi',
+  },
+  {
+    question: 'Which service areas does Bina Project cover?',
+    answer:
+      'Our studio and workshop are based in Malang City. We serve construction and interior projects across Malang City, Batu City, Malang Regency, Pasuruan, and Surabaya-Sidoarjo with our own dedicated in-house teams.',
+    category: 'proses',
+  },
+  {
+    question: 'Is there a budget package for small home renovations under 100 m2?',
+    answer:
+      'Yes, we offer flexible quotations for partial renovations. For homes under 100 m2, we can prioritize focal areas such as the facade, kitchen set, or bathrooms tailored to your budget. Contact +62 81-335-335-304 for a free consultation and custom BOQ calculation.',
+    category: 'biaya',
+  },
+  {
+    question: 'What is the minimum down payment (DP) to initiate a construction project?',
+    answer:
+      'The initial Down Payment is typically 20-30% of the contract value for material mobilization and site preparation. The remaining balance is paid in stages tied to verified physical milestones (foundation, structure, finishing). All payment terms are clearly stated in the official Work Agreement (SPK).',
+    category: 'biaya',
+  },
+  {
+    question: 'Can payments be made in stages through a milestone-based installment system?',
+    answer:
+      'Absolutely. Bina Project uses a milestone payment system based on verified physical progress: Milestone 1 (completed foundation), Milestone 2 (structural columns and beams), Milestone 3 (walls and roofing), Milestone 4 (finishing), and Retention (warranty). Clients only disburse funds after progress is physically verified.',
+    category: 'biaya',
+  },
+  {
+    question: 'What is the cost of a 3-meter kitchen set with standard HPL finish?',
+    answer:
+      'Kitchen set costs are calculated per linear meter depending on specifications: HPL grade, hardware (standard or soft-closing hinges), countertop (granite or solid surface), and design complexity. For a 3-meter setup with standard HPL, contact +62 81-335-335-304 for a detailed quote tailored to your space.',
+    category: 'biaya',
+  },
+  {
+    question: 'Does the itemized BOQ/RAB price include 11% VAT (PPN)?',
+    answer:
+      'BOQ quotations generally exclude VAT. An 11% VAT applies if the client requires an official tax invoice (faktur pajak) for corporate accounting. For individual residential clients who do not require tax invoices, costs are calculated net without VAT. This is explained during the initial BOQ presentation.',
+    category: 'biaya',
+  },
+  {
+    question: 'What is the difference between AAC lightweight blocks (hebel) and red clay bricks for walls?',
+    answer:
+      'AAC lightweight blocks (hebel) are lighter, dimensionally precise, quicker to install, and provide superior thermal insulation ideal for the local climate. Red clay bricks offer high load-bearing strength but add weight and require longer installation times. Bina Project typically utilizes AAC blocks for optimal structural efficiency and quality.',
+    category: 'material',
+  },
+  {
+    question: 'Are Bina Project kitchen sets termite-proof and moisture-resistant?',
+    answer:
+      'Yes. We use premium blockboard or marine-grade plywood treated with anti-termite sealant. For moisture-prone areas around the sink and cooktop, we apply waterproof coating and waterproof HPL backing. All hardware including hinges and drawer runners are rust-resistant stainless steel.',
+    category: 'material',
+  },
+  {
+    question: 'Which waterproofing system is best suited for exposed flat concrete decks?',
+    answer:
+      'For exposed concrete decks without tile roofing, we recommend polyester-reinforced elastomeric torch-on membrane or two-component cementitious waterproofing coatings. Both resist UV degradation and flex with concrete thermal expansion. Our team surveys the deck and provides the optimal solution with a 3-5 year warranty.',
+    category: 'material',
+  },
+  {
+    question: 'Do you use light-gauge steel trusses or timber for roof framing?',
+    answer:
+      'Bina Project standardly uses 0.75mm-1.00mm galvalume light-gauge steel trusses. Light-gauge steel is termite-proof, rot-free, lightweight to reduce structural load, and dimensionally accurate compared to timber. For heritage projects requiring exposed wood, we can provide Grade-A Meranti or teak timber.',
+    category: 'material',
+  },
+  {
+    question: 'How long does a residential facade renovation typically take?',
+    answer:
+      'A facade redesign without altering the primary structural frame generally takes 3-6 weeks depending on surface area and architectural complexity, such as decorative breeze blocks (roster), timber cladding, or ACP panels. Stages include stripping old finishes, plaster leveling, new cladding application, and accent detailing.',
+    category: 'proses',
+  },
+  {
+    question: 'Can the construction timeline be expedited by adding more workers?',
+    answer:
+      'Yes, provided the additional workforce is assigned to parallel trades (e.g., Team A laying masonry while Team B installs roof trusses). For sequential tasks such as curing concrete foundations to column casting, adding manpower cannot bypass necessary material curing times.',
+    category: 'proses',
+  },
+  {
+    question: 'When is the best time to start home construction, dry season or rainy season?',
+    answer:
+      'Ideally start at the onset of the dry season (April-May) so foundational excavation and structural casting proceed uninterrupted by rain. If commencing during rainy months, work proceeds safely with protective tarpaulins and scheduled casting during dry windows.',
+    category: 'proses',
+  },
+  {
+    question: 'How many years does the waterproofing warranty last?',
+    answer:
+      'Bina Project\'s waterproofing warranty covers 3 years for cementitious coating systems and 5 years for elastomeric torch-on membrane, provided no post-application structural alterations occur. The warranty includes complimentary repair service should any leakage occur.',
+    category: 'garansi',
+  },
+  {
+    question: 'Is there a warranty on kitchen set hinges and drawer runners?',
+    answer:
+      'Yes, soft-closing hinges and tandem drawer slides include a 1-year warranty on mechanical performance. Any defect under normal residential usage is replaced free of charge. The HPL cabinet carcasses themselves have an expected lifespan of 10-15 years.',
+    category: 'garansi',
+  },
+  {
+    question: 'What is the warranty claim procedure if a leak occurs after handover?',
+    answer:
+      'Contact +62 81-335-335-304 on WhatsApp with photos or video logs of the issue. Our engineering team schedules an on-site inspection within 1-3 business days. Verified application defects are rectified free of charge in accordance with the SPK warranty within 3-7 business days.',
+    category: 'garansi',
+  },
+] as const;
+
+export function getFaqs(lang: 'id' | 'en' = 'id'): readonly FaqItem[] {
+  return lang === 'en' ? FAQS_EN : FAQS;
+}
+
 /**
  * Generate Schema.org FAQPage JSON-LD data
  */

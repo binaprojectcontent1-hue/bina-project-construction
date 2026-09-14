@@ -12,6 +12,10 @@ import { Image } from 'astro:assets';
 import SectionHeader from '@components/SectionHeader.astro';
 import aboutImg1 from '@assets/images/normal/about_1.jpg';
 import aboutImg2 from '@assets/images/normal/about_2.jpg';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <section class="about-modern-sec space" id="about-sec">
@@ -27,7 +31,7 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
           <div class="main-photo-frame">
             <Image
               src={aboutImg1}
-              alt="Proyek Konstruksi dan Pembangunan Arsitektur Bina Project"
+              alt={currentLang === 'en' ? 'Architectural construction and building project by Bina Project' : 'Proyek Konstruksi dan Pembangunan Arsitektur Bina Project'}
               loading="lazy"
               decoding="async"
               width={540}
@@ -42,7 +46,7 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
           <div class="inset-photo-frame">
             <Image
               src={aboutImg2}
-              alt="Pekerjaan Desain Interior dan Custom Furniture Presisi Bina Project"
+              alt={currentLang === 'en' ? 'Precision interior design and bespoke cabinetry by Bina Project' : 'Pekerjaan Desain Interior dan Custom Furniture Presisi Bina Project'}
               loading="lazy"
               decoding="async"
               width={260}
@@ -59,8 +63,8 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
               <Icon name="solar:shield-check-bold" width="22" height="22" />
             </div>
             <div class="proof-text-box">
-              <span class="proof-title">10+ Tahun Dedikasi</span>
-              <span class="proof-sub">Arsitek & Tenaga Ahli Bersertifikasi</span>
+              <span class="proof-title">{t('aboutSection.proof1Title')}</span>
+              <span class="proof-sub">{t('aboutSection.proof1Sub')}</span>
             </div>
           </div>
 
@@ -69,10 +73,10 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
             <div class="exp-number-row">
               <span class="exp-count">162<span class="exp-plus">+</span></span>
             </div>
-            <span class="exp-label">Projek Sukses Selesai</span>
+            <span class="exp-label">{t('aboutSection.proof2Label')}</span>
             <div class="exp-proof-row">
               <Icon name="solar:verified-check-bold" width="14" height="14" class="exp-verified-icon" />
-              <span class="exp-verified-text">100% Tuntas Sesuai SPK</span>
+              <span class="exp-verified-text">{t('aboutSection.proof2Verified')}</span>
             </div>
           </div>
         </div>
@@ -83,10 +87,10 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
         <div class="about-content-wrap">
           <!-- Standardized Section Header -->
           <SectionHeader
-            badge="Tentang Bina Project"
+            badge={t('aboutSection.badge')}
             badgeIcon="solar:buildings-2-bold"
-            title="You Dream It, We Build It"
-            description="Mitra terpercaya untuk mewujudkan hunian dan ruang usaha Anda. Dari desain 3D hingga pengerjaan fisik dengan standar arsitektur profesional, transparansi RAB, dan kontrak legal resmi (SPK)."
+            title={t('aboutSection.title')}
+            description={t('aboutSection.desc')}
             align="left"
           />
 
@@ -98,9 +102,9 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
                 <Icon name="solar:ruler-cross-pen-bold" width="24" height="24" />
               </div>
               <div class="pillar-info">
-                <h3 class="pillar-title">Desain & Eksekusi Terintegrasi</h3>
+                <h3 class="pillar-title">{currentLang === 'en' ? 'Integrated Design & Execution' : 'Desain & Eksekusi Terintegrasi'}</h3>
                 <p class="pillar-desc">
-                  Koordinasi penuh dari gambar kerja DED, 3D render, hingga pembangunan fisik untuk hasil 100% sesuai rencana.
+                  {currentLang === 'en' ? 'Full coordination from detailed drawings (DED) and 3D renders to physical construction.' : 'Koordinasi penuh dari gambar kerja DED, 3D render, hingga pembangunan fisik untuk hasil 100% sesuai rencana.'}
                 </p>
               </div>
             </div>
@@ -111,9 +115,9 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
                 <Icon name="solar:calculator-linear" width="24" height="24" />
               </div>
               <div class="pillar-info">
-                <h3 class="pillar-title">RAB Transparan & SPK Resmi</h3>
+                <h3 class="pillar-title">{t('aboutSection.pillar1Title')}</h3>
                 <p class="pillar-desc">
-                  Anggaran jelas berbasis volume riil tanpa markup tersembunyi, dilindungi Surat Perjanjian Kerja legal.
+                  {t('aboutSection.pillar1Desc')}
                 </p>
               </div>
             </div>
@@ -124,9 +128,9 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
                 <Icon name="solar:shield-check-bold" width="24" height="24" />
               </div>
               <div class="pillar-info">
-                <h3 class="pillar-title">Garansi Pemeliharaan Tertulis</h3>
+                <h3 class="pillar-title">{t('aboutSection.pillar3Title')}</h3>
                 <p class="pillar-desc">
-                  Sertifikat Garansi resmi pasca serah terima (BAST) untuk perlindungan investasi jangka panjang.
+                  {t('aboutSection.pillar3Desc')}
                 </p>
               </div>
             </div>
@@ -134,12 +138,12 @@ import aboutImg2 from '@assets/images/normal/about_2.jpg';
 
           <!-- Dual Action CTA Buttons (Clean & Borderless) -->
           <div class="about-actions-group">
-            <a href="/contact" class="about-primary-btn">
-              <span>Konsultasi Gratis</span>
+            <a href={getLocalizedPath('/contact', currentLang)} class="about-primary-btn">
+              <span>{t('cta.consultation')}</span>
               <Icon name="solar:arrow-right-linear" width="16" height="16" class="btn-arrow" />
             </a>
-            <a href="/about" class="about-secondary-btn">
-              <span>Profil Lengkap</span>
+            <a href={getLocalizedPath('/about', currentLang)} class="about-secondary-btn">
+              <span>{t('aboutSection.ctaMore')}</span>
             </a>
           </div>
         </div>

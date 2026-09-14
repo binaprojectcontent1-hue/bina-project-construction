@@ -3,6 +3,10 @@ import ContactForm from '@components/ContactForm.astro';
 import SectionHeader from '@components/SectionHeader.astro';
 import { Image } from 'astro:assets';
 import contactImg from '@assets/images/normal/contact-image.jpg';
+import { getLangFromUrl } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const isEn = currentLang === 'en';
 ---
 
 <section class="space overflow-hidden" id="contact-sec">
@@ -11,14 +15,14 @@ import contactImg from '@assets/images/normal/contact-image.jpg';
       <div class="col-lg-6">
         <div>
           <SectionHeader
-            badge="Hubungi Kami"
+            badge={isEn ? "Contact Us" : "Hubungi Kami"}
             badgeIcon="solar:phone-calling-rounded-bold"
-            title="Punya Proyek Mendatang? Mari Bicara Sekarang!"
-            description="Konsultasikan kebutuhan konstruksi dan interior Anda bersama tim kami untuk estimasi dan survei lokasi."
+            title={isEn ? "Have An Upcoming Project? Let's Talk Today!" : "Punya Proyek Mendatang? Mari Bicara Sekarang!"}
+            description={isEn ? "Consult your construction and interior needs with our specialized team for estimation and site survey." : "Konsultasikan kebutuhan konstruksi dan interior Anda bersama tim kami untuk estimasi dan survei lokasi."}
             align="left"
             class="mb-30"
           />
-          <ContactForm />
+          <ContactForm lang={currentLang} />
         </div>
       </div>
       <div class="col-lg-6">

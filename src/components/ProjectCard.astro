@@ -3,12 +3,14 @@ import type { Project } from '../types/database';
 import { Image } from 'astro:assets';
 import { getMediaUrl } from '../lib/cdn';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations, getCategoryLabel } from '@i18n/utils';
 
 interface Props {
   project: Project;
   colClass?: string;
   loading?: 'lazy' | 'eager';
   priority?: boolean;
+  lang?: 'id' | 'en';
 }
 
 const {
@@ -16,7 +18,11 @@ const {
   colClass = 'col-12 col-md-6 col-lg-4 filter-item',
   loading: explicitLoading,
   priority = false,
+  lang,
 } = Astro.props;
+
+const currentLang = lang || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
 // Optimized loading strategy for Core Web Vitals (LCP & zero CLS)
 const loading = explicitLoading ?? (priority ? 'eager' : 'lazy');
@@ -37,6 +43,8 @@ if (catClasses.length === 0) catClasses.push('cat3');
 const catClass = catClasses.join(' ');
 
 const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/project_1_1.jpg';
+const portfolioUrl = currentLang === 'en' ? `/en/portfolio/${project.slug}` : `/portfolio/${project.slug}`;
+const categoryLabel = project.category ? getCategoryLabel(project.category, currentLang) : '';
 ---
 
 <div class={`${colClass} ${catClass}`}>
@@ -45,7 +53,7 @@ const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/projec
     <div class="card-media skeleton-shimmer">
       <Image
         src={coverUrl}
-        alt={`Portofolio ${project.title} - ${project.category} Bina Project`}
+        alt={`Portofolio ${project.title} - ${categoryLabel || project.category} Bina Project`}
         loading={loading}
         decoding="async"
         fetchpriority={fetchpriority}
@@ -55,9 +63,9 @@ const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/projec
       />
 
       <!-- Floating Category Tag -->
-      {project.category && (
+      {categoryLabel && (
         <div class="media-badge-pill">
-          <span>{project.category}</span>
+          <span>{categoryLabel}</span>
         </div>
       )}
 
@@ -65,8 +73,8 @@ const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/projec
       <a 
         href={coverUrl} 
         class="media-zoom-btn popup-image" 
-        aria-label={`Perbesar foto ${project.title}`}
-        title="Perbesar Foto"
+        aria-label={currentLang === 'en' ? `Enlarge photo ${project.title}` : `Perbesar foto ${project.title}`}
+        title={t('projectCard.zoomPhoto')}
       >
         <Icon name="solar:magnifer-linear" width="16" height="16" aria-hidden="true" />
       </a>
@@ -84,7 +92,7 @@ const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/projec
       )}
 
       <h3 class="tray-title">
-        <a href={`/portfolio/${project.slug}`} class="stretched-link">
+        <a href={portfolioUrl} class="stretched-link">
           {project.title}
         </a>
       </h3>
@@ -92,7 +100,7 @@ const coverUrl = getMediaUrl(project.cover_image) || '/assets/img/project/projec
       <div class="tray-divider"></div>
 
       <div class="tray-footer">
-        <span class="view-detail-label">Lihat Proyek</span>
+        <span class="view-detail-label">{t('projectCard.viewProject')}</span>
         <span class="view-detail-btn" aria-hidden="true">
           <Icon name="solar:arrow-right-linear" width="14" height="14" class="arrow-icon" />
         </span>

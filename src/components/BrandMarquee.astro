@@ -1,17 +1,20 @@
 ---
 import SectionHeader from '@components/SectionHeader.astro';
 import { PARTNER_BRANDS } from '@data/partners';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 const brands = PARTNER_BRANDS;
 ---
 
 <section class="brand-partner-section" id="partner-sec">
   <div class="container">
     <SectionHeader
-      badge="Kolaborasi & Kemitraan"
+      badge={t('brandMarquee.badge')}
       badgeIcon="solar:hand-shake-bold"
-      title="Partner Terpercaya Kami"
-      description="Dipercaya oleh berbagai instansi BUMN, institusi kesehatan, perusahaan, dan pemilik hunian di seluruh Indonesia."
+      title={t('brandMarquee.title')}
+      description={t('brandMarquee.desc')}
       align="center"
     />
 

@@ -3,12 +3,16 @@ import type { Project } from '@types';
 import ProjectCard from '@components/ProjectCard.astro';
 import SectionHeader from '@components/SectionHeader.astro';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
 
 interface Props {
   projects: Project[];
 }
 
 const { projects } = Astro.props;
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+
 const isSlider = projects.length > 3;
 const sliderConfig = JSON.stringify({
   slidesPerView: 1,
@@ -28,25 +32,25 @@ const sliderConfig = JSON.stringify({
     <!-- Architectural Header Row -->
     <div class="project-header-row mb-40">
       <SectionHeader
-        badge="Hasil Karya Terbaru"
+        badge={t('projectSlider.badge')}
         badgeIcon="solar:gallery-wide-bold"
-        title="Karya & Realisasi Konstruksi"
-        description="Dokumentasi proyek konstruksi hunian, villa tropis, interior komersial, dan kitchen set yang telah kami selesaikan dengan mutu bergaransi."
+        title={t('projectSlider.title')}
+        description={t('projectSlider.desc')}
         align="left"
         class="project-header-text mb-0"
       />
 
       <div class="project-header-actions d-none d-md-flex">
-        <a href="/portfolio" class="view-all-portfolio-btn">
-          <span>Lihat Semua Portofolio</span>
+        <a href={getLocalizedPath('/portfolio', currentLang)} class="view-all-portfolio-btn">
+          <span>{t('projectSlider.viewAll')}</span>
           <Icon name="solar:arrow-right-linear" width="16" height="16" />
         </a>
         {isSlider && (
           <div class="slider-nav-group">
-            <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
+            <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label={t('projectSlider.prev')}>
               <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
             </button>
-            <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label="Project Berikutnya">
+            <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label={t('projectSlider.next')}>
               <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
             </button>
           </div>
@@ -65,7 +69,7 @@ const sliderConfig = JSON.stringify({
           <div class="swiper-wrapper py-3">
             {projects.map((project) => (
               <div class="swiper-slide h-auto">
-                <ProjectCard project={project} colClass="w-100 h-100" />
+                <ProjectCard project={project} colClass="w-100 h-100" lang={currentLang} />
               </div>
             ))}
           </div>
@@ -78,7 +82,7 @@ const sliderConfig = JSON.stringify({
       <div class="row gy-4">
         {projects.map((project) => (
           <div class="col-12 col-md-6 col-lg-4">
-            <ProjectCard project={project} colClass="w-100 h-100" />
+            <ProjectCard project={project} colClass="w-100 h-100" lang={currentLang} />
           </div>
         ))}
       </div>
@@ -88,16 +92,16 @@ const sliderConfig = JSON.stringify({
     <div class="project-mobile-action d-md-none mt-30 text-center">
       {isSlider && (
         <div class="slider-nav-group justify-content-center mb-20">
-          <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label="Project Sebelumnya">
+          <button data-slider-prev="#projectSlider1" class="custom-nav-btn prev-btn" aria-label={t('projectSlider.prev')}>
             <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
           </button>
-          <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label="Project Berikutnya">
+          <button data-slider-next="#projectSlider1" class="custom-nav-btn next-btn" aria-label={t('projectSlider.next')}>
             <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
           </button>
         </div>
       )}
-      <a href="/portfolio" class="view-all-portfolio-btn w-100 justify-content-center">
-        <span>Lihat Semua Portofolio</span>
+      <a href={getLocalizedPath('/portfolio', currentLang)} class="view-all-portfolio-btn w-100 justify-content-center">
+        <span>{t('projectSlider.viewAll')}</span>
         <Icon name="solar:arrow-right-linear" width="16" height="16" />
       </a>
     </div>

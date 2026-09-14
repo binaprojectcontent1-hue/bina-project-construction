@@ -9,7 +9,10 @@ import { TESTIMONIALS } from '@data/testimonials';
 import { StackTestimonial } from '@components/StackTestimonial';
 import SectionHeader from '@components/SectionHeader.astro';
 import { siteConfig } from '@config/site';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 const testimonials = TESTIMONIALS;
 
 const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : siteConfig.siteUrl.replace(/\/$/, '');
@@ -44,10 +47,10 @@ const reviewListSchema = {
     <div class="row justify-content-center">
       <div class="col-lg-8 text-center">
         <SectionHeader
-          badge="Testimonial Klien"
+          badge={t('testimonials.badge')}
           badgeIcon="solar:chat-round-like-bold"
-          title="Apa Kata Klien Bina Project?"
-          description="Kepuasan dan kepercayaan Anda adalah prioritas utama dari setiap karya konstruksi & desain kami."
+          title={t('testimonials.title')}
+          description={t('testimonials.desc')}
           align="center"
         />
       </div>
