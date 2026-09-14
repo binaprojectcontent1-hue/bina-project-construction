@@ -3,12 +3,14 @@ import type { Article } from '../types/database';
 import { Image } from 'astro:assets';
 import { getMediaUrl } from '../lib/cdn';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, getCategoryLabel } from '@i18n/utils';
 
 interface Props {
   article: Article;
   colClass?: string;
   loading?: 'lazy' | 'eager';
   priority?: boolean;
+  lang?: 'id' | 'en';
 }
 
 const {
@@ -16,7 +18,10 @@ const {
   colClass = 'col-md-6 col-lg-4',
   loading: explicitLoading,
   priority = false,
+  lang,
 } = Astro.props;
+
+const currentLang = lang || getLangFromUrl(Astro.url);
 
 // Optimized loading strategy for Core Web Vitals (LCP & zero CLS)
 const loading = explicitLoading ?? (priority ? 'eager' : 'lazy');
@@ -24,7 +29,8 @@ const fetchpriority = priority || loading === 'eager' ? 'high' : 'auto';
 
 // Ensure valid image source with defensive fallback
 const coverUrl = getMediaUrl(article.cover_image) || '/assets/img/blog/blog_1_1.jpg';
-const articleUrl = `/blog/${article.slug}`;
+const articleUrl = currentLang === 'en' ? `/en/blog/${article.slug}` : `/blog/${article.slug}`;
+const categoryLabel = article.category ? getCategoryLabel(article.category, currentLang) : '';
 
 // Helper for parseable ISO datetime for <time> tag (SEO & Screen Readers)
 const parseIsoDate = (dateStr: string): string | null => {
@@ -44,7 +50,7 @@ const isoDate = parseIsoDate(article.publish_date);
       <a href={articleUrl} tabindex="-1" aria-hidden="true" class="blog-img-link">
         <Image
           src={coverUrl}
-          alt={`Gambar artikel: ${article.title}`}
+          alt={currentLang === 'en' ? `Article image: ${article.title}` : `Gambar artikel: ${article.title}`}
           loading={loading}
           decoding="async"
           fetchpriority={fetchpriority}
@@ -65,7 +71,7 @@ const isoDate = parseIsoDate(article.publish_date);
         </span>
         <span class="blog-meta-item">
           <Icon name="solar:tag-linear" width="15" height="15" aria-hidden="true" />
-          <span class="blog-category">{article.category}</span>
+          <span class="blog-category">{categoryLabel || article.category}</span>
         </span>
       </div>
       <h3 class="blog-title box-title" id={`blog-title-${article.slug}`}>
@@ -73,8 +79,8 @@ const isoDate = parseIsoDate(article.publish_date);
       </h3>
       <p class="blog-text">{article.excerpt}</p>
       <div class="blog-action">
-        <a href={articleUrl} class="th-btn btn-sm" aria-label={`Baca selengkapnya artikel ${article.title}`}>
-          BACA SELENGKAPNYA <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" aria-hidden="true" />
+        <a href={articleUrl} class="th-btn btn-sm" aria-label={currentLang === 'en' ? `Read article ${article.title}` : `Baca selengkapnya artikel ${article.title}`}>
+          {currentLang === 'en' ? 'READ ARTICLE' : 'BACA SELENGKAPNYA'} <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" aria-hidden="true" />
         </a>
       </div>
     </div>

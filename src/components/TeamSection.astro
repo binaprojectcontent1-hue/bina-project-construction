@@ -8,6 +8,10 @@
 import { TEAM_MEMBERS } from '@data/team';
 import SectionHeader from '@components/SectionHeader.astro';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const isEn = currentLang === 'en';
 ---
 
 <section class="team-section" id="our-team">
@@ -15,11 +19,13 @@ import { Icon } from 'astro-icon/components';
   <div class="container" style="max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1;">
     <!-- Section Header -->
     <SectionHeader
-      badge="Tim & Kepemimpinan"
+      badge={isEn ? "Team & Leadership" : "Tim & Kepemimpinan"}
       badgeIcon="solar:users-group-rounded-bold"
-      title="Dedikasi Profesional"
-      titleAccent="Dibalik Setiap Karya"
-      description="Setiap hunian dan ruang komersial yang kami bangun ditangani oleh tim arsitek, project manager, dan tenaga ahli berdedikasi tinggi untuk memastikan standar presisi dan estetika terbaik di Malang & Jawa Timur."
+      title={isEn ? "Professional Dedication" : "Dedikasi Profesional"}
+      titleAccent={isEn ? "Behind Every Masterpiece" : "Dibalik Setiap Karya"}
+      description={isEn 
+        ? "Every residential home and commercial space we build is led by dedicated architects, project managers, and certified engineers ensuring precision and aesthetic standards across East Java."
+        : "Setiap hunian dan ruang komersial yang kami bangun ditangani oleh tim arsitek, project manager, dan tenaga ahli berdedikasi tinggi untuk memastikan standar presisi dan estetika terbaik di Malang & Jawa Timur."}
       align="center"
     />
 
@@ -54,14 +60,14 @@ import { Icon } from 'astro-icon/components';
             <!-- Card Footer Quick Contact Action -->
             <div class="team-card-footer">
               <a
-                href={`https://wa.me/6281335335304?text=${encodeURIComponent(`Halo Bina Project, saya ingin konsultasi proyek konstruksi/interior bersama tim ${member.jobTitle} (${member.name})`)}`}
+                href={`https://wa.me/6281335335304?text=${encodeURIComponent(isEn ? `Hello Bina Project, I would like to consult on a construction/interior project with ${member.jobTitle} (${member.name})` : `Halo Bina Project, saya ingin konsultasi proyek konstruksi/interior bersama tim ${member.jobTitle} (${member.name})`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="team-consult-link"
-                title={`Hubungi tim untuk ${member.jobTitle}`}
+                title={isEn ? `Contact team for ${member.jobTitle}` : `Hubungi tim untuk ${member.jobTitle}`}
               >
                 <Icon name="simple-icons:whatsapp" width="16" height="16" class="team-wa-icon" />
-                <span>Konsultasi Proyek</span>
+                <span>{isEn ? "Project Consultation" : "Konsultasi Proyek"}</span>
                 <Icon name="solar:arrow-right-linear" width="14" height="14" class="team-arrow-icon" />
               </a>
             </div>

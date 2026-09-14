@@ -1,0 +1,76 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import BlogCard from '@components/BlogCard.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import EmptyState from '@components/EmptyState.astro';
+import { getAllArticles } from '@lib/blogService';
+
+const articles = await getAllArticles();
+---
+
+<BaseLayout
+  lang="en"
+  title="Articles & Design Insights - Bina Project"
+  description="Educational articles, modern architectural design trends, interior layout ideas, and home renovation guidelines from the Bina Project team."
+>
+  <Breadcrumb title="Articles & Insights" />
+
+  <section class="space">
+    <div class="container-fluid blog-fluid-container">
+      <SectionHeader
+        badge="Blog & Insights"
+        badgeIcon="solar:document-text-bold"
+        title="Architectural Trends & Design Guides"
+        description="Educational articles, modern architectural design trends, and construction guidelines from our specialist team."
+        align="center"
+      />
+
+      {articles.length > 0 ? (
+        <div class="row blog-row gy-4 gx-4">
+          {articles.map((article, index) => (
+            <BlogCard
+              article={article}
+              colClass="col-12 col-md-6 col-lg-4 blog-item"
+              loading={index < 3 ? 'eager' : 'lazy'}
+              priority={index < 3}
+              lang="en"
+            />
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          icon="solar:document-text-linear"
+          title="No Articles Published Yet"
+          description="Our editorial team is preparing educational articles and architectural design trends. Check back soon for new insights."
+          primaryActionText="Free Design Consultation"
+          primaryActionHref="/en/contact"
+        />
+      )}
+    </div>
+  </section>
+
+  <style>
+    /* Blog Fluid Container & Match Portfolio Grid Widths */
+    .blog-fluid-container {
+      padding-left: clamp(24px, 6vw, 110px);
+      padding-right: clamp(24px, 6vw, 110px);
+    }
+
+    .blog-row :global(.blog-item) {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .blog-row :global(.blog-item) {
+        width: 49.9% !important;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .blog-row :global(.blog-item) {
+        width: 33.3% !important;
+      }
+    }
+  </style>
+</BaseLayout>

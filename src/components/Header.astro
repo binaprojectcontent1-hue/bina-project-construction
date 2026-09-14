@@ -63,8 +63,8 @@ const navItems = [
             type="button" 
             class="top-bar-close-btn" 
             id="closeTopBar"
-            aria-label="Tutup top bar"
-            title="Tutup"
+            aria-label={currentLang === 'en' ? "Close top bar" : "Tutup top bar"}
+            title={currentLang === 'en' ? "Close" : "Tutup"}
           >
             <Icon name="solar:close-circle-linear" width="18" height="18" />
           </button>
@@ -111,7 +111,7 @@ const navItems = [
           <!-- Language Switcher -->
           <LanguageSwitcher />
 
-          <button type="button" class="action-icon-btn sideMenuToggler d-none d-xl-flex" aria-label="Buka Menu Panel">
+          <button type="button" class="action-icon-btn sideMenuToggler d-none d-xl-flex" aria-label={currentLang === 'en' ? "Open Menu Panel" : "Buka Menu Panel"}>
             <Icon name="solar:widget-linear" width="20" height="20" />
           </button>
           
@@ -121,7 +121,7 @@ const navItems = [
           </a>
 
           <!-- Mobile Toggle -->
-          <button type="button" class="mobile-toggle-btn d-lg-none th-menu-toggle" aria-label="Buka Menu Mobile">
+          <button type="button" class="mobile-toggle-btn d-lg-none th-menu-toggle" aria-label={currentLang === 'en' ? "Open Mobile Menu" : "Buka Menu Mobile"}>
             <Icon name="solar:hamburger-menu-linear" width="22" height="22" />
           </button>
         </div>
