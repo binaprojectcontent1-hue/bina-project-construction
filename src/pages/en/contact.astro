@@ -5,7 +5,6 @@
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Breadcrumb from '@components/Breadcrumb.astro';
-import ContactForm from '@components/ContactForm.astro';
 import SectionHeader from '@components/SectionHeader.astro';
 import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
@@ -83,50 +82,35 @@ const siteConfig = await getSiteSettings();
     </div>
   </section>
 
-  <!--============================== Split Section: Consultation Form & Map ==============================-->
+  <!--============================== Office Location & Interactive Map ==============================-->
   <section class="space-bottom overflow-hidden">
     <div class="container">
-      <div class="row gy-5 align-items-stretch">
-        <!-- Form Left Column -->
-        <div class="col-lg-6">
-          <div class="contact-form-glass-container h-100 d-flex flex-column justify-content-center">
-            <div class="mb-4">
-              <span class="contact-form-badge">
-                <Icon name="solar:chat-round-dots-bold" width="14" height="14" class="me-1" /> Direct Consultation Form
-              </span>
-              <h2 class="contact-form-title">Send Your Project Details</h2>
-              <p class="contact-form-subtitle">
-                Fill in your project requirements below. Our lead architects will prepare a preliminary plan and contact you promptly.
-              </p>
+      <div class="contact-map-wrapper">
+        <div class="map-header">
+          <div class="d-flex align-items-center">
+            <div class="map-header-icon me-3">
+              <Icon name="solar:map-point-wave-linear" width="22" height="22" />
             </div>
-            <ContactForm lang="en" />
+            <div>
+              <h3 class="map-title mb-0">Office Location</h3>
+              <p class="map-subtitle mb-0">{siteConfig.contact.city}, {siteConfig.contact.province}</p>
+            </div>
           </div>
+          <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="th-btn style1 map-direction-btn">
+            Get Directions <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+          </a>
         </div>
-
-        <!-- Map Right Column -->
-        <div class="col-lg-6">
-          <div class="contact-map-wrapper h-100">
-            <div class="map-overlay-badge">
-              <div class="d-flex align-items-center gap-2">
-                <div class="pulse-point"></div>
-                <div>
-                  <h4 class="mb-0 text-white" style="font-size: 14px; font-weight: 700;">Studio Bina Project</h4>
-                  <p class="mb-0 text-white-50" style="font-size: 12px;">Kota Malang, Jawa Timur</p>
-                </div>
-              </div>
-            </div>
-            <iframe
-              src={siteConfig.contact.googleMapsEmbedUrl}
-              width="100%"
-              height="100%"
-              style="border:0; min-height: 480px;"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Bina Project Office Map"
-              class="contact-map-iframe"
-            ></iframe>
-          </div>
+        <div class="map-container">
+          <iframe
+            src={siteConfig.contact.googleMapsEmbedUrl}
+            width="100%"
+            height="100%"
+            style="border:0; min-height: 450px;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title={`Google Maps Location ${siteConfig.name}`}
+          ></iframe>
         </div>
       </div>
     </div>
@@ -134,6 +118,14 @@ const siteConfig = await getSiteSettings();
 </BaseLayout>
 
 <style>
+  .map-direction-btn {
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 48px;
+    padding: 12px 18px;
+    display: inline-flex;
+    align-items: center;
+  }
   .contact-bento-card {
     background: #FFFFFF;
     border-radius: 1.25rem;
@@ -210,75 +202,68 @@ const siteConfig = await getSiteSettings();
     background: #10B981;
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
   }
-  .contact-form-glass-container {
-    background: #FFFFFF;
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
-  }
-  .contact-form-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 12px;
-    border-radius: 9999px;
-    background: #F1F5F9;
-    color: #183158;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .contact-form-title {
-    font-size: clamp(22px, 2.5vw, 28px);
-    font-weight: 800;
-    color: #0F172A;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-  .contact-form-subtitle {
-    font-size: 14px;
-    color: #64748B;
-    line-height: 1.6;
-    margin-bottom: 0;
-  }
   .contact-map-wrapper {
-    position: relative;
-    border-radius: 1.5rem;
+    background: #FFFFFF;
+    border: none;
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06);
-    border: 1px solid #E2E8F0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 30px rgba(34, 65, 109, 0.06);
   }
-  .contact-map-iframe {
+  .map-header {
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border-bottom: 1px solid #F1F5F9;
+  }
+  .map-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #EFF6FF;
+    color: var(--theme-color, #22416D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .map-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--title-color, #17202A);
+  }
+  .map-subtitle {
+    font-size: 14px;
+    color: #334155;
+  }
+  .map-container {
+    flex-grow: 1;
+    height: 100%;
+    min-height: 450px;
+    position: relative;
+  }
+  .map-container iframe {
     width: 100%;
     height: 100%;
-    min-height: 520px;
-    border: none;
+    min-height: 450px;
+    border: 0;
     display: block;
   }
-  .map-overlay-badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 10;
-    background: rgba(14, 30, 56, 0.9);
-    backdrop-filter: blur(8px);
-    padding: 0.75rem 1.25rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
-  .pulse-point {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #F59E0B;
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
-  }
   @media (max-width: 767px) {
-    .contact-form-glass-container {
-      padding: 1.5rem;
+    .map-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+    }
+  }
+  @media (max-width: 575px) {
+    .map-direction-btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
