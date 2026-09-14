@@ -166,6 +166,7 @@ import TeamSection from '@components/TeamSection.astro';
     background-color: #f1f5f9;
     border-radius: 8px;
     overflow: hidden;
+    will-change: transform;
   }
 
   .img-box3 .img1 img {
@@ -422,3 +423,153 @@ import TeamSection from '@components/TeamSection.astro';
     color: #FFFFFF;
   }
 </style>
+
+<script>
+  let aboutPageMatchMediaCtx: any = null;
+
+  function initAboutPageScrollTrigger() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    // @ts-ignore
+    const gsap = window.gsap;
+    // @ts-ignore
+    const ScrollTrigger = window.ScrollTrigger;
+
+    if (!gsap || !ScrollTrigger) {
+      let attempts = 0;
+      const interval = setInterval(() => {
+        attempts++;
+        // @ts-ignore
+        if (window.gsap && window.ScrollTrigger) {
+          clearInterval(interval);
+          initAboutPageScrollTrigger();
+        } else if (attempts > 30) {
+          clearInterval(interval);
+        }
+      }, 100);
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = document.querySelector('#about-sec');
+    if (!section) return;
+
+    if (aboutPageMatchMediaCtx) {
+      aboutPageMatchMediaCtx.revert();
+    }
+
+    aboutPageMatchMediaCtx = gsap.matchMedia();
+
+    // Desktop (> 768px): Parallax Scrub + Stagger Reveal
+    aboutPageMatchMediaCtx.add('(min-width: 769px)', () => {
+      const imgBox = section.querySelector('.img-box3 .img1');
+      if (imgBox) {
+        gsap.to(imgBox, {
+          yPercent: -12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        });
+      }
+
+      const headerEl = section.querySelector('.section-header');
+      const items = section.querySelectorAll('.about-item');
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      if (headerEl) {
+        tl.from(headerEl, {
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: 'power3.out',
+        });
+      }
+
+      if (items.length) {
+        tl.from(
+          items,
+          {
+            opacity: 0,
+            y: 25,
+            stagger: 0.15,
+            duration: 0.7,
+            ease: 'power2.out',
+          },
+          '-=0.4'
+        );
+      }
+    });
+
+    // Mobile (<= 768px): Lightweight Reveal
+    aboutPageMatchMediaCtx.add('(max-width: 768px)', () => {
+      const imgBox = section.querySelector('.img-box3');
+      const headerEl = section.querySelector('.section-header');
+      const items = section.querySelectorAll('.about-item');
+
+      const mobileTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      if (imgBox) {
+        mobileTl.from(imgBox, {
+          opacity: 0,
+          y: 20,
+          duration: 0.6,
+          ease: 'power2.out',
+        });
+      }
+
+      if (headerEl) {
+        mobileTl.from(
+          headerEl,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            ease: 'power2.out',
+          },
+          '-=0.3'
+        );
+      }
+
+      if (items.length) {
+        mobileTl.from(
+          items,
+          {
+            opacity: 0,
+            y: 16,
+            stagger: 0.12,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        );
+      }
+    });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initAboutPageScrollTrigger();
+  } else {
+    window.addEventListener('DOMContentLoaded', initAboutPageScrollTrigger);
+  }
+  document.addEventListener('astro:page-load', initAboutPageScrollTrigger);
+</script>

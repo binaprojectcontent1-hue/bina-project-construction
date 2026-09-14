@@ -176,6 +176,14 @@ const t = useTranslations(currentLang);
     padding: 20px 10px;
   }
 
+  .main-photo-frame,
+  .inset-photo-frame,
+  .floating-proof-card,
+  .floating-experience-badge,
+  .blueprint-grid-backdrop {
+    will-change: transform;
+  }
+
   /* Blueprint Grid Backdrop */
   .blueprint-grid-backdrop {
     position: absolute;
@@ -605,3 +613,298 @@ const t = useTranslations(currentLang);
     }
   }
 </style>
+
+<script>
+  let aboutMatchMediaCtx: any = null;
+
+  function initAboutSectionScrollTrigger() {
+    // Respect user motion preferences
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    // @ts-ignore
+    const gsap = window.gsap;
+    // @ts-ignore
+    const ScrollTrigger = window.ScrollTrigger;
+
+    // Retry if GSAP / ScrollTrigger scripts are still loading via defer
+    if (!gsap || !ScrollTrigger) {
+      let attempts = 0;
+      const interval = setInterval(() => {
+        attempts++;
+        // @ts-ignore
+        if (window.gsap && window.ScrollTrigger) {
+          clearInterval(interval);
+          initAboutSectionScrollTrigger();
+        } else if (attempts > 30) {
+          clearInterval(interval);
+        }
+      }, 100);
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = document.querySelector('#about-sec.about-modern-sec') as HTMLElement | null;
+    if (!section) return;
+
+    // Revert existing context on hot reload or page navigation
+    if (aboutMatchMediaCtx) {
+      aboutMatchMediaCtx.revert();
+    }
+
+    aboutMatchMediaCtx = gsap.matchMedia();
+
+    // =========================================================================
+    // Desktop & Tablet (> 768px): Full Multi-layer Parallax Scrub + Reveal
+    // =========================================================================
+    aboutMatchMediaCtx.add('(min-width: 769px)', () => {
+      const mainPhoto = section.querySelector('.main-photo-frame');
+      const insetPhoto = section.querySelector('.inset-photo-frame');
+      const topBadge = section.querySelector('.floating-proof-card.top-card');
+      const bottomBadge = section.querySelector('.floating-experience-badge.bottom-card');
+      const gridBackdrop = section.querySelector('.blueprint-grid-backdrop');
+
+      // 1. Continuous Parallax Scrubbing on Left Visual Composition
+      if (mainPhoto) {
+        gsap.to(mainPhoto, {
+          yPercent: -10,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        });
+      }
+
+      if (insetPhoto) {
+        gsap.to(insetPhoto, {
+          yPercent: -26,
+          rotate: 1.5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+        });
+      }
+
+      if (topBadge) {
+        gsap.to(topBadge, {
+          yPercent: -35,
+          xPercent: 4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.8,
+          },
+        });
+      }
+
+      if (bottomBadge) {
+        gsap.to(bottomBadge, {
+          yPercent: -18,
+          xPercent: -4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.0,
+          },
+        });
+      }
+
+      if (gridBackdrop) {
+        gsap.to(gridBackdrop, {
+          yPercent: -8,
+          scale: 1.05,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 2.0,
+          },
+        });
+      }
+
+      // 2. Right Column Reveal on View (Staggered Entrance)
+      const contentWrap = section.querySelector('.about-content-wrap');
+      const bentoCards = section.querySelectorAll('.bento-pillar-card');
+      const actionBtns = section.querySelector('.about-actions-group');
+
+      if (contentWrap) {
+        const headerElements = contentWrap.querySelectorAll('.section-header, .section-header__title, .section-header__desc');
+        const revealTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 75%',
+            toggleActions: 'play none none none',
+          },
+        });
+
+        if (headerElements.length) {
+          revealTl.from(headerElements, {
+            opacity: 0,
+            y: 35,
+            stagger: 0.12,
+            duration: 0.8,
+            ease: 'power3.out',
+          });
+        }
+
+        if (bentoCards.length) {
+          revealTl.from(
+            bentoCards,
+            {
+              opacity: 0,
+              y: 28,
+              stagger: 0.14,
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            '-=0.4'
+          );
+        }
+
+        if (actionBtns) {
+          revealTl.from(
+            actionBtns,
+            {
+              opacity: 0,
+              y: 20,
+              duration: 0.6,
+              ease: 'power2.out',
+            },
+            '-=0.3'
+          );
+        }
+      }
+
+      // 3. Interactive Number Counter for 162+ Proyek
+      const counterEl = section.querySelector('.exp-count');
+      if (counterEl) {
+        ScrollTrigger.create({
+          trigger: counterEl,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            const countObj = { count: 0 };
+            gsap.to(countObj, {
+              count: 162,
+              duration: 2.0,
+              ease: 'power2.out',
+              onUpdate: () => {
+                counterEl.innerHTML = `${Math.floor(countObj.count)}<span class="exp-plus">+</span>`;
+              },
+            });
+          },
+        });
+      }
+    });
+
+    // =========================================================================
+    // Mobile (<= 768px): Smooth Lightweight Entrance Reveal (No Heavy Scrub)
+    // =========================================================================
+    aboutMatchMediaCtx.add('(max-width: 768px)', () => {
+      const mainPhoto = section.querySelector('.main-photo-frame');
+      const mobileBadges = section.querySelectorAll('.floating-proof-card, .floating-experience-badge');
+      const bentoCards = section.querySelectorAll('.bento-pillar-card');
+      const contentWrap = section.querySelector('.about-content-wrap');
+
+      const mobileTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      if (mainPhoto) {
+        mobileTl.from(mainPhoto, {
+          opacity: 0,
+          y: 25,
+          duration: 0.7,
+          ease: 'power2.out',
+        });
+      }
+
+      if (mobileBadges.length) {
+        mobileTl.from(
+          mobileBadges,
+          {
+            opacity: 0,
+            y: 20,
+            stagger: 0.12,
+            duration: 0.6,
+            ease: 'power2.out',
+          },
+          '-=0.3'
+        );
+      }
+
+      if (contentWrap) {
+        mobileTl.from(
+          contentWrap,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.7,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        );
+      }
+
+      if (bentoCards.length) {
+        mobileTl.from(
+          bentoCards,
+          {
+            opacity: 0,
+            y: 16,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.3'
+        );
+      }
+
+      const counterEl = section.querySelector('.exp-count');
+      if (counterEl) {
+        ScrollTrigger.create({
+          trigger: counterEl,
+          start: 'top 90%',
+          once: true,
+          onEnter: () => {
+            const countObj = { count: 0 };
+            gsap.to(countObj, {
+              count: 162,
+              duration: 1.6,
+              ease: 'power2.out',
+              onUpdate: () => {
+                counterEl.innerHTML = `${Math.floor(countObj.count)}<span class="exp-plus">+</span>`;
+              },
+            });
+          },
+        });
+      }
+    });
+  }
+
+  // Initialize on page load and view transitions
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initAboutSectionScrollTrigger();
+  } else {
+    window.addEventListener('DOMContentLoaded', initAboutSectionScrollTrigger);
+  }
+  document.addEventListener('astro:page-load', initAboutSectionScrollTrigger);
+</script>
