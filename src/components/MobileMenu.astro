@@ -1,25 +1,40 @@
 ---
 import { siteConfig } from '@config/site';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
+import LanguageSwitcher from '@components/LanguageSwitcher.astro';
 
 const currentPath = Astro.url.pathname;
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
-const navLinks = siteConfig.mainNav.map((item) => ({
-  ...item,
-  isActive: item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href),
-}));
+const navLinks = [
+  { name: t('nav.home'), href: getLocalizedPath('/', currentLang), icon: 'solar:home-smile-linear' },
+  { name: t('nav.about'), href: getLocalizedPath('/about', currentLang), icon: 'solar:buildings-2-linear' },
+  { name: t('nav.portfolio'), href: getLocalizedPath('/portfolio', currentLang), icon: 'solar:gallery-wide-linear' },
+  { name: t('nav.liveProjects'), href: `${getLocalizedPath('/about', currentLang)}#proyek-berjalan`, icon: 'solar:map-point-linear' },
+  { name: t('nav.articles'), href: getLocalizedPath('/blog', currentLang), icon: 'solar:document-text-linear' },
+  { name: t('nav.contact'), href: getLocalizedPath('/contact', currentLang), icon: 'solar:chat-round-dots-linear' },
+].map((item) => {
+  const isHome = item.href === '/' || item.href === '/en';
+  const isActive = isHome ? (currentPath === '/' || currentPath === '/en') : currentPath.startsWith(item.href);
+  return { ...item, isActive };
+});
 ---
 
 <div class="th-menu-wrapper custom-mobile-menu">
   <div class="th-menu-area custom-drawer-body">
     <!-- Top Header -->
     <div class="drawer-header d-flex align-items-center justify-content-between pb-20 mb-20 border-bottom">
-      <a href="/" class="d-inline-flex align-items-center">
+      <a href={getLocalizedPath('/', currentLang)} class="d-inline-flex align-items-center">
         <img src="/assets/img/logo.svg" alt="Bina Project Logo" width="160" height="56" />
       </a>
-      <button type="button" class="th-menu-toggle drawer-close-btn" aria-label="Tutup Menu Mobile">
-        <Icon name="solar:close-circle-linear" width="22" height="22" />
-      </button>
+      <div class="d-flex align-items-center gap-2">
+        <LanguageSwitcher />
+        <button type="button" class="th-menu-toggle drawer-close-btn" aria-label="Tutup Menu Mobile">
+          <Icon name="solar:close-circle-linear" width="22" height="22" />
+        </button>
+      </div>
     </div>
 
     <!-- Navigation Menu Landmark -->
@@ -62,7 +77,7 @@ const navLinks = siteConfig.mainNav.map((item) => ({
         class="th-btn style1 w-100 py-3 mb-15 text-center d-flex align-items-center justify-content-center"
         style="border-radius: 12px; font-weight: 700; font-size: 14px;"
       >
-        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> KONSULTASI GRATIS
+        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> {t('cta.consultation')}
       </a>
 
       <div class="d-flex justify-content-center gap-3">

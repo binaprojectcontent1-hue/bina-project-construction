@@ -1,0 +1,74 @@
+---
+/**
+ * @file LanguageSwitcher.astro
+ * @description Glassmorphism Pill Language Switcher (ID / EN)
+ */
+import { getLangFromUrl, getLocalizedPath } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
+const idPath = getLocalizedPath(currentPath, 'id');
+const enPath = getLocalizedPath(currentPath, 'en');
+---
+
+<div class="lang-switcher-dock" role="navigation" aria-label="Language Selector">
+  <a
+    href={idPath}
+    class={`lang-pill ${currentLang === 'id' ? 'active' : ''}`}
+    aria-label="Bahasa Indonesia"
+    aria-current={currentLang === 'id' ? 'true' : undefined}
+  >
+    ID
+  </a>
+  <span class="lang-divider">/</span>
+  <a
+    href={enPath}
+    class={`lang-pill ${currentLang === 'en' ? 'active' : ''}`}
+    aria-label="English"
+    aria-current={currentLang === 'en' ? 'true' : undefined}
+  >
+    EN
+  </a>
+</div>
+
+<style>
+  .lang-switcher-dock {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    border-radius: 9999px;
+    padding: 3px 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    user-select: none;
+    line-height: 1;
+  }
+  .lang-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 7px;
+    border-radius: 9999px;
+    color: #64748B;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .lang-pill:hover {
+    color: #0E1E38;
+  }
+  .lang-pill.active {
+    background: #183158;
+    color: #FFFFFF !important;
+    box-shadow: 0 1px 4px rgba(24, 49, 88, 0.25);
+  }
+  .lang-divider {
+    color: #CBD5E1;
+    margin: 0 2px;
+    font-size: 10px;
+    font-weight: 400;
+  }
+</style>

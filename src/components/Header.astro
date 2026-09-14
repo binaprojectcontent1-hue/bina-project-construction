@@ -1,13 +1,25 @@
 ---
 import { siteConfig } from '@config/site';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
+import LanguageSwitcher from '@components/LanguageSwitcher.astro';
 
 const currentPath = Astro.url.pathname;
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
-const navItems = siteConfig.mainNav.map((item) => ({
-  ...item,
-  isActive: item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href),
-}));
+const navItems = [
+  { name: t('nav.home'), href: getLocalizedPath('/', currentLang) },
+  { name: t('nav.about'), href: getLocalizedPath('/about', currentLang) },
+  { name: t('nav.portfolio'), href: getLocalizedPath('/portfolio', currentLang) },
+  { name: t('nav.liveProjects'), href: `${getLocalizedPath('/about', currentLang)}#proyek-berjalan` },
+  { name: t('nav.articles'), href: getLocalizedPath('/blog', currentLang) },
+  { name: t('nav.contact'), href: getLocalizedPath('/contact', currentLang) },
+].map((item) => {
+  const isHome = item.href === '/' || item.href === '/en';
+  const isActive = isHome ? (currentPath === '/' || currentPath === '/en') : currentPath.startsWith(item.href);
+  return { ...item, isActive };
+});
 ---
 
 <header class="modern-header">
@@ -67,7 +79,7 @@ const navItems = siteConfig.mainNav.map((item) => ({
       <div class="d-flex align-items-center justify-content-between py-2">
         <!-- Logo -->
         <div class="navbar-logo">
-          <a href="/" class="d-flex align-items-center">
+          <a href={getLocalizedPath('/', currentLang)} class="d-flex align-items-center">
             <img
               src="/assets/img/logo.svg"
               alt="Bina Project Logo"
@@ -95,13 +107,16 @@ const navItems = siteConfig.mainNav.map((item) => ({
         </div>
 
         <!-- shadcn/ui Style Actions -->
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2 gap-sm-3">
+          <!-- Language Switcher -->
+          <LanguageSwitcher />
+
           <button type="button" class="action-icon-btn sideMenuToggler d-none d-xl-flex" aria-label="Buka Menu Panel">
             <Icon name="solar:widget-linear" width="20" height="20" />
           </button>
           
-          <a href="/contact" class="shadcn-cta-btn d-none d-sm-inline-flex">
-            <span>KONSULTASI GRATIS</span>
+          <a href={getLocalizedPath('/contact', currentLang)} class="shadcn-cta-btn d-none d-sm-inline-flex">
+            <span>{t('cta.consultation')}</span>
             <Icon name="solar:arrow-right-up-linear" width="16" height="16" class="ms-2 arrow-icon" />
           </a>
 
