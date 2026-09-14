@@ -1,12 +1,40 @@
 ---
 import { siteConfig } from '@config/site';
 import { Icon } from 'astro-icon/components';
-import { FOOTER_SERVICES, FOOTER_QUICK_LINKS } from '@data/navigation';
 import { createWhatsAppUrl } from '@utils/whatsapp';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
 
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 const currentYear = new Date().getFullYear();
-const servicesList = FOOTER_SERVICES;
-const quickLinks = FOOTER_QUICK_LINKS;
+
+const quickLinks = [
+  { name: t('nav.home'), href: getLocalizedPath('/', currentLang) },
+  { name: t('nav.about'), href: getLocalizedPath('/about', currentLang) },
+  { name: t('nav.portfolio'), href: getLocalizedPath('/portfolio', currentLang) },
+  { name: t('nav.liveProjects'), href: `${getLocalizedPath('/about', currentLang)}#proyek-berjalan` },
+  { name: t('nav.articles'), href: getLocalizedPath('/blog', currentLang) },
+  { name: t('nav.contact'), href: getLocalizedPath('/contact', currentLang) },
+  { name: currentLang === 'en' ? 'Terms & Conditions' : 'Syarat & Ketentuan', href: getLocalizedPath('/syarat-ketentuan', currentLang) },
+];
+
+const servicesList = currentLang === 'en' ? [
+  { name: 'New Residential & Villa Construction', href: getLocalizedPath('/portfolio', currentLang) },
+  { name: 'Bespoke Interior & Kitchen Sets', href: getLocalizedPath('/portfolio', currentLang) },
+  { name: 'Renovation & Expansions', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Commercial Buildings & Cafes', href: getLocalizedPath('/portfolio', currentLang) },
+  { name: '3D Architectural Planning & BOQ', href: getLocalizedPath('/contact', currentLang) },
+] : [
+  { name: 'Konstruksi Rumah & Villa Baru', href: '/portfolio' },
+  { name: 'Desain Interior & Kitchen Set', href: '/portfolio' },
+  { name: 'Renovasi & Penambahan Ruang', href: '/contact' },
+  { name: 'Cafe & Bangunan Komersial', href: '/portfolio' },
+  { name: 'Perencanaan 3D & Pembuatan RAB', href: '/contact' },
+];
+
+const waFooterMessage = currentLang === 'en'
+  ? 'Hello Bina Project Team, I would like to consult on my building project and cost estimation.'
+  : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek konstruksi/interior dan estimasi RAB gratis.';
 ---
 
 <footer class="modern-footer">
@@ -16,20 +44,20 @@ const quickLinks = FOOTER_QUICK_LINKS;
       <div class="footer-callout-card">
         <div class="row align-items-center justify-content-between gy-4">
           <div class="col-lg-7">
-            <h3 class="callout-title mb-2">Siap Mewujudkan Bangunan & Interior Impian Anda?</h3>
+            <h3 class="callout-title mb-2">{t('footer.ctaTitle')}</h3>
             <p class="callout-desc mb-0">
-              Diskusikan konsep desain, survei lokasi lahan, dan estimasi anggaran biaya (RAB) tanpa komitmen di awal bersama arsitek kami.
+              {t('footer.ctaDesc')}
             </p>
           </div>
           <div class="col-lg-auto">
             <a
-              href={createWhatsAppUrl()}
+              href={createWhatsAppUrl({ customMessage: waFooterMessage })}
               target="_blank"
               rel="noopener noreferrer"
               class="footer-cta-btn"
             >
               <Icon name="simple-icons:whatsapp" width="20" height="20" class="me-2" />
-              <span>KONSULTASI VIA WHATSAPP</span>
+              <span>{t('footer.ctaButton')}</span>
               <Icon name="solar:arrow-right-up-linear" width="16" height="16" class="ms-2 arrow-icon" />
             </a>
           </div>
@@ -46,12 +74,12 @@ const quickLinks = FOOTER_QUICK_LINKS;
         <div class="col-lg-4 col-md-6">
           <div class="footer-col pe-xl-4">
             <div class="footer-logo mb-25">
-              <a href="/" class="d-inline-block">
+              <a href={getLocalizedPath('/', currentLang)} class="d-inline-block">
                 <img src="/assets/img/logo.svg" alt="Bina Project Logo" width="200" height="70" class="logo-brightness" />
               </a>
             </div>
             <p class="footer-bio mb-25">
-              {siteConfig.description}
+              {t('footer.about')}
             </p>
             <div class="footer-social-row">
               {siteConfig.socials.map((social) => (
@@ -72,7 +100,7 @@ const quickLinks = FOOTER_QUICK_LINKS;
         <!-- Col 2: Navigasi Cepat -->
         <div class="col-lg-2 col-md-6 col-sm-6 col-12">
           <div class="footer-col">
-            <h4 class="footer-col-title mb-25">Navigasi</h4>
+            <h4 class="footer-col-title mb-25">{t('footer.quickLinks')}</h4>
             <ul class="footer-link-list p-0 m-0">
               {quickLinks.map((nav) => (
                 <li>
@@ -89,7 +117,7 @@ const quickLinks = FOOTER_QUICK_LINKS;
         <!-- Col 3: Layanan Spesialis -->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
           <div class="footer-col">
-            <h4 class="footer-col-title mb-25">Layanan Spesialis</h4>
+            <h4 class="footer-col-title mb-25">{t('footer.services')}</h4>
             <ul class="footer-link-list p-0 m-0">
               {servicesList.map((service) => (
                 <li>
@@ -106,7 +134,7 @@ const quickLinks = FOOTER_QUICK_LINKS;
         <!-- Col 4: Informasi Kontak & Status -->
         <div class="col-lg-3 col-md-6">
           <div class="footer-col">
-            <h4 class="footer-col-title mb-25">Kontak & Workshop</h4>
+            <h4 class="footer-col-title mb-25">{currentLang === 'en' ? 'Contact & Studio' : 'Kontak & Workshop'}</h4>
             <div class="footer-contact-cards">
               <!-- Address -->
               <a href={siteConfig.contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="footer-contact-card">
@@ -114,7 +142,7 @@ const quickLinks = FOOTER_QUICK_LINKS;
                   <Icon name="solar:map-point-linear" width="16" height="16" />
                 </div>
                 <div>
-                  <span class="contact-card-label">Studio & Kantor</span>
+                  <span class="contact-card-label">{currentLang === 'en' ? 'Studio & Office' : 'Studio & Kantor'}</span>
                   <p class="contact-card-value mb-0">{siteConfig.contact.address}</p>
                 </div>
               </a>
@@ -136,7 +164,7 @@ const quickLinks = FOOTER_QUICK_LINKS;
                   <Icon name="solar:letter-linear" width="16" height="16" />
                 </div>
                 <div>
-                  <span class="contact-card-label">Email Resmi</span>
+                  <span class="contact-card-label">{currentLang === 'en' ? 'Official Email' : 'Email Resmi'}</span>
                   <p class="contact-card-value mb-0">{siteConfig.contact.email}</p>
                 </div>
               </a>
@@ -147,8 +175,10 @@ const quickLinks = FOOTER_QUICK_LINKS;
                   <Icon name="solar:clock-circle-linear" width="16" height="16" />
                 </div>
                 <div>
-                  <span class="contact-card-label">Jam Operasional</span>
-                  <p class="contact-card-value mb-0">{siteConfig.contact.openingHours}</p>
+                  <span class="contact-card-label">{t('footer.officeHoursTitle')}</span>
+                  <p class="contact-card-value mb-0">
+                    {currentLang === 'en' ? 'Monday - Saturday: 08:00 - 16:00 WIB' : siteConfig.contact.openingHours}
+                  </p>
                 </div>
               </div>
             </div>
@@ -163,14 +193,20 @@ const quickLinks = FOOTER_QUICK_LINKS;
     <div class="container">
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
         <p class="copyright-text mb-0">
-          &copy; {currentYear} <strong>{siteConfig.legalName}</strong>. Hak Cipta Dilindungi.
+          &copy; {currentYear} <strong>{siteConfig.legalName}</strong>. {t('footer.rights')}
         </p>
         <div class="copyright-links d-flex align-items-center gap-4">
-          <a href="/syarat-ketentuan" class="bottom-link">Syarat & Ketentuan</a>
+          <a href={getLocalizedPath('/syarat-ketentuan', currentLang)} class="bottom-link">
+            {currentLang === 'en' ? 'Terms & Conditions' : 'Syarat & Ketentuan'}
+          </a>
           <span class="link-dot">•</span>
-          <a href="/about" class="bottom-link">Tentang Kami</a>
+          <a href={getLocalizedPath('/about', currentLang)} class="bottom-link">
+            {t('nav.about')}
+          </a>
           <span class="link-dot">•</span>
-          <a href="/contact" class="bottom-link">Kontak Kami</a>
+          <a href={getLocalizedPath('/contact', currentLang)} class="bottom-link">
+            {t('nav.contact')}
+          </a>
         </div>
       </div>
     </div>
@@ -200,63 +236,53 @@ const quickLinks = FOOTER_QUICK_LINKS;
   }
 
   .footer-callout-card {
-    background: rgba(34, 65, 109, 0.45);
-    border: none;
-    border-radius: 20px;
-    padding: 35px 40px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-
-  .callout-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 14px;
-    background: rgba(132, 172, 223, 0.12);
-    border: 1px solid rgba(132, 172, 223, 0.25);
-    color: #84ACDF;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl, 24px);
+    padding: 35px 45px;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
   }
 
   .callout-title {
-    font-size: 26px;
-    font-weight: 700;
     color: #FFFFFF;
-    line-height: 1.35;
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .callout-desc {
-    font-size: 14px;
     color: #94A3B8;
-    max-width: 600px;
+    font-size: 15px;
     line-height: 1.6;
+    max-width: 600px;
   }
 
   .footer-cta-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #22416D;
+    background-color: #25D366;
     color: #FFFFFF !important;
-    padding: 15px 30px;
-    border-radius: 14px;
-    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    padding: 14px 26px;
+    border-radius: var(--radius-full, 9999px);
     text-decoration: none;
-    border: 1.5px solid #84ACDF;
-    box-shadow: 0 4px 16px rgba(34, 65, 109, 0.3);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
   }
 
   .footer-cta-btn:hover {
-    background: #345F99;
-    border-color: #84ACDF;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    color: #FFFFFF !important;
   }
 
-  .footer-cta-btn .arrow-icon {
-    transition: transform 0.2s ease;
+  .arrow-icon {
+    transition: transform 0.3s ease;
   }
 
   .footer-cta-btn:hover .arrow-icon {
@@ -265,75 +291,57 @@ const quickLinks = FOOTER_QUICK_LINKS;
 
   /* Main Area */
   .footer-main-area {
-    padding: 50px 0 60px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 40px;
+    padding-bottom: 60px;
+  }
+
+  .footer-col-title {
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    position: relative;
+    display: inline-block;
+  }
+
+  .footer-bio {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #94A3B8;
   }
 
   .logo-brightness {
     filter: brightness(0) invert(1);
     opacity: 0.95;
-    transition: opacity 0.2s ease;
   }
 
-  .logo-brightness:hover {
-    opacity: 1;
-  }
-
-  .footer-bio {
-    font-size: 14px;
-    line-height: 1.65;
-    color: #94A3B8;
-  }
-
+  /* Social Icons */
   .footer-social-row {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .footer-social-circle {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    min-height: 48px;
-    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #CBD5E1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: all 0.25s ease;
   }
 
   .footer-social-circle:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.25);
+    background: var(--bina-gold, #F68A0A);
+    border-color: var(--bina-gold, #F68A0A);
     color: #FFFFFF;
+    transform: translateY(-3px);
   }
 
-  .footer-col-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #FFFFFF;
-    letter-spacing: 0.3px;
-    position: relative;
-    padding-bottom: 12px;
-  }
-
-  .footer-col-title::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 32px;
-    height: 2px;
-    background: #84ACDF;
-    border-radius: 2px;
-  }
-
+  /* Links */
   .footer-link-list {
     list-style: none;
     display: flex;
@@ -342,149 +350,125 @@ const quickLinks = FOOTER_QUICK_LINKS;
   }
 
   .footer-link {
+    display: inline-flex;
+    align-items: center;
     color: #94A3B8;
     font-size: 14px;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
   }
 
   .link-chevron {
-    font-size: 11px;
-    color: #94A3B8;
-    transition: color 0.2s ease;
+    color: var(--bina-gold, #F68A0A);
+    transition: transform 0.2s ease;
+    opacity: 0.7;
   }
 
   .footer-link:hover {
-    color: #84ACDF;
+    color: #FFFFFF;
+    transform: translateX(4px);
   }
 
   .footer-link:hover .link-chevron {
-    color: #84ACDF;
+    opacity: 1;
+    transform: translateX(2px);
   }
 
-  /* Contact Cards in Col 4 */
+  /* Contact Cards */
   .footer-contact-cards {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .footer-contact-card {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.04);
-    border: none;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 12px;
+    color: inherit;
     text-decoration: none;
-    transition: background-color 0.2s ease;
+    transition: all 0.25s ease;
   }
 
   .footer-contact-card:hover {
-    background: rgba(132, 172, 223, 0.1);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
   }
 
   .contact-card-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    color: #84ACDF;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(246, 138, 10, 0.12);
+    color: var(--bina-gold, #F68A0A);
     flex-shrink: 0;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .footer-contact-card:hover .contact-card-icon {
-    background: #22416D;
-    color: #FFFFFF;
   }
 
   .contact-card-label {
     display: block;
     font-size: 11px;
-    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #94A3B8;
+    letter-spacing: 0.05em;
+    color: #64748B;
+    font-weight: 600;
     margin-bottom: 2px;
   }
 
   .contact-card-value {
     font-size: 13px;
-    font-weight: 600;
-    color: #E2E8F0;
+    font-weight: 500;
+    color: #CBD5E1;
     line-height: 1.4;
   }
 
-  .footer-live-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    border-radius: 20px;
-    font-size: 13px;
-    color: var(--bina-success, #10B981);
-    font-weight: 600;
-    margin-top: 4px;
-  }
-
-  .live-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
-    animation: livePulse 2s infinite;
-  }
-
-  @keyframes livePulse {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.8; }
-  }
-
-
   /* Copyright Bar */
   .footer-copyright-bar {
-    padding: 22px 0;
-    background: rgba(0, 0, 0, 0.3);
-    font-size: 14px;
-    color: #CBD5E1;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 24px 0;
+    font-size: 13px;
+  }
+
+  .copyright-text {
+    color: #64748B;
   }
 
   .copyright-text strong {
-    color: #FFFFFF;
+    color: #94A3B8;
   }
 
   .bottom-link {
-    color: #CBD5E1;
+    color: #64748B;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    min-height: 48px;
-    padding: 8px 6px;
     transition: color 0.2s ease;
   }
 
   .bottom-link:hover {
-    color: #84ACDF;
+    color: #F8FAFC;
   }
 
   .link-dot {
     color: #334155;
-    user-select: none;
+    font-size: 10px;
   }
 
-  .text-cyan {
-    color: #84ACDF !important;
+  @media (max-width: 991px) {
+    .footer-callout-card {
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .callout-desc {
+      margin: 0 auto;
+    }
+    .footer-callout-card .col-lg-auto {
+      margin-top: 10px;
+    }
   }
 </style>

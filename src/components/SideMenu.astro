@@ -1,16 +1,20 @@
 ---
 import { siteConfig } from '@config/site';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <div class="sidemenu-wrapper sidemenu-info">
   <div class="sidemenu-content modern-sidemenu">
     <!-- Header Drawer -->
     <div class="d-flex align-items-center justify-content-between mb-35 pb-25 border-bottom">
-      <a href="/" class="d-inline-block">
+      <a href={getLocalizedPath('/', currentLang)} class="d-inline-block">
         <img src="/assets/img/logo.svg" alt="Bina Project Logo" width="180" height="63" />
       </a>
-      <button class="modern-close-btn sideMenuCls" aria-label="Tutup Menu">
+      <button class="modern-close-btn sideMenuCls" aria-label={currentLang === 'en' ? 'Close Menu' : 'Tutup Menu'}>
         <Icon name="solar:close-circle-linear" width="22" height="22" />
       </button>
     </div>
@@ -18,16 +22,16 @@ import { Icon } from 'astro-icon/components';
     <!-- About Section -->
     <div class="sidebar-block mb-35">
       <div class="studio-badge mb-15">
-        <Icon name="solar:pen-new-square-linear" width="14" height="14" class="me-1 text-theme" /> Studio Arsitektur & Kontraktor
+        <Icon name="solar:pen-new-square-linear" width="14" height="14" class="me-1 text-theme" /> {t('sidemenu.badge')}
       </div>
       <p class="sidebar-text">
-        {siteConfig.description}
+        {t('site.description')}
       </p>
     </div>
 
     <!-- Contact Information Cards -->
     <div class="sidebar-block mb-35">
-      <p class="sidebar-section-title mb-20">Informasi Kontak</p>
+      <p class="sidebar-section-title mb-20">{t('sidemenu.contactInfo')}</p>
       
       <div class="sidebar-info-list">
         <!-- Address -->
@@ -36,7 +40,7 @@ import { Icon } from 'astro-icon/components';
             <Icon name="solar:map-point-linear" width="18" height="18" />
           </div>
           <div>
-            <span class="info-label">Alamat Kantor</span>
+            <span class="info-label">{t('sidemenu.address')}</span>
             <p class="info-val mb-0">{siteConfig.contact.address}</p>
           </div>
         </a>
@@ -47,7 +51,7 @@ import { Icon } from 'astro-icon/components';
             <Icon name="simple-icons:whatsapp" width="18" height="18" />
           </div>
           <div>
-            <span class="info-label">WhatsApp Hotline</span>
+            <span class="info-label">{t('sidemenu.hotline')}</span>
             <p class="info-val mb-0">{siteConfig.contact.phoneDisplay}</p>
           </div>
         </a>
@@ -58,7 +62,7 @@ import { Icon } from 'astro-icon/components';
             <Icon name="solar:letter-linear" width="18" height="18" />
           </div>
           <div>
-            <span class="info-label">Email Resmi</span>
+            <span class="info-label">{currentLang === 'en' ? 'Official Email' : 'Email Resmi'}</span>
             <p class="info-val mb-0">{siteConfig.contact.email}</p>
           </div>
         </a>
@@ -69,8 +73,8 @@ import { Icon } from 'astro-icon/components';
             <Icon name="solar:clock-circle-linear" width="18" height="18" />
           </div>
           <div>
-            <span class="info-label">Jam Operasional</span>
-            <p class="info-val mb-0">{siteConfig.contact.openingHours}</p>
+            <span class="info-label">{t('sidemenu.hours')}</span>
+            <p class="info-val mb-0">{t('sidemenu.hoursVal')}</p>
           </div>
         </div>
       </div>
@@ -78,7 +82,7 @@ import { Icon } from 'astro-icon/components';
 
     <!-- Social Media Links -->
     <div class="sidebar-block mb-35">
-      <p class="sidebar-section-title mb-15">Media Sosial</p>
+      <p class="sidebar-section-title mb-15">{currentLang === 'en' ? 'Social Channels' : 'Media Sosial'}</p>
       <div class="sidebar-social-list">
         {siteConfig.socials.map((social) => (
           <a
@@ -104,7 +108,7 @@ import { Icon } from 'astro-icon/components';
         style="border-radius: 12px; font-weight: 700;"
         onclick="if(typeof window.trackLead==='function') window.trackLead('sidemenu_wa', 'sidemenu');"
       >
-        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> KONSULTASI WHATSAPP
+        <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> {currentLang === 'en' ? 'WHATSAPP CONSULTATION' : 'KONSULTASI WHATSAPP'}
       </a>
     </div>
   </div>

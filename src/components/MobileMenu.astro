@@ -31,14 +31,14 @@ const navLinks = [
       </a>
       <div class="d-flex align-items-center gap-2">
         <LanguageSwitcher />
-        <button type="button" class="th-menu-toggle drawer-close-btn" aria-label="Tutup Menu Mobile">
+        <button type="button" class="th-menu-toggle drawer-close-btn" aria-label={currentLang === 'en' ? 'Close Mobile Menu' : 'Tutup Menu Mobile'}>
           <Icon name="solar:close-circle-linear" width="22" height="22" />
         </button>
       </div>
     </div>
 
     <!-- Navigation Menu Landmark -->
-    <nav class="drawer-nav-section flex-grow-1" aria-label="Navigasi Menu Mobile">
+    <nav class="drawer-nav-section flex-grow-1" aria-label={currentLang === 'en' ? 'Mobile Navigation' : 'Navigasi Menu Mobile'}>
       <div class="drawer-nav-list">
         {navLinks.map((item) => (
           <a

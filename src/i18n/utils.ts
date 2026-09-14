@@ -36,3 +36,22 @@ export function getLocalizedPath(pathname: string, targetLang: Language): string
   // Indonesian default locale has no prefix
   return basePath;
 }
+
+const CATEGORY_TRANSLATIONS: Record<string, { id: string; en: string }> = {
+  konstruksi: { id: 'Konstruksi', en: 'Construction' },
+  interior: { id: 'Interior', en: 'Interior' },
+  renovasi: { id: 'Renovasi', en: 'Renovation' },
+  arsitektur: { id: 'Arsitektur', en: 'Architecture' },
+  eksterior: { id: 'Eksterior', en: 'Exterior' },
+  'kitchen set': { id: 'Kitchen Set', en: 'Kitchen Set' },
+  developer: { id: 'Developer', en: 'Housing Development' },
+  waterproofing: { id: 'Waterproofing', en: 'Specialist Waterproofing' },
+};
+
+export function getCategoryLabel(category: string | undefined, lang: Language): string {
+  if (!category) return '';
+  const key = category.toLowerCase().trim();
+  const match = CATEGORY_TRANSLATIONS[key];
+  if (match) return match[lang];
+  return category;
+}

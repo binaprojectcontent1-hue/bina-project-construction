@@ -1,19 +1,27 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { createWhatsAppUrl } from '@utils/whatsapp';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+
+const defaultMsg = currentLang === 'en'
+  ? 'Hello Bina Project Team, I would like to consult on architectural construction & interior design plans.'
+  : 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.';
 
 const waUrl = createWhatsAppUrl({
-  customMessage: 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.',
+  customMessage: defaultMsg,
 });
 ---
 
-<aside class="floating-wa-wrapper" aria-label="Konsultasi Cepat WhatsApp">
+<aside class="floating-wa-wrapper" aria-label={currentLang === 'en' ? 'Quick WhatsApp Consultation' : 'Konsultasi Cepat WhatsApp'}>
   <a
     href={waUrl}
     target="_blank"
     rel="noopener noreferrer"
     class="floating-wa-btn"
-    aria-label="Chat WhatsApp Resmi Bina Project"
+    aria-label={currentLang === 'en' ? 'Official Bina Project WhatsApp' : 'Chat WhatsApp Resmi Bina Project'}
     id="floatingWhatsAppBtn"
   >
     <!-- Live Pulse Radar -->
@@ -27,7 +35,7 @@ const waUrl = createWhatsAppUrl({
     <!-- Text Pill Label (Visible on desktop / large viewports) -->
     <span class="floating-wa-label">
       <span class="floating-wa-status-dot"></span>
-      <span>Konsultasi Gratis</span>
+      <span>{t('floatingWa.label')}</span>
     </span>
   </a>
 </aside>
@@ -39,21 +47,28 @@ const waUrl = createWhatsAppUrl({
       if (!btn) return;
 
       const path = window.location.pathname;
-      let customMsg = 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.';
+      const isEn = path === '/en' || path.startsWith('/en/');
+      let customMsg = isEn
+        ? 'Hello Bina Project Team, I would like to consult on architectural construction & interior design plans.'
+        : 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.';
 
-      if (path.startsWith('/portfolio/')) {
+      if (path.includes('/portfolio/')) {
         const pageTitle = document.querySelector('h1, h2.sec-title')?.textContent?.trim();
         if (pageTitle) {
-          customMsg = `Halo Tim Arsitek Bina Project, saya tertarik dengan portofolio "${pageTitle}" di website dan ingin konsultasi estimasi biaya serta survei.`;
+          customMsg = isEn
+            ? `Hello Bina Project Team, I am interested in the "${pageTitle}" portfolio project on your website and would like to consult on cost estimation & survey.`
+            : `Halo Tim Arsitek Bina Project, saya tertarik dengan portofolio "${pageTitle}" di website dan ingin konsultasi estimasi biaya serta survei.`;
         }
       } else if (path.includes('jasa-konstruksi-')) {
         const citySlug = path.replace(/.*jasa-konstruksi-/, '').replace(/\//g, '');
         const cityName = citySlug ? citySlug.charAt(0).toUpperCase() + citySlug.slice(1) : 'Jawa Timur';
         customMsg = `Halo Tim Bina Project, saya ingin konsultasi rencana pembangunan/renovasi di area ${cityName}.`;
-      } else if (path.startsWith('/blog/')) {
+      } else if (path.includes('/blog/')) {
         const articleTitle = document.querySelector('h1.blog-title')?.textContent?.trim();
         if (articleTitle) {
-          customMsg = `Halo Tim Bina Project, saya baru membaca artikel "${articleTitle}" di website dan ingin konsultasi teknis terkait hal tersebut.`;
+          customMsg = isEn
+            ? `Hello Bina Project Team, I just read the article "${articleTitle}" on your website and would like technical consultation regarding this.`
+            : `Halo Tim Bina Project, saya baru membaca artikel "${articleTitle}" di website dan ingin konsultasi teknis terkait hal tersebut.`;
         }
       }
 
