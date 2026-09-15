@@ -9,6 +9,7 @@ import CustomCursor from '@components/CustomCursor.astro';
 import FloatingWhatsApp from '@components/FloatingWhatsApp.astro';
 import { getSiteSettings } from '@lib/siteSettingsService';
 import { MASTER_SERVICES } from '@data/services';
+import { useTranslations } from '@i18n/utils';
 import '@styles/global.css';
 
 const siteConfig = await getSiteSettings();
@@ -23,26 +24,33 @@ interface Props {
   noindex?: boolean;
   preloadImage?: string;
   lang?: 'id' | 'en';
+  googleSiteVerification?: string;
 }
 
 const siteUrl = Astro.site ? Astro.site.href : siteConfig.siteUrl;
 const cleanSiteUrl = siteUrl.replace(/\/$/, '');
 
 const currentLang = Astro.props.lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'id');
+const t = useTranslations(currentLang);
+
 const cleanPath = Astro.url.pathname.replace(/^\/en/, '') || '/';
 const idCanonical = `${cleanSiteUrl}${cleanPath === '/' ? '' : cleanPath}`;
 const enCanonical = `${cleanSiteUrl}/en${cleanPath === '/' ? '' : cleanPath}`;
 const activeCanonical = currentLang === 'en' ? enCanonical : idCanonical;
 
+const defaultTitle = `${t('site.name')} - ${t('site.tagline')}`;
+const defaultDesc = t('site.description');
+
 const {
-  title = `${siteConfig.name} - ${siteConfig.tagline}`,
-  description = siteConfig.description,
+  title = defaultTitle,
+  description = defaultDesc,
   keywords = 'jasa konstruksi malang, desain interior malang, kontraktor rumah batu, kitchen set kediri, bina project construction, arsitek malang',
   ogImage = '/assets/img/og-image.webp',
   canonicalUrl = activeCanonical,
   type = 'website',
   noindex = false,
   preloadImage,
+  googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || import.meta.env.GOOGLE_SITE_VERIFICATION || (siteConfig as any).googleSiteVerification || '',
 } = Astro.props;
 
 const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${cleanSiteUrl}/${ogImage.replace(/^\//, '')}`;
@@ -65,9 +73,9 @@ const connectedSchemaGraph = {
       "@type": "WebSite",
       "@id": `${cleanSiteUrl}/#website`,
       "url": `${cleanSiteUrl}/`,
-      "name": siteConfig.name,
-      "description": siteConfig.description,
-      "inLanguage": "id-ID",
+      "name": t('site.name'),
+      "description": description,
+      "inLanguage": currentLang === 'en' ? 'en-US' : 'id-ID',
       "publisher": {
         "@id": `${cleanSiteUrl}/#organization`
       }
@@ -76,7 +84,7 @@ const connectedSchemaGraph = {
       "@type": ["HomeAndConstructionBusiness", "GeneralContractor", "Organization"],
       "@id": `${cleanSiteUrl}/#organization`,
       "name": siteConfig.legalName,
-      "alternateName": siteConfig.name,
+      "alternateName": t('site.name'),
       "url": `${cleanSiteUrl}/`,
       "logo": {
         "@type": "ImageObject",
@@ -85,7 +93,7 @@ const connectedSchemaGraph = {
         "caption": siteConfig.legalName
       },
       "image": resolvedOgImage,
-      "description": siteConfig.description,
+      "description": description,
       "telephone": siteConfig.contact.phoneTel.replace('tel:', ''),
       "email": siteConfig.contact.email,
       "priceRange": "$$",
@@ -228,9 +236,11 @@ const connectedSchemaGraph = {
       </>
     )}
     
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="format-detection" content="telephone=no" />
-    
+    <!-- Google Search Console Verification -->
+    {googleSiteVerification && (
+      <meta name="google-site-verification" content={googleSiteVerification} />
+    )}
+
     <!-- Canonical & Alternate Links -->
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang="id" href={idCanonical} />
@@ -319,13 +329,29 @@ const connectedSchemaGraph = {
 
     <!-- Critical Inline Styles (Prevent FOUC & Stabilize Layout) -->
     <style is:inline>
+      @font-face {
+        font-family: 'Archivo-Fallback';
+        src: local('Arial'), local('Helvetica');
+        ascent-override: 95%;
+        descent-override: 25%;
+        line-gap-override: 0%;
+        size-adjust: 102%;
+      }
+      @font-face {
+        font-family: 'Titillium-Fallback';
+        src: local('Arial'), local('Trebuchet MS');
+        ascent-override: 96%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+        size-adjust: 100%;
+      }
       :root {
         --theme-color: #22416D;
         --theme-color2: #3B82F6;
         --title-color: #17202A;
         --body-color: #475569;
-        --body-font: 'Archivo', sans-serif;
-        --title-font: 'Titillium Web', sans-serif;
+        --body-font: 'Archivo', 'Archivo-Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --title-font: 'Titillium Web', 'Titillium-Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
       body {
         margin: 0;
@@ -340,19 +366,12 @@ const connectedSchemaGraph = {
       }
     </style>
 
-    <!-- Stylesheets (Minified & Optimized) -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <!-- Optimized Stylesheet Cascade (Eliminates FOUC & Stabilizes Layout) -->
+    <link rel="stylesheet" href="/assets/css/style.min.css" />
+    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
     <Fragment set:html={`
-      <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" media="print" onload="this.media='all'" />
-      <noscript><link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" /></noscript>
-    `} />
-    <Fragment set:html={`
-      <link rel="preload" as="style" href="/assets/css/style.min.css" onload="this.onload=null;this.rel='stylesheet'" />
-      <noscript><link rel="stylesheet" href="/assets/css/style.min.css" /></noscript>
-    `} />
-    <Fragment set:html={`
-      <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" media="print" onload="this.media='all'" />
-      <noscript><link rel="stylesheet" href="/assets/css/magnific-popup.min.css" /></noscript>
+      <link rel="preload" as="style" href="/assets/css/bootstrap.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="/assets/css/bootstrap.min.css" /></noscript>
     `} />
 
     <!-- Schema.org Connected Knowledge Graph JSON-LD -->
@@ -401,20 +420,43 @@ const connectedSchemaGraph = {
             })();
           `} />
 
-          {/* Meta Pixel (Facebook & Instagram Ads) */}
+          {/* Meta Pixel (Facebook & Instagram Ads - Deferred & Non-blocking) */}
           {metaPixelId && (
             <>
               <script is:inline set:html={`
+                window._fbqInit = window._fbqInit || false;
                 !function(f,b,e,v,n,t,s)
                 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
                 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
                 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window, document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
+                n.queue=[];}(window, document);
                 fbq('init', '${metaPixelId}');
                 fbq('track', 'PageView');
+
+                (function() {
+                  var fbLoaded = false;
+                  function loadFBScript() {
+                    if (fbLoaded) return;
+                    fbLoaded = true;
+                    var s = document.createElement('script');
+                    s.async = true;
+                    s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+                    document.head.appendChild(s);
+                  }
+
+                  var events = ['scroll', 'pointerdown', 'keydown', 'touchstart'];
+                  var triggerFB = function() {
+                    loadFBScript();
+                    events.forEach(function(e) { window.removeEventListener(e, triggerFB, { passive: true }); });
+                  };
+                  events.forEach(function(e) { window.addEventListener(e, triggerFB, { passive: true, once: true }); });
+
+                  if ('requestIdleCallback' in window) {
+                    requestIdleCallback(function() { setTimeout(loadFBScript, 3000); });
+                  } else {
+                    setTimeout(loadFBScript, 3500);
+                  }
+                })();
               `} />
               <noscript>
                 <img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`} alt="" />
@@ -468,12 +510,221 @@ const connectedSchemaGraph = {
     <SmoothScroll />
     <CustomCursor />
 
-    <!-- Scripts (Optimized Core Scripts, Deferred) -->
-    <script is:inline src="/assets/js/vendor/jquery-3.6.0.min.js" defer></script>
+    <!-- Modern Interactive Engine (Zero jQuery, Zero Legacy Overhead) -->
     <script is:inline src="/assets/js/swiper-bundle.min.js" defer></script>
-    <script is:inline src="/assets/js/jquery.magnific-popup.min.js" defer></script>
     <script is:inline src="/assets/js/gsap.min.js" defer></script>
     <script is:inline src="/assets/js/ScrollTrigger.min.js" defer></script>
-    <script is:inline src="/assets/js/main.min.js" defer></script>
+    <script is:inline>
+      (function () {
+        // 1. [data-bg-src] Dynamic Background Image Setter
+        function initBgSrc() {
+          document.querySelectorAll('[data-bg-src]').forEach(function (el) {
+            var src = el.getAttribute('data-bg-src');
+            if (src) {
+              el.style.backgroundImage = "url('" + src + "')";
+              el.classList.add('background-image');
+            }
+          });
+        }
+
+        // 2. .th-slider Swiper Carousel Initializer
+        function initThSliders() {
+          if (typeof Swiper === 'undefined') {
+            setTimeout(initThSliders, 80);
+            return;
+          }
+          document.querySelectorAll('.th-slider').forEach(function (sliderEl) {
+            if (sliderEl.swiper) return;
+            var rawOpts = sliderEl.getAttribute('data-slider-options');
+            var customOpts = {};
+            try {
+              if (rawOpts) customOpts = JSON.parse(rawOpts);
+            } catch (err) {
+              console.warn('Invalid slider options on element:', err);
+            }
+            var prevBtn = sliderEl.querySelector('.slider-prev');
+            var nextBtn = sliderEl.querySelector('.slider-next');
+            var paginationEl = sliderEl.querySelector('.slider-pagination');
+
+            var defaultOpts = {
+              slidesPerView: 1,
+              spaceBetween: 24,
+              loop: true,
+              speed: 1000,
+              autoplay: { delay: 6000, disableOnInteraction: false },
+            };
+            if (prevBtn && nextBtn) {
+              defaultOpts.navigation = { prevEl: prevBtn, nextEl: nextBtn };
+            }
+            if (paginationEl) {
+              defaultOpts.pagination = {
+                el: paginationEl,
+                clickable: true,
+                renderBullet: function (index, className) {
+                  return '<button type="button" class="' + className + '" aria-label="Go to Slide ' + (index + 1) + '"></button>';
+                },
+              };
+            }
+            var finalOpts = Object.assign({}, defaultOpts, customOpts);
+            new Swiper(sliderEl, finalOpts);
+          });
+        }
+
+        // 3. External Swiper Navigation Controller [data-slider-prev] / [data-slider-next]
+        function initSliderNavButtons() {
+          document.querySelectorAll('[data-slider-prev], [data-slider-next]').forEach(function (btn) {
+            if (btn._hasSliderNav) return;
+            btn._hasSliderNav = true;
+            btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              var targetSelector = btn.getAttribute('data-slider-prev') || btn.getAttribute('data-slider-next');
+              var targetEl = targetSelector ? document.querySelector(targetSelector) : null;
+              if (targetEl && targetEl.swiper) {
+                if (btn.hasAttribute('data-slider-prev')) {
+                  targetEl.swiper.slidePrev();
+                } else {
+                  targetEl.swiper.slideNext();
+                }
+              }
+            });
+          });
+        }
+
+        // 4. Zero-Dependency Modern Photo Lightbox for .popup-image
+        var lightboxOverlay = null;
+        var lightboxImg = null;
+
+        function ensureLightbox() {
+          if (lightboxOverlay) return;
+          lightboxOverlay = document.createElement('div');
+          lightboxOverlay.className = 'bina-lightbox-overlay';
+          lightboxOverlay.setAttribute('aria-hidden', 'true');
+          lightboxOverlay.innerHTML =
+            '<div class="bina-lightbox-dialog">' +
+              '<button type="button" class="bina-lightbox-close" aria-label="Tutup foto">&times;</button>' +
+              '<img class="bina-lightbox-img" src="" alt="Dokumentasi Portofolio Bina Project" />' +
+            '</div>';
+          document.body.appendChild(lightboxOverlay);
+          lightboxImg = lightboxOverlay.querySelector('.bina-lightbox-img');
+
+          function closeLightbox() {
+            if (!lightboxOverlay) return;
+            lightboxOverlay.classList.remove('is-active');
+            lightboxOverlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+          }
+
+          lightboxOverlay.addEventListener('click', function (e) {
+            if (e.target === lightboxOverlay || e.target.closest('.bina-lightbox-close')) {
+              closeLightbox();
+            }
+          });
+
+          window.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lightboxOverlay && lightboxOverlay.classList.contains('is-active')) {
+              closeLightbox();
+            }
+          });
+        }
+
+        function openPhotoLightbox(src) {
+          ensureLightbox();
+          if (!lightboxOverlay || !lightboxImg) return;
+          lightboxImg.src = src;
+          lightboxOverlay.classList.add('is-active');
+          lightboxOverlay.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+
+        document.addEventListener('click', function (e) {
+          var zoomBtn = e.target.closest('.popup-image');
+          if (!zoomBtn) return;
+          e.preventDefault();
+          var imgSrc = zoomBtn.getAttribute('href');
+          if (imgSrc) openPhotoLightbox(imgSrc);
+        });
+
+        // Initialize on DOM ready and Astro page load
+        function initVanillaEngine() {
+          initBgSrc();
+          initThSliders();
+          initSliderNavButtons();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initVanillaEngine);
+        } else {
+          initVanillaEngine();
+        }
+        document.addEventListener('astro:page-load', initVanillaEngine);
+      })();
+    </script>
+
+    <!-- Global Micro-Lightbox Styles (Zero Layout Shift) -->
+    <style is:global>
+      .bina-lightbox-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: rgba(13, 25, 43, 0.9);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        opacity: 0;
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+      }
+      .bina-lightbox-overlay.is-active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .bina-lightbox-dialog {
+        position: relative;
+        max-width: 90vw;
+        max-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.96);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .bina-lightbox-overlay.is-active .bina-lightbox-dialog {
+        transform: scale(1);
+      }
+      .bina-lightbox-img {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        object-fit: contain;
+      }
+      .bina-lightbox-close {
+        position: absolute;
+        top: -16px;
+        right: -16px;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        color: #17202A;
+        border: none;
+        font-size: 22px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+      }
+      .bina-lightbox-close:hover {
+        transform: scale(1.08);
+        background: #EF4444;
+        color: #FFFFFF;
+      }
+    </style>
   </body>
 </html>

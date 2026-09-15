@@ -1,0 +1,211 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import aboutImg3 from '@assets/images/normal/about_3.jpg';
+import SectionHeader from '@components/SectionHeader.astro';
+import { getLangFromUrl } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+
+const content = currentLang === 'en'
+  ? {
+      badge: 'Why Choose Bina Project?',
+      title: 'Why Choose Bina Project?',
+      description:
+        'Bina Project is a professional company specializing in design planning services, interior contracting, construction contracting, and waterproofing solutions for residential homes, commercial buildings, high-rise structures, and healthcare facilities. We are here to be your trusted partner in safely building your dream spaces. We are ready to collaborate with individuals, institutions, or other sectors with full commitment to quality and transparency.',
+      items: [
+        {
+          icon: 'solar:users-group-rounded-bold',
+          title: 'Qualified Team',
+          desc: 'Handled by experienced and certified professionals.',
+        },
+        {
+          icon: 'solar:shield-check-bold',
+          title: 'Warrantied Work',
+          desc: 'Every project is bound by official work contracts (SPK) with trusted maintenance period guarantees.',
+        },
+        {
+          icon: 'solar:ruler-cross-pen-bold',
+          title: 'Neat & Solution-Oriented',
+          desc: 'Commitment to neat workmanship handled by experienced teams ensuring reliable solutions to any challenges that arise.',
+        },
+        {
+          icon: 'solar:restart-circle-bold',
+          title: 'Continuous Maintenance',
+          desc: 'Provision of ongoing maintenance services even after the warranty period has concluded.',
+        },
+      ],
+    }
+  : {
+      badge: 'Kenapa Harus Memilih Bina Project ?',
+      title: 'Kenapa Harus Memilih Bina Project?',
+      description:
+        'Bina Project merupakan Perusahaan profesional yang bergerak dibidang jasa desain perencanaan, kontraktor interior, kontraktor konstruksi dan waterproofing yang meliputi pembangunan rumah tinggal, bangunan komersial, gedung bertingkat hingga Gedung kesehatan. Kami hadir untuk menjadi mitra solusi aman membangun ruang impian bagi Anda. Kami siap bekerjasama dengan perorangan, instansi atau sektor lain dengan komitmen mutu dan transparansi penuh.',
+      items: [
+        {
+          icon: 'solar:users-group-rounded-bold',
+          title: 'Tim Berkompeten',
+          desc: 'Ditangani oleh tim yang berpengalaman dan bersertifikasi.',
+        },
+        {
+          icon: 'solar:shield-check-bold',
+          title: 'Bergaransi',
+          desc: 'Setiap proyek terikat kontrak kerja resmi (SPK) dengan jaminan masa pemeliharaan terpercaya.',
+        },
+        {
+          icon: 'solar:ruler-cross-pen-bold',
+          title: 'Lebih Rapi',
+          desc: 'Jaminan lebih rapi dalam setiap hasil pengerjaan dan ditangani oleh Tim berpengalaman sehingga selalu mendapatkan solusi dari setiap kendala yang ada.',
+        },
+        {
+          icon: 'solar:restart-circle-bold',
+          title: 'Pemeliharaan Berkelanjutan',
+          desc: 'Menyediakan layanan pemeliharaan berkelanjutan pasca masa pemeliharaan selesai.',
+        },
+      ],
+    };
+---
+
+<section class="why-choose-bina-sec overflow-hidden space" id="why-bina-sec">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-xl-6 col-lg-6">
+        <div class="why-bina-img-box">
+          <div class="img1">
+            <Image
+              src={aboutImg3}
+              alt={currentLang === 'en' ? 'Bina Project Architects and Construction Engineering Team Malang' : 'Profil Tim Arsitek dan Tenaga Ahli Konstruksi Bina Project Malang'}
+              loading="lazy"
+              decoding="async"
+              width={600}
+              height={520}
+              format="webp"
+              quality={85}
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6">
+        <SectionHeader
+          badge={content.badge}
+          badgeIcon="solar:buildings-2-bold"
+          title={content.title}
+          description={content.description}
+          align="left"
+          class="why-choose-header mb-30"
+        />
+
+        <div class="row gy-4">
+          {content.items.map((item) => (
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="why-bina-item">
+                <div class="why-bina-item_icon">
+                  <Icon name={item.icon} width="28" height="28" />
+                </div>
+                <div class="why-bina-item_content">
+                  <h3 class="box-title">{item.title}</h3>
+                  <p class="why-bina-item_text">{item.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-choose-bina-sec {
+    position: relative;
+    background: #FFFFFF;
+  }
+
+  :global(.why-choose-header .section-header__title) {
+    font-size: clamp(1.25rem, 2.25vw, 2.15rem) !important;
+  }
+  @media (min-width: 576px) {
+    :global(.why-choose-header .section-header__title) {
+      white-space: nowrap !important;
+    }
+  }
+
+  .why-bina-img-box .img1 {
+    aspect-ratio: 600 / 520;
+    width: 100%;
+    max-width: 600px;
+    background-color: #f1f5f9;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(34, 65, 109, 0.12);
+  }
+
+  .why-bina-img-box .img1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .why-bina-img-box:hover .img1 img {
+    transform: scale(1.03);
+  }
+
+  .why-bina-item {
+    background: #FFFFFF !important;
+    border-radius: 14px;
+    padding: 24px !important;
+    box-shadow: 0 4px 20px rgba(34, 65, 109, 0.05);
+    border: 1px solid var(--bina-slate-200, #E2E8F0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .why-bina-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(34, 65, 109, 0.1);
+    border-color: #CBD5E1;
+  }
+
+  .why-bina-item_icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: rgba(34, 65, 109, 0.07);
+    color: var(--bina-navy, #22416D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
+  }
+
+  .why-bina-item:hover .why-bina-item_icon {
+    background: var(--bina-navy, #22416D);
+    color: #FFFFFF;
+  }
+
+  .why-bina-item .box-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bina-slate-900, #17202A);
+    margin-bottom: 8px;
+    font-family: var(--title-font, 'Archivo', sans-serif);
+    line-height: 1.3;
+  }
+
+  .why-bina-item_text {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--bina-slate-600, #475569);
+    margin: 0;
+  }
+
+  .why-choose-bina-sec .row > [class*="col-"] {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

@@ -6,7 +6,7 @@
  */
 
 import { TESTIMONIALS } from '@data/testimonials';
-import { StackTestimonial } from '@components/StackTestimonial';
+import StackTestimonial from '@components/StackTestimonial.astro';
 import SectionHeader from '@components/SectionHeader.astro';
 import { siteConfig } from '@config/site';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
@@ -58,7 +58,7 @@ const reviewListSchema = {
 
     <div class="row justify-content-center">
       <div class="col-12">
-        <StackTestimonial client:visible testimonials={testimonials} />
+        <StackTestimonial testimonials={testimonials} />
       </div>
     </div>
   </div>

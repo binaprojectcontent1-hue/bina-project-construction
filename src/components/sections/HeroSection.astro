@@ -1,177 +1,146 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { getImage } from 'astro:assets';
-import heroArchitectural from '@assets/images/hero/hero_architectural.png';
-import heroBg1 from '@assets/images/hero/hero_bg_1_1.jpg';
+import heroImage1 from '@assets/images/hero/hero-image1.webp';
+import heroImage2 from '@assets/images/hero/hero-image2.webp';
+import heroImage3 from '@assets/images/hero/hero-image3.webp';
+import heroImage4 from '@assets/images/hero/hero-image4.webp';
 import { getLangFromUrl, getLocalizedPath } from '@i18n/utils';
+import { getWhatsAppUrl } from '@config/site';
 
 const currentLang = getLangFromUrl(Astro.url);
+const heroWaUrl = getWhatsAppUrl(
+  currentLang === 'en'
+    ? 'Hello Bina Project Team, I would like to consult on my project plans and cost estimation.'
+    : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek dan estimasi biaya',
+  currentLang
+);
 
-const optimizedHeroMain = await getImage({ src: heroArchitectural, format: 'webp', quality: 68, width: 1200 });
-const optimizedHeroAlt = await getImage({ src: heroBg1, format: 'webp', quality: 68, width: 1200 });
+const bgImages = [heroImage1.src, heroImage2.src, heroImage3.src, heroImage4.src];
 
-export interface HeroSlide {
-  image: string;
-  subtitle: string;
-  titlePart1: string;
-  titlePart2: string;
-  desc: string;
-  isH1: boolean;
-}
-
-const heroSlides: readonly HeroSlide[] = currentLang === 'en'
-  ? [
-      {
-        image: optimizedHeroMain.src,
-        subtitle: 'Certified SNI Quality Standards & Official SPK Warranty',
-        titlePart1: 'BINA PROJECT',
-        titlePart2: 'ARCHITECTURE & BUILD',
-        desc: 'Turnkey residential building contractor, architectural renovation, bespoke kitchen sets, and trustworthy development in Greater Malang & East Java.',
-        isH1: true,
-      },
-      {
-        image: optimizedHeroAlt.src,
-        subtitle: 'Trusted Architects & General Contractors in East Java',
-        titlePart1: 'ARCHITECTURAL CONSTRUCTION &',
-        titlePart2: 'INTERIOR DESIGN MALANG',
-        desc: 'Turn your dream residence and commercial spaces into reality with modern architectural precision, transparent cost estimation, and dedicated engineering.',
-        isH1: false,
-      },
-    ]
-  : [
-      {
-        image: optimizedHeroMain.src,
-        subtitle: 'Standar Mutu SNI & Garansi Pemeliharaan Resmi SPK',
-        titlePart1: 'BINA PROJECT',
-        titlePart2: 'ARCHITECTURE & BUILD',
-        desc: 'Penyedia jasa bangun rumah baru, renovasi bangunan, custom kitchen set, dan developer amanah bergaransi di Malang Raya & sekitarnya.',
-        isH1: true,
-      },
-      {
-        image: optimizedHeroAlt.src,
-        subtitle: 'Arsitek & Kontraktor Terpercaya di Jawa Timur',
-        titlePart1: 'JASA KONSTRUKSI &',
-        titlePart2: 'DESAIN INTERIOR MALANG',
-        desc: 'Wujudkan hunian dan ruang usaha impian Anda dengan standar arsitektur modern, transparansi RAB tanpa biaya tersembunyi, dan pengawasan profesional.',
-        isH1: false,
-      },
-    ];
+const heroContent = currentLang === 'en'
+  ? {
+      subtitle: 'Safe Solutions to Build Your Dream Space',
+      titlePart1: 'BINA PROJECT',
+      pillars: ['DESIGN', 'INTERIOR', 'CONSTRUCTION', 'WATERPROOFING'],
+      desc: 'A professional company specializing in architectural design planning, interior contracting, construction contracting, and guaranteed waterproofing.',
+    }
+  : {
+      subtitle: 'Solusi Aman Membangun Ruang Impian',
+      titlePart1: 'BINA PROJECT',
+      pillars: ['DESAIN', 'INTERIOR', 'KONSTRUKSI', 'WATERPROOFING'],
+      desc: 'Perusahaan profesional yang bergerak di bidang desain perencanaan, kontraktor interior, kontraktor konstruksi dan waterproofing dengan garansi',
+    };
 ---
 
 <section class="hero-fs-sec" id="hero">
-  <div class="swiper hero-fs-slider" id="heroFsSlider">
+  <!-- Ambient Background Slider (Transitions smoothly behind static content) -->
+  <div class="swiper hero-fs-slider hero-ambient-slider" id="heroFsSlider" aria-hidden="true">
     <div class="swiper-wrapper">
-      {heroSlides.map((slide) => (
-        <div class="swiper-slide hero-fs-slide">
-          <!-- Fullscreen Background Image -->
-          <div class="hero-fs-bg" style={`background-image: url('${slide.image}');`}></div>
-
-          <!-- Architectural Dark Blue Gradient Vignette (Left-focused for maximum contrast) -->
-          <div class="hero-architectural-overlay" aria-hidden="true"></div>
-
-          <!-- Left-Aligned Content Container -->
-          <div class="container h-100 position-relative d-flex align-items-center">
-            <div class="hero-left-content">
-              <!-- Eyebrow Subtitle -->
-              <span class="hero-eyebrow" data-original-text={slide.subtitle}>{slide.subtitle}</span>
-
-              <!-- Dynamic Heading -->
-              {slide.isH1 ? (
-                <h1 class="hero-main-title">
-                  <span class="hero-title-white">{slide.titlePart1}</span>
-                  <span class="hero-title-cyan">{slide.titlePart2}</span>
-                </h1>
-              ) : (
-                <h2 class="hero-main-title">
-                  <span class="hero-title-white">{slide.titlePart1}</span>
-                  <span class="hero-title-cyan">{slide.titlePart2}</span>
-                </h2>
-              )}
-
-              <!-- Description Text -->
-              <p class="hero-description">{slide.desc}</p>
-
-              <!-- Pill CTA Action Buttons -->
-              <div class="hero-cta-buttons">
-                <a
-                  href={`https://wa.me/6281335335304?text=${encodeURIComponent(currentLang === 'en' ? 'Hello Bina Project, I would like to consult my project and cost estimation.' : 'Halo Tim Arsitek Bina Project, saya ingin konsultasi rencana proyek dan estimasi biaya')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hero-pill-btn-primary"
-                  onclick="if(typeof window.trackLead==='function') window.trackLead('hero_wa_cta', 'hero_slide');"
-                >
-                  <Icon name="simple-icons:whatsapp" width="18" height="18" class="btn-icon" />
-                  <span>{currentLang === 'en' ? 'Free Cost Consultation' : 'Konsultasi Estimasi Biaya'}</span>
-                </a>
-
-                <a href={getLocalizedPath('/portfolio', currentLang)} class="hero-pill-btn-secondary">
-                  <Icon name="solar:document-text-linear" width="18" height="18" class="btn-icon" />
-                  <span>{currentLang === 'en' ? 'View 162+ Projects' : 'Lihat 162+ Portofolio'}</span>
-                  <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="btn-arrow" />
-                </a>
-              </div>
-
-              <!-- 4 Trust Badges Horizontal Strip -->
-              <div class="hero-trust-badges-grid">
-                <div class="hero-badge-card">
-                  <div class="badge-icon-box">
-                    <Icon name="solar:shield-check-linear" width="22" height="22" />
-                  </div>
-                  <div class="badge-title">{currentLang === 'en' ? 'Experienced' : 'Berpengalaman'}</div>
-                  <div class="badge-sub">{currentLang === 'en' ? 'Professional Team' : 'Tim Profesional'}</div>
-                </div>
-
-                <div class="hero-badge-card">
-                  <div class="badge-icon-box">
-                    <Icon name="solar:shield-check-linear" width="22" height="22" />
-                  </div>
-                  <div class="badge-title">{currentLang === 'en' ? 'Quality Material' : 'Material Berkualitas'}</div>
-                  <div class="badge-sub">{currentLang === 'en' ? 'Long Lasting' : 'Tahan Lama'}</div>
-                </div>
-
-                <div class="hero-badge-card">
-                  <div class="badge-icon-box">
-                    <Icon name="solar:home-smile-linear" width="22" height="22" />
-                  </div>
-                  <div class="badge-title">{currentLang === 'en' ? 'Modern Design' : 'Desain Modern'}</div>
-                  <div class="badge-sub">{currentLang === 'en' ? 'Customized' : 'Sesuai Kebutuhan'}</div>
-                </div>
-
-                <div class="hero-badge-card">
-                  <div class="badge-icon-box">
-                    <Icon name="solar:hand-shake-linear" width="22" height="22" />
-                  </div>
-                  <div class="badge-title">{currentLang === 'en' ? 'Work Warranty' : 'Garansi Pekerjaan'}</div>
-                  <div class="badge-sub">{currentLang === 'en' ? 'Hassle Free' : 'Anti Ribet'}</div>
-                </div>
-              </div>
-            </div>
-          </div>
+      {bgImages.map((imgSrc, idx) => (
+        <div class={`swiper-slide hero-fs-slide ${idx === 0 ? 'swiper-slide-active' : ''}`}>
+          <div
+            class="hero-fs-bg"
+            style={idx === 0 ? `background-image: url('${imgSrc}');` : undefined}
+            data-bg-slide={idx > 0 ? imgSrc : undefined}
+          ></div>
         </div>
       ))}
     </div>
+  </div>
 
-    <!-- Minimalist Slider Controls (Pill Cluster) -->
-    <div class="hero-fs-controls-bottom">
-      <div class="hero-fs-nav-cluster">
-        <button type="button" class="hero-fs-nav-btn prev" id="heroSlidePrev" aria-label="Slide Sebelumnya">
-          <Icon name="solar:alt-arrow-left-linear" width="13" height="13" />
-        </button>
-        <div class="hero-custom-pagination" id="heroCustomPagination"></div>
-        <button type="button" class="hero-fs-nav-btn next" id="heroSlideNext" aria-label="Slide Berikutnya">
-          <Icon name="solar:alt-arrow-right-linear" width="13" height="13" />
-        </button>
+  <!-- Architectural Dark Blue Gradient Vignette (Left-focused for maximum contrast) -->
+  <div class="hero-architectural-overlay" aria-hidden="true"></div>
+
+  <!-- Left-Aligned Content Container (Single, static, stable) -->
+  <div class="container h-100 position-relative d-flex align-items-center hero-content-wrapper">
+    <div class="hero-left-content">
+      <!-- Eyebrow Subtitle -->
+      <span class="hero-eyebrow" id="heroEyebrow" data-original-text={heroContent.subtitle}>{heroContent.subtitle}</span>
+
+      <!-- Dynamic Heading with Refined Pillar Balancing -->
+      <h1 class="hero-main-title">
+        <span class="hero-title-white">{heroContent.titlePart1}</span>
+        <span class="hero-title-cyan hero-pillars-accent">
+          <span class="hero-pillar-row">
+            <span>{heroContent.pillars[0]}</span>
+            <span class="hero-pipe">|</span>
+            <span>{heroContent.pillars[1]}</span>
+          </span>
+          <span class="hero-pillar-row">
+            <span>{heroContent.pillars[2]}</span>
+            <span class="hero-pipe">|</span>
+            <span>{heroContent.pillars[3]}</span>
+          </span>
+        </span>
+      </h1>
+
+      <!-- Description Text -->
+      <p class="hero-description">{heroContent.desc}</p>
+
+      <!-- Pill CTA Action Buttons -->
+      <div class="hero-cta-buttons">
+        <a
+          href={heroWaUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hero-pill-btn-primary"
+          onclick="if(typeof window.trackLead==='function') window.trackLead('hero_wa_cta', 'hero_main');"
+        >
+          <Icon name="simple-icons:whatsapp" width="18" height="18" class="btn-icon" />
+          <span>{currentLang === 'en' ? 'Free Consultation' : 'Konsultasi Gratis'}</span>
+        </a>
+
+        <a href={getLocalizedPath('/portfolio', currentLang)} class="hero-pill-btn-secondary">
+          <Icon name="solar:document-text-linear" width="18" height="18" class="btn-icon" />
+          <span>{currentLang === 'en' ? 'View 162+ Projects' : 'Lihat 162+ Portofolio'}</span>
+          <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="btn-arrow" />
+        </a>
+      </div>
+
+      <!-- 4 Trust Badges Horizontal Strip with Distinct Icons -->
+      <div class="hero-trust-badges-grid">
+        <div class="hero-badge-card">
+          <div class="badge-icon-box">
+            <Icon name="solar:users-group-rounded-bold" width="22" height="22" />
+          </div>
+          <div class="badge-title">{currentLang === 'en' ? 'Competent' : 'Berkompeten'}</div>
+          <div class="badge-sub">{currentLang === 'en' ? 'Professional & Experienced Team' : 'Tim Profesional dan Berpengalaman'}</div>
+        </div>
+
+        <div class="hero-badge-card">
+          <div class="badge-icon-box">
+            <Icon name="solar:shield-check-bold" width="22" height="22" />
+          </div>
+          <div class="badge-title">{currentLang === 'en' ? 'Warranty' : 'Bergaransi'}</div>
+          <div class="badge-sub">{currentLang === 'en' ? 'Maintenance Period for Every Project' : 'Masa Pemeliharaan di Setiap Pekerjaan'}</div>
+        </div>
+
+        <div class="hero-badge-card">
+          <div class="badge-icon-box">
+            <Icon name="solar:ruler-cross-pen-bold" width="22" height="22" />
+          </div>
+          <div class="badge-title">{currentLang === 'en' ? 'Neat' : 'Rapi'}</div>
+          <div class="badge-sub">{currentLang === 'en' ? 'Guaranteed Neater & Solution-Oriented' : 'Jaminan Lebih Rapi & Solutif'}</div>
+        </div>
+
+        <div class="hero-badge-card">
+          <div class="badge-icon-box">
+            <Icon name="solar:restart-circle-bold" width="22" height="22" />
+          </div>
+          <div class="badge-title">{currentLang === 'en' ? 'Sustainable' : 'Berkelanjutan'}</div>
+          <div class="badge-sub">{currentLang === 'en' ? 'Post-Maintenance Support Services' : 'Layanan Pasca Masa Pemeliharaan Selesai'}</div>
+        </div>
       </div>
     </div>
-
-    <!-- Bottom Right Scroll Down Indicator -->
-    <a href="#about-sec" class="hero-scroll-indicator d-none d-lg-flex" aria-label={currentLang === 'en' ? 'Scroll down' : 'Scroll ke bawah'}>
-      <div class="scroll-circle">
-        <Icon name="solar:arrow-down-linear" width="15" height="15" />
-      </div>
-      <span class="scroll-text">{currentLang === 'en' ? 'Scroll down' : 'Scroll ke bawah'}</span>
-    </a>
   </div>
+
+  <!-- Bottom Right Scroll Down Indicator -->
+  <a href="#about-sec" class="hero-scroll-indicator d-none d-lg-flex" aria-label={currentLang === 'en' ? 'Scroll down' : 'Scroll ke bawah'}>
+    <div class="scroll-circle">
+      <Icon name="solar:arrow-down-linear" width="15" height="15" />
+    </div>
+    <span class="scroll-text">{currentLang === 'en' ? 'Scroll down' : 'Scroll ke bawah'}</span>
+  </a>
 </section>
 
 <script is:inline>
@@ -181,7 +150,13 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
 
     function initHeroSlider() {
       const sliderEl = document.getElementById('heroFsSlider');
+      const heroSec = document.getElementById('hero');
       if (!sliderEl) return;
+
+      // Always mark as initialized quickly to trigger smooth entrance
+      if (heroSec && !heroSec.classList.contains('is-initialized')) {
+        heroSec.classList.add('is-initialized');
+      }
 
       if (typeof Swiper === 'undefined') {
         if (heroRetries < maxRetries) {
@@ -195,7 +170,14 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
         sliderEl.swiper.destroy(true, true);
       }
 
-      const heroSec = sliderEl.closest('.hero-fs-sec');
+      // Populate background images for upcoming slides before Swiper runs
+      sliderEl.querySelectorAll('[data-bg-slide]').forEach(function (el) {
+        var src = el.getAttribute('data-bg-slide');
+        if (src) {
+          el.style.backgroundImage = "url('" + src + "')";
+          el.removeAttribute('data-bg-slide');
+        }
+      });
 
       new Swiper(sliderEl, {
         effect: 'fade',
@@ -205,53 +187,22 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
         slidesPerView: 1,
         spaceBetween: 0,
         loop: true,
-        speed: 1200,
+        speed: 1600,
         autoplay: {
-          delay: 7000,
+          delay: 6000,
           disableOnInteraction: false,
-          pauseOnMouseEnter: true,
         },
-        navigation: {
-          prevEl: '#heroSlidePrev',
-          nextEl: '#heroSlideNext',
-        },
-        pagination: {
-          el: '#heroCustomPagination',
-          clickable: true,
-          bulletElement: 'button',
-          bulletClass: 'hero-nav-dot',
-          bulletActiveClass: 'hero-nav-dot-active',
-          bulletsClass: 'hero-dots-wrap',
-          horizontalClass: 'hero-dots-h',
-          renderBullet: function (index, className) {
-            return '<button type="button" class="' + className + '" aria-label="Slide ' + (index + 1) + '"><span class="hero-dot-bar"><span class="hero-dot-fill"></span></span></button>';
-          },
-        },
+        allowTouchMove: false,
         on: {
-          init: function (swiper) {
+          init: function () {
             heroSec?.classList.add('is-initialized');
-            triggerScramble(swiper);
-          },
-          slideChangeTransitionStart: function (swiper) {
-            triggerScramble(swiper);
-            setTimeout(() => {
-              const activeDot = heroSec?.querySelector('.hero-nav-dot-active .hero-dot-fill');
-              if (activeDot) {
-                activeDot.style.animation = 'none';
-                requestAnimationFrame(() => {
-                  if (activeDot) activeDot.style.animation = '';
-                });
-              }
-            }, 10);
+            triggerScramble();
           },
         },
       });
 
-      function triggerScramble(swiper) {
-        if (!swiper || !swiper.slides) return;
-        const activeSlide = swiper.slides[swiper.activeIndex];
-        if (!activeSlide) return;
-        const eyebrow = activeSlide.querySelector('.hero-eyebrow');
+      function triggerScramble() {
+        const eyebrow = document.getElementById('heroEyebrow');
         if (eyebrow) {
           scrambleText(eyebrow);
         }
@@ -287,7 +238,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
         }, 28);
       }
 
-      heroSec?.classList.add('is-initialized');
+      triggerScramble();
     }
 
     if (document.readyState === 'loading') {
@@ -305,7 +256,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
 
 <style is:global>
   /* ========================================================
-     Modern Architectural Hero Section (Reference Design)
+     Modern Architectural Hero Section (Single Content)
      ======================================================== */
   .hero-fs-sec {
     position: relative !important;
@@ -315,19 +266,33 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     overflow: hidden !important;
   }
 
+  .hero-fs-sec .hero-ambient-slider,
   .hero-fs-sec .hero-fs-slider {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    position: relative !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
   }
 
   .hero-fs-sec .hero-fs-slide {
-    position: relative !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 100% !important;
     height: 100% !important;
     display: flex !important;
     align-items: center !important;
     overflow: hidden !important;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .hero-fs-sec .hero-fs-slide.swiper-slide-active,
+  .hero-fs-sec .hero-fs-slide:first-child {
+    opacity: 1 !important;
   }
 
   .hero-fs-sec .hero-fs-bg {
@@ -339,7 +304,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     background-size: cover !important;
     background-position: center right !important;
     background-repeat: no-repeat !important;
-    transform: scale(1.01);
+    transform: scale(1.03);
     transition: transform 14s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: transform;
     z-index: 0 !important;
@@ -369,12 +334,19 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     pointer-events: none !important;
   }
 
+  /* Content Wrapper on Top */
+  .hero-fs-sec .hero-content-wrapper {
+    position: relative !important;
+    z-index: 3 !important;
+    pointer-events: auto !important;
+  }
+
   /* Left Aligned Content */
   .hero-fs-sec .hero-left-content {
     position: relative !important;
     z-index: 3 !important;
-    max-width: 680px !important;
-    padding: 60px 0 65px 0 !important;
+    max-width: 780px !important;
+    padding: 50px 0 55px 0 !important;
     text-align: left !important;
     display: flex !important;
     flex-direction: column !important;
@@ -398,8 +370,8 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     will-change: opacity, transform, filter;
   }
 
-  /* Active Slide Cascading In - Apple Soft Deceleration */
-  .hero-fs-sec .swiper-slide-active .hero-eyebrow {
+  /* Initialized State Cascading In - Apple Soft Deceleration */
+  .hero-fs-sec.is-initialized .hero-eyebrow {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
@@ -409,7 +381,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     transition-delay: 0.12s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-main-title {
+  .hero-fs-sec.is-initialized .hero-main-title {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
@@ -419,7 +391,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     transition-delay: 0.24s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-description {
+  .hero-fs-sec.is-initialized .hero-description {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
@@ -429,7 +401,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     transition-delay: 0.38s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-cta-buttons {
+  .hero-fs-sec.is-initialized .hero-cta-buttons {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
@@ -439,7 +411,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     transition-delay: 0.52s;
   }
 
-  .hero-fs-sec .swiper-slide-active .hero-trust-badges-grid {
+  .hero-fs-sec.is-initialized .hero-trust-badges-grid {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
@@ -449,15 +421,17 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     transition-delay: 0.66s;
   }
 
-  /* Uninitialized Fallback */
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-eyebrow,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-main-title,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-description,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-cta-buttons,
-  .hero-fs-sec:not(.is-initialized) .hero-fs-slide:first-child .hero-trust-badges-grid {
-    opacity: 1;
-    filter: blur(0px);
-    transform: translateY(0);
+  /* Fallback for disabled JS */
+  @media (scripting: none) {
+    .hero-fs-sec .hero-eyebrow,
+    .hero-fs-sec .hero-main-title,
+    .hero-fs-sec .hero-description,
+    .hero-fs-sec .hero-cta-buttons,
+    .hero-fs-sec .hero-trust-badges-grid {
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
+    }
   }
 
   /* Eyebrow */
@@ -473,17 +447,18 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
   }
 
-  /* Main Title H1 / H2 */
+  /* Main Title H1 */
   .hero-fs-sec .hero-main-title {
     font-family: 'Titillium Web', 'Archivo', sans-serif !important;
-    font-size: clamp(34px, 4.4vw, 56px) !important;
+    font-size: clamp(34px, 4.4vw, 54px) !important;
     font-weight: 800 !important;
     line-height: 1.15 !important;
     letter-spacing: -0.01em !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 18px !important;
     text-transform: uppercase !important;
     display: flex !important;
     flex-direction: column !important;
+    gap: 8px !important;
   }
 
   .hero-fs-sec .hero-title-white {
@@ -498,15 +473,42 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     filter: drop-shadow(0 4px 16px rgba(0, 210, 255, 0.35)) !important;
   }
 
+  /* Specialty Pillars Line - Clean, Proportional, Balanced 2 Rows */
+  .hero-fs-sec .hero-pillars-accent {
+    font-size: clamp(20px, 2.6vw, 32px) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.03em !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    margin-top: 4px !important;
+  }
+
+  .hero-fs-sec .hero-pillar-row {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .hero-fs-sec .hero-pipe {
+    opacity: 0.45 !important;
+    font-weight: 300 !important;
+    font-size: 0.85em !important;
+    -webkit-text-fill-color: #38BDF8 !important;
+  }
+
   /* Description */
   .hero-fs-sec .hero-description {
     font-family: 'Archivo', sans-serif !important;
-    font-size: 16px !important;
+    font-size: 15.5px !important;
     font-weight: 400 !important;
     color: #CBD5E1 !important;
-    line-height: 1.7 !important;
-    margin-bottom: 34px !important;
-    max-width: 580px !important;
+    line-height: 1.65 !important;
+    margin-bottom: 28px !important;
+    max-width: 620px !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
   }
 
@@ -516,7 +518,7 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     align-items: center !important;
     gap: 16px !important;
     flex-wrap: wrap !important;
-    margin-bottom: 42px !important;
+    margin-bottom: 32px !important;
   }
 
   .hero-fs-sec .hero-pill-btn-primary {
@@ -598,17 +600,21 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
   /* 4 Trust Badges Horizontal Grid */
   .hero-fs-sec .hero-trust-badges-grid {
     display: grid !important;
-    grid-template-columns: repeat(4, auto) !important;
-    gap: 24px !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 16px 20px !important;
     align-items: start !important;
-    padding-top: 10px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    width: 100% !important;
+    max-width: 780px !important;
   }
 
   .hero-fs-sec .hero-badge-card {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 3px !important;
+    gap: 2px !important;
+    min-width: 0 !important;
   }
 
   .hero-fs-sec .badge-icon-box {
@@ -621,197 +627,20 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
 
   .hero-fs-sec .badge-title {
     font-family: 'Archivo', sans-serif !important;
-    font-size: 13.5px !important;
+    font-size: 13px !important;
     font-weight: 700 !important;
     color: #FFFFFF !important;
-    line-height: 1.25 !important;
+    line-height: 1.3 !important;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+    word-break: normal !important;
   }
 
   .hero-fs-sec .badge-sub {
     font-family: 'Archivo', sans-serif !important;
-    font-size: 12px !important;
+    font-size: 11.5px !important;
     font-weight: 400 !important;
     color: #94A3B8 !important;
     line-height: 1.3 !important;
-  }
-
-  /* ========================================================
-     Minimalist Slider Controls (Pill Cluster - Completely Custom)
-     ======================================================== */
-  .hero-fs-sec .hero-fs-controls-bottom {
-    position: absolute !important;
-    bottom: 28px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 10 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    pointer-events: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-  }
-
-  .hero-fs-sec .hero-fs-nav-cluster {
-    display: inline-flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    pointer-events: auto !important;
-    background: rgba(8, 20, 38, 0.8) !important;
-    padding: 0 12px !important;
-    border-radius: 999px !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
-    box-sizing: border-box !important;
-    height: 46px !important;
-    min-height: 46px !important;
-    line-height: 1 !important;
-  }
-
-  .hero-fs-sec .hero-fs-nav-btn {
-    position: relative !important;
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    border-radius: 50% !important;
-    border: none !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    color: rgba(255, 255, 255, 0.75) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-    transition: all 0.2s ease !important;
-    line-height: 1 !important;
-  }
-
-  .hero-fs-sec .hero-fs-nav-btn::after {
-    content: '' !important;
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-  }
-
-  .hero-fs-sec .hero-fs-nav-btn:hover {
-    color: #FFFFFF !important;
-    background: rgba(255, 255, 255, 0.2) !important;
-    background-color: rgba(255, 255, 255, 0.2) !important;
-  }
-
-  .hero-fs-sec .hero-custom-pagination,
-  .hero-fs-sec #heroCustomPagination {
-    display: inline-flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 4px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    height: auto !important;
-    line-height: 1 !important;
-    position: static !important;
-    width: auto !important;
-    border: none !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-
-  .hero-fs-sec .hero-nav-dot {
-    position: relative !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-width: 44px !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-height: 44px !important;
-    padding: 0 4px !important;
-    margin: 0 !important;
-    border-radius: 999px !important;
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    cursor: pointer !important;
-    vertical-align: middle !important;
-    line-height: 1 !important;
-    box-sizing: border-box !important;
-  }
-
-  .hero-fs-sec .hero-nav-dot::before,
-  .hero-fs-sec .hero-nav-dot::after {
-    display: none !important;
-    content: none !important;
-  }
-
-  .hero-fs-sec .hero-nav-dot .hero-dot-bar {
-    position: relative !important;
-    display: block !important;
-    width: 14px !important;
-    height: 4px !important;
-    min-width: 14px !important;
-    border-radius: 999px !important;
-    background: rgba(255, 255, 255, 0.35) !important;
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.25s ease !important;
-    overflow: hidden !important;
-  }
-
-  .hero-fs-sec .hero-nav-dot:hover .hero-dot-bar {
-    background: rgba(255, 255, 255, 0.85) !important;
-  }
-
-  .hero-fs-sec .hero-nav-dot.hero-nav-dot-active .hero-dot-bar {
-    width: 36px !important;
-    background: rgba(255, 255, 255, 0.25) !important;
-  }
-
-  .hero-fs-sec .hero-dot-fill {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: inherit !important;
-    background: #00D2FF !important;
-    transform-origin: left center !important;
-    transform: scaleX(0) !important;
-    will-change: transform;
-  }
-
-  .hero-fs-sec .hero-nav-dot.hero-nav-dot-active .hero-dot-fill {
-    transform: scaleX(1) !important;
-    box-shadow: 0 0 10px rgba(0, 210, 255, 0.85) !important;
-    animation: heroAutoplayFill 7s linear forwards !important;
-  }
-
-  .hero-fs-sec .hero-fs-slider:hover .hero-dot-fill {
-    animation-play-state: paused !important;
-  }
-
-  @keyframes heroAutoplayFill {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
   }
 
   /* Scroll Down Indicator */
@@ -887,14 +716,16 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
       max-width: 100% !important;
       padding: 50px 15px 70px 15px !important;
     }
+    .hero-fs-sec .hero-pillars-accent {
+      font-size: clamp(17px, 2.8vw, 24px) !important;
+      gap: 4px 10px !important;
+    }
     .hero-fs-sec .hero-trust-badges-grid {
       grid-template-columns: repeat(2, 1fr) !important;
-      gap: 18px 24px !important;
+      gap: 16px 20px !important;
       width: 100% !important;
       max-width: 480px !important;
-    }
-    .hero-fs-sec .hero-fs-controls-bottom {
-      bottom: 20px !important;
+      padding-top: 16px !important;
     }
   }
 
@@ -910,19 +741,28 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     .hero-fs-sec .hero-main-title {
       font-size: clamp(28px, 8vw, 36px) !important;
       line-height: 1.2 !important;
-      margin-bottom: 16px !important;
+      margin-bottom: 14px !important;
+      gap: 4px !important;
+    }
+    .hero-fs-sec .hero-pillars-accent {
+      font-size: clamp(15px, 4.2vw, 19px) !important;
+      line-height: 1.3 !important;
+      gap: 4px 8px !important;
+    }
+    .hero-fs-sec .hero-pillar-row {
+      gap: 6px !important;
     }
     .hero-fs-sec .hero-description {
       font-size: 14px !important;
       line-height: 1.6 !important;
-      margin-bottom: 26px !important;
+      margin-bottom: 24px !important;
     }
     .hero-fs-sec .hero-cta-buttons {
       flex-direction: column !important;
       width: 100% !important;
       max-width: 320px !important;
       gap: 12px !important;
-      margin-bottom: 30px !important;
+      margin-bottom: 26px !important;
     }
     .hero-fs-sec .hero-pill-btn-primary,
     .hero-fs-sec .hero-pill-btn-secondary {
@@ -933,13 +773,14 @@ const heroSlides: readonly HeroSlide[] = currentLang === 'en'
     }
     .hero-fs-sec .hero-trust-badges-grid {
       grid-template-columns: repeat(2, 1fr) !important;
-      gap: 14px 16px !important;
+      gap: 12px 14px !important;
+      padding-top: 14px !important;
     }
     .hero-fs-sec .badge-title {
-      font-size: 12.5px !important;
+      font-size: 12px !important;
     }
     .hero-fs-sec .badge-sub {
-      font-size: 11px !important;
+      font-size: 10.5px !important;
     }
     .hero-fs-sec .hero-left-content {
       padding: 40px 15px 65px 15px !important;

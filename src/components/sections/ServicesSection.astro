@@ -1,10 +1,80 @@
 ---
 // Services Section with Swiper Carousel
 import SectionHeader from '@components/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
+
+const services = [
+  {
+    num: '01',
+    icon: 'solar:ruler-cross-pen-bold',
+    title: t('servicesSection.s1Title'),
+    desc: t('servicesSection.s1Desc'),
+  },
+  {
+    num: '02',
+    icon: 'solar:map-point-wave-bold',
+    title: t('servicesSection.s2Title'),
+    desc: t('servicesSection.s2Desc'),
+  },
+  {
+    num: '03',
+    icon: 'solar:calculator-bold',
+    title: t('servicesSection.s3Title'),
+    desc: t('servicesSection.s3Desc'),
+  },
+  {
+    num: '04',
+    icon: 'solar:layers-minimalistic-bold',
+    title: t('servicesSection.s4Title'),
+    desc: t('servicesSection.s4Desc'),
+  },
+  {
+    num: '05',
+    icon: 'solar:structure-bold',
+    title: t('servicesSection.s5Title'),
+    desc: t('servicesSection.s5Desc'),
+  },
+  {
+    num: '06',
+    icon: 'solar:home-add-bold',
+    title: t('servicesSection.s6Title'),
+    desc: t('servicesSection.s6Desc'),
+  },
+  {
+    num: '07',
+    icon: 'solar:city-bold',
+    title: t('servicesSection.s7Title'),
+    desc: t('servicesSection.s7Desc'),
+  },
+  {
+    num: '08',
+    icon: 'solar:waterdrop-bold',
+    title: t('servicesSection.s8Title'),
+    desc: t('servicesSection.s8Desc'),
+  },
+  {
+    num: '09',
+    icon: 'solar:shield-check-bold',
+    title: t('servicesSection.s9Title'),
+    desc: t('servicesSection.s9Desc'),
+  },
+  {
+    num: '10',
+    icon: 'solar:diploma-verified-bold',
+    title: t('servicesSection.s10Title'),
+    desc: t('servicesSection.s10Desc'),
+  },
+  {
+    num: '11',
+    icon: 'solar:box-minimalistic-bold',
+    title: t('servicesSection.s11Title'),
+    desc: t('servicesSection.s11Desc'),
+  },
+];
 ---
 
 <section class="service-area overflow-hidden space" id="service-sec" data-bg-src="/assets/img/bg/service_bg_1.jpg">
@@ -21,99 +91,46 @@ const t = useTranslations(currentLang);
       </div>
     </div>
 
-    <div class="slider-area">
+    <div class="slider-area position-relative">
       <div class="swiper th-slider has-shadow" id="serviceSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1.18,"spaceBetween":16},"576":{"slidesPerView":1.3,"spaceBetween":20},"768":{"slidesPerView":2,"spaceBetween":24},"992":{"slidesPerView":2,"spaceBetween":24},"1200":{"slidesPerView":3,"spaceBetween":24}}}'>
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="service-box">
-              <div class="service-content">
-                <div class="service-box_icon">
-                  <img src="/assets/img/icon/service_1_1.svg" alt="Konstruksi Icon" width="60" height="60" />
+          {services.map((item) => (
+            <div class="swiper-slide">
+              <div class="service-box">
+                <div class="service-content">
+                  <div class="service-box_icon">
+                    <Icon name={item.icon} width="32" height="32" />
+                  </div>
+                  <div class="service-box_number">{item.num}</div>
                 </div>
-                <div class="service-box_number">01</div>
+                <h3 class="box-title">{item.title}</h3>
+                <p class="service-box_text">
+                  {item.desc}
+                </p>
               </div>
-              <h3 class="box-title">{t('servicesSection.s1Title')}</h3>
-              <p class="service-box_text">
-                {t('servicesSection.s1Desc')}
-              </p>
             </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="service-box">
-              <div class="service-content">
-                <div class="service-box_icon">
-                  <img src="/assets/img/icon/service_1_2.svg" alt="Interior Icon" width="60" height="60" />
-                </div>
-                <div class="service-box_number">02</div>
-              </div>
-              <h3 class="box-title">{t('servicesSection.s2Title')}</h3>
-              <p class="service-box_text">
-                {t('servicesSection.s2Desc')}
-              </p>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="service-box">
-              <div class="service-content">
-                <div class="service-box_icon">
-                  <img src="/assets/img/icon/service_1_3.svg" alt="Developer Icon" width="60" height="60" />
-                </div>
-                <div class="service-box_number">03</div>
-              </div>
-              <h3 class="box-title">{t('servicesSection.s3Title')}</h3>
-              <p class="service-box_text">
-                {t('servicesSection.s3Desc')}
-              </p>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="service-box">
-              <div class="service-content">
-                <div class="service-box_icon">
-                  <img src="/assets/img/icon/service_1_4.svg" alt="Desain Perencanaan Icon" width="60" height="60" />
-                </div>
-                <div class="service-box_number">04</div>
-              </div>
-              <h3 class="box-title">{t('servicesSection.s4Title')}</h3>
-              <p class="service-box_text">
-                {t('servicesSection.s4Desc')}
-              </p>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="service-box">
-              <div class="service-content">
-                <div class="service-box_icon">
-                  <img src="/assets/img/icon/service_1_5.svg" alt="Maket Icon" width="60" height="60" />
-                </div>
-                <div class="service-box_number">05</div>
-              </div>
-              <h3 class="box-title">{currentLang === 'en' ? 'Architectural Model & Scale Maquette' : 'Maket'}</h3>
-              <p class="service-box_text">
-                {currentLang === 'en' ? 'Accurate scale models for architectural visualization, residential developments, and commercial planning.' : 'Miniatur 3D berskala akurat untuk visualisasi arsitektur, kawasan perumahan, dan fasilitas publik secara nyata.'}
-              </p>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="service-box">
-              <div class="service-content">
-                <div class="service-box_icon">
-                  <img src="/assets/img/icon/service_1_6.svg" alt="Waterproofing Icon" width="60" height="60" />
-                </div>
-                <div class="service-box_number">06</div>
-              </div>
-              <h3 class="box-title">{t('servicesSection.s6Title')}</h3>
-              <p class="service-box_text">
-                {t('servicesSection.s6Desc')}
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
+      </div>
+
+      <!-- Navigation Arrows for Slider -->
+      <div class="service-slider-nav d-flex justify-content-center align-items-center gap-3">
+        <button
+          type="button"
+          data-slider-prev="#serviceSlider1"
+          class="service-nav-btn prev-btn"
+          aria-label={currentLang === 'en' ? 'Previous Service' : 'Layanan Sebelumnya'}
+        >
+          <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
+        </button>
+        <button
+          type="button"
+          data-slider-next="#serviceSlider1"
+          class="service-nav-btn next-btn"
+          aria-label={currentLang === 'en' ? 'Next Service' : 'Layanan Berikutnya'}
+        >
+          <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
+        </button>
       </div>
     </div>
   </div>
@@ -189,6 +206,25 @@ const t = useTranslations(currentLang);
     transition: border-color 0.35s ease !important;
   }
 
+  #serviceSlider1 .service-box .service-box_icon {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 12px !important;
+    background: #EFF6FF !important;
+    color: #22416D !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all 0.35s ease !important;
+  }
+
+  #serviceSlider1 .service-box:hover .service-box_icon {
+    background: rgba(255, 255, 255, 0.18) !important;
+    color: #FFFFFF !important;
+    transform: scale(1.06);
+  }
+
   #serviceSlider1 .service-box .box-title {
     margin-bottom: 10px !important;
     font-size: 19px !important;
@@ -248,10 +284,43 @@ const t = useTranslations(currentLang);
     border-bottom-color: rgba(255, 255, 255, 0.18) !important;
   }
 
+  /* Slider Navigation Buttons */
+  .service-slider-nav {
+    margin-top: 36px;
+  }
+
+  .service-nav-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    color: #22416D;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(34, 65, 109, 0.08);
+    transition: all 0.25s ease;
+  }
+
+  .service-nav-btn:hover {
+    background: #22416D;
+    color: #FFFFFF;
+    border-color: #22416D;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(34, 65, 109, 0.25);
+  }
+
   @media (max-width: 575px) {
     #serviceSlider1 .service-box {
       padding: 24px 20px !important;
       border-radius: 14px !important;
+    }
+    #serviceSlider1 .service-box .service-box_icon {
+      width: 48px !important;
+      height: 48px !important;
+      border-radius: 10px !important;
     }
     #serviceSlider1 .service-box .box-title {
       font-size: 18px !important;
@@ -264,10 +333,6 @@ const t = useTranslations(currentLang);
     #serviceSlider1 .service-content {
       padding-bottom: 16px !important;
       margin-bottom: 16px !important;
-    }
-    #serviceSlider1 .service-box_icon img {
-      width: 48px !important;
-      height: 48px !important;
     }
   }
 </style>

@@ -9,15 +9,19 @@ import SectionHeader from '@components/SectionHeader.astro';
 import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
 
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
 const siteConfig = await getSiteSettings();
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <BaseLayout
   lang="en"
-  title={`Contact Us - ${siteConfig.name} Studio`}
-  description="Contact Bina Project architects and structural contractors for free consultation on residential building, architectural renovation, bespoke interior design, and kitchen sets in Malang and East Java."
+  title={`${t('contact.title')} - ${t('site.name')}`}
+  description={t('contact.subtitle')}
 >
-  <Breadcrumb title="Contact Us" />
+  <Breadcrumb title={t('nav.contact')} />
 
   <!--============================== Bento Contact Cards Grid ==============================-->
   <section class="space-top space-extra-bottom">
@@ -25,21 +29,23 @@ const siteConfig = await getSiteSettings();
       <SectionHeader
         badge="Official Contact Information"
         badgeIcon="solar:user-id-bold"
-        title="Connect With Our Studio"
-        description="Our team of licensed architects and structural engineering specialists is ready to assist your building plans with the highest standards of craftsmanship."
+        title="Get to Know Us Better"
+        description="We are ready to be a safe solution partner in building your dream spaces"
         align="center"
       />
 
       <div class="row gy-4">
-        <!-- Card 1: WhatsApp Consultation -->
+        <!-- Card 1: WhatsApp Inquiry -->
         <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="simple-icons:whatsapp" width="24" height="24" />
             </div>
-            <h3 class="contact-bento-title">WhatsApp Inquiry</h3>
+            <h3 class="contact-bento-title">Free Consultation & Collaboration</h3>
             <p class="contact-bento-desc">
-              Rapid response channel for project discussions, preliminary cost estimation, and on-site survey bookings.
+              Responsive service for free consultation<br/>
+              and B2B collaboration through<br/>
+              Official WhatsApp of Bina Project Team
             </p>
             <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
               {siteConfig.contact.phoneDisplay} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
@@ -55,7 +61,8 @@ const siteConfig = await getSiteSettings();
             </div>
             <h3 class="contact-bento-title">Email</h3>
             <p class="contact-bento-desc">
-              Submit your project brief, floor plans, or tender documentation directly to our management team.
+              Send project supporting documents<br/>
+              to Bina Project Team
             </p>
             <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
               {siteConfig.contact.email} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
@@ -63,19 +70,30 @@ const siteConfig = await getSiteSettings();
           </div>
         </div>
 
-        <!-- Card 3: Operating Hours -->
+        <!-- Card 3: Business Hours -->
         <div class="col-lg-4 col-md-6">
           <div class="contact-bento-card">
             <div class="contact-bento-icon">
               <Icon name="solar:clock-circle-linear" width="24" height="24" />
             </div>
             <h3 class="contact-bento-title">Business Hours</h3>
-            <p class="contact-bento-desc mb-2">
-              Monday - Saturday: 08:00 - 16:00 WIB<br />Sunday & Holidays: Closed
-            </p>
-            <span class="contact-status-badge">
-              <span class="status-indicator"></span> Active Studio
-            </span>
+            <div class="contact-schedule-list">
+              <div class="schedule-item">
+                <span class="schedule-days">Monday – Saturday:</span>
+                <span class="schedule-hours">08:00 – 16:00 WIB</span>
+              </div>
+              <div class="schedule-item holiday">
+                <span class="schedule-days">Sunday / Public Holidays:</span>
+                <span class="schedule-hours">Closed</span>
+              </div>
+            </div>
+            <div class="contact-bento-footer mt-auto">
+              <span class="contact-status-chip is-open" id="operational-status-chip" title="Business Hours: Monday – Saturday, 08:00 – 16:00 WIB">
+                <Icon name="solar:check-circle-bold" width="15" height="15" class="me-1 status-icon status-icon-open" />
+                <Icon name="solar:close-circle-bold" width="15" height="15" class="me-1 status-icon status-icon-closed" />
+                <span id="operational-status-text">Open</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -168,7 +186,7 @@ const siteConfig = await getSiteSettings();
     font-size: 0.875rem;
     line-height: 1.6;
     color: #64748B;
-    margin-bottom: 1.25rem;
+    margin-bottom: 22px;
     flex-grow: 1;
   }
   .contact-bento-action {
@@ -183,24 +201,76 @@ const siteConfig = await getSiteSettings();
   .contact-bento-action:hover {
     color: #D97706;
   }
-  .contact-status-badge {
+  .contact-status-chip {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 9999px;
+    padding: 6px 14px;
     background: #ECFDF5;
     color: #059669;
-    font-size: 0.75rem;
-    font-weight: 700;
-    width: fit-content;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: all 0.25s ease;
   }
-  .status-indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+
+  .contact-status-chip.is-open {
+    background: #ECFDF5;
+    color: #059669;
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+
+  .contact-status-chip.is-open .status-icon-open {
+    display: inline-block;
+    color: #10B981;
+  }
+
+  .contact-status-chip.is-open .status-icon-closed {
+    display: none;
+  }
+
+  .contact-status-chip.is-closed {
+    background: #FEF2F2;
+    color: #DC2626;
+    border-color: rgba(239, 68, 68, 0.25);
+  }
+
+  .contact-status-chip.is-closed .status-icon-open {
+    display: none;
+  }
+
+  .contact-status-chip.is-closed .status-icon-closed {
+    display: inline-block;
+    color: #EF4444;
+  }
+  .contact-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #E2E8F0;
+  }
+  .schedule-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .schedule-days {
+    color: #64748B;
+    font-weight: 500;
+  }
+  .schedule-hours {
+    color: #0F172A;
+    font-weight: 600;
+  }
+  .schedule-item.holiday .schedule-hours {
+    color: #DC2626;
   }
   .contact-map-wrapper {
     background: #FFFFFF;
@@ -267,3 +337,71 @@ const siteConfig = await getSiteSettings();
     }
   }
 </style>
+
+<script is:inline>
+  function updateOperationalStatus() {
+    const chip = document.getElementById('operational-status-chip');
+    const text = document.getElementById('operational-status-text');
+    if (!chip || !text) return;
+
+    let isSunday = false;
+    let isWorkDay = false;
+    let isOpenHours = false;
+
+    try {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Jakarta',
+        hour12: false,
+        weekday: 'short',
+        hour: 'numeric',
+        minute: 'numeric'
+      });
+      const parts = formatter.formatToParts(now);
+      let weekday = '';
+      let hour = 0;
+      let minute = 0;
+      for (const p of parts) {
+        if (p.type === 'weekday') weekday = p.value;
+        if (p.type === 'hour') hour = parseInt(p.value, 10);
+        if (p.type === 'minute') minute = parseInt(p.value, 10);
+      }
+      if (hour === 24) hour = 0;
+
+      isSunday = (weekday === 'Sun');
+      isWorkDay = !isSunday;
+      const totalMinutes = hour * 60 + minute;
+      isOpenHours = totalMinutes >= (8 * 60) && totalMinutes < (16 * 60);
+    } catch (e) {
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const wib = new Date(utc + (7 * 3600000));
+      const day = wib.getDay();
+      const hour = wib.getHours();
+      const minute = wib.getMinutes();
+
+      isSunday = (day === 0);
+      isWorkDay = (day >= 1 && day <= 6);
+      const totalMinutes = hour * 60 + minute;
+      isOpenHours = totalMinutes >= (8 * 60) && totalMinutes < (16 * 60);
+    }
+
+    const isOpen = isWorkDay && isOpenHours;
+    const isEn = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
+
+    if (isOpen) {
+      chip.classList.remove('is-closed');
+      chip.classList.add('is-open');
+      text.textContent = isEn ? 'Open' : 'Buka';
+    } else {
+      chip.classList.remove('is-open');
+      chip.classList.add('is-closed');
+      text.textContent = isEn ? 'Closed' : 'Tutup';
+    }
+  }
+
+  updateOperationalStatus();
+  document.addEventListener('DOMContentLoaded', updateOperationalStatus);
+  document.addEventListener('astro:page-load', updateOperationalStatus);
+  setInterval(updateOperationalStatus, 30000);
+</script>

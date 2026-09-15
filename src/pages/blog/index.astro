@@ -5,23 +5,26 @@ import BlogCard from '@components/BlogCard.astro';
 import SectionHeader from '@components/SectionHeader.astro';
 import EmptyState from '@components/EmptyState.astro';
 import { getAllArticles } from '@lib/blogService';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 const articles = await getAllArticles();
 ---
 
 <BaseLayout
-  title="Artikel & Tips Desain Interior - Bina Project"
-  description="Kumpulan artikel edukasi, tren desain arsitektur, tips menata kitchen set minimalis, dan panduan renovasi rumah dari tim ahli Bina Project."
+  title={`${t('blog.title')} - ${t('site.name')}`}
+  description={t('blog.desc')}
 >
-  <Breadcrumb title="Artikel & Berita" />
+  <Breadcrumb title={t('nav.articles')} />
 
   <section class="space">
     <div class="container-fluid blog-fluid-container">
       <SectionHeader
-        badge="Blog & Inspirasi"
+        badge={t('blog.badge')}
         badgeIcon="solar:document-text-bold"
-        title="Tips & Tren Desain Masa Kini"
-        description="Kumpulan artikel edukasi, tren desain arsitektur modern, dan panduan konstruksi dari tim ahli Bina Project."
+        title={t('blog.title')}
+        description={t('blog.desc')}
         align="center"
       />
 

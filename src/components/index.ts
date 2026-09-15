@@ -26,5 +26,6 @@ export { default as ConsultationCtaSection } from './sections/ConsultationCtaSec
 export { default as CounterSection } from './sections/CounterSection.astro';
 export { default as ProjectSliderSection } from './sections/ProjectSliderSection.astro';
 export { default as WhyChooseUsSection } from './sections/WhyChooseUsSection.astro';
+export { default as WhyChooseBinaSection } from './sections/WhyChooseBinaSection.astro';
 export { default as FaqSection } from './sections/FaqSection.astro';
 export { default as ContactSection } from './sections/ContactSection.astro';

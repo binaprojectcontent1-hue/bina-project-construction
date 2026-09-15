@@ -94,25 +94,12 @@ const t = useTranslations(currentLang);
             align="left"
           />
 
-          <!-- 3 Frameless Bento Value Pillars (Zero Outline / Zero Stroke) -->
+          <!-- 4 Frameless Bento Value Pillars (Zero Outline / Zero Stroke) -->
           <div class="about-bento-grid">
-            <!-- Pillar 1 -->
+            <!-- Pillar 1: Tim Berkompeten -->
             <div class="bento-pillar-card">
               <div class="pillar-icon-wrap">
-                <Icon name="solar:ruler-cross-pen-bold" width="24" height="24" />
-              </div>
-              <div class="pillar-info">
-                <h3 class="pillar-title">{currentLang === 'en' ? 'Integrated Design & Execution' : 'Desain & Eksekusi Terintegrasi'}</h3>
-                <p class="pillar-desc">
-                  {currentLang === 'en' ? 'Full coordination from detailed drawings (DED) and 3D renders to physical construction.' : 'Koordinasi penuh dari gambar kerja DED, 3D render, hingga pembangunan fisik untuk hasil 100% sesuai rencana.'}
-                </p>
-              </div>
-            </div>
-
-            <!-- Pillar 2 -->
-            <div class="bento-pillar-card">
-              <div class="pillar-icon-wrap">
-                <Icon name="solar:calculator-linear" width="24" height="24" />
+                <Icon name="solar:users-group-rounded-bold" width="24" height="24" />
               </div>
               <div class="pillar-info">
                 <h3 class="pillar-title">{t('aboutSection.pillar1Title')}</h3>
@@ -122,15 +109,41 @@ const t = useTranslations(currentLang);
               </div>
             </div>
 
-            <!-- Pillar 3 -->
+            <!-- Pillar 2: Bergaransi -->
             <div class="bento-pillar-card">
               <div class="pillar-icon-wrap">
                 <Icon name="solar:shield-check-bold" width="24" height="24" />
               </div>
               <div class="pillar-info">
+                <h3 class="pillar-title">{t('aboutSection.pillar2Title')}</h3>
+                <p class="pillar-desc">
+                  {t('aboutSection.pillar2Desc')}
+                </p>
+              </div>
+            </div>
+
+            <!-- Pillar 3: Lebih Rapi & Solutif -->
+            <div class="bento-pillar-card">
+              <div class="pillar-icon-wrap">
+                <Icon name="solar:ruler-cross-pen-bold" width="24" height="24" />
+              </div>
+              <div class="pillar-info">
                 <h3 class="pillar-title">{t('aboutSection.pillar3Title')}</h3>
                 <p class="pillar-desc">
                   {t('aboutSection.pillar3Desc')}
+                </p>
+              </div>
+            </div>
+
+            <!-- Pillar 4: Pemeliharaan Berkelanjutan -->
+            <div class="bento-pillar-card">
+              <div class="pillar-icon-wrap">
+                <Icon name="solar:restart-circle-bold" width="24" height="24" />
+              </div>
+              <div class="pillar-info">
+                <h3 class="pillar-title">{t('aboutSection.pillar4Title')}</h3>
+                <p class="pillar-desc">
+                  {t('aboutSection.pillar4Desc')}
                 </p>
               </div>
             </div>
@@ -395,25 +408,40 @@ const t = useTranslations(currentLang);
     padding-left: 10px;
   }
 
-  /* 3 Frameless Bento Value Pillars (Zero Outline / Zero Stroke) */
+  .about-content-wrap :global(.section-header) {
+    margin-bottom: 22px;
+  }
+
+  .about-content-wrap :global(.section-header__title) {
+    font-size: clamp(1.25rem, 2.05vw, 1.85rem) !important;
+    letter-spacing: -0.025em !important;
+  }
+
+  @media (min-width: 576px) {
+    .about-content-wrap :global(.section-header__title) {
+      white-space: nowrap !important;
+    }
+  }
+
+  /* 4 Frameless Bento Value Pillars (Zero Outline / Zero Stroke) */
   .about-bento-grid {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-bottom: 35px;
+    gap: 11px;
+    margin-bottom: 28px;
   }
 
   .bento-pillar-card {
     display: flex;
     align-items: flex-start;
-    gap: 18px;
+    gap: 16px;
     background: #22416D;
     border: none;
     outline: none;
-    border-radius: 16px;
-    padding: 20px 24px;
+    border-radius: 14px;
+    padding: 15px 20px;
     box-shadow: 0 2px 8px rgba(34, 65, 109, 0.15);
-    transition: all 0.25s ease;
+    transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   }
 
   .bento-pillar-card:hover {
@@ -425,9 +453,9 @@ const t = useTranslations(currentLang);
   }
 
   .pillar-icon-wrap {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.15);
     color: #FFFFFF;
     display: flex;
@@ -451,18 +479,18 @@ const t = useTranslations(currentLang);
   }
 
   .pillar-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: #FFFFFF;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
     font-family: var(--title-font, 'Archivo', sans-serif);
     line-height: 1.3;
   }
 
   .pillar-desc {
-    font-size: 14px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.85);
-    line-height: 1.6;
+    line-height: 1.5;
     margin-bottom: 0;
   }
 
@@ -753,37 +781,46 @@ const t = useTranslations(currentLang);
         });
 
         if (headerElements.length) {
-          revealTl.from(headerElements, {
-            opacity: 0,
-            y: 35,
-            stagger: 0.12,
-            duration: 0.8,
-            ease: 'power3.out',
-          });
+          revealTl.fromTo(
+            headerElements,
+            { opacity: 0, y: 35 },
+            {
+              opacity: 1,
+              y: 0,
+              stagger: 0.12,
+              duration: 0.8,
+              ease: 'power3.out',
+              clearProps: 'transform,opacity',
+            }
+          );
         }
 
         if (bentoCards.length) {
-          revealTl.from(
+          revealTl.fromTo(
             bentoCards,
+            { opacity: 0, y: 28 },
             {
-              opacity: 0,
-              y: 28,
+              opacity: 1,
+              y: 0,
               stagger: 0.14,
               duration: 0.7,
               ease: 'power2.out',
+              clearProps: 'transform,opacity',
             },
             '-=0.4'
           );
         }
 
         if (actionBtns) {
-          revealTl.from(
+          revealTl.fromTo(
             actionBtns,
+            { opacity: 0, y: 20 },
             {
-              opacity: 0,
-              y: 20,
+              opacity: 1,
+              y: 0,
               duration: 0.6,
               ease: 'power2.out',
+              clearProps: 'transform,opacity',
             },
             '-=0.3'
           );
@@ -853,27 +890,31 @@ const t = useTranslations(currentLang);
       }
 
       if (contentWrap) {
-        mobileTl.from(
+        mobileTl.fromTo(
           contentWrap,
+          { opacity: 0, y: 20 },
           {
-            opacity: 0,
-            y: 20,
+            opacity: 1,
+            y: 0,
             duration: 0.7,
             ease: 'power2.out',
+            clearProps: 'transform,opacity',
           },
           '-=0.2'
         );
       }
 
       if (bentoCards.length) {
-        mobileTl.from(
+        mobileTl.fromTo(
           bentoCards,
+          { opacity: 0, y: 16 },
           {
-            opacity: 0,
-            y: 16,
+            opacity: 1,
+            y: 0,
             stagger: 0.1,
             duration: 0.5,
             ease: 'power2.out',
+            clearProps: 'transform,opacity',
           },
           '-=0.3'
         );

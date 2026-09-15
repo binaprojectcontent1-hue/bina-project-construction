@@ -5,24 +5,27 @@ import BlogCard from '@components/BlogCard.astro';
 import SectionHeader from '@components/SectionHeader.astro';
 import EmptyState from '@components/EmptyState.astro';
 import { getAllArticles } from '@lib/blogService';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 const articles = await getAllArticles();
 ---
 
 <BaseLayout
   lang="en"
-  title="Articles & Design Insights - Bina Project"
-  description="Educational articles, modern architectural design trends, interior layout ideas, and home renovation guidelines from the Bina Project team."
+  title={`${t('blog.title')} - ${t('site.name')}`}
+  description={t('blog.desc')}
 >
-  <Breadcrumb title="Articles & Insights" />
+  <Breadcrumb title={t('nav.articles')} />
 
   <section class="space">
     <div class="container-fluid blog-fluid-container">
       <SectionHeader
-        badge="Blog & Insights"
+        badge={t('blog.badge')}
         badgeIcon="solar:document-text-bold"
-        title="Architectural Trends & Design Guides"
-        description="Educational articles, modern architectural design trends, and construction guidelines from our specialist team."
+        title={t('blog.title')}
+        description={t('blog.desc')}
         align="center"
       />
 

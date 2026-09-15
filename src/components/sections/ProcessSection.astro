@@ -13,10 +13,11 @@ import type { ImageMetadata } from 'astro';
 import { siteConfig } from '@config/site';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
-import process1 from '@assets/images/normal/process_stage1_survey.jpg';
-import process2 from '@assets/images/normal/process_stage2_design.jpg';
-import process3 from '@assets/images/normal/process_stage3_construction.jpg';
-import process4 from '@assets/images/normal/process_stage4_handover.jpg';
+import process1 from '@assets/images/normal/process_stage0_consultation.jpg';
+import process2 from '@assets/images/normal/process_stage1_survey.jpg';
+import process3 from '@assets/images/normal/process_stage2_design.jpg';
+import process4 from '@assets/images/normal/process_stage3_construction.jpg';
+import process5 from '@assets/images/normal/process_stage4_handover.jpg';
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
@@ -29,10 +30,9 @@ const englishWorkflowSteps = [
     desc: t('process.step1Desc'),
     deliverable: t('process.step1Deliv'),
     milestones: [
-      'Digital laser perimeter measurement & boundary validation',
-      'Elevation contour mapping & soil condition review',
-      'Sun path orientation & local wind direction study',
-      'In-depth discussion of family lifestyle & space requirements',
+      'In-depth discussion of lifestyle, space functionality & architectural style',
+      'Initial budget allocation guidance and spatial priority planning',
+      'Formulation of design brief and preliminary timeline roadmap',
     ],
   },
   {
@@ -42,10 +42,10 @@ const englishWorkflowSteps = [
     desc: t('process.step2Desc'),
     deliverable: t('process.step2Deliv'),
     milestones: [
-      'Photorealistic 3D architectural facade & interior visualization',
-      'Architectural, structural, and MEP engineering drawings (DED)',
-      'Itemized transparent Bill of Quantities (BOQ/RAB)',
-      'Drafting of official legal contract agreement (SPK)',
+      'Digital laser perimeter measurement & boundary validation',
+      'Elevation contour mapping & soil condition review',
+      'Sun path orientation & local wind direction study',
+      'Site utility access and delivery logistics assessment',
     ],
   },
   {
@@ -55,10 +55,10 @@ const englishWorkflowSteps = [
     desc: t('process.step3Desc'),
     deliverable: t('process.step3Deliv'),
     milestones: [
-      'Physical site execution by certified master craftsmen',
-      'Periodic quality inspection by architects & civil engineers',
-      'Weekly milestone reports & visual photo/video updates',
-      'Strict adherence to national building safety standards (SNI)',
+      'Photorealistic 3D architectural facade & interior visualization',
+      'Architectural, structural, and MEP engineering drawings (DED)',
+      'Itemized transparent Bill of Quantities (BOQ/RAB)',
+      'Drafting of official legal contract agreement (SPK)',
     ],
   },
   {
@@ -67,6 +67,19 @@ const englishWorkflowSteps = [
     title: t('process.step4Title'),
     desc: t('process.step4Desc'),
     deliverable: t('process.step4Deliv'),
+    milestones: [
+      'Physical site execution by certified master craftsmen',
+      'Periodic quality inspection by architects & civil engineers',
+      'Weekly milestone reports & visual photo/video updates',
+      'Strict adherence to national building safety standards (SNI)',
+    ],
+  },
+  {
+    number: '05',
+    phaseTag: 'Phase 05',
+    title: t('process.step5Title'),
+    desc: t('process.step5Desc'),
+    deliverable: t('process.step5Deliv'),
     milestones: [
       'Comprehensive joint walkthrough inspection with client',
       'Rectification of all minor snagging items',
@@ -83,18 +96,19 @@ const processImages: Record<string, ImageMetadata> = {
   '02': process2,
   '03': process3,
   '04': process4,
+  '05': process5,
 };
 
 const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : siteConfig.siteUrl.replace(/\/$/, '');
 
-// GEO: HowTo JSON-LD dari data workflow 4 tahap (tanpa angka harga spesifik)
+// GEO: HowTo JSON-LD dari data workflow 5 tahap (tanpa angka harga spesifik)
 const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
-  name: currentLang === 'en' ? 'Turnkey Building Process with Bina Project - 4 Professional Stages' : 'Proses Pembangunan Rumah dengan Bina Project - 4 Tahap Profesional',
+  name: currentLang === 'en' ? 'Turnkey Building Process with Bina Project - 5 Professional Stages' : 'Proses Pembangunan Ruang dengan Bina Project - 5 Tahap Profesional',
   description: currentLang === 'en'
-    ? 'Comprehensive 4-step architectural and construction workflow: on-site survey, 3D design & transparent BOQ, supervised physical construction, and formal warranty handover.'
-    : 'Panduan 4 tahap proses konstruksi Bina Project dari survei lahan hingga serah terima kunci: survei & analisis lokasi, perancangan 3D & RAB transparan, konstruksi dengan pengawasan berkala, serta serah terima resmi bergaransi.',
+    ? 'Comprehensive 5-step architectural and construction workflow: consultation, on-site survey, 3D design & transparent BOQ, supervised physical construction, and formal warranty handover.'
+    : 'Panduan 5 tahap proses konstruksi Bina Project dari konsultasi awal hingga serah terima kunci: konsultasi terarah, survei & analisis lokasi, perancangan 3D & RAB transparan, konstruksi dengan pengawasan berkala, serta serah terima resmi bergaransi.',
   totalTime: 'PT5M',
   supply: [
     { '@type': 'HowToSupply', name: currentLang === 'en' ? 'Certified SNI construction materials' : 'Material konstruksi berkualitas sesuai spesifikasi RAB' },

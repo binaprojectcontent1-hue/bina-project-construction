@@ -7,6 +7,8 @@
 import { Icon } from 'astro-icon/components';
 import { getImage } from 'astro:assets';
 
+import { getWhatsAppUrl } from '@config/site';
+
 interface Props {
   beforeImage: any;
   afterImage: any;
@@ -52,7 +54,7 @@ if (typeof afterImage === 'object' && afterImage !== null) {
   optimizedAfterSrc = optAfter.src;
 }
 
-const waUrl = `https://wa.me/6281335335304?text=${encodeURIComponent(ctaMessage)}`;
+const waUrl = getWhatsAppUrl(ctaMessage);
 ---
 
 <div class="ba-card-wrapper" id={id}>

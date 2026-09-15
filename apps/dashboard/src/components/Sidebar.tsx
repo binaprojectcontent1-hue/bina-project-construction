@@ -69,11 +69,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Floating Island Sidebar */}
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-50 w-72 min-w-[18rem] max-w-[18rem] shrink-0 h-full md:h-auto md:rounded-[28px] bg-gradient-to-b from-[#0E1E38] via-[#0B172C] to-[#07101E] border border-slate-700/60 shadow-2xl flex flex-col justify-between p-4 overflow-y-auto select-none transition-transform duration-300 ${
-          mobileOpen
+        className={`fixed md:static inset-y-0 left-0 z-50 w-72 min-w-[18rem] max-w-[18rem] shrink-0 h-full md:h-auto md:rounded-[28px] bg-gradient-to-b from-[#0E1E38] via-[#0B172C] to-[#07101E] border border-slate-700/60 shadow-2xl flex flex-col justify-between p-4 overflow-y-auto select-none transition-transform duration-300 ${mobileOpen
             ? 'translate-x-0 shadow-2xl'
             : '-translate-x-full md:translate-x-0 md:transform-none'
-        }`}
+          }`}
       >
         <div className="space-y-5">
           {/* Workspace Branding Header */}
@@ -109,11 +108,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('portfolio-new')}
-              className={`flex items-center justify-center gap-1.5 h-9 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer ${
-                activeTab === 'portfolio-new'
+              className={`flex items-center justify-center gap-1.5 h-9 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer ${activeTab === 'portfolio-new'
                   ? 'bg-[#152B49] text-white ring-2 ring-blue-400/40'
                   : 'bg-[#22416D] hover:bg-[#1A3356] text-white'
-              }`}
+                }`}
             >
               <FolderPlus className="w-3.5 h-3.5 shrink-0" />
               <span>+ Proyek</span>
@@ -122,11 +120,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('article-new')}
-              className={`flex items-center justify-center gap-1.5 h-9 px-3 rounded-full text-xs font-bold border transition-all cursor-pointer ${
-                activeTab === 'article-new'
+              className={`flex items-center justify-center gap-1.5 h-9 px-3 rounded-full text-xs font-bold border transition-all cursor-pointer ${activeTab === 'article-new'
                   ? 'bg-[#152B49] border-blue-400 text-white'
                   : 'border-blue-400/30 bg-[#12233B]/60 hover:bg-[#12233B] text-blue-100'
-              }`}
+                }`}
             >
               <PenTool className="w-3.5 h-3.5 shrink-0 text-blue-200" />
               <span>+ Artikel</span>
@@ -142,11 +139,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('overview')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === 'overview'
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'overview'
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <LayoutDashboard className={`w-5 h-5 shrink-0 ${activeTab === 'overview' ? 'text-white' : 'text-blue-300/70'}`} />
@@ -165,20 +161,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('portfolio')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                isTabActive('portfolio')
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${isTabActive('portfolio')
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Briefcase className={`w-5 h-5 shrink-0 ${isTabActive('portfolio') ? 'text-white' : 'text-blue-300/70'}`} />
                 <span className="truncate">Portofolio Proyek</span>
               </div>
               <span
-                className={`text-xs font-bold font-mono tabular-nums px-2.5 py-0.5 rounded-full min-w-[1.75rem] text-center shrink-0 ${
-                  isTabActive('portfolio') ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-300'
-                }`}
+                className={`text-xs font-bold font-mono tabular-nums px-2.5 py-0.5 rounded-full min-w-[1.75rem] text-center shrink-0 ${isTabActive('portfolio') ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-300'
+                  }`}
               >
                 {portfolioCount}
               </span>
@@ -188,11 +182,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('live-projects')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === 'live-projects'
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'live-projects'
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <MapPin className={`w-5 h-5 shrink-0 ${activeTab === 'live-projects' ? 'text-white' : 'text-blue-300/70'}`} />
@@ -204,20 +197,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('articles')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                isTabActive('articles')
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${isTabActive('articles')
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <BookOpen className={`w-5 h-5 shrink-0 ${isTabActive('articles') ? 'text-white' : 'text-blue-300/70'}`} />
-                <span className="truncate">Artikel & Berita</span>
+                <span className="truncate">Artikel</span>
               </div>
               <span
-                className={`text-xs font-bold font-mono tabular-nums px-2.5 py-0.5 rounded-full min-w-[1.75rem] text-center shrink-0 ${
-                  isTabActive('articles') ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-300'
-                }`}
+                className={`text-xs font-bold font-mono tabular-nums px-2.5 py-0.5 rounded-full min-w-[1.75rem] text-center shrink-0 ${isTabActive('articles') ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-300'
+                  }`}
               >
                 {articleCount}
               </span>
@@ -227,20 +218,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('biolink')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === 'biolink'
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'biolink'
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Link2 className={`w-5 h-5 shrink-0 ${activeTab === 'biolink' ? 'text-white' : 'text-blue-300/70'}`} />
                 <span className="truncate">Bio Link (Linktree)</span>
               </div>
               <span
-                className={`text-xs font-medium px-2.5 py-0.5 rounded-full shrink-0 ${
-                  activeTab === 'biolink' ? 'bg-white/25 text-white' : 'bg-blue-500/20 text-blue-300'
-                }`}
+                className={`text-xs font-medium px-2.5 py-0.5 rounded-full shrink-0 ${activeTab === 'biolink' ? 'bg-white/25 text-white' : 'bg-blue-500/20 text-blue-300'
+                  }`}
               >
                 Aktif
               </span>
@@ -250,11 +239,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('site-settings')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === 'site-settings'
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'site-settings'
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Building2 className={`w-5 h-5 shrink-0 ${activeTab === 'site-settings' ? 'text-white' : 'text-blue-300/70'}`} />
@@ -272,11 +260,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('redirects')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === 'redirects'
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'redirects'
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Shuffle className={`w-5 h-5 shrink-0 ${activeTab === 'redirects' ? 'text-white' : 'text-blue-300/70'}`} />
@@ -287,11 +274,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               type="button"
               onClick={() => handleSelect('settings')}
-              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === 'settings'
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'settings'
                   ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
                   : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Settings className={`w-5 h-5 shrink-0 ${activeTab === 'settings' ? 'text-white' : 'text-blue-300/70'}`} />

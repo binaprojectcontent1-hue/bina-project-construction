@@ -8,38 +8,30 @@ import TextTickerRibbon from '@components/TextTickerRibbon.astro';
 import ConsultationCtaSection from '@components/sections/ConsultationCtaSection.astro';
 import CounterSection from '@components/sections/CounterSection.astro';
 import ProjectSliderSection from '@components/sections/ProjectSliderSection.astro';
-import WhyChooseUsSection from '@components/sections/WhyChooseUsSection.astro';
+import WhyChooseBinaSection from '@components/sections/WhyChooseBinaSection.astro';
 import BrandMarquee from '@components/BrandMarquee.astro';
 import TestimonialSection from '@components/TestimonialSection.astro';
 import FaqSection from '@components/sections/FaqSection.astro';
-import ContactSection from '@components/sections/ContactSection.astro';
 import { getAllProjects } from '@lib/portfolioService';
-import { getImage } from 'astro:assets';
-import heroArchitectural from '@assets/images/hero/hero_architectural.png';
+import heroImage1 from '@assets/images/hero/hero-image1.webp';
 
-const optimizedHero1 = await getImage({ src: heroArchitectural, format: 'webp', quality: 68, width: 1200 });
 const projects = await getAllProjects();
 ---
 
-<BaseLayout
-  title="Bina Project - Jasa Konstruksi & Desain Interior Malang"
-  description="Jasa konstruksi, renovasi rumah, desain interior & kitchen set di Malang & Jawa Timur. Pengerjaan profesional, bergaransi & gratis survei lokasi."
-  preloadImage={optimizedHero1.src}
->
+<BaseLayout preloadImage={heroImage1.src}>
 
   <HeroSection />
-  <TextTickerRibbon variant="dark" speed={28} />
+  <TextTickerRibbon variant="dark" speed={36} />
   <AboutSection />
   <ServicesSection />
   <ProjectSliderSection projects={projects} />
   <CounterSection />
-  <WhyChooseUsSection />
+  <WhyChooseBinaSection />
   <ProcessSection />
   <ConsultationCtaSection />
   <TestimonialSection />
   <BrandMarquee />
   <FaqSection />
-  <ContactSection />
 </BaseLayout>
 
 <style is:global>

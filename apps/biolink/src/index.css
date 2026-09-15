@@ -26,6 +26,9 @@
   --white-12: rgba(255, 255, 255, 0.12);
   --white-08: rgba(255, 255, 255, 0.08);
   --white-05: rgba(255, 255, 255, 0.05);
+  
+  /* Custom Cursor - Meteran Style */
+  --bina-cursor-meteran: url('/meteran-cursor.png') 7 2, pointer;
 }
 
 html, body, #root {
@@ -97,6 +100,7 @@ body {
   padding: 0;
   flex-shrink: 0;
   animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: var(--bina-cursor-meteran);
 }
 
 .bio-logo {
@@ -213,7 +217,7 @@ body {
   outline: none !important;
   color: #ffffff;
   text-decoration: none;
-  cursor: pointer;
+  cursor: var(--bina-cursor-meteran);
   box-shadow: 
     inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2),
@@ -282,7 +286,7 @@ body {
   line-height: 1.3;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
+  cursor: var(--bina-cursor-meteran);
   user-select: none;
 }
 
@@ -375,6 +379,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
   transition: all 0.22s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: var(--bina-cursor-meteran);
 }
 
 .social-link:hover {

@@ -5,14 +5,18 @@ import SectionHeader from '@components/SectionHeader.astro';
 import { getSiteSettings } from '@lib/siteSettingsService';
 import { Icon } from 'astro-icon/components';
 
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
 const siteConfig = await getSiteSettings();
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <BaseLayout
-  title={`Hubungi Kami - ${siteConfig.legalName}`}
-  description="Hubungi tim arsitek dan kontraktor Bina Project untuk konsultasi gratis mengenai rencana pembangunan gedung, rumah tinggal, renovasi, kitchen set, atau interior di Kota Malang dan Jawa Timur."
+  title={`${t('contact.title')} - ${t('site.name')}`}
+  description={t('contact.subtitle')}
 >
-  <Breadcrumb title="Contact Us" />
+  <Breadcrumb title={t('nav.contact')} />
 
   <!--============================== Bento Contact Cards Grid ==============================-->
   <section class="space-top space-extra-bottom">
@@ -20,8 +24,8 @@ const siteConfig = await getSiteSettings();
       <SectionHeader
         badge="Informasi Kontak Resmi"
         badgeIcon="solar:user-id-bold"
-        title="Terhubung Bersama Kami"
-        description="Kenali kami lebih dekat. Kami siap menjadi solusi aman dan amanah dalam membangun ruang impian Anda."
+        title="Kenali Kami Lebih Dekat"
+        description="Kami siap menjadi mitra solusi aman dalam membangun ruang impian Anda"
         align="center"
       />
 
@@ -34,7 +38,9 @@ const siteConfig = await getSiteSettings();
             </div>
             <h3 class="contact-bento-title">Konsultasi Gratis & Kerjasama</h3>
             <p class="contact-bento-desc">
-              Layanan respons cepat untuk konsultasi gratis dan kerjasama B2B melalui WhatsApp resmi tim kami.
+              Layanan respon untuk konsultasi secara<br/>
+              gratis dan kerjasama B2B melalui<br/>
+              WhatsApp resmi Tim Bina Project
             </p>
             <div class="contact-bento-footer mt-auto">
               <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
@@ -53,7 +59,8 @@ const siteConfig = await getSiteSettings();
             </div>
             <h3 class="contact-bento-title">Email</h3>
             <p class="contact-bento-desc">
-              Kirimkan dokumen pendukung atau berkas rencana proyek Anda langsung kepada tim manajemen kami.
+              Kirimkan dokumen pendukung rencana<br/>
+              Proyek Anda kepada Tim Bina Project
             </p>
             <div class="contact-bento-footer mt-auto">
               <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
@@ -73,18 +80,19 @@ const siteConfig = await getSiteSettings();
             <h3 class="contact-bento-title">Jam Operasional</h3>
             <div class="contact-schedule-list">
               <div class="schedule-item">
-                <span class="schedule-days">Senin – Sabtu:</span>
+                <span class="schedule-days">Hari Senin – Sabtu:</span>
                 <span class="schedule-hours">08:00 – 16:00 WIB</span>
               </div>
               <div class="schedule-item holiday">
-                <span class="schedule-days">Minggu / Tgl Merah:</span>
+                <span class="schedule-days">Hari Minggu / Tanggal Merah:</span>
                 <span class="schedule-hours">Libur</span>
               </div>
             </div>
             <div class="contact-bento-footer mt-auto">
-              <span class="contact-status-chip">
-                <Icon name="solar:check-circle-bold" width="15" height="15" class="me-1 text-success" />
-                Respon Cepat Tim Arsitek
+              <span class="contact-status-chip is-open" id="operational-status-chip" title="Jam Operasional: Senin – Sabtu, 08:00 – 16:00 WIB">
+                <Icon name="solar:check-circle-bold" width="15" height="15" class="me-1 status-icon status-icon-open" />
+                <Icon name="solar:close-circle-bold" width="15" height="15" class="me-1 status-icon status-icon-closed" />
+                <span id="operational-status-text">Buka</span>
               </span>
             </div>
           </div>
@@ -297,12 +305,44 @@ const siteConfig = await getSiteSettings();
   .contact-status-chip {
     display: inline-flex;
     align-items: center;
-    padding: 6px 12px;
+    padding: 6px 14px;
     background: #ECFDF5;
     color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.25);
     border-radius: 20px;
     font-size: 12.5px;
     font-weight: 600;
+    transition: all 0.25s ease;
+  }
+
+  .contact-status-chip.is-open {
+    background: #ECFDF5;
+    color: #059669;
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+
+  .contact-status-chip.is-open .status-icon-open {
+    display: inline-block;
+    color: #10B981;
+  }
+
+  .contact-status-chip.is-open .status-icon-closed {
+    display: none;
+  }
+
+  .contact-status-chip.is-closed {
+    background: #FEF2F2;
+    color: #DC2626;
+    border-color: rgba(239, 68, 68, 0.25);
+  }
+
+  .contact-status-chip.is-closed .status-icon-open {
+    display: none;
+  }
+
+  .contact-status-chip.is-closed .status-icon-closed {
+    display: inline-block;
+    color: #EF4444;
   }
 
   /* Map Section */
@@ -426,3 +466,71 @@ const siteConfig = await getSiteSettings();
     }
   }
 </style>
+
+<script is:inline>
+  function updateOperationalStatus() {
+    const chip = document.getElementById('operational-status-chip');
+    const text = document.getElementById('operational-status-text');
+    if (!chip || !text) return;
+
+    let isSunday = false;
+    let isWorkDay = false;
+    let isOpenHours = false;
+
+    try {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Jakarta',
+        hour12: false,
+        weekday: 'short',
+        hour: 'numeric',
+        minute: 'numeric'
+      });
+      const parts = formatter.formatToParts(now);
+      let weekday = '';
+      let hour = 0;
+      let minute = 0;
+      for (const p of parts) {
+        if (p.type === 'weekday') weekday = p.value;
+        if (p.type === 'hour') hour = parseInt(p.value, 10);
+        if (p.type === 'minute') minute = parseInt(p.value, 10);
+      }
+      if (hour === 24) hour = 0;
+
+      isSunday = (weekday === 'Sun');
+      isWorkDay = !isSunday;
+      const totalMinutes = hour * 60 + minute;
+      isOpenHours = totalMinutes >= (8 * 60) && totalMinutes < (16 * 60);
+    } catch (e) {
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const wib = new Date(utc + (7 * 3600000));
+      const day = wib.getDay();
+      const hour = wib.getHours();
+      const minute = wib.getMinutes();
+
+      isSunday = (day === 0);
+      isWorkDay = (day >= 1 && day <= 6);
+      const totalMinutes = hour * 60 + minute;
+      isOpenHours = totalMinutes >= (8 * 60) && totalMinutes < (16 * 60);
+    }
+
+    const isOpen = isWorkDay && isOpenHours;
+    const isEn = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
+
+    if (isOpen) {
+      chip.classList.remove('is-closed');
+      chip.classList.add('is-open');
+      text.textContent = isEn ? 'Open' : 'Buka';
+    } else {
+      chip.classList.remove('is-open');
+      chip.classList.add('is-closed');
+      text.textContent = isEn ? 'Closed' : 'Tutup';
+    }
+  }
+
+  updateOperationalStatus();
+  document.addEventListener('DOMContentLoaded', updateOperationalStatus);
+  document.addEventListener('astro:page-load', updateOperationalStatus);
+  setInterval(updateOperationalStatus, 30000);
+</script>

@@ -31,7 +31,7 @@
       background-color: var(--bina-navy, #22416D);
       border-radius: 50%;
       pointer-events: none;
-      z-index: 999999;
+      z-index: var(--zi-cursor, 9999);
       transform: translate3d(-100px, -100px, 0);
       transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
                   height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
@@ -55,7 +55,7 @@
       background-color: transparent;
       border-radius: 50%;
       pointer-events: none;
-      z-index: 999998;
+      z-index: var(--zi-cursor, 9999);
       transform: translate3d(-100px, -100px, 0);
       transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
                   height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
@@ -177,15 +177,33 @@
     const LERP_FACTOR = 0.18;
 
     function render() {
+      const dx = mouseX - ringX;
+      const dy = mouseY - ringY;
+
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        ringX = mouseX;
+        ringY = mouseY;
+        dotEl.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+        ringEl.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+        rafId = null;
+        return; // Sleep rAF loop when cursor has settled
+      }
+
       // Smoothly interpolate ring position towards mouse
-      ringX += (mouseX - ringX) * LERP_FACTOR;
-      ringY += (mouseY - ringY) * LERP_FACTOR;
+      ringX += dx * LERP_FACTOR;
+      ringY += dy * LERP_FACTOR;
 
       // Pure GPU transform without geometry recalculation (0 forced reflows)
       dotEl.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       ringEl.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
 
       rafId = requestAnimationFrame(render);
+    }
+
+    function wakeLoop() {
+      if (rafId === null && isVisible) {
+        rafId = requestAnimationFrame(render);
+      }
     }
 
     // Interactive target detection
@@ -237,6 +255,8 @@
         ringY = mouseY;
       }
 
+      wakeLoop();
+
       const target = e.target as HTMLElement | null;
       if (target) {
         // Check interactive hover
@@ -280,11 +300,13 @@
     function onMouseDown() {
       ringEl.classList.add('is-active');
       dotEl.classList.add('is-active');
+      wakeLoop();
     }
 
     function onMouseUp() {
       ringEl.classList.remove('is-active');
       dotEl.classList.remove('is-active');
+      wakeLoop();
     }
 
     function onMouseLeave() {
@@ -297,6 +319,7 @@
       isVisible = true;
       dotEl.style.opacity = '1';
       ringEl.style.opacity = '1';
+      wakeLoop();
     }
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -305,7 +328,7 @@
     document.documentElement.addEventListener('mouseleave', onMouseLeave);
     document.documentElement.addEventListener('mouseenter', onMouseEnter);
 
-    rafId = requestAnimationFrame(render);
+    wakeLoop();
 
     // Cleanup on page swap (Astro View Transitions / SPA)
     document.addEventListener(

@@ -1,0 +1,617 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { TestimonialItem } from '@types';
+
+interface Props {
+  testimonials: readonly TestimonialItem[];
+}
+
+const { testimonials } = Astro.props;
+---
+
+<div class="stack-testi-wrapper" id="nativeStackTesti">
+  <!-- Interactive Card Stack Area -->
+  <div class="stack-deck-container" id="stackDeckContainer">
+    {testimonials.map((item, index) => (
+      <div
+        class={`stack-card-item ${index === 0 ? 'is-active' : ''}`}
+        data-index={index}
+      >
+        <div
+          class={`stack-card-inner ${
+            index === 0 ? 'card-level-0' : index === 1 ? 'card-level-1' : 'card-level-2'
+          }`}
+        >
+          <!-- Header: Client Info & Star Rating -->
+          <div class="stack-card-header">
+            <div class="stack-client-meta">
+              <div class="stack-avatar-wrap">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  class="stack-avatar-img"
+                  loading="lazy"
+                  decoding="async"
+                  width="52"
+                  height="52"
+                />
+                <span class="stack-verified-badge" title="Klien Terverifikasi Bina Project">
+                  <Icon name="solar:check-circle-bold" width="13" height="13" class="verified-icon" />
+                </span>
+              </div>
+              <div class="stack-client-titles">
+                <h3 class="stack-client-name">{item.name}</h3>
+                <p class="stack-client-role">{item.role}</p>
+                {item.project && (
+                  <span class="stack-project-tag">{item.project}</span>
+                )}
+              </div>
+            </div>
+
+            <div class="stack-rating-box">
+              <div class="stack-stars-row">
+                {Array.from({ length: item.rating }).map(() => (
+                  <Icon name="solar:star-bold" width="15" height="15" class="star-icon" />
+                ))}
+              </div>
+              <span class="stack-rating-score">5.0</span>
+            </div>
+          </div>
+
+          <!-- Body: Quote Text -->
+          <div class="stack-card-body">
+            <svg class="stack-quote-watermark" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zM15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
+            </svg>
+            <p class="stack-quote-text">
+              &ldquo;{item.quote}&rdquo;
+            </p>
+          </div>
+
+          <!-- Footer: Verification & Hint -->
+          <div class="stack-card-footer">
+            <div class="stack-trust-badge">
+              <span class="stack-trust-dot"></span>
+              <span class="stack-trust-label">Review Klien Terverifikasi</span>
+            </div>
+            <span class="stack-drag-hint">
+              ← Geser atau klik tombol →
+            </span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Navigation Controls Bar -->
+  <div class="stack-controls-bar">
+    <button
+      type="button"
+      id="stackPrevBtn"
+      class="stack-nav-btn prev-btn"
+      aria-label="Review Sebelumnya"
+    >
+      <Icon name="solar:alt-arrow-left-linear" width="18" height="18" />
+      <span class="btn-label-text">Sebelumnya</span>
+    </button>
+
+    <div class="stack-pagination-pills" role="tablist" aria-label="Pilih Review Klien" id="stackPaginationPills">
+      {testimonials.map((item, index) => (
+        <button
+          type="button"
+          role="tab"
+          data-page-index={index}
+          class={`stack-page-pill ${index === 0 ? 'is-active' : ''}`}
+          aria-label={`Lihat ulasan ${item.name}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+        />
+      ))}
+    </div>
+
+    <button
+      type="button"
+      id="stackNextBtn"
+      class="stack-nav-btn next-btn"
+      aria-label="Review Berikutnya"
+    >
+      <span class="btn-label-text">Berikutnya</span>
+      <Icon name="solar:alt-arrow-right-linear" width="18" height="18" />
+    </button>
+  </div>
+</div>
+
+<style>
+  .stack-testi-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 10px 0 20px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .stack-deck-container {
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+  }
+
+  .stack-card-item {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    cursor: grab;
+    touch-action: pan-y;
+    transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+  }
+
+  .stack-card-item.is-dragging {
+    cursor: grabbing;
+    transition: none !important;
+  }
+
+  .stack-card-inner {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 34px 38px;
+    position: relative;
+    border: none;
+    transition: box-shadow 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-level-0 {
+    background: #FFFFFF;
+    box-shadow:
+      0 20px 45px rgba(34, 65, 109, 0.09),
+      0 4px 14px rgba(0, 0, 0, 0.03);
+  }
+
+  .card-level-1 {
+    background: #F8FAFC;
+    box-shadow:
+      0 14px 30px rgba(34, 65, 109, 0.06),
+      0 2px 8px rgba(0, 0, 0, 0.02);
+  }
+
+  .card-level-2 {
+    background: #F1F5F9;
+    box-shadow: 0 8px 20px rgba(34, 65, 109, 0.04);
+  }
+
+  .stack-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .stack-client-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .stack-avatar-wrap {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+
+  .stack-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(34, 65, 109, 0.12);
+    background: #E2E8F0;
+  }
+
+  .stack-verified-badge {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 18px;
+    height: 18px;
+    background: #22416D;
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+  }
+
+  .stack-client-titles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stack-client-name {
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: #17202A;
+    margin: 0 0 2px;
+    line-height: 1.3;
+  }
+
+  .stack-client-role {
+    font-size: 13px;
+    color: #475569;
+    font-weight: 600;
+    margin: 0 0 5px;
+  }
+
+  .stack-project-tag {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #22416D;
+    background: #EFF6FF;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  .stack-rating-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bina-rating-bg, #FEF3C7);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    flex-shrink: 0;
+  }
+
+  .stack-stars-row {
+    display: flex;
+    gap: 2px;
+    color: #F59E0B;
+  }
+
+  .stack-rating-score {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--bina-rating-text, #92400E);
+  }
+
+  .stack-card-body {
+    position: relative;
+    padding: 6px 0 18px;
+  }
+
+  .stack-quote-watermark {
+    position: absolute;
+    top: -10px;
+    left: -4px;
+    color: rgba(34, 65, 109, 0.08);
+    pointer-events: none;
+  }
+
+  .stack-quote-text {
+    font-family: var(--font-body, 'Archivo', sans-serif);
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.7;
+    color: #1E293B;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stack-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid #F1F5F9;
+  }
+
+  .stack-trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .stack-trust-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10B981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  }
+
+  .stack-trust-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #475569;
+  }
+
+  .stack-drag-hint {
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+  }
+
+  .stack-controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 36px;
+  }
+
+  .stack-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #22416D;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    min-height: 48px;
+    padding: 12px 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(34, 65, 109, 0.22);
+  }
+
+  .stack-nav-btn:hover {
+    background: var(--bina-navy-hover, #1B3457);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(34, 65, 109, 0.32);
+  }
+
+  .stack-nav-btn:active {
+    transform: translateY(0);
+  }
+
+  .stack-pagination-pills {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .stack-page-pill {
+    height: 48px;
+    min-height: 48px;
+    min-width: 20px;
+    padding: 0 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stack-page-pill::before {
+    content: '';
+    display: block;
+    height: 8px;
+    width: 8px;
+    border-radius: 9999px;
+    background: #CBD5E1;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stack-page-pill.is-active::before {
+    width: 32px;
+    background: #22416D;
+    box-shadow: 0 2px 8px rgba(34, 65, 109, 0.25);
+  }
+
+  .stack-page-pill:hover:not(.is-active)::before {
+    background: #475569;
+  }
+
+  @media (max-width: 640px) {
+    .stack-deck-container {
+      min-height: 440px;
+    }
+
+    .stack-card-inner {
+      padding: 24px 22px;
+      border-radius: 20px;
+    }
+
+    .stack-quote-text {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .stack-card-header {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stack-rating-box {
+      align-self: flex-start;
+    }
+
+    .btn-label-text {
+      display: none;
+    }
+
+    .stack-nav-btn {
+      padding: 10px 14px;
+    }
+
+    .stack-drag-hint {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initStackDeck() {
+    const wrapper = document.getElementById('nativeStackTesti');
+    if (!wrapper || (wrapper as any)._hasStackDeck) return;
+    (wrapper as any)._hasStackDeck = true;
+
+    const cards = Array.from(wrapper.querySelectorAll<HTMLElement>('.stack-card-item'));
+    const pills = Array.from(wrapper.querySelectorAll<HTMLElement>('.stack-page-pill'));
+    const prevBtn = wrapper.querySelector('#stackPrevBtn');
+    const nextBtn = wrapper.querySelector('#stackNextBtn');
+
+    let activeIndex = 0;
+    const total = cards.length;
+    let autoTimer: any = null;
+    let isPaused = false;
+
+    function renderStack(dragOffset = 0) {
+      cards.forEach((card, idx) => {
+        const pos = (idx - activeIndex + total) % total;
+        const isActive = pos === 0;
+        const inner = card.querySelector<HTMLElement>('.stack-card-inner');
+
+        card.classList.toggle('is-active', isActive);
+        card.style.pointerEvents = isActive ? 'auto' : 'none';
+
+        if (inner) {
+          inner.classList.remove('card-level-0', 'card-level-1', 'card-level-2');
+          inner.classList.add(isActive ? 'card-level-0' : pos === 1 ? 'card-level-1' : 'card-level-2');
+        }
+
+        const dragHint = card.querySelector<HTMLElement>('.stack-drag-hint');
+        if (dragHint) {
+          dragHint.style.display = isActive ? '' : 'none';
+        }
+
+        if (isActive) {
+          card.style.transform = `translate3d(${dragOffset}px, 0px, 0px) rotate(${dragOffset * 0.04}deg) scale(1)`;
+          card.style.opacity = '1';
+          card.style.zIndex = total.toString();
+        } else if (pos === 1) {
+          card.style.transform = 'translate3d(0px, 16px, 0px) rotate(-1.2deg) scale(0.96)';
+          card.style.opacity = '0.88';
+          card.style.zIndex = (total - 1).toString();
+        } else if (pos === 2) {
+          card.style.transform = 'translate3d(2px, 32px, 0px) rotate(1.2deg) scale(0.92)';
+          card.style.opacity = '0.55';
+          card.style.zIndex = (total - 2).toString();
+        } else {
+          card.style.transform = 'translate3d(0px, 48px, 0px) rotate(0deg) scale(0.88)';
+          card.style.opacity = '0';
+          card.style.zIndex = '0';
+        }
+      });
+
+      pills.forEach((pill, idx) => {
+        const isSelected = idx === activeIndex;
+        pill.classList.toggle('is-active', isSelected);
+        pill.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      });
+    }
+
+    function setActive(idx: number) {
+      activeIndex = (idx + total) % total;
+      renderStack();
+    }
+
+    function handleNext() {
+      setActive(activeIndex + 1);
+    }
+
+    function handlePrev() {
+      setActive(activeIndex - 1);
+    }
+
+    function startAuto() {
+      if (autoTimer) clearInterval(autoTimer);
+      autoTimer = setInterval(() => {
+        if (!isPaused) handleNext();
+      }, 7500);
+    }
+
+    prevBtn?.addEventListener('click', () => { handlePrev(); startAuto(); });
+    nextBtn?.addEventListener('click', () => { handleNext(); startAuto(); });
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const idx = parseInt(pill.getAttribute('data-page-index') || '0', 10);
+        setActive(idx);
+        startAuto();
+      });
+    });
+
+    wrapper.addEventListener('mouseenter', () => { isPaused = true; });
+    wrapper.addEventListener('mouseleave', () => { isPaused = false; });
+    wrapper.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
+    wrapper.addEventListener('touchend', () => { isPaused = false; }, { passive: true });
+
+    // Drag / Gesture Physics on Active Card
+    let isDragging = false;
+    let startX = 0;
+    let currentDragX = 0;
+
+    wrapper.addEventListener('pointerdown', (e) => {
+      const activeCard = cards[activeIndex];
+      if (!activeCard || !activeCard.contains(e.target as Node)) return;
+      isDragging = true;
+      startX = e.clientX;
+      currentDragX = 0;
+      activeCard.classList.add('is-dragging');
+      activeCard.setPointerCapture(e.pointerId);
+    });
+
+    wrapper.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      currentDragX = e.clientX - startX;
+      renderStack(currentDragX);
+    });
+
+    function endDrag(e: PointerEvent) {
+      if (!isDragging) return;
+      isDragging = false;
+      const activeCard = cards[activeIndex];
+      if (activeCard) {
+        activeCard.classList.remove('is-dragging');
+        try { activeCard.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+
+      if (currentDragX < -55) {
+        handleNext();
+      } else if (currentDragX > 55) {
+        handlePrev();
+      } else {
+        renderStack(0);
+      }
+      startAuto();
+    }
+
+    wrapper.addEventListener('pointerup', endDrag);
+    wrapper.addEventListener('pointercancel', endDrag);
+
+    renderStack();
+    startAuto();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStackDeck);
+  } else {
+    initStackDeck();
+  }
+  document.addEventListener('astro:page-load', initStackDeck);
+</script>

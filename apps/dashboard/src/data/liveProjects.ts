@@ -2,7 +2,7 @@ export interface FallbackLiveProject {
   id: string;
   title: string;
   area_name: string;
-  category: 'Konstruksi' | 'Renovasi' | 'Interior' | 'Arsitektur';
+  category: 'Konstruksi' | 'Interior' | 'Desain';
   stage: string;
   progress: number;
   lat: number;
@@ -21,23 +21,11 @@ export const FALLBACK_LIVE_PROJECTS: FallbackLiveProject[] = [
     progress: 65,
     lat: -7.935,
     lng: 112.658,
-    image_url: 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=800&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1590381105924-c759b3f3e8a9?q=80&w=800&auto=format&fit=crop',
     is_active: true,
   },
   {
     id: 'sample-2',
-    title: 'Renovasi Total Fasad & Interior Villa',
-    area_name: 'Bumiaji, Kota Batu',
-    category: 'Renovasi',
-    stage: 'Pemasangan Finishing Plafon & Rangka Atap',
-    progress: 80,
-    lat: -7.85,
-    lng: 112.535,
-    image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop',
-    is_active: true,
-  },
-  {
-    id: 'sample-3',
     title: 'Fabrikasi & Instalasi Kitchen Set Minimalis',
     area_name: 'Klojen, Kota Malang',
     category: 'Interior',
@@ -49,15 +37,27 @@ export const FALLBACK_LIVE_PROJECTS: FallbackLiveProject[] = [
     is_active: true,
   },
   {
+    id: 'sample-3',
+    title: 'Konsep Arsitektur Villa Tropis Modern',
+    area_name: 'Kedungkandang, Kota Malang',
+    category: 'Desain',
+    stage: 'Penyusunan Gambar Arsitektur & 3D Visualisasi',
+    progress: 75,
+    lat: -7.982,
+    lng: 112.625,
+    image_url: 'https://images.unsplash.com/photo-1600607686527-6f88c0a5dc1d?q=80&w=800&auto=format&fit=crop',
+    is_active: true,
+  },
+  {
     id: 'sample-4',
-    title: 'Pembangunan Ruko & Kantor Bisnis 3 Lantai',
-    area_name: 'Warugunung, Surabaya Barat',
-    category: 'Konstruksi',
-    stage: 'Pekerjaan Struktur Bawah & Pondasi Footplate',
-    progress: 35,
-    lat: -7.34,
-    lng: 112.69,
-    image_url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop',
+    title: 'Masterplan Kawasan Perumahan Eco-Green',
+    area_name: 'Singosari, Kabupaten Malang',
+    category: 'Desain',
+    stage: 'Perencanaan Masterplan & Siteplan Detail',
+    progress: 60,
+    lat: -7.915,
+    lng: 112.735,
+    image_url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop',
     is_active: true,
   },
 ];

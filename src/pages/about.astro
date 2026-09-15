@@ -7,14 +7,21 @@ import aboutImg3 from '@assets/images/normal/about_3.jpg';
 import LiveProjectsMap from '@components/LiveProjectsMap';
 import SectionHeader from '@components/SectionHeader.astro';
 import ProcessSection from '@components/sections/ProcessSection.astro';
+import VisionMissionSection from '@components/VisionMissionSection.astro';
 import TeamSection from '@components/TeamSection.astro';
+import TestimonialSection from '@components/TestimonialSection.astro';
+import BrandMarquee from '@components/BrandMarquee.astro';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <BaseLayout
-  title="Tentang Kami - Bina Project Construction"
-  description="Mengenal Bina Project Construction, penyedia jasa arsitektur, interior, dan konstruksi terpercaya dengan pengalaman lebih dari 10 tahun di Jawa Timur."
+  title={`${t('about.title')} - ${t('site.name')}`}
+  description={t('about.subtitle')}
 >
-  <Breadcrumb title="Tentang Kami" />
+  <Breadcrumb title={t('nav.about')} />
 
   <!--============================== About Area ==============================-->
   <div class="overflow-hidden space" id="about-sec">
@@ -38,31 +45,63 @@ import TeamSection from '@components/TeamSection.astro';
         </div>
         <div class="col-xl-6">
           <SectionHeader
-            badge="Tentang Perusahaan Kami"
+            badge="Kenapa Harus Memilih Bina Project ?"
             badgeIcon="solar:buildings-2-bold"
-            title="You Dream It, We Build It"
-            description="Bina Project Construction merupakan usaha yang bergerak di bidang jasa Interior dan Konstruksi yang meliputi pembangunan gedung, perumahan, ruko hingga klinik. Kami hadir untuk menjadi solusi di setiap kebutuhan Interior & Konstruksi Anda. Kami siap bekerjasama dengan instansi dan seluruh sektor lain dengan komitmen mutu terbaik dan transparansi penuh."
+            title="Kenapa Harus Memilih Bina Project?"
+            description="Bina Project merupakan Perusahaan profesional yang bergerak dibidang jasa desain perencanaan, kontraktor interior, kontraktor konstruksi dan waterproofing yang meliputi pembangunan rumah tinggal, bangunan komersial, gedung bertingkat hingga Gedung kesehatan. Kami hadir untuk menjadi mitra solusi aman membangun ruang impian bagi Anda. Kami siap bekerjasama dengan perorangan, instansi atau sektor lain dengan komitmen mutu dan transparansi penuh."
             align="left"
-            class="pe-xl-5 me-xl-5 mb-30"
+            class="why-choose-header mb-30"
           />
 
-            <div class="about-item-wrap">
+          <div class="row gy-4">
+            <!-- Item 1: Tim Berkompeten -->
+            <div class="col-lg-6 col-md-6">
               <div class="about-item">
                 <div class="about-item_icon">
                   <Icon name="solar:users-group-rounded-bold" width="30" height="30" />
                 </div>
                 <div class="about-item_centent">
-                  <h3 class="box-title">Tenaga Ahli Bersertifikasi</h3>
-                  <p class="about-item_text">Ditangani oleh arsitek dan tim pengawas berdedikasi dengan jam terbang lebih dari 10 tahun di Jawa Timur.</p>
+                  <h3 class="box-title">Tim Berkompeten</h3>
+                  <p class="about-item_text">Ditangani oleh tim yang berpengalaman dan bersertifikasi.</p>
                 </div>
               </div>
+            </div>
+
+            <!-- Item 2: Bergaransi -->
+            <div class="col-lg-6 col-md-6">
               <div class="about-item">
                 <div class="about-item_icon">
                   <Icon name="solar:shield-check-bold" width="30" height="30" />
                 </div>
                 <div class="about-item_centent">
-                  <h3 class="box-title">Garansi Konstruksi SPK</h3>
-                  <p class="about-item_text">Komitmen tanggung jawab penuh dengan pemeliharaan fisik dan jaminan kebocoran dak tertulis.</p>
+                  <h3 class="box-title">Bergaransi</h3>
+                  <p class="about-item_text">Setiap proyek terikat kontrak kerja resmi (SPK) dengan jaminan masa pemeliharaan terpercaya.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 3: Lebih Rapi -->
+            <div class="col-lg-6 col-md-6">
+              <div class="about-item">
+                <div class="about-item_icon">
+                  <Icon name="solar:ruler-cross-pen-bold" width="30" height="30" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Lebih Rapi</h3>
+                  <p class="about-item_text">Jaminan lebih rapi dalam setiap hasil pengerjaan dan ditangani oleh Tim berpengalaman sehingga selalu mendapatkan solusi dari setiap kendala yang ada.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 4: Pemeliharaan Berkelanjutan -->
+            <div class="col-lg-6 col-md-6">
+              <div class="about-item">
+                <div class="about-item_icon">
+                  <Icon name="solar:restart-circle-bold" width="30" height="30" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Pemeliharaan Berkelanjutan</h3>
+                  <p class="about-item_text">Menyediakan layanan pemeliharaan berkelanjutan pasca masa pemeliharaan selesai.</p>
                 </div>
               </div>
             </div>
@@ -71,6 +110,9 @@ import TeamSection from '@components/TeamSection.astro';
       </div>
     </div>
   </div>
+
+  <!--============================== Vision, Mission & Core Values Section ==============================-->
+  <VisionMissionSection />
 
   <!--============================== Live Projects Map Section ==============================-->
   <section class="coverage-sec space-bottom" id="proyek-berjalan">
@@ -100,61 +142,11 @@ import TeamSection from '@components/TeamSection.astro';
   <!--============================== Our Team Section ==============================-->
   <TeamSection />
 
-  <!--============================== Refined Architectural CTA Section ==============================-->
-  <section class="about-cta-section">
-    <div class="about-cta-backdrop" aria-hidden="true"></div>
-    <div class="container position-relative" style="z-index: 2;">
-      <div class="row align-items-center justify-content-between gy-4">
-        <div class="col-lg-7 col-xl-8">
-          <div class="about-cta-content">
-            <span class="about-cta-kicker">
-              <Icon name="solar:buildings-bold" width="15" height="15" />
-              <span>Studio Arsitektur & Pelaksana Konstruksi</span>
-            </span>
-            <h2 class="about-cta-title">
-              Konsultasikan Rencana Bangunan <span class="about-cta-title-accent">Anda Bersama Kami</span>
-            </h2>
-            <p class="about-cta-desc">
-              Mulai dari penyusunan konsep denah, visualisasi 3D interior, hingga estimasi anggaran biaya (RAB) yang transparan dan presisi bersama tim arsitek Bina Project.
-            </p>
-            <div class="about-cta-trust-row">
-              <div class="trust-item">
-                <Icon name="solar:check-circle-bold" width="16" height="16" class="trust-icon" />
-                <span>Survei Tapak Gratis Malang Raya</span>
-              </div>
-              <div class="trust-item">
-                <Icon name="solar:check-circle-bold" width="16" height="16" class="trust-icon" />
-                <span>100% Transparansi Spesifikasi & RAB</span>
-              </div>
-              <div class="trust-item">
-                <Icon name="solar:check-circle-bold" width="16" height="16" class="trust-icon" />
-                <span>Garansi Resmi Konstruksi</span>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!--============================== Testimonials ==============================-->
+  <TestimonialSection />
 
-        <div class="col-lg-5 col-xl-4">
-          <div class="about-cta-actions">
-            <a
-              href="https://wa.me/6281335335304?text=Halo%20Bina%20Project,%20saya%20ingin%20konsultasi%20rencana%20bangunan"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="about-cta-btn about-cta-btn--primary"
-            >
-              <Icon name="simple-icons:whatsapp" width="18" height="18" />
-              <span>Konsultasi via WhatsApp</span>
-              <Icon name="solar:arrow-right-linear" width="16" height="16" class="arrow-icon" />
-            </a>
-            <a href="/portfolio" class="about-cta-btn about-cta-btn--secondary">
-              <Icon name="solar:gallery-bold" width="18" height="18" />
-              <span>Lihat Portofolio Proyek</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!--============================== Brand Partners ==============================-->
+  <BrandMarquee />
 </BaseLayout>
 
 <style>
@@ -193,6 +185,15 @@ import TeamSection from '@components/TeamSection.astro';
     font-size: 15px;
     font-weight: 400;
     line-height: 1.65;
+  }
+
+  :global(.why-choose-header .section-header__title) {
+    font-size: clamp(1.25rem, 2.25vw, 2.15rem) !important;
+  }
+  @media (min-width: 576px) {
+    :global(.why-choose-header .section-header__title) {
+      white-space: nowrap !important;
+    }
   }
 
 
@@ -235,161 +236,6 @@ import TeamSection from '@components/TeamSection.astro';
     }
   }
 
-  /* ========================================================
-     Refined Architectural CTA Section
-     ======================================================== */
-  .about-cta-section {
-    position: relative;
-    padding: clamp(64px, 7vw, 92px) 0;
-    background: linear-gradient(135deg, rgba(17, 32, 55, 0.95) 0%, rgba(26, 49, 82, 0.92) 50%, rgba(13, 24, 40, 0.96) 100%),
-      url('/assets/img/bg/cta_bg_1.jpg') center center / cover no-repeat;
-    overflow: hidden;
-    color: #FFFFFF;
-  }
-  .about-cta-backdrop {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle at 80% 20%, rgba(132, 172, 223, 0.16) 0%, transparent 50%),
-      radial-gradient(circle at 10% 80%, rgba(37, 211, 102, 0.08) 0%, transparent 40%);
-    pointer-events: none;
-  }
-  .about-cta-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 14px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--bina-blue-ice, #84ACDF);
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .about-cta-title {
-    font-family: var(--font-heading, 'Archivo', sans-serif);
-    font-size: clamp(24px, 3.2vw, 36px);
-    font-weight: 800;
-    line-height: 1.25;
-    color: #FFFFFF !important;
-    margin-top: 0;
-    margin-bottom: 14px;
-    letter-spacing: -0.02em;
-  }
-  .about-cta-title-accent {
-    color: var(--bina-blue-ice, #84ACDF);
-  }
-  .about-cta-desc {
-    font-size: clamp(14px, 1.1vw, 15.5px);
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.85) !important;
-    max-width: 620px;
-    margin-bottom: 22px;
-  }
-  .about-cta-trust-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 20px;
-  }
-  .trust-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
-  }
-  .trust-icon {
-    color: #25D366;
-    flex-shrink: 0;
-  }
-  .about-cta-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    max-width: 320px;
-    margin-left: auto;
-  }
-  .about-cta-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px 22px;
-    border-radius: 12px;
-    font-size: 13.5px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    white-space: nowrap;
-    font-family: var(--font-heading, 'Archivo', sans-serif);
-  }
-  .about-cta-btn--primary {
-    background: #25D366;
-    color: #064E3B;
-    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
-  }
-  .about-cta-btn--primary:hover {
-    background: #1EBE5D;
-    color: #064E3B;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
-  }
-  .about-cta-btn--primary .arrow-icon {
-    transition: transform 0.2s ease;
-  }
-  .about-cta-btn--primary:hover .arrow-icon {
-    transform: translateX(4px);
-  }
-  .about-cta-btn--secondary {
-    background: rgba(255, 255, 255, 0.12);
-    color: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-  }
-  .about-cta-btn--secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #FFFFFF;
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-
-  @media (max-width: 991px) {
-    .about-cta-content {
-      text-align: center;
-    }
-    .about-cta-kicker {
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .about-cta-desc {
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .about-cta-trust-row {
-      justify-content: center;
-    }
-    .about-cta-actions {
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 440px;
-    }
-  }
-
-  @media (max-width: 575px) {
-    .about-cta-actions {
-      max-width: 100%;
-    }
-    .about-cta-btn {
-      width: 100%;
-    }
-    .about-cta-trust-row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-  }
 
   /* ========================================================
      Architectural Value Cards (Refined Solar Icons & Solid Box)
@@ -401,6 +247,9 @@ import TeamSection from '@components/TeamSection.astro';
     box-shadow: 0 4px 20px rgba(34, 65, 109, 0.05);
     border: 1px solid var(--bina-slate-200, #E2E8F0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
   .about-item:hover {
     transform: translateY(-4px);
@@ -421,6 +270,13 @@ import TeamSection from '@components/TeamSection.astro';
   .about-item:hover .about-item_icon {
     background: var(--bina-navy, #22416D);
     color: #FFFFFF;
+  }
+  
+  /* Samakan tinggi kolom - Flex basis equal */
+  .row > [class*="col-lg-"], 
+  .row > [class*="col-md-"] {
+    display: flex;
+    flex-direction: column;
   }
 </style>
 

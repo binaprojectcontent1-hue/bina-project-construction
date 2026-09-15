@@ -168,7 +168,7 @@ export default function LiveProjectsMap({ initialCategory = 'all', lang = 'id' }
       const marker = L.marker(latLng, { icon: customIcon }).addTo(map);
 
       const localizedCategory = lang === 'en'
-        ? (proj.category === 'Konstruksi' ? 'New Construction' : proj.category === 'Renovasi' ? 'Renovation' : proj.category === 'Interior' ? 'Interior' : proj.category)
+        ? (proj.category === 'Konstruksi' ? 'New Construction' : (proj.category as string) === 'Desain' ? 'Design' : proj.category === 'Interior' || proj.category.includes('Interior') ? 'Interior' : proj.category)
         : proj.category;
       const stageLabel = lang === 'en' ? 'Work Phase:' : 'Tahap Pekerjaan:';
 
@@ -218,11 +218,11 @@ export default function LiveProjectsMap({ initialCategory = 'all', lang = 'id' }
     }
   };
 
-  const categories = [
+const categories = [
     { id: 'all', label: lang === 'en' ? 'All Projects' : 'Semua Proyek' },
-    { id: 'konstruksi', label: lang === 'en' ? 'New Construction' : 'Konstruksi Baru' },
-    { id: 'renovasi', label: lang === 'en' ? 'Renovation' : 'Renovasi' },
     { id: 'interior', label: lang === 'en' ? 'Interior' : 'Interior' },
+    { id: 'konstruksi', label: lang === 'en' ? 'Construction' : 'Konstruksi' },
+    { id: 'desain', label: lang === 'en' ? 'Design' : 'Desain' },
   ];
 
   return (

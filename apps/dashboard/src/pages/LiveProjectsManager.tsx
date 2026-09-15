@@ -31,7 +31,7 @@ export interface LiveProjectRecord {
   id: string;
   title: string;
   area_name: string;
-  category: 'Konstruksi' | 'Renovasi' | 'Interior' | 'Arsitektur';
+  category: 'Konstruksi' | 'Interior' | 'Desain';
   stage: string;
   progress: number;
   lat: number;

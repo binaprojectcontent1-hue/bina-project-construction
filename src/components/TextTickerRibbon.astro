@@ -1,22 +1,42 @@
 ---
 // TextTickerRibbon.astro - Modern Architectural Infinite Typography Marquee
+import { getLangFromUrl } from '@i18n/utils';
+
 interface Props {
   variant?: 'dark' | 'light';
   speed?: number;
 }
 
-const { variant = 'dark', speed = 25 } = Astro.props;
+const { variant = 'dark', speed = 36 } = Astro.props;
+const currentLang = getLangFromUrl(Astro.url);
 
-const tickerItems = [
-  'ARCHITECTURAL DESIGN',
-  'GENERAL CONTRACTOR',
-  'BESPOKE INTERIOR',
-  'STRUCTURAL ENGINEERING',
-  'RESIDENTIAL & COMMERCIAL',
-  'PRECISION 3D RENDERING',
-  'QUALITY GUARANTEE',
-  'LEGAL CONTRACT PROTECTION',
-];
+const tickerItems = currentLang === 'en'
+  ? [
+      'Architectural Planning Drawings',
+      'Area Siteplan & Masterplan',
+      'Detailed Cost Estimation (RAB)',
+      'Geoelectric Soil Investigation',
+      'Structural Engineering Calculation',
+      'Residential & Multi-Story Building Renovation',
+      'Housing & Commercial Area Development',
+      'Structural Leakage Repair',
+      'Specialist Waterproofing Works',
+      'Building Approval & Permitting (PBG/SLF)',
+      'Architectural Scale Modeling',
+    ]
+  : [
+      'Gambar Perencanaan',
+      'Gambar Siteplan Kawasan',
+      'Pembuatan RAB',
+      'Uji Tanah Geolistrik',
+      'Perhitungan Struktur',
+      'Renovasi Rumah Tinggal/Gedung Bertingkat',
+      'Pembangunan Kawasan Perumahan/Komersial',
+      'Perbaikan Kebocoran',
+      'Pekerjaan Waterproofing',
+      'Pengurusan PBG/SLF',
+      'Pembuatan Maket',
+    ];
 ---
 
 <div class={`arch-ticker-strip ${variant === 'light' ? 'is-light' : 'is-dark'}`} aria-hidden="true">

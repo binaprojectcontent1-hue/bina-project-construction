@@ -11,7 +11,7 @@ export const liveProjectFormSchema = z.object({
     .trim()
     .min(3, 'Nama kawasan minimal 3 karakter (contoh: Araya, Kota Malang).')
     .max(100, 'Nama kawasan maksimal 100 karakter.'),
-  category: z.enum(['Konstruksi', 'Renovasi', 'Interior', 'Arsitektur']),
+  category: z.enum(['Konstruksi', 'Interior', 'Desain']),
   stage: z
     .string()
     .trim()

@@ -15,7 +15,7 @@ export const defaultLang: Language = 'id';
 export const ui = {
   id: {
     // Navigation
-    'nav.home': 'Home',
+    'nav.home': 'Beranda',
     'nav.about': 'Tentang Kami',
     'nav.portfolio': 'Portfolio',
     'nav.liveProjects': 'Proyek Berjalan',
@@ -49,7 +49,7 @@ export const ui = {
     'map.hudBadge': 'LIVE ON-GOING PROJECTS',
     'map.activeCount': 'Titik Proyek Aktif Sedang Berjalan',
     'map.filterAll': 'Semua Proyek',
-    'map.filterConstruction': 'Konstruksi Baru',
+    'map.filterConstruction': 'Konstruksi',
     'map.filterRenovation': 'Renovasi',
     'map.filterInterior': 'Interior',
     'map.statusOngoing': 'Sedang Berjalan',
@@ -65,19 +65,21 @@ export const ui = {
 
     // About Section (Homepage)
     'aboutSection.badge': 'Tentang Bina Project',
-    'aboutSection.title': 'You Dream It, We Build It',
+    'aboutSection.title': 'Solusi Aman Membangun Ruang Impian',
     'aboutSection.desc':
-      'Mitra terpercaya untuk mewujudkan hunian dan ruang usaha Anda. Dari desain 3D hingga pengerjaan fisik dengan standar arsitektur profesional, transparansi RAB, dan kontrak legal resmi (SPK).',
+      'Perusahaan profesional yang bergerak di bidang desain perencanaan, kontraktor interior, kontraktor konstruksi dan waterproofing dengan garansi',
     'aboutSection.proof1Title': '10+ Tahun Dedikasi',
     'aboutSection.proof1Sub': 'Arsitek & Tenaga Ahli Bersertifikasi',
     'aboutSection.proof2Label': 'Projek Sukses Selesai',
     'aboutSection.proof2Verified': '100% Tuntas Sesuai SPK',
-    'aboutSection.pillar1Title': 'RAB Transparan & Mengikat',
-    'aboutSection.pillar1Desc': 'Rincian volume material dan harga terbuka sejak awal tanpa biaya siluman.',
-    'aboutSection.pillar2Title': 'Arsitek & Tim Berpengalaman',
-    'aboutSection.pillar2Desc': 'Dikerjakan tenaga ahli bersertifikasi dengan jam terbang tinggi di Jawa Timur.',
-    'aboutSection.pillar3Title': 'Pengawasan Konstruksi Berkala',
-    'aboutSection.pillar3Desc': 'Laporan opname fisik berkala dan garansi masa pemeliharaan resmi.',
+    'aboutSection.pillar1Title': 'Tim Berkompeten',
+    'aboutSection.pillar1Desc': 'Ditangani oleh tim yang berpengalaman dan bersertifikasi.',
+    'aboutSection.pillar2Title': 'Bergaransi',
+    'aboutSection.pillar2Desc': 'Setiap proyek terikat kontrak kerja resmi (SPK) dengan jaminan masa pemeliharaan terpercaya.',
+    'aboutSection.pillar3Title': 'Lebih Rapi',
+    'aboutSection.pillar3Desc': 'Jaminan lebih rapi dalam setiap hasil pengerjaan dan ditangani oleh Tim berpengalaman sehingga selalu mendapatkan solusi dari setiap kendala yang ada.',
+    'aboutSection.pillar4Title': 'Pemeliharaan Berkelanjutan',
+    'aboutSection.pillar4Desc': 'Menyediakan layanan pemeliharaan berkelanjutan pasca masa pemeliharaan selesai.',
     'aboutSection.ctaWhatsApp': 'Konsultasi Cepat via WhatsApp',
     'aboutSection.ctaMore': 'Pelajari Selengkapnya',
 
@@ -86,28 +88,43 @@ export const ui = {
     'servicesSection.title': 'Pelayanan Terbaik Untuk Anda',
     'servicesSection.desc':
       'Solusi lengkap konstruksi dan interior dari perencanaan hingga eksekusi, dengan standar profesional dan jaminan kualitas.',
-    'servicesSection.s1Title': 'Konstruksi',
+    'servicesSection.s1Title': 'Gambar Perencanaan',
     'servicesSection.s1Desc':
-      'Pembangunan rumah tinggal, gedung kantor, pergudangan, sekolah, hingga klinik kesehatan dengan pengawasan profesional.',
-    'servicesSection.s2Title': 'Interior & Kitchen Set',
+      'Penyusunan gambar kerja arsitektur lengkap (DED), denah tata ruang, visualisasi 3D fasad, dan detail teknis MEP.',
+    'servicesSection.s2Title': 'Gambar Siteplan Kawasan',
     'servicesSection.s2Desc':
-      'Desain dan pembuatan kitchen set, backdrop, kabinet, wardrobe, plafond, hingga custom furniture sesuai kebutuhan.',
-    'servicesSection.s3Title': 'Perumahan & Developer',
+      'Perencanaan masterplan zonasi lahan, jaringan utilitas, aksesibilitas jalan, dan penataan lanskap kawasan terpadu.',
+    'servicesSection.s3Title': 'Pembuatan RAB',
     'servicesSection.s3Desc':
-      'Pembangunan unit perumahan, ruko komersial, kavling siap bangun, serta infrastruktur lingkungan perumahan.',
-    'servicesSection.s4Title': 'Arsitektur & 3D',
+      'Rencana Anggaran Biaya transparan, rincian volume material detail, dan analisis harga satuan tanpa biaya siluman.',
+    'servicesSection.s4Title': 'Uji Tanah Geolistrik',
     'servicesSection.s4Desc':
-      'Jasa gambar kerja teknis (DED), visualisasi 3D photorealistic, siteplan, perhitungan struktur, dan simulasi MEP.',
-    'servicesSection.s5Title': 'Renovasi Bangunan',
+      'Investigasi geolistrik dan pengujian sondir untuk memetakan daya dukung tanah serta potensi air tanah secara akurat.',
+    'servicesSection.s5Title': 'Perhitungan Struktur',
     'servicesSection.s5Desc':
-      'Renovasi total maupun parsial, penambahan lantai (dak cor), perbaikan atap bocor, dan peremajaan fasad bangunan.',
-    'servicesSection.s6Title': 'Waterproofing',
+      'Kalkulasi rekayasa struktur beton dan baja bertulang berstandar SNI untuk keamanan gempa dan ketahanan maksimal.',
+    'servicesSection.s6Title': 'Renovasi Rumah Tinggal/Gedung Bertingkat',
     'servicesSection.s6Desc':
-      'Aplikasi membran bakar, coating elastomeric, dan injeksi beton bergaransi untuk mengatasi rembesan lantai dak dan dinding.',
+      'Renovasi total maupun parsial, penambahan lantai (dak cor), penguatan struktur, serta peremajaan fasad bangunan modern.',
+    'servicesSection.s7Title': 'Pembangunan Kawasan Perumahan/Komersial',
+    'servicesSection.s7Desc':
+      'Pembangunan klaster perumahan, ruko komersial, pergudangan, dan fasilitas publik dari fondasi hingga serah terima SPK.',
+    'servicesSection.s8Title': 'Perbaikan Kebocoran',
+    'servicesSection.s8Desc':
+      'Identifikasi sumber kebocoran atap dak, talang beton, dinding rembes, serta perbaikan sistematis dengan garansi tuntas.',
+    'servicesSection.s9Title': 'Pekerjaan Waterproofing',
+    'servicesSection.s9Desc':
+      'Aplikasi membran bakar, coating elastomeric, dan injeksi polyurethane (PU) bergaransi untuk perlindungan anti bocor permanen.',
+    'servicesSection.s10Title': 'Pengurusan PBG/SLF',
+    'servicesSection.s10Desc':
+      'Pendampingan legalitas izin Persetujuan Bangunan Gedung (PBG) dan Sertifikat Laik Fungsi (SLF) resmi sesuai regulasi dinas.',
+    'servicesSection.s11Title': 'Pembuatan Maket',
+    'servicesSection.s11Desc':
+      'Miniatur arsitektur 3D presisi berskala realistis untuk visualisasi proyek perumahan, gedung, dan display pameran.',
 
     // Project Slider Section
     'projectSlider.badge': 'Hasil Karya Terbaru',
-    'projectSlider.title': 'Karya & Realisasi Konstruksi',
+    'projectSlider.title': 'Portofolio Kami',
     'projectSlider.desc':
       'Dokumentasi proyek konstruksi hunian, villa tropis, interior komersial, dan kitchen set yang telah kami selesaikan dengan mutu bergaransi.',
     'projectSlider.viewAll': 'Lihat Semua Portofolio',
@@ -116,10 +133,10 @@ export const ui = {
 
     // Counter Section
     'counterSection.badge': 'Rekam Jejak & Kapabilitas',
-    'counterSection.title': 'Dedikasi Konstruksi dalam',
+    'counterSection.title': 'Dedikasi Kami dalam',
     'counterSection.titleAccent': 'Angka Nyata',
     'counterSection.desc':
-      'Bukti rekam jejak profesionalisme, ketepatan estimasi RAB, dan jaminan mutu konstruksi bergaransi resmi di Malang dan seluruh Jawa Timur.',
+      'Bukti rekam jejak profesionalisme, ketepatan estimasi RAB, dan jaminan mutu konstruksi karya kami di seluruh Indonesia.',
     'counterSection.stat1Label': 'Proyek Selesai',
     'counterSection.stat1Detail': 'Rumah, Villa & Gedung Komersial',
     'counterSection.stat2Label': 'Dedikasi & Pengalaman',
@@ -165,33 +182,37 @@ export const ui = {
 
     // Process Section
     'process.badge': 'Alur Kerja Profesional',
-    'process.title': '4 Tahap Pembangunan',
-    'process.titleAccent': 'Rumah Impian Anda',
+    'process.title': '5 Tahap Pembangunan',
+    'process.titleAccent': 'Ruang Impian Anda',
     'process.desc':
-      'Transparan, terukur, dan terjadwal dari tahap konsultasi hingga serah terima kunci bergaransi.',
-    'process.step1Title': 'Survei & Analisis Lokasi',
+      'Transparan, terukur, dan terjadwal dari tahap konsultasi awal hingga serah terima kunci bergaransi.',
+    'process.step1Title': 'Konsultasi',
     'process.step1Desc':
-      'Pengukuran akurat dimensi lahan, elevasi kontur tanah, orientasi arah mata angin, dan diskusi mendalam kebutuhan tata ruang.',
-    'process.step1Deliv': 'Data kontur, foto eksisting, & resume kebutuhan ruang',
-    'process.step2Title': 'Desain 3D & RAB Transparan',
+      'Diskusi mendalam membedah kebutuhan fungsi ruang, gaya arsitektur, preferensi tata letak, hingga estimasi awal anggaran bersama tim arsitek.',
+    'process.step1Deliv': 'Design brief awal, resume kebutuhan ruang, & estimasi timeline',
+    'process.step2Title': 'Survei & Analisis Lokasi',
     'process.step2Desc':
-      'Visualisasi denah arsitektur 3D photorealistic interaktif dan rincian anggaran biaya (RAB) terbuka tanpa biaya siluman.',
-    'process.step2Deliv': 'Gambar 3D render, denah arsitektur, & dokumen RAB',
-    'process.step3Title': 'Pembangunan & Supervisi',
+      'Pengukuran akurat dimensi lahan, elevasi kontur tanah, orientasi arah mata angin, dan diskusi mendalam kebutuhan tata ruang.',
+    'process.step2Deliv': 'Data kontur, foto eksisting, & kajian kelayakan teknis lahan',
+    'process.step3Title': 'Perancangan & Rencana Anggaran Biaya',
     'process.step3Desc':
-      'Pengerjaan fisik oleh tim tukang profesional dengan supervisi rutin arsitek & project manager serta laporan berkala.',
-    'process.step3Deliv': 'Laporan opname mingguan & dokumentasi foto/video',
-    'process.step4Title': 'Serah Terima Kunci & Garansi',
+      'Visualisasi denah arsitektur 3D photorealistic interaktif dan rincian anggaran biaya (RAB) terbuka tanpa biaya siluman.',
+    'process.step3Deliv': 'Buku gambar kerja DED, visual 3D render, & dokumen RAB detail',
+    'process.step4Title': 'Pembangunan & Pengawasan',
     'process.step4Desc':
-      'Pemeriksaan bersama (joint inspection), penandatanganan Berita Acara Serah Terima (BAST), dan penyerahan sertifikat garansi.',
-    'process.step4Deliv': 'Kunci bangunan, dokumen BAST, & sertifikat garansi',
+      'Pengerjaan fisik oleh tim tukang profesional dengan supervisi rutin arsitek & project manager serta laporan berkala.',
+    'process.step4Deliv': 'Laporan opname mingguan & dokumentasi foto/video WhatsApp',
+    'process.step5Title': 'Serah Terima Kunci & Garansi',
+    'process.step5Desc':
+      'Pemeriksaan bersama (joint inspection), penandatanganan Berita Acara Serah Terima (BAST), dan penyerahan sertifikat garansi resmi.',
+    'process.step5Deliv': 'Kunci bangunan, dokumen BAST, & sertifikat garansi pemeliharaan',
 
     // Consultation CTA Section
     'consultationCta.badge': 'Konsultasi & Estimasi RAB',
-    'consultationCta.title': 'Rencanakan Bangunan Impian Tanpa Khawatir Biaya Membengkak',
+    'consultationCta.title': 'Rencanakan Ruang Impian Anda Tanpa Khawatir Biaya Membengkak',
     'consultationCta.desc':
-      'Konsultasikan desain 3D, pemilihan material SNI, serta estimasi anggaran biaya (RAB) terbuka langsung bersama tim arsitek & project manager Bina Project.',
-    'consultationCta.btnWa': 'Konsultasi Cepat via WhatsApp',
+      'Konsultasikan desain, konsep, serta estimasi biaya langsung bersama tim Bina Project.',
+    'consultationCta.btnWa': 'Konsultasi via WhatsApp',
     'consultationCta.btnSurvey': 'Jadwalkan Survei Lokasi',
 
     // Testimonials
@@ -204,7 +225,7 @@ export const ui = {
     'brandMarquee.badge': 'Kolaborasi & Kemitraan',
     'brandMarquee.title': 'Partner Terpercaya Kami',
     'brandMarquee.desc':
-      'Dipercaya oleh berbagai instansi BUMN, institusi kesehatan, perusahaan, dan pemilik hunian di seluruh Indonesia.',
+      'Dipercaya oleh berbagai Instansi, Lembaga dan Organisasi Lainnya di seluruh Indonesia.',
 
     // FAQ Section
     'faq.badge': 'Pusat Bantuan & Tanya Jawab',
@@ -224,6 +245,13 @@ export const ui = {
     'about.missionTitle': 'Membangun Masa Depan dengan Mutu Tertinggi',
     'about.teamTitle': 'Tim Arsitek & Manajemen Proyek',
     'about.teamSubtitle': 'Tenaga ahli bersertifikasi yang berdedikasi mewujudkan standar bangunan presisi.',
+
+    // Team Section
+    'team.badge': 'Tim & Kepemimpinan',
+    'team.title': 'Dedikasi Profesional',
+    'team.titleAccent': 'Dibalik Setiap Karya',
+    'team.desc':
+      'Setiap ruang yang kami bangun ditangani oleh tim berkompeten demi menjaga keamanan dan kepuasan konsumen.',
 
     // Portfolio Page & Card
     'portfolio.title': 'Katalog Karya Arsitektur & Interior',
@@ -251,9 +279,9 @@ export const ui = {
 
     // Articles / Blog
     'blog.badge': 'Blog & Inspirasi',
-    'blog.title': 'Tips & Tren Desain Masa Kini',
+    'blog.title': 'Artikel Bina Project',
     'blog.desc':
-      'Kumpulan artikel edukasi, tren desain arsitektur modern, dan panduan konstruksi dari tim ahli Bina Project.',
+      'Kumpulan artikel, berita, konten dan hal-hal yang berkaitan dengan desain properti interior konstruksi dan waterproofing.',
     'blog.readMore': 'BACA SELENGKAPNYA',
     'blog.emptyTitle': 'Belum Ada Artikel Tersedia',
     'blog.emptyDesc':
@@ -284,14 +312,19 @@ export const ui = {
     'breadcrumb.home': 'Beranda',
 
     // SideMenu
-    'sidemenu.badge': 'Studio Arsitektur & Kontraktor',
+    'sidemenu.badge': 'Solusi Aman Membangun Ruang Impian',
+    'sidemenu.desc':
+      'Perusahaan profesional yang bergerak di bidang desain perencanaan, kontraktor interior, kontraktor konstruksi dan waterproofing dengan garansi',
     'sidemenu.contactInfo': 'Informasi Kontak',
-    'sidemenu.address': 'Alamat Kantor',
-    'sidemenu.hotline': 'WhatsApp Hotline',
+    'sidemenu.address': 'Alamat',
+    'sidemenu.hotline': 'WhatsApp',
+    'sidemenu.email': 'Email',
     'sidemenu.hours': 'Jam Operasional',
     'sidemenu.hoursVal': 'Senin - Sabtu: 08.00 - 17.00 WIB',
     'sidemenu.hoursSun': 'Minggu: Janji Temu',
+    'sidemenu.socialMedia': 'Media Sosial',
     'sidemenu.contactUs': 'Hubungi Kami',
+    'sidemenu.ctaWhatsapp': 'KONSULTASI WHATSAPP',
 
     // Footer
     'footer.about':
@@ -343,7 +376,7 @@ export const ui = {
     'map.hudBadge': 'LIVE ON-GOING PROJECTS',
     'map.activeCount': 'Active Projects In Progress',
     'map.filterAll': 'All Projects',
-    'map.filterConstruction': 'New Construction',
+    'map.filterConstruction': 'Construction',
     'map.filterRenovation': 'Renovation',
     'map.filterInterior': 'Interior',
     'map.statusOngoing': 'In Progress',
@@ -358,46 +391,63 @@ export const ui = {
     'map.noDocumentation': 'No visual documentation uploaded yet',
 
     // About Section (Homepage)
-    'aboutSection.badge': 'About Our Studio',
-    'aboutSection.title': 'You Dream It, We Build It',
+    'aboutSection.badge': 'About Bina Project',
+    'aboutSection.title': 'Safe Solutions to Build Your Dream Space',
     'aboutSection.desc':
-      'Your trusted partner for residential homes and commercial premises. From 3D architectural plans to turnkey construction with professional engineering standards, transparent BOQ, and official legal contracts.',
+      'A professional company specializing in architectural design planning, interior contracting, construction contracting, and guaranteed waterproofing.',
     'aboutSection.proof1Title': '10+ Years Dedication',
     'aboutSection.proof1Sub': 'Licensed Architects & Certified Engineers',
     'aboutSection.proof2Label': 'Completed Projects',
-    'aboutSection.proof2Verified': '100% Contractual Completion',
-    'aboutSection.pillar1Title': 'Transparent & Binding BOQ',
-    'aboutSection.pillar1Desc': 'Clear material specifications and honest cost breakdown with zero hidden fees.',
-    'aboutSection.pillar2Title': 'Licensed Architects & Master Craftsmen',
-    'aboutSection.pillar2Desc': 'Executed by certified site supervisors and master craftsmen across East Java.',
-    'aboutSection.pillar3Title': 'Supervised Site Management',
-    'aboutSection.pillar3Desc': 'Regular progress reports and comprehensive post-handover structural warranty.',
-    'aboutSection.ctaWhatsApp': 'WhatsApp Consultation',
-    'aboutSection.ctaMore': 'Learn More About Us',
+    'aboutSection.proof2Verified': '100% Completed According to SPK Contract',
+    'aboutSection.pillar1Title': 'Competent Team',
+    'aboutSection.pillar1Desc': 'Handled by an experienced and certified team.',
+    'aboutSection.pillar2Title': 'Official Warranty',
+    'aboutSection.pillar2Desc': 'Every project is bound by an official work contract (SPK) with a trusted maintenance warranty.',
+    'aboutSection.pillar3Title': 'Neater Workmanship',
+    'aboutSection.pillar3Desc': 'Guaranteed neater work in every project delivery, handled by experienced teams to always find solutions for any challenges.',
+    'aboutSection.pillar4Title': 'Sustainable Maintenance',
+    'aboutSection.pillar4Desc': 'Providing sustainable maintenance services after the initial maintenance period ends.',
+    'aboutSection.ctaWhatsApp': 'Fast WhatsApp Consultation',
+    'aboutSection.ctaMore': 'Learn More',
 
     // Services Section
     'servicesSection.badge': 'Our Services',
     'servicesSection.title': 'Premier Architectural & Building Solutions',
     'servicesSection.desc':
       'Turnkey construction and interior solutions from initial planning to physical execution, backed by professional engineering standards.',
-    'servicesSection.s1Title': 'General Construction',
+    'servicesSection.s1Title': 'Architectural Planning',
     'servicesSection.s1Desc':
-      'Turnkey construction of residential estates, commercial offices, warehouses, and medical clinics under licensed supervision.',
-    'servicesSection.s2Title': 'Bespoke Interior & Kitchens',
+      'Comprehensive architectural working drawings (DED), functional floor plans, photorealistic 3D facades, and MEP details.',
+    'servicesSection.s2Title': 'Master Site Plan Design',
     'servicesSection.s2Desc':
-      'Custom kitchen sets, wardrobes, living room backdrop, architectural ceiling work, and bespoke furniture tailored to your lifestyle.',
-    'servicesSection.s3Title': 'Housing & Development',
+      'Integrated master planning for land zoning, utility networks, road accessibility, and sustainable landscape layouts.',
+    'servicesSection.s3Title': 'BOQ & Cost Estimation (RAB)',
     'servicesSection.s3Desc':
-      'Residential housing developments, commercial shophouses, and masterplanned residential infrastructure.',
-    'servicesSection.s4Title': 'Architectural Design & 3D',
+      'Transparent bill of quantities (BOQ), detailed material takeoffs, and unit rate analysis with zero hidden costs.',
+    'servicesSection.s4Title': 'Geoelectric Soil Investigation',
     'servicesSection.s4Desc':
-      'Detailed engineering drawings (DED), photorealistic 3D rendering, site planning, and MEP analysis.',
-    'servicesSection.s5Title': 'Structural Renovation',
+      'Subsurface resistivity mapping and soil cone penetration tests to assess ground bearing capacity and groundwater tables.',
+    'servicesSection.s5Title': 'Structural Engineering Calculations',
     'servicesSection.s5Desc':
-      'Total or partial renovations, vertical building expansions, roof waterproofing, and facade modernization.',
-    'servicesSection.s6Title': 'Specialist Waterproofing',
+      'Rigorous reinforced concrete and structural steel engineering calculations adhering to SNI seismic safety standards.',
+    'servicesSection.s6Title': 'Residential & Multi-Story Renovation',
     'servicesSection.s6Desc':
-      'Torch-on membrane, elastomeric coatings, and polyurethane crack injection with guaranteed protection.',
+      'Turnkey complete or partial renovations, vertical building expansions, structural reinforcement, and modern facade revamps.',
+    'servicesSection.s7Title': 'Housing & Commercial Development',
+    'servicesSection.s7Desc':
+      'Turnkey development of residential clusters, commercial shophouses, warehouses, and infrastructure from foundation to handover.',
+    'servicesSection.s8Title': 'Structural Leakage Repair',
+    'servicesSection.s8Desc':
+      'Precise diagnosis and systematic restoration of rooftop slab leaks, concrete gutters, and damp walls with official warranty.',
+    'servicesSection.s9Title': 'Specialist Waterproofing Works',
+    'servicesSection.s9Desc':
+      'Application of torch-on membranes, elastomeric coatings, and polyurethane (PU) injection for permanent water barrier protection.',
+    'servicesSection.s10Title': 'Building Approval & Permitting (PBG/SLF)',
+    'servicesSection.s10Desc':
+      'Complete professional assistance for official Building Approval (PBG) and Certificate of Functionality (SLF) compliance.',
+    'servicesSection.s11Title': 'Architectural Scale Modeling',
+    'servicesSection.s11Desc':
+      'Precision 3D architectural scale models built to realistic proportions for property marketing, presentations, and exhibitions.',
 
     // Project Slider Section
     'projectSlider.badge': 'Recent Projects',
@@ -427,18 +477,18 @@ export const ui = {
     'whyUs.badge': 'Why Choose Us',
     'whyUs.title': 'Why Build With Bina Project?',
     'whyUs.desc':
-      'Our studio prioritizes budget integrity, official contract guarantees, and superior architectural craftsmanship for your investment security.',
-    'whyUs.card1Title': 'Over a Decade of Experience',
-    'whyUs.card1Desc': 'Managed by a licensed team with over 10 years of experience and 162+ verified projects.',
-    'whyUs.card2Title': 'Adaptive & Precision-Driven',
+      'Our dedication prioritizes budget transparency, official legal contracts, and architectural quality standards for your investment security.',
+    'whyUs.card1Title': 'Experienced',
+    'whyUs.card1Desc': 'Handled by an experienced team with over 10 years of dedication and a track record of 162+ successful projects.',
+    'whyUs.card2Title': 'Solution-Oriented & Precise',
     'whyUs.card2Desc':
-      'Functional design exploration tailored to the local tropical climate and modern living requirements.',
-    'whyUs.card3Title': 'Transparent & Accountable',
+      'Functional design exploration adaptive to the local tropical climate and your family’s real spatial needs.',
+    'whyUs.card3Title': 'Trustworthy & Transparent',
     'whyUs.card3Desc':
-      'Proven track record of zero legal disputes, backed by periodic opname reporting and open-book BOQ.',
+      'Proven to complete 162+ projects in Greater Malang with zero disputes, backed by periodic progress reports and open-book RAB.',
     'whyUs.card4Title': 'Quality Assurance & Warranty',
     'whyUs.card4Desc':
-      'Formal post-handover maintenance warranty to ensure enduring peace of mind.',
+      'Physical maintenance warranty after key handover (BAST) to ensure your peace of mind.',
     'whyUs.sidebarBadge': 'QUALITY STANDARDS',
     'whyUs.sidebarTitle': 'Quality Commitment & Investment Safety',
     'whyUs.tableHeadItem': 'Commitment Point',
@@ -459,26 +509,30 @@ export const ui = {
 
     // Process Section
     'process.badge': 'Professional Workflow',
-    'process.title': '4 Steps to Building',
-    'process.titleAccent': 'Your Dream Home',
+    'process.title': '5 Steps to Building',
+    'process.titleAccent': 'Your Dream Space',
     'process.desc':
       'Transparent, measurable, and scheduled from initial consultation to turnkey handover with warranty.',
-    'process.step1Title': 'On-Site Survey & Land Analysis',
+    'process.step1Title': 'Consultation',
     'process.step1Desc':
-      'Accurate boundary measurements, contour elevation analysis, sun path orientation, and spatial needs analysis.',
-    'process.step1Deliv': 'Site contour data, existing photos, & spatial brief',
-    'process.step2Title': '3D Architectural Design & BOQ',
+      'In-depth discussion exploring spatial functionality, architectural style, layout preferences, and initial budget estimations with the architect team.',
+    'process.step1Deliv': 'Initial design brief, spatial needs summary, & preliminary timeline estimate',
+    'process.step2Title': 'Site Survey & Location Analysis',
     'process.step2Desc':
-      'Photorealistic 3D architectural rendering and transparent itemized bill of quantities with zero hidden costs.',
-    'process.step2Deliv': '3D renders, architectural plans, & itemized BOQ',
-    'process.step3Title': 'Construction & Site Supervision',
+      'Accurate land dimension measurement, soil contour elevation, wind/sun orientation, and in-depth spatial needs discussion.',
+    'process.step2Deliv': 'Contour data, existing site photos, & technical feasibility report',
+    'process.step3Title': 'Architectural Design & BOQ (RAB)',
     'process.step3Desc':
-      'Physical execution by seasoned craftsmen under strict supervision of project managers with periodic progress reports.',
-    'process.step3Deliv': 'Weekly physical reports & site photo/video logs',
-    'process.step4Title': 'Key Handover & Formal Warranty',
+      'Interactive photorealistic 3D architectural floor plans and transparent itemized bill of quantities (RAB/BOQ) with zero hidden fees.',
+    'process.step3Deliv': 'DED working drawing book, 3D visual renders, & detailed RAB document',
+    'process.step4Title': 'Construction & Site Supervision',
     'process.step4Desc':
-      'Joint inspection, signing of the Handover Deed (BAST), and issuance of the official structural warranty.',
-    'process.step4Deliv': 'Building keys, BAST document, & warranty certificate',
+      'Physical execution by a professional craftsman team under periodic supervision of architects & project managers with regular updates.',
+    'process.step4Deliv': 'Weekly milestone reports & WhatsApp photo/video updates',
+    'process.step5Title': 'Key Handover & Formal Warranty',
+    'process.step5Desc':
+      'Joint inspection, signing of the Handover Deed (BAST), and delivery of the official maintenance warranty certificate.',
+    'process.step5Deliv': 'Building keys, BAST document, & maintenance warranty certificate',
 
     // Consultation CTA Section
     'consultationCta.badge': 'Consultation & Cost Estimation',
@@ -518,6 +572,13 @@ export const ui = {
     'about.missionTitle': 'Building the Future with the Highest Quality Standards',
     'about.teamTitle': 'Architectural Team & Project Management',
     'about.teamSubtitle': 'Certified professionals committed to engineering precision and architectural elegance.',
+
+    // Team Section
+    'team.badge': 'Team & Leadership',
+    'team.title': 'Professional Dedication',
+    'team.titleAccent': 'Behind Every Masterpiece',
+    'team.desc':
+      'Every space we build is handled by a competent team dedicated to ensuring safety and customer satisfaction.',
 
     // Portfolio Page & Card
     'portfolio.title': 'Architecture & Interior Catalog',
@@ -578,14 +639,19 @@ export const ui = {
     'breadcrumb.home': 'Home',
 
     // SideMenu
-    'sidemenu.badge': 'Architectural Studio & Contractor',
+    'sidemenu.badge': 'Safe Solutions to Build Your Dream Space',
+    'sidemenu.desc':
+      'A professional company specializing in architectural design planning, interior contracting, construction contracting, and guaranteed waterproofing.',
     'sidemenu.contactInfo': 'Contact Information',
-    'sidemenu.address': 'Studio Office Address',
-    'sidemenu.hotline': 'WhatsApp Hotline',
+    'sidemenu.address': 'Address',
+    'sidemenu.hotline': 'WhatsApp',
+    'sidemenu.email': 'Email',
     'sidemenu.hours': 'Business Hours',
     'sidemenu.hoursVal': 'Monday - Saturday: 08:00 - 17:00 WIB',
     'sidemenu.hoursSun': 'Sunday: By Appointment',
+    'sidemenu.socialMedia': 'Social Media',
     'sidemenu.contactUs': 'Contact Us',
+    'sidemenu.ctaWhatsapp': 'WHATSAPP CONSULTATION',
 
     // Footer
     'footer.about':

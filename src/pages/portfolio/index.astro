@@ -6,7 +6,10 @@ import { getAllProjects } from '@lib/portfolioService';
 import SectionHeader from '@components/SectionHeader.astro';
 import EmptyState from '@components/EmptyState.astro';
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 const projects = await getAllProjects();
 
 // Live project counts computed directly from database
@@ -32,10 +35,10 @@ const konstruksiCount = projects.filter((p) => {
 ---
 
 <BaseLayout
-  title="Portofolio Proyek - Bina Project Construction"
-  description="Dokumentasi hasil karya konstruksi bangunan, renovasi villa, interior kafe, rumah tinggal, dan kitchen set yang telah diselesaikan oleh Bina Project di Malang, Batu, dan sekitarnya."
+  title={`${t('portfolio.title')} - ${t('site.name')}`}
+  description={t('portfolio.subtitle')}
 >
-  <Breadcrumb title="Portofolio Kami" />
+  <Breadcrumb title={t('nav.portfolio')} />
 
   <section class="space">
     <div class="container-fluid portfolio-fluid-container">
@@ -43,7 +46,7 @@ const konstruksiCount = projects.filter((p) => {
         badge="Projek Yang Sudah Kita Kerjakan"
         badgeIcon="solar:gallery-wide-bold"
         title="Portofolio Kami"
-        description="Dokumentasi hasil karya konstruksi bangunan, renovasi hunian, desain interior, dan custom furniture dengan jaminan mutu terbaik."
+        description="Dokumentasi hasil karya tim bina project di seluruh Indonesia."
         align="center"
       />
 
@@ -78,8 +81,13 @@ const konstruksiCount = projects.filter((p) => {
 
       {projects.length > 0 ? (
         <div class="row gallery-row filter-active gy-4 gx-4">
-          {projects.map((project) => (
-            <ProjectCard project={project} colClass="col-12 col-md-6 col-lg-4 filter-item" />
+          {projects.map((project, index) => (
+            <ProjectCard
+              project={project}
+              colClass="col-12 col-md-6 col-lg-4 filter-item"
+              priority={index < 3}
+              loading={index < 3 ? 'eager' : 'lazy'}
+            />
           ))}
         </div>
       ) : (
@@ -285,6 +293,44 @@ const konstruksiCount = projects.filter((p) => {
     }
   </style>
 
-  <!-- Isotope Grid Filter Script (Scoped strictly to Portfolio Page) -->
-  <script is:inline src="/assets/js/isotope.pkgd.min.js" defer></script>
+  <!-- Native Responsive Category Filter Engine (Zero Dependency, Zero Jitter) -->
+  <script is:inline>
+    (function () {
+      function initPortfolioFilter() {
+        var tabButtons = document.querySelectorAll('.filter-tab-pill');
+        var items = document.querySelectorAll('.gallery-row .filter-item');
+        if (!tabButtons.length || !items.length) return;
+
+        tabButtons.forEach(function (tab) {
+          if (tab._hasFilterHandler) return;
+          tab._hasFilterHandler = true;
+
+          tab.addEventListener('click', function (e) {
+            e.preventDefault();
+            var filter = tab.getAttribute('data-filter') || '*';
+
+            tabButtons.forEach(function (btn) {
+              btn.classList.remove('active');
+            });
+            tab.classList.add('active');
+
+            items.forEach(function (item) {
+              if (filter === '*' || item.matches(filter)) {
+                item.style.display = '';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPortfolioFilter);
+      } else {
+        initPortfolioFilter();
+      }
+      document.addEventListener('astro:page-load', initPortfolioFilter);
+    })();
+  </script>
 </BaseLayout>

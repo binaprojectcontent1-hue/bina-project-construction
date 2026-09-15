@@ -10,9 +10,13 @@
   --zi-card: 5;
   --zi-dropdown: 100;
   --zi-sticky: 500;
-  --zi-drawer: 900;
-  --zi-modal: 1000;
+  --zi-scroll-top: 800;
+  --zi-floating-wa: 900;
+  --zi-header: 1000;
+  --zi-mobile-menu: 1050;
+  --zi-modal: 1500;
   --zi-preloader: 2000;
+  --zi-cursor: 9999;
 
   /* ==============================================================================
      BINA PROJECT - CORE BRAND & COLOR DESIGN TOKENS

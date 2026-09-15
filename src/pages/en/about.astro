@@ -11,15 +11,22 @@ import aboutImg3 from '@assets/images/normal/about_3.jpg';
 import LiveProjectsMap from '@components/LiveProjectsMap';
 import SectionHeader from '@components/SectionHeader.astro';
 import ProcessSection from '@components/sections/ProcessSection.astro';
+import VisionMissionSection from '@components/VisionMissionSection.astro';
 import TeamSection from '@components/TeamSection.astro';
+import TestimonialSection from '@components/TestimonialSection.astro';
+import BrandMarquee from '@components/BrandMarquee.astro';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <BaseLayout
   lang="en"
-  title="About Us - Bina Project Studio"
-  description="Learn about Bina Project Construction, trusted architectural planning, bespoke interior design, and residential general contractor with over 10 years of craftsmanship in East Java."
+  title={`${t('about.title')} - ${t('site.name')}`}
+  description={t('about.subtitle')}
 >
-  <Breadcrumb title="About Us" />
+  <Breadcrumb title={t('nav.about')} />
 
   <!--============================== About Area ==============================-->
   <div class="overflow-hidden space" id="about-sec">
@@ -43,31 +50,64 @@ import TeamSection from '@components/TeamSection.astro';
         </div>
         <div class="col-xl-6">
           <SectionHeader
-            badge="About Our Studio"
+            badge="Why Choose Bina Project?"
             badgeIcon="solar:buildings-2-bold"
-            title="You Dream It, We Build It"
-            description="Bina Project is an architectural planning and construction general contractor specializing in high-end residential homes, commercial premises, medical clinics, and bespoke interiors. We deliver end-to-end building solutions backed by full cost transparency, verified structural engineering, and uncompromising aesthetic standards."
+            title="Why Choose Bina Project?"
+            description="Bina Project is a professional company specializing in design planning services, interior contracting, construction contracting, and waterproofing solutions for residential homes, commercial buildings, high-rise structures, and healthcare facilities. We are here to be your trusted partner in safely building your dream spaces. We are ready to collaborate with individuals, institutions, or other sectors with full commitment to quality and transparency."
             align="left"
-            class="pe-xl-5 me-xl-5 mb-30"
+            class="why-choose-header mb-30"
           />
 
-          <div class="about-item-wrap">
-            <div class="about-item">
-              <div class="about-item_icon">
-                <Icon name="solar:users-group-rounded-bold" width="30" height="30" />
-              </div>
-              <div class="about-item_centent">
-                <h3 class="box-title">Certified Architectural Team</h3>
-                <p class="about-item_text">Managed by licensed architects and seasoned site supervisors with over a decade of verified projects in East Java.</p>
+          <div class="row gy-4">
+            <!-- Item 1: Qualified Team -->
+            <div class="col-lg-6 col-md-6">
+              <div class="about-item">
+                <div class="about-item_icon">
+                  <Icon name="solar:users-group-rounded-bold" width="30" height="30" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Qualified Team</h3>
+                  <p class="about-item_text">Handled by experienced and certified professionals.</p>
+                </div>
               </div>
             </div>
-            <div class="about-item">
-              <div class="about-item_icon">
-                <Icon name="solar:shield-check-bold" width="30" height="30" />
+
+            <!-- Item 2: Warrantied Work -->
+            <div class="col-lg-6 col-md-6">
+              <div class="about-item">
+                <div class="about-item_icon">
+                  <Icon name="solar:shield-check-bold" width="30" height="30" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Warrantied Work</h3>
+                  <p class="about-item_text">Every project is bound by official work contracts (SPK) with trusted maintenance period guarantees.</p>
+                </div>
               </div>
-              <div class="about-item_centent">
-                <h3 class="box-title">Official Contract Warranty</h3>
-                <p class="about-item_text">Full contractual accountability including physical maintenance warranty and guaranteed waterproofing protection.</p>
+            </div>
+
+            <!-- Item 3: Neater Workmanship -->
+            <div class="col-lg-6 col-md-6">
+              <div class="about-item">
+                <div class="about-item_icon">
+                  <Icon name="solar:ruler-cross-pen-bold" width="30" height="30" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Neater Workmanship</h3>
+                  <p class="about-item_text">Commitment to neat workmanship handled by experienced teams ensuring reliable solutions to any challenges that arise.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 4: Continuous Maintenance -->
+            <div class="col-lg-6 col-md-6">
+              <div class="about-item">
+                <div class="about-item_icon">
+                  <Icon name="solar:restart-circle-bold" width="30" height="30" />
+                </div>
+                <div class="about-item_centent">
+                  <h3 class="box-title">Continuous Maintenance</h3>
+                  <p class="about-item_text">Provision of ongoing maintenance services even after the warranty period has concluded.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -75,6 +115,9 @@ import TeamSection from '@components/TeamSection.astro';
       </div>
     </div>
   </div>
+
+  <!--============================== Vision, Mission & Core Values Section ==============================-->
+  <VisionMissionSection />
 
   <!--============================== Live Projects Map Section ==============================-->
   <section class="coverage-sec space-bottom" id="proyek-berjalan">
@@ -104,167 +147,22 @@ import TeamSection from '@components/TeamSection.astro';
   <!--============================== Our Team Section ==============================-->
   <TeamSection />
 
-  <!--============================== Refined Architectural CTA Section ==============================-->
-  <section class="about-cta-section">
-    <div class="about-cta-backdrop" aria-hidden="true"></div>
-    <div class="container position-relative" style="z-index: 2;">
-      <div class="row align-items-center justify-content-between gy-4">
-        <div class="col-lg-7 col-xl-8">
-          <div class="about-cta-content">
-            <span class="about-cta-kicker">
-              <Icon name="solar:buildings-bold" width="15" height="15" />
-              <span>Architectural Studio & General Contractor</span>
-            </span>
-            <h2 class="about-cta-title">
-              Consult Your Architectural Plans <span class="about-cta-title-accent">With Our Experts</span>
-            </h2>
-            <p class="about-cta-desc">
-              From floor plan concepts and photorealistic 3D interior visualization to precision cost estimates (BOQ/RAB) with zero hidden fees.
-            </p>
-            <div class="about-cta-trust-row">
-              <div class="trust-item">
-                <Icon name="solar:check-circle-bold" width="16" height="16" class="trust-icon" />
-                <span>Free On-Site Survey in Greater Malang</span>
-              </div>
-              <div class="trust-item">
-                <Icon name="solar:check-circle-bold" width="16" height="16" class="trust-icon" />
-                <span>100% Specification & Cost Transparency</span>
-              </div>
-              <div class="trust-item">
-                <Icon name="solar:check-circle-bold" width="16" height="16" class="trust-icon" />
-                <span>Official Structural Warranty</span>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!--============================== Testimonials ==============================-->
+  <TestimonialSection />
 
-        <div class="col-lg-5 col-xl-4">
-          <div class="about-cta-actions">
-            <a
-              href="https://wa.me/6281335335304?text=Hello%20Bina%20Project,%20I%20would%20like%20to%20consult%20my%20building%20plans"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="about-cta-btn about-cta-btn--primary"
-            >
-              <Icon name="simple-icons:whatsapp" width="18" height="18" />
-              <span>WhatsApp Consultation</span>
-              <Icon name="solar:arrow-right-linear" width="16" height="16" class="arrow-icon" />
-            </a>
-            <a href="/en/portfolio" class="about-cta-btn about-cta-btn--secondary">
-              <Icon name="solar:gallery-bold" width="18" height="18" />
-              <span>Explore Portfolio</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!--============================== Brand Partners ==============================-->
+  <BrandMarquee />
 </BaseLayout>
 
 <style>
-  .about-cta-section {
-    position: relative;
-    padding: 70px 0;
-    background: #0E1E38;
-    overflow: hidden;
+
+  :global(.why-choose-header .section-header__title) {
+    font-size: clamp(1.25rem, 2.25vw, 2.15rem) !important;
   }
-  .about-cta-backdrop {
-    position: absolute;
-    inset: 0;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(24, 49, 88, 0.65) 0%, transparent 60%),
-      radial-gradient(circle at 85% 30%, rgba(217, 119, 6, 0.12) 0%, transparent 50%),
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
-  }
-  .about-cta-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #F8FAFC;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-  .about-cta-title {
-    font-size: clamp(26px, 3.2vw, 38px);
-    font-weight: 800;
-    line-height: 1.25;
-    color: #FFFFFF;
-    margin-bottom: 14px;
-    letter-spacing: -0.02em;
-  }
-  .about-cta-title-accent {
-    background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .about-cta-desc {
-    font-size: 15px;
-    line-height: 1.65;
-    color: #94A3B8;
-    margin-bottom: 24px;
-    max-width: 600px;
-  }
-  .about-cta-trust-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 24px;
-  }
-  .trust-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #E2E8F0;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .trust-icon {
-    color: #22C55E;
-  }
-  .about-cta-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .about-cta-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 15px 24px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 15px;
-    text-decoration: none;
-    transition: all 0.25s ease;
-  }
-  .about-cta-btn--primary {
-    background: #25D366;
-    color: #064E3B;
-    box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.4);
-  }
-  .about-cta-btn--primary:hover {
-    background: #20BA5A;
-    color: #064E3B;
-    transform: translateY(-2px);
-  }
-  .about-cta-btn--secondary {
-    background: rgba(255, 255, 255, 0.08);
-    color: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  .about-cta-btn--secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #FFFFFF;
-    transform: translateY(-2px);
+  @media (min-width: 576px) {
+    :global(.why-choose-header .section-header__title) {
+      white-space: nowrap !important;
+    }
   }
 
   .img-box3 .img1 {

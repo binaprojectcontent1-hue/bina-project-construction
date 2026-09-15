@@ -20,17 +20,29 @@ const quickLinks = [
 ];
 
 const servicesList = currentLang === 'en' ? [
-  { name: 'New Residential & Villa Construction', href: getLocalizedPath('/portfolio', currentLang) },
-  { name: 'Bespoke Interior & Kitchen Sets', href: getLocalizedPath('/portfolio', currentLang) },
-  { name: 'Renovation & Expansions', href: getLocalizedPath('/contact', currentLang) },
-  { name: 'Commercial Buildings & Cafes', href: getLocalizedPath('/portfolio', currentLang) },
-  { name: '3D Architectural Planning & BOQ', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Planning Drawings', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Area Siteplan Drawings', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Cost Estimation (BOQ/RAB)', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Geoelectric Soil Testing', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Structural Calculations', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Residential/Commercial Building Renovation', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Housing/Commercial Area Development', href: getLocalizedPath('/portfolio', currentLang) },
+  { name: 'Leakage Repair', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'Waterproofing Works', href: getLocalizedPath('/contact', currentLang) },
+  { name: 'PBG/SLF Permit Processing', href: getLocalizedPath('/contact', currentLang) },
+  { name: '3D Model Making', href: getLocalizedPath('/contact', currentLang) },
 ] : [
-  { name: 'Konstruksi Rumah & Villa Baru', href: '/portfolio' },
-  { name: 'Desain Interior & Kitchen Set', href: '/portfolio' },
-  { name: 'Renovasi & Penambahan Ruang', href: '/contact' },
-  { name: 'Cafe & Bangunan Komersial', href: '/portfolio' },
-  { name: 'Perencanaan 3D & Pembuatan RAB', href: '/contact' },
+  { name: 'Gambar Perencanaan', href: '/contact' },
+  { name: 'Gambar Siteplan Kawasan', href: '/contact' },
+  { name: 'Pembuatan RAB', href: '/contact' },
+  { name: 'Uji Tanah Geolistrik', href: '/contact' },
+  { name: 'Perhitungan Struktur', href: '/contact' },
+  { name: 'Renovasi Rumah Tinggal/Gedung Bertingkat', href: '/contact' },
+  { name: 'Pembangunan Kawasan Perumahan/Komersial', href: '/portfolio' },
+  { name: 'Perbaikan Kebocoran', href: '/contact' },
+  { name: 'Pekerjaan Waterproofing', href: '/contact' },
+  { name: 'Pengurusan PBG/SLF', href: '/contact' },
+  { name: 'Pembuatan Maket', href: '/contact' },
 ];
 
 const waFooterMessage = currentLang === 'en'
@@ -45,9 +57,14 @@ const waFooterMessage = currentLang === 'en'
       <div class="footer-callout-card">
         <div class="row align-items-center justify-content-between gy-4">
           <div class="col-lg-7">
-            <h3 class="callout-title mb-2">{t('footer.ctaTitle')}</h3>
+            <h3 class="callout-title mb-2">
+              {currentLang === 'en' ? 'Safe Solution, Building Your Dream Space' : 'Solusi Aman Membangun Ruang Impian Anda'}
+            </h3>
             <p class="callout-desc mb-0">
-              {t('footer.ctaDesc')}
+              {currentLang === 'en' 
+                ? 'Discuss design concepts, land surveys and budget calculations with no commitment costs upfront with Bina Project Team.'
+                : 'Diskusikan konsep desain, survey lokasi lahan dan kalkulasi anggaran tanpa biaya komitmen di awal Bersama Tim Bina Project'
+              }
             </p>
           </div>
           <div class="col-lg-auto">
@@ -80,7 +97,22 @@ const waFooterMessage = currentLang === 'en'
               </a>
             </div>
             <p class="footer-bio mb-25">
-              {t('footer.about')}
+              {currentLang === 'en'
+                ? 'A professional company in planning design, interior contractor,'
+                : 'Perusahaan profesional yang bergerak di bidang'
+              }<br />
+              {currentLang === 'en'
+                ? 'construction contractor, and guaranteed waterproofing.'
+                : 'desain perencanaan, kontraktor interior,'
+              }<br />
+              {currentLang === 'en'
+                ? ''
+                : 'kontraktor konstruksi dan waterproofing dengan'
+              }<br />
+              {currentLang === 'en'
+                ? ''
+                : 'garansi'
+              }
             </p>
             <div class="footer-social-row">
               {siteConfig.socials.map((social) => (
@@ -103,11 +135,11 @@ const waFooterMessage = currentLang === 'en'
           <div class="footer-col">
             <h4 class="footer-col-title mb-25">{t('footer.quickLinks')}</h4>
             <ul class="footer-link-list p-0 m-0">
-              {quickLinks.map((nav) => (
+              {quickLinks.map((nav, index) => (
                 <li>
                   <a href={nav.href} class="footer-link">
                     <Icon name="solar:alt-arrow-right-linear" width="14" height="14" class="link-chevron me-2" />
-                    <span>{nav.name}</span>
+                    <span>{index === 0 && currentLang === 'id' ? 'Beranda' : nav.name}</span>
                   </a>
                 </li>
               ))}
@@ -115,10 +147,10 @@ const waFooterMessage = currentLang === 'en'
           </div>
         </div>
 
-        <!-- Col 3: Layanan Spesialis -->
+        <!-- Col 3: Jasa Layanan -->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
           <div class="footer-col">
-            <h4 class="footer-col-title mb-25">{t('footer.services')}</h4>
+            <h4 class="footer-col-title mb-25">{currentLang === 'en' ? 'Services' : 'Jasa Layanan'}</h4>
             <ul class="footer-link-list p-0 m-0">
               {servicesList.map((service) => (
                 <li>
@@ -170,18 +202,26 @@ const waFooterMessage = currentLang === 'en'
                 </div>
               </a>
 
-              <!-- Jam Operasional -->
-              <div class="footer-contact-card">
-                <div class="contact-card-icon">
-                  <Icon name="solar:clock-circle-linear" width="16" height="16" />
-                </div>
-                <div>
-                  <span class="contact-card-label">{t('footer.officeHoursTitle')}</span>
-                  <p class="contact-card-value mb-0">
-                    {currentLang === 'en' ? 'Monday - Saturday: 08:00 - 16:00 WIB' : siteConfig.contact.openingHours}
-                  </p>
-                </div>
-              </div>
+               <!-- Jam Operasional -->
+               <div class="footer-contact-card">
+                 <div class="contact-card-icon">
+                   <Icon name="solar:clock-circle-linear" width="16" height="16" />
+                 </div>
+                 <div>
+                   <span class="contact-card-label">{t('footer.officeHoursTitle')}</span>
+                   {currentLang === 'en' ? (
+                     <>
+                       <p class="contact-card-value mb-0">Monday - Saturday: 08.00 - 16.00 WIB</p>
+                       <p class="contact-card-value mb-0">Sunday / Public Holidays: Closed</p>
+                     </>
+                   ) : (
+                     <>
+                       <p class="contact-card-value mb-0">Hari Senin – Sabtu: 08.00-16.00 WIB</p>
+                       <p class="contact-card-value mb-0">Hari Minggu / Tanggal Merah: Libur</p>
+                     </>
+                   )}
+                 </div>
+               </div>
             </div>
           </div>
         </div>
@@ -310,6 +350,7 @@ const waFooterMessage = currentLang === 'en'
     font-size: 14px;
     line-height: 1.7;
     color: #94A3B8;
+    white-space: pre-wrap;
   }
 
   .logo-brightness {

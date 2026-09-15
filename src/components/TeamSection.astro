@@ -7,11 +7,10 @@
  */
 import { TEAM_MEMBERS } from '@data/team';
 import SectionHeader from '@components/SectionHeader.astro';
-import { Icon } from 'astro-icon/components';
-import { getLangFromUrl } from '@i18n/utils';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const currentLang = getLangFromUrl(Astro.url);
-const isEn = currentLang === 'en';
+const t = useTranslations(currentLang);
 ---
 
 <section class="team-section" id="our-team">
@@ -19,13 +18,11 @@ const isEn = currentLang === 'en';
   <div class="container" style="max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1;">
     <!-- Section Header -->
     <SectionHeader
-      badge={isEn ? "Team & Leadership" : "Tim & Kepemimpinan"}
+      badge={t('team.badge')}
       badgeIcon="solar:users-group-rounded-bold"
-      title={isEn ? "Professional Dedication" : "Dedikasi Profesional"}
-      titleAccent={isEn ? "Behind Every Masterpiece" : "Dibalik Setiap Karya"}
-      description={isEn 
-        ? "Every residential home and commercial space we build is led by dedicated architects, project managers, and certified engineers ensuring precision and aesthetic standards across East Java."
-        : "Setiap hunian dan ruang komersial yang kami bangun ditangani oleh tim arsitek, project manager, dan tenaga ahli berdedikasi tinggi untuk memastikan standar presisi dan estetika terbaik di Malang & Jawa Timur."}
+      title={t('team.title')}
+      titleAccent={t('team.titleAccent')}
+      description={t('team.desc')}
       align="center"
     />
 
@@ -52,25 +49,9 @@ const isEn = currentLang === 'en';
 
           <!-- Card Content -->
           <div class="team-card-body">
-            <span class="team-role-pill">{member.role}</span>
             <h3 class="team-name">{member.name}</h3>
             <p class="team-job-title">{member.jobTitle}</p>
             <p class="team-bio">{member.description}</p>
-
-            <!-- Card Footer Quick Contact Action -->
-            <div class="team-card-footer">
-              <a
-                href={`https://wa.me/6281335335304?text=${encodeURIComponent(isEn ? `Hello Bina Project, I would like to consult on a construction/interior project with ${member.jobTitle} (${member.name})` : `Halo Bina Project, saya ingin konsultasi proyek konstruksi/interior bersama tim ${member.jobTitle} (${member.name})`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="team-consult-link"
-                title={isEn ? `Contact team for ${member.jobTitle}` : `Hubungi tim untuk ${member.jobTitle}`}
-              >
-                <Icon name="simple-icons:whatsapp" width="16" height="16" class="team-wa-icon" />
-                <span>{isEn ? "Project Consultation" : "Konsultasi Proyek"}</span>
-                <Icon name="solar:arrow-right-linear" width="14" height="14" class="team-arrow-icon" />
-              </a>
-            </div>
           </div>
         </article>
       ))}
@@ -80,7 +61,7 @@ const isEn = currentLang === 'en';
 
 <style>
   /* ==============================================================================
-     TEAM SECTION - REDESIGNED (BORDERLESS & NO-SKILLS CHECKLIST)
+     TEAM SECTION - REDESIGNED (BORDERLESS & BALANCED 4-CARD GRID)
      ============================================================================== */
   .team-section {
     position: relative;
@@ -93,13 +74,13 @@ const isEn = currentLang === 'en';
 
 
   /* ----------------------------------------------------------------------------
-     1. Team Cards Layout (Centered 3 + 2 Grid)
+     1. Team Cards Layout (Balanced 4-Card Grid)
      ---------------------------------------------------------------------------- */
   .team-cards-wrap {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;
+    gap: 24px;
     margin-bottom: 0;
   }
 
@@ -114,9 +95,9 @@ const isEn = currentLang === 'en';
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    flex: 0 1 calc(33.333% - 20px);
-    min-width: 320px;
-    max-width: 380px;
+    flex: 0 1 calc(25% - 18px);
+    min-width: 270px;
+    max-width: 310px;
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .team-card:hover {
@@ -249,13 +230,13 @@ const isEn = currentLang === 'en';
   /* ----------------------------------------------------------------------------
      3. Responsive Breakpoints
      ---------------------------------------------------------------------------- */
-  @media (max-width: 991px) {
+  @media (max-width: 1199px) {
     .team-cards-wrap {
       gap: 20px;
     }
     .team-card {
       flex: 0 1 calc(50% - 15px);
-      max-width: none;
+      max-width: 380px;
     }
   }
 
@@ -263,6 +244,7 @@ const isEn = currentLang === 'en';
     .team-card {
       flex: 0 1 100%;
       min-width: 0;
+      max-width: 100%;
     }
     .team-card-body {
       padding: 0 18px 20px;

@@ -52,9 +52,16 @@
       if (!preloader || preloader.style.display === 'none') return;
       preloader.style.pointerEvents = 'none';
       preloader.classList.add('preloader-hidden');
-      setTimeout(function () {
+
+      let cleaned = false;
+      function cleanup() {
+        if (cleaned) return;
+        cleaned = true;
         if (preloader) preloader.style.display = 'none';
-      }, 250);
+      }
+
+      preloader.addEventListener('transitionend', cleanup, { once: true });
+      setTimeout(cleanup, 260); // Safety fallback matching 0.25s CSS transition
     }
 
     // Bypass completely for Lighthouse, Googlebot, or reduced-motion
@@ -63,15 +70,14 @@
       return;
     }
 
-    // Dismiss as soon as DOM is ready, with max 350ms cap
+    // Dismiss immediately once DOM is interactive without artificial sleep
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      setTimeout(dismissPreloader, 120);
+      dismissPreloader();
     } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(dismissPreloader, 120);
-      });
-      window.addEventListener('load', dismissPreloader);
+      document.addEventListener('DOMContentLoaded', dismissPreloader, { once: true });
+      window.addEventListener('load', dismissPreloader, { once: true });
     }
-    setTimeout(dismissPreloader, 350);
+    // Hard fallback cap at 180ms max
+    setTimeout(dismissPreloader, 180);
   })();
 </script>

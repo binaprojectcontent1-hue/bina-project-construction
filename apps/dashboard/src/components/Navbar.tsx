@@ -105,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => onNavigate && onNavigate('articles')}
                 className="hover:text-[#22416D] hover:underline cursor-pointer transition-colors truncate"
               >
-                Artikel & Berita
+                Artikel
               </button>
               <ChevronRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
               <span className="text-slate-900 font-bold truncate text-sm md:text-base">
@@ -117,16 +117,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               {activeTab === 'overview'
                 ? 'Beranda & Ringkasan'
                 : activeTab === 'portfolio'
-                ? 'Portofolio Proyek'
-                : activeTab === 'articles'
-                ? 'Artikel & Berita'
-                : activeTab === 'biolink'
-                ? 'Bio Link (Linktree)'
-                : activeTab === 'redirects'
-                ? 'Pengalihan Link (301)'
-                : activeTab === 'settings'
-                ? 'Pengaturan & Cloudflare'
-                : 'Beranda'}
+                  ? 'Portofolio Proyek'
+                  : activeTab === 'articles'
+                    ? 'Artikel'
+                    : activeTab === 'biolink'
+                      ? 'Bio Link (Linktree)'
+                      : activeTab === 'redirects'
+                        ? 'Pengalihan Link (301)'
+                        : activeTab === 'settings'
+                          ? 'Pengaturan & Cloudflare'
+                          : 'Beranda'}
             </span>
           )}
         </nav>
@@ -195,11 +195,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Floating Notification Toast if deploy status active */}
       {deployResult && (
         <div
-          className={`absolute top-18 right-6 z-50 flex items-center gap-3 rounded-xl border p-3.5 text-xs font-medium shadow-xl transition-all animate-in fade-in slide-in-from-top-2 ${
-            deployResult.success
-              ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-              : 'border-rose-200 bg-rose-50 text-rose-900'
-          }`}
+          className={`absolute top-18 right-6 z-50 flex items-center gap-3 rounded-xl border p-3.5 text-xs font-medium shadow-xl transition-all animate-in fade-in slide-in-from-top-2 ${deployResult.success
+            ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+            : 'border-rose-200 bg-rose-50 text-rose-900'
+            }`}
         >
           {deployResult.success ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />

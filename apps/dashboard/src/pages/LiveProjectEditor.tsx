@@ -29,7 +29,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
 
   // Form states
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<'Konstruksi' | 'Renovasi' | 'Interior' | 'Arsitektur'>('Konstruksi');
+  const [category, setCategory] = useState<'Konstruksi' | 'Interior' | 'Desain'>('Konstruksi');
   const [areaName, setAreaName] = useState('Kota Malang');
   const [lat, setLat] = useState(-7.9780);
   const [lng, setLng] = useState(112.6300);
@@ -350,9 +350,8 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                     className="w-full h-11 px-4 text-xs font-semibold border border-slate-200 rounded-full bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30 shadow-xs"
                   >
                     <option value="Konstruksi">Konstruksi</option>
-                    <option value="Renovasi">Renovasi</option>
                     <option value="Interior">Interior</option>
-                    <option value="Arsitektur">Arsitektur</option>
+                    <option value="Desain">Desain</option>
                   </select>
                 </div>
 

@@ -67,3 +67,22 @@ export const siteConfig: SiteConfig = {
 
   mainNav: MAIN_NAV,
 } as const;
+
+/**
+ * Helper function to generate standardized WhatsApp chat URLs with localized default messages.
+ */
+export function getWhatsAppUrl(
+  customMessage?: string,
+  lang: 'id' | 'en' = 'id'
+): string {
+  const num = siteConfig.contact.whatsappNumber;
+  if (!customMessage) {
+    const defaultMsg =
+      lang === 'en'
+        ? 'Hello Bina Project Team, I would like to consult on architectural construction & interior design plans.'
+        : 'Halo Tim Bina Project, saya ingin konsultasi rencana proyek konstruksi & desain interior.';
+    return `https://wa.me/${num}?text=${encodeURIComponent(defaultMsg)}`;
+  }
+  return `https://wa.me/${num}?text=${encodeURIComponent(customMessage)}`;
+}
+

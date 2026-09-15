@@ -1,6 +1,6 @@
 /**
  * @file workflow.ts
- * @description Single Source of Truth for Bina Project 4-stage construction and interior workflow.
+ * @description Single Source of Truth for Bina Project 5-stage construction and interior workflow.
  */
 
 import type { WorkflowStep } from '@types';
@@ -8,10 +8,24 @@ import type { WorkflowStep } from '@types';
 export const WORKFLOW_STEPS: readonly WorkflowStep[] = [
   {
     number: '01',
+    title: 'Konsultasi',
+    desc: 'Langkah awal untuk membedah visi, kebutuhan fungsi ruang hunian maupun ruang usaha, preferensi gaya arsitektur, hingga estimasi awal anggaran (budgeting) bersama tim arsitek ahli Bina Project agar perencanaan terarah sejak hari pertama.',
+    deliverable: 'Design brief awal, resume kebutuhan ruang, dan estimasi timeline perencanaan.',
+    phaseTag: 'Tahap Awal & Eksplorasi',
+    badgeText: 'Sesi Konsultasi Terarah',
+    image: '/assets/img/normal/process_stage0_consultation.jpg',
+    milestones: [
+      'Diskusi mendalam kebutuhan fungsi ruang, aktivitas penghuni, dan preferensi gaya arsitektur',
+      'Konsultasi fleksibilitas anggaran (budgeting) dan rekomendasi skala prioritas ruang',
+      'Penyusunan kerangka acuan kerja (design brief) sebelum masuk ke tahap survei fisik'
+    ]
+  },
+  {
+    number: '02',
     title: 'Survei & Analisis Lokasi',
     desc: 'Sebelum masuk ke tahap desain, kami memastikan kondisi lahan dipahami dengan baik. Tim melakukan pengukuran, melihat kondisi kontur dan tanah, serta mengecek akses menuju lokasi untuk kebutuhan pembangunan.',
     deliverable: 'Data pengukuran tapak dan kajian awal kelayakan teknis lahan.',
-    phaseTag: 'Tahap Awal & Investigasi',
+    phaseTag: 'Tahap Investigasi Lahan',
     badgeText: 'Akurasi Tapak 99.8%',
     image: '/assets/img/normal/process_stage1_survey.jpg',
     milestones: [
@@ -21,8 +35,8 @@ export const WORKFLOW_STEPS: readonly WorkflowStep[] = [
     ]
   },
   {
-    number: '02',
-    title: 'Perancangan & RAB',
+    number: '03',
+    title: 'Perancangan & Rencana Anggaran Biaya',
     desc: 'Setelah kondisi lahan diketahui, proses dilanjutkan ke tahap perancangan. Gambar kerja, visualisasi 3D, dokumen teknis, dan perhitungan biaya disusun secara terintegrasi agar Anda memiliki gambaran yang jelas sebelum pembangunan dimulai.',
     deliverable: 'Buku gambar kerja DED dan rincian RAB sebagai dasar pelaksanaan proyek.',
     phaseTag: 'Tahap Desain & Anggaran',
@@ -35,8 +49,8 @@ export const WORKFLOW_STEPS: readonly WorkflowStep[] = [
     ]
   },
   {
-    number: '03',
-    title: 'Konstruksi & Pengawasan',
+    number: '04',
+    title: 'Pembangunan & Pengawasan',
     desc: 'Memasuki tahap pembangunan, pekerjaan dikerjakan oleh tenaga spesialis sesuai bidangnya dan dipantau secara berkala. Kami menjaga agar pelaksanaan di lapangan tetap mengacu pada gambar kerja, spesifikasi material, dan kesepakatan yang telah dibuat.',
     deliverable: 'Bangunan yang dikerjakan sesuai spesifikasi serta laporan perkembangan proyek secara berkala.',
     phaseTag: 'Tahap Realisasi Fisik',
@@ -50,7 +64,7 @@ export const WORKFLOW_STEPS: readonly WorkflowStep[] = [
     ]
   },
   {
-    number: '04',
+    number: '05',
     title: 'Serah Terima & Garansi',
     desc: 'Sebelum proyek dinyatakan selesai, kami melakukan pemeriksaan bersama untuk memastikan fungsi dan kualitas bangunan sesuai dengan pekerjaan yang telah disepakati. Setelah semuanya selesai, bangunan diserahterimakan secara resmi beserta dokumen pendukung dan garansi pemeliharaan.',
     deliverable: 'Kunci bangunan, dokumen BAST, dan Sertifikat Garansi Pemeliharaan.',
