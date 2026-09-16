@@ -29,14 +29,15 @@ const waConsultationUrl = createWhatsAppUrl({
       alt={currentLang === 'en' ? 'Architectural Design & Construction Consultation Bina Project' : 'Konsultasi Desain & Konstruksi Bangunan Bina Project'}
       loading="lazy"
       decoding="async"
-      width={580}
-      height={620}
+      width={520}
+      height={450}
       format="webp"
       quality={85}
+      style="height: 100%; width: auto; object-fit: cover;"
     />
   </div>
   <div class="container">
-    <div class="row align-items-end flex-md-row-reverse">
+    <div class="row align-items-center flex-md-row-reverse">
       <div class="col-md-8">
         <div class="consultation-title-area">
           <SectionHeader
@@ -46,7 +47,7 @@ const waConsultationUrl = createWhatsAppUrl({
             description={t('consultationCta.desc')}
             align="left"
             variant="dark"
-            class="mb-30"
+            class="mb-20"
           />
           <div class="d-flex flex-wrap gap-3 consultation-cta-actions">
             <a
@@ -73,8 +74,8 @@ const waConsultationUrl = createWhatsAppUrl({
             alt="Konsultasi Bina Project" 
             loading="lazy" 
             decoding="async" 
-            width={362} 
-            height={527} 
+            width={240} 
+            height={260} 
             format="webp" 
             quality={85} 
           />
@@ -85,6 +86,29 @@ const waConsultationUrl = createWhatsAppUrl({
 </section>
 
 <style>
+  .consultation-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .consultation-image img {
+    max-height: 220px;
+    width: auto;
+    object-fit: contain;
+  }
+  @media (max-width: 1199px) {
+    .consultation-image img {
+      max-height: 180px;
+    }
+  }
+  @media (max-width: 767px) {
+    .consultation-image {
+      margin-bottom: 20px;
+    }
+    .consultation-image img {
+      max-height: 140px;
+    }
+  }
   @media (max-width: 575px) {
     .consultation-cta-actions {
       flex-direction: column;
