@@ -511,7 +511,7 @@ export function App() {
               onNavigate={handleNavigate}
             />
 
-            <div className="flex flex-1 overflow-hidden p-2 sm:p-3 md:p-4 gap-3 md:gap-4 relative z-10">
+            <div className="flex flex-1 min-h-0 overflow-hidden p-2 sm:p-3 md:p-4 gap-3 md:gap-4 relative z-10">
               <Sidebar
                 activeTab={activeTab}
                 onNavigate={handleNavigate}
@@ -521,7 +521,7 @@ export function App() {
                 articleCount={articleCount}
               />
 
-              <main className="flex-1 overflow-y-auto bg-[#F8FAFC] text-slate-900 rounded-[24px] sm:rounded-[32px] shadow-2xl border border-slate-700/40 p-4 sm:p-6 lg:p-8">
+              <main className="flex-1 min-h-0 overflow-y-auto relative bg-[#F8FAFC] text-slate-900 rounded-[24px] sm:rounded-[32px] shadow-2xl border border-slate-700/40 p-4 sm:p-6 lg:p-8">
                 {renderContent()}
               </main>
             </div>

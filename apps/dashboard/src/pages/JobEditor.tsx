@@ -405,17 +405,27 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
       {/* Status & Publish */}
       <div className="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
         <h2 className="text-base font-bold text-slate-800 mb-4">Status Publikasi</h2>
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { value: 'draft', label: 'Draft', desc: 'Simpan sebagai draft, belum tampil di portal' },
             { value: 'published', label: 'Publikasikan', desc: 'Langsung tampil di karir.binaproject.id' },
             { value: 'closed', label: 'Ditutup', desc: 'Lowongan tidak menerima lamaran lagi' },
           ].map((s) => (
-            <label key={s.value} className={`flex-1 min-w-[150px] p-4 rounded-xl border-2 cursor-pointer transition-all ${status === s.value ? 'border-blue-400 bg-blue-50/50' : 'border-slate-100 hover:border-slate-200'}`}>
-              <input type="radio" name="status" value={s.value} checked={status === s.value} onChange={() => setStatus(s.value)} className="sr-only" />
-              <div className="text-sm font-bold text-slate-700">{s.label}</div>
+            <button
+              key={s.value}
+              type="button"
+              onClick={() => setStatus(s.value)}
+              className={`p-4 rounded-xl border-2 text-left cursor-pointer transition-all ${
+                status === s.value
+                  ? 'border-blue-500 bg-blue-50/50 shadow-xs'
+                  : 'border-slate-100 hover:border-slate-200 bg-white'
+              }`}
+            >
+              <div className={`text-sm font-bold ${status === s.value ? 'text-blue-700' : 'text-slate-700'}`}>
+                {s.label}
+              </div>
               <div className="text-xs text-slate-400 mt-0.5">{s.desc}</div>
-            </label>
+            </button>
           ))}
         </div>
       </div>

@@ -41,9 +41,9 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (silent = false) => {
     if (!supabase) return;
-    setLoading(true);
+    if (!silent) setLoading(true);
     try {
       const { data: jobsData } = await supabase
         .from('job_postings')
@@ -65,7 +65,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
     } catch (err) {
       console.error('Failed to fetch jobs:', err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
@@ -75,16 +75,30 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
 
   const handleDelete = async (id: string) => {
     if (!supabase) return;
-    await supabase.from('job_postings').delete().eq('id', id);
+    // Optimistic UI update
+    setJobs((prev) => prev.filter((j) => j.id !== id));
     setDeleteConfirm(null);
-    fetchJobs();
+    try {
+      await supabase.from('job_postings').delete().eq('id', id);
+      fetchJobs(true);
+    } catch (err) {
+      console.error('Failed to delete job:', err);
+      fetchJobs(true);
+    }
   };
 
   const handleToggleStatus = async (id: string, currentStatus: string) => {
     if (!supabase) return;
     const newStatus = currentStatus === 'published' ? 'closed' : 'published';
-    await supabase.from('job_postings').update({ status: newStatus }).eq('id', id);
-    fetchJobs();
+    // Optimistic instant UI update (zero layout shift or flicker)
+    setJobs((prev) => prev.map((j) => (j.id === id ? { ...j, status: newStatus } : j)));
+    try {
+      await supabase.from('job_postings').update({ status: newStatus }).eq('id', id);
+      fetchJobs(true);
+    } catch (err) {
+      console.error('Failed to toggle status:', err);
+      fetchJobs(true);
+    }
   };
 
   const totalJobs = jobs.length;
@@ -104,20 +118,20 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
     switch (status) {
       case 'published':
         return (
-          <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
             Aktif
           </span>
         );
       case 'closed':
         return (
-          <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
             Ditutup
           </span>
         );
       case 'draft':
       default:
         return (
-          <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
             Draft
           </span>
         );
@@ -137,7 +151,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
         <div className="flex items-center gap-2.5">
           <button
             type="button"
-            onClick={fetchJobs}
+            onClick={() => fetchJobs(false)}
             className="w-10 h-10 flex items-center justify-center border border-slate-200 rounded-xl hover:bg-white text-slate-600 transition-colors shadow-xs"
             title="Segarkan Data"
           >
