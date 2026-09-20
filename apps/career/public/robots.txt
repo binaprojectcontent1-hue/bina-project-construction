@@ -1,0 +1,7 @@
+# Robots.txt for Karir Bina Project (karir.binaproject.id)
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://karir.binaproject.id/sitemap-index.xml

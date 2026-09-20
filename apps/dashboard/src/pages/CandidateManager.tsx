@@ -106,7 +106,7 @@ export function CandidateManager() {
 
   const getResumeUrl = async (path: string): Promise<string | null> => {
     if (!supabase) return null;
-    const { data } = await supabase.storage.from('resumes').createSignedUrl(path, 600);
+    const { data } = await supabase.storage.from('job-applications').createSignedUrl(path, 600);
     return data?.signedUrl || null;
   };
 
