@@ -22,6 +22,10 @@ export const ui = {
     'nav.articles': 'Artikel',
     'nav.contact': 'Kontak Kami',
 
+    // Top Bar
+    'topbar.chatOnly': '(Chat Only)',
+    'topbar.tagline': 'KONTRAKTOR SURABAYA MALANG',
+
     // Call To Action
     'cta.consultation': 'Konsultasi & Kerjasama',
     'cta.contactUs': 'Hubungi Kami',
@@ -320,8 +324,8 @@ export const ui = {
     'sidemenu.hotline': 'WhatsApp',
     'sidemenu.email': 'Email',
     'sidemenu.hours': 'Jam Operasional',
-    'sidemenu.hoursVal': 'Senin - Sabtu: 08.00 - 17.00 WIB',
-    'sidemenu.hoursSun': 'Minggu: Janji Temu',
+    'sidemenu.hoursVal': 'Hari Senin – Sabtu: 08.00 - 16.00 WIB',
+    'sidemenu.hoursSun': 'Hari Minggu / Tanggal Merah: Libur',
     'sidemenu.socialMedia': 'Media Sosial',
     'sidemenu.contactUs': 'Hubungi Kami',
     'sidemenu.ctaWhatsapp': 'KONSULTASI WHATSAPP',
@@ -348,6 +352,10 @@ export const ui = {
     'nav.liveProjects': 'Live Projects',
     'nav.articles': 'Articles',
     'nav.contact': 'Contact Us',
+
+    // Top Bar
+    'topbar.chatOnly': '(Chat Only)',
+    'topbar.tagline': 'KONTRAKTOR SURABAYA MALANG',
 
     // Call To Action
     'cta.consultation': 'Consultation & Cooperation',
@@ -647,8 +655,8 @@ export const ui = {
     'sidemenu.hotline': 'WhatsApp',
     'sidemenu.email': 'Email',
     'sidemenu.hours': 'Business Hours',
-    'sidemenu.hoursVal': 'Monday - Saturday: 08:00 - 17:00 WIB',
-    'sidemenu.hoursSun': 'Sunday: By Appointment',
+    'sidemenu.hoursVal': 'Monday - Saturday: 08:00 - 16:00 WIB',
+    'sidemenu.hoursSun': 'Sunday / Public Holidays: Closed',
     'sidemenu.socialMedia': 'Social Media',
     'sidemenu.contactUs': 'Contact Us',
     'sidemenu.ctaWhatsapp': 'WHATSAPP CONSULTATION',

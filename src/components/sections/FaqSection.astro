@@ -115,11 +115,13 @@ const quickSearchChips = isEn
         <!-- 1. Live Architect Consultation Card -->
         <div class="faq-card-consult">
           <div class="faq-consult-header">
-            <span class="faq-live-pill">
-              <span class="faq-live-dot"></span>
-              {isEn ? 'Online Now' : 'Online Sekarang'}
+            <div class="faq-consult-icon-box">
+              <Icon name="simple-icons:whatsapp" width="18" height="18" />
+            </div>
+            <span class="faq-consult-speed">
+              <Icon name="solar:clock-circle-linear" width="14" height="14" />
+              {isEn ? 'Response < 15 Mins' : 'Respon < 15 Mnt'}
             </span>
-            <span class="faq-consult-speed">{isEn ? 'Response < 15 Mins' : 'Respon < 15 Mnt'}</span>
           </div>
 
           <div class="faq-consult-body">
@@ -143,7 +145,7 @@ const quickSearchChips = isEn
             class="faq-consult-btn"
           >
             <Icon name="simple-icons:whatsapp" width="18" height="18" />
-            <span>{isEn ? 'Chat Our Architect' : 'Chat Arsitek Kami'}</span>
+            <span>{isEn ? 'Chat Our Architect' : 'Chat WhatsApp'}</span>
             <Icon name="solar:arrow-right-linear" width="16" height="16" class="faq-consult-arrow" />
           </a>
         </div>
@@ -153,30 +155,39 @@ const quickSearchChips = isEn
           <h4 class="faq-trust-title">{isEn ? 'Bina Service Guarantees' : 'Jaminan Layanan Bina'}</h4>
           <ul class="faq-trust-list">
             <li class="faq-trust-item">
-              <div class="faq-trust-icon-box faq-trust-icon-box--blue">
-                <Icon name="solar:shield-check-bold" width="16" height="16" />
+              <div class="faq-trust-icon-box">
+                <Icon name="solar:users-group-rounded-bold" width="16" height="16" />
               </div>
               <div class="faq-trust-text">
-                <strong>{isEn ? '100% Transparent' : '100% Transparan'}</strong>
-                <span>{isEn ? 'Itemized BOQ with zero hidden fees' : 'RAB mendalam tanpa biaya tersembunyi'}</span>
+                <strong>{isEn ? 'Competent' : 'Berkompeten'}</strong>
+                <span>{isEn ? 'Professional & Experienced Team' : 'Tim Profesional dan Berpengalaman'}</span>
               </div>
             </li>
             <li class="faq-trust-item">
-              <div class="faq-trust-icon-box faq-trust-icon-box--gold">
+              <div class="faq-trust-icon-box">
                 <Icon name="solar:shield-check-bold" width="16" height="16" />
               </div>
               <div class="faq-trust-text">
-                <strong>{isEn ? 'Official Written Warranty' : 'Garansi Resmi Tertulis'}</strong>
-                <span>{isEn ? 'Up to 5 years for structural & concrete deck' : 'Hingga 5 tahun struktur & dak beton'}</span>
+                <strong>{isEn ? 'Warrantied' : 'Bergaransi'}</strong>
+                <span>{isEn ? 'Maintenance Period for Every Project' : 'Masa Pemeliharaan di Setiap Pekerjaan'}</span>
               </div>
             </li>
             <li class="faq-trust-item">
-              <div class="faq-trust-icon-box faq-trust-icon-box--green">
-                <Icon name="solar:check-circle-bold" width="16" height="16" />
+              <div class="faq-trust-icon-box">
+                <Icon name="solar:ruler-cross-pen-bold" width="16" height="16" />
               </div>
               <div class="faq-trust-text">
-                <strong>{isEn ? 'Free Physical Survey' : 'Survei Fisik Gratis'}</strong>
-                <span>{isEn ? 'Covering Malang, Batu & surrounding areas' : 'Khusus Kota Malang, Batu & sekitarnya'}</span>
+                <strong>{isEn ? 'Neat' : 'Rapi'}</strong>
+                <span>{isEn ? 'Guaranteed Neater & Solution-Oriented' : 'Jaminan Lebih Rapi & Solutif'}</span>
+              </div>
+            </li>
+            <li class="faq-trust-item">
+              <div class="faq-trust-icon-box">
+                <Icon name="solar:restart-circle-bold" width="16" height="16" />
+              </div>
+              <div class="faq-trust-text">
+                <strong>{isEn ? 'Sustainable' : 'Berkelanjutan'}</strong>
+                <span>{isEn ? 'Post-Maintenance Support Services' : 'Layanan Pasca Masa Pemeliharaan Selesai'}</span>
               </div>
             </li>
           </ul>
@@ -615,14 +626,14 @@ const quickSearchChips = isEn
     gap: 20px;
   }
 
-  /* Card 1: Consult */
+  /* Card 1: Consult (Unified White Card) */
   .faq-card-consult {
-    background: linear-gradient(145deg, #182C49 0%, #22416D 100%);
+    background: #FFFFFF;
     border-radius: 20px;
-    padding: 24px;
-    color: #FFFFFF;
+    padding: 24px 22px;
+    color: var(--bina-slate-900, #17202A);
     border: none;
-    box-shadow: 0 10px 30px rgba(13, 25, 43, 0.15);
+    box-shadow: 0 4px 20px rgba(34, 65, 109, 0.04);
     position: relative;
     overflow: hidden;
   }
@@ -632,47 +643,37 @@ const quickSearchChips = isEn
     justify-content: space-between;
     margin-bottom: 16px;
   }
-  .faq-live-pill {
-    display: inline-flex;
+  .faq-consult-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(34, 65, 109, 0.08);
+    color: var(--bina-navy, #22416D);
+    display: flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(16, 185, 129, 0.25);
-    border: none;
-    padding: 4px 10px;
-    border-radius: 9999px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #34D399;
-  }
-  .faq-live-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 8px #10B981;
-    animation: pulseGlow 1.8s infinite;
-  }
-  @keyframes pulseGlow {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.6; }
+    justify-content: center;
+    flex-shrink: 0;
   }
   .faq-consult-speed {
-    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--bina-slate-500, #64748B);
   }
   .faq-consult-title {
     font-size: 17px;
     font-weight: 800;
     line-height: 1.35;
     margin: 0 0 8px;
-    color: #FFFFFF;
+    color: var(--bina-slate-900, #17202A);
     font-family: var(--font-display, 'Archivo', sans-serif);
   }
   .faq-consult-desc {
     font-size: 13px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--bina-slate-600, #475569);
     margin: 0 0 20px;
   }
   .faq-consult-btn {
@@ -684,19 +685,19 @@ const quickSearchChips = isEn
     padding: 12px 18px;
     border-radius: 12px;
     background: #25D366;
-    color: #064E3B;
+    color: #FFFFFF;
     border: none;
-    font-size: 13px;
-    font-weight: 800;
+    font-size: 13.5px;
+    font-weight: 700;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
   }
   .faq-consult-btn:hover {
     background: #1EBE5D;
-    color: #064E3B;
+    color: #FFFFFF;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
   }
   .faq-consult-arrow {
     transition: transform 0.2s ease;
@@ -741,19 +742,9 @@ const quickSearchChips = isEn
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-  }
-  .faq-trust-icon-box--blue {
     background: rgba(34, 65, 109, 0.08);
     color: var(--bina-navy, #22416D);
-  }
-  .faq-trust-icon-box--gold {
-    background: rgba(217, 119, 6, 0.12);
-    color: #D97706;
-  }
-  .faq-trust-icon-box--green {
-    background: rgba(16, 185, 129, 0.12);
-    color: #059669;
+    flex-shrink: 0;
   }
   .faq-trust-text {
     display: flex;

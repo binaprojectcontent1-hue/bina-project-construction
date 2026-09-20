@@ -4,7 +4,7 @@ interface Props {
   badgeIcon?: string;
   title: string;
   titleAccent?: string;
-  description?: string;
+  description?: string | string[];
   align?: 'center' | 'left';
   variant?: 'light' | 'dark';
   class?: string;
@@ -29,9 +29,13 @@ const {
     <slot name="title-extra" />
   </h2>
 
-  {description && (
+  {Array.isArray(description) ? (
+    description.map((desc, idx) => (
+      <p class:list={['section-header__desc', { 'mb-3': idx < description.length - 1 }]}>{desc}</p>
+    ))
+  ) : description ? (
     <p class="section-header__desc">{description}</p>
-  )}
+  ) : null}
 
   <slot />
 </div>

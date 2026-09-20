@@ -39,8 +39,12 @@ const navItems = [
                 class="top-link d-inline-flex align-items-center"
               >
                 <Icon name="simple-icons:whatsapp" width="16" height="16" class="text-theme me-2" />
-                <span>{siteConfig.contact.phoneDisplay}</span>
+                <span>{siteConfig.contact.phoneDisplay} {t('topbar.chatOnly')}</span>
               </a>
+            </li>
+            <li class="separator">|</li>
+            <li class="d-inline-flex align-items-center">
+              <span class="top-tagline">{t('topbar.tagline')}</span>
             </li>
           </ul>
         </div>
@@ -168,6 +172,14 @@ const navItems = [
   .separator {
     color: #94A3B8;
     user-select: none;
+    font-size: 13px;
+  }
+
+  .top-tagline {
+    font-weight: 600;
+    color: var(--bina-slate-700, #334155);
+    letter-spacing: 0.02em;
+    font-size: 13.5px;
   }
 
   .top-social-links {

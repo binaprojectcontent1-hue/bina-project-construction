@@ -134,11 +134,12 @@ const { testimonials } = Astro.props;
   .stack-deck-container {
     position: relative;
     width: 100%;
-    min-height: 380px;
+    min-height: 270px;
     display: flex;
     align-items: center;
     justify-content: center;
     perspective: 1000px;
+    transition: min-height 0.3s ease;
   }
 
   .stack-card-item {
@@ -353,7 +354,7 @@ const { testimonials } = Astro.props;
     align-items: center;
     justify-content: center;
     gap: 18px;
-    margin-top: 36px;
+    margin-top: 14px;
   }
 
   .stack-nav-btn {
@@ -428,7 +429,7 @@ const { testimonials } = Astro.props;
 
   @media (max-width: 640px) {
     .stack-deck-container {
-      min-height: 440px;
+      min-height: 320px;
     }
 
     .stack-card-inner {
@@ -474,11 +475,20 @@ const { testimonials } = Astro.props;
     const pills = Array.from(wrapper.querySelectorAll<HTMLElement>('.stack-page-pill'));
     const prevBtn = wrapper.querySelector('#stackPrevBtn');
     const nextBtn = wrapper.querySelector('#stackNextBtn');
+    const deckContainer = wrapper.querySelector<HTMLElement>('#stackDeckContainer');
 
     let activeIndex = 0;
     const total = cards.length;
     let autoTimer: any = null;
     let isPaused = false;
+
+    function updateDeckHeight() {
+      if (!deckContainer || cards.length === 0) return;
+      const maxCardHeight = Math.max(...cards.map((c) => c.offsetHeight || 0));
+      if (maxCardHeight > 0) {
+        deckContainer.style.minHeight = `${maxCardHeight + 34}px`;
+      }
+    }
 
     function renderStack(dragOffset = 0) {
       cards.forEach((card, idx) => {
@@ -605,6 +615,8 @@ const { testimonials } = Astro.props;
     wrapper.addEventListener('pointercancel', endDrag);
 
     renderStack();
+    updateDeckHeight();
+    window.addEventListener('resize', updateDeckHeight);
     startAuto();
   }
 

@@ -144,38 +144,69 @@ const isEn = currentLang === 'en';
 
       <!-- Bootstrap Row for guaranteed responsive column layout -->
       <div class="row g-4">
-        {CORE_VALUES_DATA.items.map((val) => (
-          <div class="col-lg-4 col-md-6 col-12">
-            <div 
-              class="vm-kpi-card"
-              style="background: #FFFFFF !important; border-radius: 16px; border: none !important; outline: none !important; padding: 26px 24px; box-shadow: 0 4px 20px rgba(34, 65, 109, 0.05); height: 100%; display: flex; flex-direction: column;"
-            >
-              <div class="d-flex align-items-center justify-content-between mb-15">
-                <span 
-                  class="vm-kpi-char"
-                  style="width: 38px; height: 38px; border-radius: 10px; background: #22416D; color: #FFFFFF; font-family: var(--font-heading, 'Archivo', sans-serif); font-size: 20px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;"
-                >
-                  {val.letter}
-                </span>
-                <span style="color: #22416D; opacity: 0.8;">
-                  <Icon name={val.icon} width="22" height="22" />
-                </span>
+        {CORE_VALUES_DATA.items.map((val) => {
+          return (
+            <div class="col-lg-4 col-md-6 col-12">
+              <div
+                class="vm-kpi-card"
+                style="position: relative; background: linear-gradient(145deg, #13253F 0%, #1A3459 55%, #22416D 100%) !important; border-radius: 18px; border: 1px solid rgba(132, 172, 223, 0.3) !important; box-shadow: 0 10px 30px rgba(18, 44, 73, 0.16); padding: 26px 24px 26px; height: 100%; display: flex; flex-direction: column; overflow: hidden;"
+              >
+                <!-- Architectural Blueprint Drafting Grid Pattern Overlay -->
+                <div
+                  class="vm-kpi-grid-pattern"
+                  style="position: absolute; inset: 0; pointer-events: none; z-index: 1; background-image: linear-gradient(to right, rgba(132, 172, 223, 0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(132, 172, 223, 0.09) 1px, transparent 1px); background-size: 22px 22px; opacity: 0.75;"
+                  aria-hidden="true"
+                ></div>
+
+                <!-- CAD Precision Corner Crosshairs -->
+                <div
+                  class="vm-kpi-corner-tl"
+                  style="position: absolute; top: 12px; left: 12px; width: 12px; height: 12px; border-top: 2px solid rgba(132, 172, 223, 0.6); border-left: 2px solid rgba(132, 172, 223, 0.6); pointer-events: none; z-index: 2;"
+                  aria-hidden="true"
+                ></div>
+                <div
+                  class="vm-kpi-corner-br"
+                  style="position: absolute; bottom: 12px; right: 12px; width: 12px; height: 12px; border-bottom: 2px solid rgba(132, 172, 223, 0.6); border-right: 2px solid rgba(132, 172, 223, 0.6); pointer-events: none; z-index: 2;"
+                  aria-hidden="true"
+                ></div>
+
+                <!-- Card Header (Letter Badge on Left of Title + Decorative Icon on Right) -->
+                <div class="vm-kpi-header mb-3" style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;">
+                  <div class="d-flex align-items-center gap-3">
+                    <span
+                      class="vm-kpi-char"
+                      style="width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; color: #13253F; font-family: var(--font-heading, 'Archivo', sans-serif); font-size: 22px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22); flex-shrink: 0;"
+                    >
+                      {val.letter}
+                    </span>
+                    <h4
+                      class="vm-kpi-card-title m-0"
+                      style="font-family: var(--font-heading, 'Archivo', sans-serif); font-size: 20px; font-weight: 800; color: #FFFFFF !important; margin: 0; letter-spacing: -0.01em;"
+                    >
+                      {isEn ? val.titleEn : val.title}
+                    </h4>
+                  </div>
+                  <span
+                    class="vm-kpi-icon-wrap"
+                    style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); display: inline-flex; align-items: center; justify-content: center; color: #84ACDF; flex-shrink: 0;"
+                  >
+                    <Icon name={val.icon} width="20" height="20" />
+                  </span>
+                </div>
+
+                <!-- Card Description -->
+                <div class="vm-kpi-content" style="position: relative; z-index: 2;">
+                  <p
+                    class="vm-kpi-card-desc"
+                    style="font-size: 13.5px; line-height: 1.68; color: #CBD5E1 !important; margin: 0;"
+                  >
+                    {isEn ? val.descEn : val.desc}
+                  </p>
+                </div>
               </div>
-              <h4 
-                class="vm-kpi-card-title mb-2"
-                style="font-family: var(--font-heading, 'Archivo', sans-serif); font-size: 18px; font-weight: 800; color: #17202A;"
-              >
-                {isEn ? val.titleEn : val.title}
-              </h4>
-              <p 
-                class="vm-kpi-card-desc mb-0"
-                style="font-size: 13.5px; line-height: 1.6; color: #475569;"
-              >
-                {isEn ? val.descEn : val.desc}
-              </p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
 
@@ -194,21 +225,157 @@ const isEn = currentLang === 'en';
   }
 
   .vm-visi-card,
-  .vm-kpi-card,
   .vm-mission-card {
     border: none !important;
     outline: none !important;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .vm-kpi-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(34, 65, 109, 0.09) !important;
-  }
-
   .vm-mission-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(34, 65, 109, 0.08) !important;
+  }
+
+  /* --------------------------------------------------------
+     ARCHITECTURAL BLUEPRINT CARD (NILAI K-P-I)
+     -------------------------------------------------------- */
+  .vm-kpi-card {
+    position: relative;
+    background: linear-gradient(145deg, #152742 0%, #1A3459 55%, #22416D 100%) !important;
+    border-radius: 18px;
+    border: 1px solid rgba(132, 172, 223, 0.25) !important;
+    box-shadow: 0 10px 30px rgba(18, 44, 73, 0.16);
+    padding: 28px 24px 26px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  }
+
+  /* Blueprint Grid Pattern */
+  .vm-kpi-grid-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: 
+      linear-gradient(to right, rgba(132, 172, 223, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(132, 172, 223, 0.08) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.65;
+    mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 88%);
+    -webkit-mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 88%);
+    transition: opacity 0.3s ease;
+  }
+
+  /* Corner CAD Alignment Crosshairs */
+  .vm-kpi-corner-tl {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 12px;
+    height: 12px;
+    border-top: 1.5px solid rgba(132, 172, 223, 0.45);
+    border-left: 1.5px solid rgba(132, 172, 223, 0.45);
+    pointer-events: none;
+    z-index: 2;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .vm-kpi-corner-br {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 12px;
+    height: 12px;
+    border-bottom: 1.5px solid rgba(132, 172, 223, 0.45);
+    border-right: 1.5px solid rgba(132, 172, 223, 0.45);
+    pointer-events: none;
+    z-index: 2;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Header inside Card */
+  .vm-kpi-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .vm-kpi-char {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: #FFFFFF;
+    color: #152742;
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: 22px;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    flex-shrink: 0;
+  }
+
+  .vm-kpi-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #84ACDF;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  /* Content inside Card */
+  .vm-kpi-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .vm-kpi-card-title {
+    font-family: var(--font-heading, 'Archivo', sans-serif);
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF !important;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .vm-kpi-card-desc {
+    font-size: 13.5px;
+    line-height: 1.68;
+    color: #CBD5E1 !important;
+    margin: 0;
+  }
+
+  /* Hover Interaction */
+  .vm-kpi-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(56, 189, 248, 0.5) !important;
+    box-shadow: 0 16px 38px rgba(15, 36, 64, 0.32) !important;
+  }
+
+  .vm-kpi-card:hover .vm-kpi-grid-pattern {
+    opacity: 0.95;
+  }
+
+  .vm-kpi-card:hover .vm-kpi-corner-tl,
+  .vm-kpi-card:hover .vm-kpi-corner-br {
+    border-color: #38BDF8;
+    transform: scale(1.15);
+  }
+
+  .vm-kpi-card:hover .vm-kpi-icon-wrap {
+    background: rgba(56, 189, 248, 0.16);
+    color: #38BDF8;
   }
 
   /* Defend against any global theme blockquote or text borders */

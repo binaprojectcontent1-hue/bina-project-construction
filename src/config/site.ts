@@ -16,7 +16,7 @@ export const siteConfig: SiteConfig = {
   siteUrl: 'https://binaproject.com',
 
   contact: {
-    phoneDisplay: '+62 81-335-335-304',
+    phoneDisplay: '+62 81 335 335 304',
     phoneTel: 'tel:+6281335335304',
     whatsappNumber: '6281335335304',
     whatsappUrl: 'https://wa.me/6281335335304',

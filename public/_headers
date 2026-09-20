@@ -9,6 +9,9 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+/assets/img/favicons/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 

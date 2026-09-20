@@ -5,9 +5,22 @@
  * modern architectural floating cards, role badges, elegant typography,
  * centered 5-member layout, and a high-converting consultation banner.
  */
+import { Image } from 'astro:assets';
 import { TEAM_MEMBERS } from '@data/team';
 import SectionHeader from '@components/SectionHeader.astro';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+import gesangImg from '@assets/images/team/Gesang Sudrajad, S.ST., M.M.webp';
+import marhaendraImg from '@assets/images/team/Ir. Marhaendra Muslim Bachtiyar, S.T.webp';
+import kuncoroImg from '@assets/images/team/Kuncoro Widiyan Nugroho, S.Ak.webp';
+import firdhanImg from '@assets/images/team/Firdhan Choirul Anwar, S.Ikom.webp';
+
+const teamPhotos: Record<string, ImageMetadata> = {
+  'gesang-sudrajad': gesangImg,
+  'marhaendra-muslim': marhaendraImg,
+  'kuncoro-widiyan': kuncoroImg,
+  'firdhan-choirul': firdhanImg,
+};
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
@@ -30,21 +43,34 @@ const t = useTranslations(currentLang);
     <div class="team-cards-wrap">
       {TEAM_MEMBERS.map((member) => (
         <article class="team-card">
-          <!-- Top Card Banner -->
-          <div class="team-card-banner"></div>
-
-          <!-- Avatar Frame (Head & Shoulders Focus) -->
-          <div class="team-avatar-frame">
-            <img
-              src={member.image}
-              alt={`${member.name} - ${member.jobTitle} Bina Project`}
-              loading="lazy"
-              decoding="async"
-              width="110"
-              height="110"
-              class="team-avatar-img"
-              style="width: 110px; height: 110px; max-width: 110px; max-height: 110px; border-radius: 50%; object-fit: cover;"
-            />
+          <!-- Avatar Frame (Seamless, Zero Border/Ring, Natural Uncropped 5:6 Aspect Ratio) -->
+          <div
+            class="team-avatar-frame"
+            style="width: 135px; height: 162px; margin: 0 auto 16px !important; background: transparent !important; padding: 0 !important; border: none !important; box-shadow: none !important; overflow: visible !important;"
+          >
+            {teamPhotos[member.id] ? (
+              <Image
+                src={teamPhotos[member.id]}
+                alt={`${member.name} - ${member.jobTitle} Bina Project`}
+                loading="lazy"
+                decoding="async"
+                width={250}
+                height={300}
+                class="team-avatar-img"
+                style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important;"
+              />
+            ) : (
+              <img
+                src={member.image}
+                alt={`${member.name} - ${member.jobTitle} Bina Project`}
+                loading="lazy"
+                decoding="async"
+                width={135}
+                height={162}
+                class="team-avatar-img"
+                style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important;"
+              />
+            )}
           </div>
 
           <!-- Card Content -->
@@ -90,60 +116,54 @@ const t = useTranslations(currentLang);
   .team-card {
     background: #FFFFFF;
     border-radius: 20px;
-    border: none;
+    border: 1px solid #F1F5F9;
     box-shadow: 0 4px 24px rgba(34, 65, 109, 0.05);
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     flex: 0 1 calc(25% - 18px);
     min-width: 270px;
-    max-width: 310px;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 315px;
+    padding-top: 32px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   }
   .team-card:hover {
     transform: translateY(-5px);
+    border-color: #E2E8F0;
     box-shadow: 0 12px 36px rgba(34, 65, 109, 0.1);
   }
 
-  /* Top Card Banner */
-  .team-card-banner {
-    height: 85px;
-    background: linear-gradient(135deg, #182C49 0%, #22416D 70%, #1F3A60 100%);
-    position: relative;
-  }
-
-  /* Avatar Frame (Centered over the banner) */
+  /* Avatar Frame (Seamless, Zero Border/Ring, Natural 5:6 Aspect Ratio) */
   .team-avatar-frame {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    margin: -55px auto 14px;
-    background: #FFFFFF;
-    padding: 4px;
-    box-shadow: 0 8px 24px rgba(34, 65, 109, 0.16);
+    width: 135px;
+    height: 162px;
+    margin: 0 auto 16px !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
     position: relative;
     z-index: 2;
-    overflow: hidden;
+    overflow: visible !important;
     transition: transform 0.3s ease;
   }
   .team-card:hover .team-avatar-frame {
-    transform: scale(1.06);
+    transform: translateY(-3px) scale(1.03);
   }
   .team-avatar-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center 25%;
-    transform: scale(1.15);
-    transform-origin: center 30%;
-    display: block;
-    background: #22416D;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 
   /* Content Area */
   .team-card-body {
-    padding: 0 24px 24px;
+    padding: 0 22px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -166,24 +186,28 @@ const t = useTranslations(currentLang);
   }
 
   .team-name {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 800;
     color: var(--bina-slate-900, #17202A);
-    margin: 0 0 4px;
+    margin: 0 0 6px;
+    line-height: 1.35;
     font-family: var(--font-display, 'Archivo', sans-serif);
   }
   .team-job-title {
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     color: var(--bina-navy, #22416D);
     margin: 0 0 16px;
   }
   .team-bio {
-    font-size: 13.5px;
-    line-height: 1.7;
-    color: var(--bina-slate-500, #475569);
-    margin: 0 0 20px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--bina-slate-600, #475569);
+    margin: 0 0 12px;
     flex: 1;
+    text-align: left;
   }
 
   /* Card Footer Contact Link */

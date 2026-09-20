@@ -48,7 +48,7 @@ export const TESTIMONIALS: readonly TestimonialItem[] = [
   },
   {
     name: 'Farid',
-    role: 'Bea Cukai Pasuruan',
+    role: 'Bea Cukai',
     image: '/assets/img/testimonial/farid.jpg',
     quote: 'Hasil renovasinya sangat tidak mengecewakan, timnya profesional dan sangat mengerti seluk-beluk teknis interior & konstruksi.',
     rating: 5,

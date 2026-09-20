@@ -47,9 +47,12 @@ const t = useTranslations(currentLang);
               and B2B collaboration through<br/>
               Official WhatsApp of Bina Project Team
             </p>
-            <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
-              {siteConfig.contact.phoneDisplay} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
-            </a>
+            <div class="contact-bento-footer mt-auto">
+              <a href={siteConfig.contact.whatsappUrl} target="_blank" rel="noopener noreferrer" class="contact-bento-action">
+                <span>{siteConfig.contact.phoneDisplay} (Chat Only)</span>
+                <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+              </a>
+            </div>
           </div>
         </div>
 
@@ -64,9 +67,12 @@ const t = useTranslations(currentLang);
               Send project supporting documents<br/>
               to Bina Project Team
             </p>
-            <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
-              {siteConfig.contact.email} <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
-            </a>
+            <div class="contact-bento-footer mt-auto">
+              <a href={`mailto:${siteConfig.contact.email}`} class="contact-bento-action">
+                <span>{siteConfig.contact.email}</span>
+                <Icon name="solar:arrow-right-up-linear" width="14" height="14" class="ms-1" />
+              </a>
+            </div>
           </div>
         </div>
 
