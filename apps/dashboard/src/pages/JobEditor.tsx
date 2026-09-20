@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, Save, Plus, Trash2, GripVertical, ChevronDown, AlertTriangle } from 'lucide-react';
+import { Card } from '../components/ui/card';
+import { Skeleton } from '../components/ui/skeleton';
 
 interface CustomQuestion {
   id: string;
@@ -154,7 +156,27 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
   const labelClass = "block text-sm font-semibold text-slate-700 mb-1.5";
 
   if (loading) {
-    return <div className="text-center py-16 text-slate-400 text-sm">Memuat data lowongan...</div>;
+    return (
+      <div className="space-y-6 max-w-4xl min-h-[600px]">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-48 rounded-xl" />
+          <Skeleton className="h-10 w-28 rounded-xl" />
+        </div>
+        <Card className="p-6 space-y-4 border border-slate-200/80">
+          <Skeleton className="h-5 w-32 rounded-md" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Skeleton className="h-11 w-full rounded-xl sm:col-span-2" />
+            <Skeleton className="h-11 w-full rounded-xl sm:col-span-2" />
+            <Skeleton className="h-11 w-full rounded-xl" />
+            <Skeleton className="h-11 w-full rounded-xl" />
+          </div>
+        </Card>
+        <Card className="p-6 space-y-4 border border-slate-200/80">
+          <Skeleton className="h-5 w-32 rounded-md" />
+          <Skeleton className="h-32 w-full rounded-xl" />
+        </Card>
+      </div>
+    );
   }
 
   return (
