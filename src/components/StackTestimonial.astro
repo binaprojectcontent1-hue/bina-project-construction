@@ -67,17 +67,6 @@ const { testimonials } = Astro.props;
               &ldquo;{item.quote}&rdquo;
             </p>
           </div>
-
-          <!-- Footer: Verification & Hint -->
-          <div class="stack-card-footer">
-            <div class="stack-trust-badge">
-              <span class="stack-trust-dot"></span>
-              <span class="stack-trust-label">Review Klien Terverifikasi</span>
-            </div>
-            <span class="stack-drag-hint">
-              ← Geser atau klik tombol →
-            </span>
-          </div>
         </div>
       </div>
     ))}
@@ -291,7 +280,7 @@ const { testimonials } = Astro.props;
 
   .stack-card-body {
     position: relative;
-    padding: 6px 0 18px;
+    padding: 4px 0 6px;
   }
 
   .stack-quote-watermark {
@@ -311,42 +300,6 @@ const { testimonials } = Astro.props;
     margin: 0;
     position: relative;
     z-index: 1;
-  }
-
-  .stack-card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 18px;
-    border-top: 1px solid #F1F5F9;
-  }
-
-  .stack-trust-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-
-  .stack-trust-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
-  }
-
-  .stack-trust-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #475569;
-  }
-
-  .stack-drag-hint {
-    font-size: 12px;
-    font-weight: 500;
-    color: #475569;
   }
 
   .stack-controls-bar {
@@ -458,10 +411,6 @@ const { testimonials } = Astro.props;
     .stack-nav-btn {
       padding: 10px 14px;
     }
-
-    .stack-drag-hint {
-      display: none;
-    }
   }
 </style>
 
@@ -502,11 +451,6 @@ const { testimonials } = Astro.props;
         if (inner) {
           inner.classList.remove('card-level-0', 'card-level-1', 'card-level-2');
           inner.classList.add(isActive ? 'card-level-0' : pos === 1 ? 'card-level-1' : 'card-level-2');
-        }
-
-        const dragHint = card.querySelector<HTMLElement>('.stack-drag-hint');
-        if (dragHint) {
-          dragHint.style.display = isActive ? '' : 'none';
         }
 
         if (isActive) {

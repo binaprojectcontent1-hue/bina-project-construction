@@ -118,7 +118,7 @@ const t = useTranslations(currentLang);
   <VisionMissionSection />
 
   <!--============================== Live Projects Map Section ==============================-->
-  <section class="coverage-sec space-bottom" id="proyek-berjalan">
+  <section class="coverage-sec space" id="proyek-berjalan">
     <div class="container">
       <SectionHeader
         badge="Proyek Berjalan"
@@ -146,10 +146,10 @@ const t = useTranslations(currentLang);
   <TeamSection />
 
   <!--============================== Testimonials ==============================-->
-  <TestimonialSection />
+  <TestimonialSection bg="slate" />
 
   <!--============================== Brand Partners ==============================-->
-  <BrandMarquee />
+  <BrandMarquee bg="white" />
 </BaseLayout>
 
 <style>
@@ -206,7 +206,6 @@ const t = useTranslations(currentLang);
      ======================================================== */
   .coverage-sec {
     position: relative;
-    padding-bottom: 90px;
     background-color: #FFFFFF;
   }
 
@@ -225,9 +224,6 @@ const t = useTranslations(currentLang);
   }
 
   @media (max-width: 991px) {
-    .coverage-sec {
-      padding-bottom: 60px;
-    }
     .coverage-map-presentation-wrapper {
       min-height: 440px;
     }

@@ -15,7 +15,7 @@ const currentLang = getLangFromUrl(Astro.url);
 const isEn = currentLang === 'en';
 ---
 
-<section class="vm-section" id="visi-misi">
+<section class="vm-section space" id="visi-misi">
   <div class="container vm-container">
     
     <!-- Section Header -->
@@ -156,7 +156,6 @@ const isEn = currentLang === 'en';
   .vm-section {
     background: var(--bina-slate-50, #F8FAFC);
     position: relative;
-    padding: clamp(50px, 6vw, 85px) 0;
   }
 
   .vm-container {

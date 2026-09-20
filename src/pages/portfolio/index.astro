@@ -40,7 +40,7 @@ const konstruksiCount = projects.filter((p) => {
 >
   <Breadcrumb title={t('nav.portfolio')} />
 
-  <section class="space">
+  <section class="space portfolio-grid-section">
     <div class="container-fluid portfolio-fluid-container">
       <SectionHeader
         badge="Projek Yang Sudah Kita Kerjakan"
@@ -102,18 +102,23 @@ const konstruksiCount = projects.filter((p) => {
     </div>
   </section>
 
-  <!-- CTA Area -->
-  <section class="cta-area2" data-overlay="title" data-opacity="9" data-bg-src="/assets/img/bg/cta_bg_1.jpg">
+  <!-- CTA Consultation Section -->
+  <section class="space portfolio-cta-section">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 mb-5 mb-lg-0">
-          <div class="title-area title-area--dark mb-0 text-center text-lg-start">
-            <h2 class="sec-title text-white">Ingin Mewujudkan Proyek Serupa? Konsultasikan Sekarang <span class="text-white">!</span></h2>
+      <div class="portfolio-cta-card">
+        <div class="row align-items-center">
+          <div class="col-lg-7 mb-4 mb-lg-0 text-center text-lg-start">
+            <span class="portfolio-cta-badge">
+              <Icon name="solar:chat-round-call-bold" width="16" height="16" class="me-1" />
+              Konsultasi Proyek & RAB Gratis
+            </span>
+            <h2 class="portfolio-cta-title">Ingin Mewujudkan Proyek Bangunan atau Interior Serupa?</h2>
+            <p class="portfolio-cta-desc mb-0">Diskusikan visi denah, spesifikasi material, dan estimasi anggaran bersama tim arsitek ahli Bina Project tanpa komitmen awal.</p>
           </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="cta-group justify-content-lg-end justify-content-center">
-            <a href="/contact" class="th-btn style1 th-icon">Konsultasi Gratis <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" /></a>
+          <div class="col-lg-5 text-center text-lg-end">
+            <a href="/contact" class="th-btn style1 th-icon d-inline-flex align-items-center">
+              Mulai Konsultasi Gratis <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+            </a>
           </div>
         </div>
       </div>
@@ -121,6 +126,47 @@ const konstruksiCount = projects.filter((p) => {
   </section>
 
   <style>
+    /* Section Alternating Backgrounds */
+    .portfolio-grid-section {
+      background: #FFFFFF;
+    }
+    .portfolio-cta-section {
+      background: var(--bina-slate-50, #F8FAFC);
+    }
+    .portfolio-cta-card {
+      background: linear-gradient(135deg, #183158 0%, #0D192B 100%);
+      border-radius: 24px;
+      padding: clamp(36px, 5vw, 56px);
+      box-shadow: 0 20px 40px -15px rgba(24, 49, 88, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .portfolio-cta-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #93C5FD;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      backdrop-filter: blur(4px);
+    }
+    .portfolio-cta-title {
+      color: #FFFFFF;
+      font-size: clamp(24px, 3.2vw, 36px);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .portfolio-cta-desc {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 580px;
+    }
     /* ==========================================================================
        Portfolio Fluid Container & Isotope Subpixel Safe Grid Widths
        ========================================================================== */

@@ -134,19 +134,6 @@ export const StackTestimonial: FC<StackTestimonialProps> = ({ testimonials }) =>
                     &ldquo;{item.quote}&rdquo;
                   </p>
                 </div>
-
-                {/* Footer: Verification & Interactive Hint */}
-                <div className="stack-card-footer">
-                  <div className="stack-trust-badge">
-                    <span className="stack-trust-dot"></span>
-                    <span className="stack-trust-label">Review Klien Terverifikasi</span>
-                  </div>
-                  {isActive && (
-                    <span className="stack-drag-hint">
-                      ← Geser atau klik tombol →
-                    </span>
-                  )}
-                </div>
               </div>
             </motion.div>
           );
@@ -364,7 +351,7 @@ export const StackTestimonial: FC<StackTestimonialProps> = ({ testimonials }) =>
         /* Body Quote */
         .stack-card-body {
           position: relative;
-          padding: 6px 0 18px;
+          padding: 4px 0 6px;
         }
 
         .stack-quote-watermark {
@@ -384,43 +371,6 @@ export const StackTestimonial: FC<StackTestimonialProps> = ({ testimonials }) =>
           margin: 0;
           position: relative;
           z-index: 1;
-        }
-
-        /* Footer */
-        .stack-card-footer {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding-top: 18px;
-          border-top: 1px solid #F1F5F9;
-        }
-
-        .stack-trust-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-        }
-
-        .stack-trust-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: #10B981;
-          box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
-        }
-
-        .stack-trust-label {
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.8px;
-          color: #475569;
-        }
-
-        .stack-drag-hint {
-          font-size: 12px;
-          font-weight: 500;
-          color: #475569;
         }
 
         /* Navigation Controls Bar */
@@ -536,10 +486,6 @@ export const StackTestimonial: FC<StackTestimonialProps> = ({ testimonials }) =>
 
           .stack-nav-btn {
             padding: 10px 14px;
-          }
-
-          .stack-drag-hint {
-            display: none;
           }
         }
       `}</style>

@@ -11,6 +11,11 @@ import SectionHeader from '@components/SectionHeader.astro';
 import { siteConfig } from '@config/site';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+interface Props {
+  bg?: 'white' | 'slate';
+}
+
+const { bg = 'white' } = Astro.props;
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 const testimonials = TESTIMONIALS;
@@ -42,10 +47,10 @@ const reviewListSchema = {
 
 <script is:inline type="application/ld+json" set:html={JSON.stringify(reviewListSchema)} />
 
-<section class="testimonial-section-modern space" id="testi-sec">
+<section class:list={['testimonial-section-modern space', { 'testimonial-section-modern--slate': bg === 'slate' }]} id="testi-sec">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-8 text-center">
+      <div class="col-lg-10 col-xl-9 text-center">
         <SectionHeader
           badge={t('testimonials.badge')}
           badgeIcon="solar:chat-round-like-bold"
@@ -66,10 +71,12 @@ const reviewListSchema = {
 
 <style>
   .testimonial-section-modern {
-    background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+    background: #FFFFFF;
     position: relative;
     overflow: hidden;
-    padding-top: 90px;
-    padding-bottom: 90px;
+  }
+
+  .testimonial-section-modern--slate {
+    background: var(--bina-slate-50, #F8FAFC) !important;
   }
 </style>

@@ -7,6 +7,8 @@ import EmptyState from '@components/EmptyState.astro';
 import { getAllArticles } from '@lib/blogService';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+import { Icon } from 'astro-icon/components';
+
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 const articles = await getAllArticles();
@@ -19,7 +21,7 @@ const articles = await getAllArticles();
 >
   <Breadcrumb title={t('nav.articles')} />
 
-  <section class="space">
+  <section class="space blog-grid-section">
     <div class="container-fluid blog-fluid-container">
       <SectionHeader
         badge={t('blog.badge')}
@@ -53,7 +55,72 @@ const articles = await getAllArticles();
     </div>
   </section>
 
+  <!-- CTA Consultation Section -->
+  <section class="space blog-cta-section">
+    <div class="container">
+      <div class="blog-cta-card">
+        <div class="row align-items-center">
+          <div class="col-lg-7 mb-4 mb-lg-0 text-center text-lg-start">
+            <span class="blog-cta-badge">
+              <Icon name="solar:chat-round-call-bold" width="16" height="16" class="me-1" />
+              Project Consultation & Free Estimate
+            </span>
+            <h2 class="blog-cta-title">Ready to Build Your Architectural Project?</h2>
+            <p class="blog-cta-desc mb-0">Discuss your residential floor plan, commercial building, or custom interior ideas with Bina Project's lead architects.</p>
+          </div>
+          <div class="col-lg-5 text-center text-lg-end">
+            <a href="/en/contact" class="th-btn style1 th-icon d-inline-flex align-items-center">
+              Consult With Us <Icon name="solar:arrow-right-linear" width="16" height="16" class="ms-2" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <style>
+    /* Section Alternating Backgrounds */
+    .blog-grid-section {
+      background: #FFFFFF;
+    }
+    .blog-cta-section {
+      background: var(--bina-slate-50, #F8FAFC);
+    }
+    .blog-cta-card {
+      background: linear-gradient(135deg, #183158 0%, #0D192B 100%);
+      border-radius: 24px;
+      padding: clamp(36px, 5vw, 56px);
+      box-shadow: 0 20px 40px -15px rgba(24, 49, 88, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-cta-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #93C5FD;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      backdrop-filter: blur(4px);
+    }
+    .blog-cta-title {
+      color: #FFFFFF;
+      font-size: clamp(24px, 3.2vw, 36px);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .blog-cta-desc {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 580px;
+    }
+
     /* Blog Fluid Container & Match Portfolio Grid Widths */
     .blog-fluid-container {
       padding-left: clamp(24px, 6vw, 110px);

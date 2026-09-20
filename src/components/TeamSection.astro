@@ -26,7 +26,7 @@ const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 ---
 
-<section class="team-section" id="our-team">
+<section class="team-section space" id="our-team">
 
   <div class="container team-container">
     <!-- Section Header -->
@@ -86,8 +86,7 @@ const t = useTranslations(currentLang);
      ============================================================================== */
   .team-section {
     position: relative;
-    padding: clamp(60px, 8vw, 100px) 0;
-    background: var(--bina-slate-50, #F8FAFC);
+    background: #FFFFFF;
     overflow: hidden;
     color: var(--bina-slate-900, #17202A);
     font-family: var(--font-body, 'Archivo', sans-serif);
@@ -117,10 +116,10 @@ const t = useTranslations(currentLang);
      2. Individual Team Card (Seamless Floating Design, No Borders)
      ---------------------------------------------------------------------------- */
   .team-card {
-    background: #FFFFFF;
+    background: var(--bina-slate-50, #F8FAFC);
     border-radius: 20px;
-    border: 1px solid #F1F5F9;
-    box-shadow: 0 4px 24px rgba(34, 65, 109, 0.05);
+    border: 1px solid var(--bina-slate-200, #E2E8F0);
+    box-shadow: 0 4px 24px rgba(34, 65, 109, 0.04);
     overflow: visible;
     display: flex;
     flex-direction: column;
@@ -128,11 +127,12 @@ const t = useTranslations(currentLang);
     min-width: 270px;
     max-width: 315px;
     padding-top: 32px;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease;
   }
   .team-card:hover {
     transform: translateY(-5px);
-    border-color: #E2E8F0;
+    background: #FFFFFF;
+    border-color: var(--bina-navy, #22416D);
     box-shadow: 0 12px 36px rgba(34, 65, 109, 0.1);
   }
 

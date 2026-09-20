@@ -105,7 +105,7 @@ async function minifyAssets() {
   try {
     const { transformSync } = await import('esbuild');
 
-    // 1. Minify style.css
+    // Minify style.css
     const cssPath = path.resolve('public/assets/css/style.css');
     const cssMinPath = path.resolve('public/assets/css/style.min.css');
     if (fs.existsSync(cssPath)) {
@@ -113,16 +113,6 @@ async function minifyAssets() {
       const minifiedCss = transformSync(rawCss, { loader: 'css', minify: true });
       fs.writeFileSync(cssMinPath, minifiedCss.code);
       console.log(`⚡ [Asset Minify] style.min.css generated (${Math.round(minifiedCss.code.length / 1024)} KB).`);
-    }
-
-    // 2. Minify main.js
-    const jsPath = path.resolve('public/assets/js/main.js');
-    const jsMinPath = path.resolve('public/assets/js/main.min.js');
-    if (fs.existsSync(jsPath)) {
-      const rawJs = fs.readFileSync(jsPath, 'utf-8');
-      const minifiedJs = transformSync(rawJs, { minify: true });
-      fs.writeFileSync(jsMinPath, minifiedJs.code);
-      console.log(`⚡ [Asset Minify] main.min.js generated (${Math.round(minifiedJs.code.length / 1024)} KB).`);
     }
   } catch (err) {
     console.warn('⚠️ [Asset Minify] Minification skipped:', err.message);

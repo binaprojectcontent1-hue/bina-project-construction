@@ -1,15 +1,20 @@
 ---
+import { Image } from 'astro:assets';
 import SectionHeader from '@components/SectionHeader.astro';
-import { PARTNER_BRANDS } from '@data/partners';
+import partnerBrandsImg from '@assets/images/brand/klien-binaproject.webp';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
+interface Props {
+  bg?: 'white' | 'slate';
+}
+
+const { bg = 'slate' } = Astro.props;
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
-const brands = PARTNER_BRANDS;
 ---
 
-<section class="brand-partner-section" id="partner-sec">
-  <div class="container">
+<section class:list={['brand-partner-section space', { 'brand-partner-section--white': bg === 'white' }]} id="partner-sec">
+  <div class="container text-center">
     <SectionHeader
       badge={t('brandMarquee.badge')}
       badgeIcon="solar:hand-shake-bold"
@@ -18,97 +23,64 @@ const brands = PARTNER_BRANDS;
       align="center"
     />
 
-    <div class="row row-cols-2 row-cols-md-4 g-3 g-md-4 justify-content-center align-items-center brand-static-row">
-      {brands.map((brand) => (
-        <div class="col">
-          <div class="brand-pill-box" title={brand.name}>
-            <img
-              src={brand.src}
-              alt={brand.name}
-              class="brand-logo-img"
-              loading="lazy"
-              decoding="async"
-              width="130"
-              height="55"
-            />
-          </div>
-        </div>
-      ))}
+    <div class="brand-single-wrapper d-flex justify-content-center align-items-center mx-auto text-center">
+      <Image
+        src={partnerBrandsImg}
+        alt={t('brandMarquee.title')}
+        class="brand-single-img img-fluid mx-auto d-block"
+        loading="lazy"
+        decoding="async"
+        width={1080}
+        height={506}
+        quality={92}
+        format="webp"
+      />
     </div>
   </div>
 </section>
 
-<style>
+<style is:global>
   .brand-partner-section {
-    padding-top: 50px;
-    padding-bottom: 60px;
-    background: #FFFFFF;
+    background: var(--bina-slate-50, #F8FAFC);
     position: relative;
     overflow: hidden;
+    text-align: center;
   }
 
-  .brand-static-row {
-    padding: 10px 0;
+  .brand-partner-section--white {
+    background: #FFFFFF !important;
   }
 
-  .brand-pill-box {
-    background: #FFFFFF;
-    border: 1px solid #F1F5F9;
-    border-radius: 14px;
-    height: 105px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 18px 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    cursor: default;
+  #partner-sec .brand-single-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 1000px !important;
+    padding: 10px 15px;
   }
 
-  .brand-pill-box:hover {
-    transform: translateY(-2px);
-    border-color: #E2E8F0;
-    box-shadow: 0 8px 24px rgba(34, 65, 109, 0.08);
+  #partner-sec .brand-single-img {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 960px !important;
+    object-fit: contain !important;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
-  .brand-logo-img {
-    max-height: 60px;
-    max-width: 150px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    filter: opacity(0.88);
-    transition: filter 0.2s ease, opacity 0.2s ease;
-  }
-
-  .brand-pill-box:hover .brand-logo-img {
-    filter: opacity(1);
-  }
-
-  @media (max-width: 991px) {
-    .brand-pill-box {
-      height: 90px;
-      padding: 14px 18px;
-    }
-    .brand-logo-img {
-      max-height: 48px;
-      max-width: 120px;
-    }
+  #partner-sec .brand-single-img:hover {
+    transform: scale(1.015);
   }
 
   @media (max-width: 767px) {
-    .brand-partner-section {
-      padding-top: 35px;
-      padding-bottom: 40px;
-    }
-    .brand-pill-box {
-      height: 76px;
-      padding: 10px 14px;
-      border-radius: 12px;
-    }
-    .brand-logo-img {
-      max-height: 38px;
-      max-width: 95px;
+    #partner-sec .brand-single-wrapper {
+      padding: 5px 10px;
     }
   }
 </style>
