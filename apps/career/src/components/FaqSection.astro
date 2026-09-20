@@ -1,55 +1,62 @@
 ---
 const faqs = [
   {
-    question: 'Bagaimana tahapan proses rekrutmen di Bina Project?',
-    answer: 'Proses seleksi kami terdiri dari: (1) Screening berkas & CV, (2) Tes kompetensi atau portofolio review, (3) Wawancara dengan tim HRD & Manajemen, (4) Penawaran kerja. Seluruh proses biasanya memakan waktu 1-2 minggu.',
+    question: 'Bagaimana tahapan proses seleksi & rekrutmen di Bina Project?',
+    answer: 'Alur rekrutmen kami transparan dan terstruktur: (1) Seleksi administrasi & CV screening, (2) Tinjauan portofolio / tes studi kasus teknis sesuai bidang, (3) Wawancara langsung dengan tim manajemen & arsitek senior, dan (4) Surat penawaran kerja (Offering Letter). Rata-rata proses berjalan 7–14 hari kerja.',
   },
   {
-    question: 'Berapa lama waktu respons setelah mengirim lamaran?',
-    answer: 'Tim HRD kami akan meninjau lamaran Anda dalam 3-5 hari kerja. Kandidat yang lolos tahap screening akan dihubungi melalui WhatsApp atau email untuk jadwal wawancara.',
+    question: 'Berapa lama estimasi pemberitahuan setelah submit lamaran?',
+    answer: 'Tim Rekrutmen kami meninjau setiap berkas pelamar dalam kurun 3–5 hari kerja. Kandidat yang memenuhi kualifikasi akan segera dihubungi via WhatsApp resmi atau email untuk penjadwalan interview.',
   },
   {
-    question: 'Format CV/Portofolio apa yang diterima?',
-    answer: 'Kami menerima CV dalam format PDF dengan ukuran maksimal 10MB. Untuk portofolio, Anda dapat melampirkan link ke Google Drive, Behance, atau website pribadi.',
+    question: 'Format berkas apa yang direkomendasikan untuk upload CV & Portofolio?',
+    answer: 'Unggah Curriculum Vitae (CV) dalam format PDF (maksimal 10MB). Untuk portofolio arsitektur, gambar kerja, atau 3D rendering, Anda dapat mencantumkan link Google Drive, Behance, atau website pribadi di kolom yang disediakan.',
   },
   {
-    question: 'Di mana lokasi kantor Bina Project?',
-    answer: 'Kantor pusat kami berlokasi di Kota Malang, Jawa Timur. Sebagian besar posisi membutuhkan kehadiran on-site, namun beberapa posisi tertentu memungkinkan kerja hybrid.',
+    question: 'Di mana lokasi penempatan kerja Bina Project?',
+    answer: 'Kantor pusat dan studio desain kami berbasis di Kota Malang, Jawa Timur. Sebagian besar posisi konstruksi dan arsitektur beroperasi secara on-site di proyek Malang Raya, Surabaya, dan sekitarnya.',
   },
   {
-    question: 'Apakah saya bisa melamar meskipun tidak ada lowongan yang sesuai?',
-    answer: 'Tentu! Kami menyediakan fitur Talent Pool. Anda dapat mengirimkan CV dan data diri untuk kami simpan dalam database. Ketika ada posisi yang cocok, tim HRD akan menghubungi Anda.',
+    question: 'Apakah saya bisa mengirimkan CV jika posisi yang saya incar belum dibuka?',
+    answer: 'Tentu bisa! Anda dapat mendaftar melalui fitur Talent Pool kami. Database profil Anda akan diprioritaskan saat posisi baru dibuka oleh manajemen Bina Project.',
   },
 ];
 ---
 
-<section class="py-16 sm:py-24 bg-[#070D1A]/50">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="faq" class="py-20 bg-white relative">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
     <!-- Section Header -->
-    <div class="text-center mb-10 sm:mb-14">
-      <span class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4">
-        FAQ
+    <div class="text-center mb-14">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-bold uppercase tracking-wider bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] mb-3">
+        Tanya Jawab
       </span>
-      <h2 class="text-2xl sm:text-3xl font-bold text-white">
-        Pertanyaan Umum Rekrutmen
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#17202A] tracking-tight">
+        Pertanyaan Seputar Proses Rekrutmen
       </h2>
+      <p class="text-[#475569] font-body text-sm sm:text-base mt-2">
+        Jawaban atas pertanyaan yang sering diajukan oleh calon rekan kerja kami.
+      </p>
     </div>
 
-    <!-- FAQ Items -->
-    <div class="space-y-3">
-      {faqs.map((faq, index) => (
-        <details class="group rounded-2xl bg-[#0E1E38]/60 border border-white/5 hover:border-white/10 transition-colors">
-          <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none text-sm sm:text-base font-semibold text-white select-none">
+    <!-- FAQ Accordion List -->
+    <div class="space-y-3.5">
+      {faqs.map((faq) => (
+        <details class="group bento-card bg-white border border-[#E2E8F0] rounded-xl overflow-hidden transition-all duration-200">
+          <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none select-none text-base font-heading font-bold text-[#17202A] group-open:text-[#22416D]">
             <span>{faq.question}</span>
-            <svg class="w-5 h-5 shrink-0 text-slate-400 transition-transform duration-300 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
+            <span class="w-7 h-7 rounded-full bg-[#F1F5F9] text-[#22416D] flex items-center justify-center shrink-0 transition-transform duration-300 group-open:rotate-180 group-open:bg-[#22416D] group-open:text-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
           </summary>
-          <div class="px-6 pb-5 text-sm text-slate-400 leading-relaxed border-t border-white/5 pt-4">
+          <div class="px-6 pb-5 pt-1 text-sm font-body text-[#475569] leading-relaxed border-t border-[#F1F5F9]">
             {faq.answer}
           </div>
         </details>
       ))}
     </div>
+
   </div>
 </section>

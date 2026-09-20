@@ -1,62 +1,65 @@
 ---
 const pillars = [
   {
-    icon: '🎨',
-    title: 'Kebebasan Eksplorasi Desain',
-    description: 'Kami mendorong setiap anggota tim untuk bereksperimen dan menuangkan kreativitas terbaiknya dalam setiap proyek arsitektur dan interior.',
+    icon: 'solar:palette-round-linear',
+    title: 'Eksplorasi Desain Tanpa Batas',
+    description: 'Kami memberikan ruang dan kebebasan penuh bagi arsitek dan desainer interior untuk berinovasi, bereksperimen dengan material, dan melahirkan rancangan yang berani.',
   },
   {
-    icon: '🤝',
-    title: 'Budaya Kolaboratif & Terbuka',
-    description: 'Tim kami bekerja dalam lingkungan yang saling mendukung, di mana setiap ide dihargai dan dikembangkan bersama.',
+    icon: 'solar:users-group-rounded-linear',
+    title: 'Kultur Kolaboratif & Terbuka',
+    description: 'Bekerja bersama tim multidisiplin (arsitek, estimator RAB, hingga pelaksana lapangan) dengan komunikasi yang transparan, apresiatif, dan saling mendukung.',
   },
   {
-    icon: '🏗️',
-    title: 'Proyek Nyata Skala Besar',
-    description: 'Kesempatan terlibat langsung dalam proyek konstruksi dan renovasi berskala besar di Malang dan Jawa Timur.',
+    icon: 'solar:buildings-linear',
+    title: 'Proyek Nyata Berkualitas Tinggi',
+    description: 'Keterlibatan langsung dalam proyek residensial mewah, villa estetik, kawasan komersial, hingga fasilitas publik terkemuka di Malang Raya dan Jawa Timur.',
   },
   {
-    icon: '📈',
-    title: 'Pengembangan Keahlian Teknis',
-    description: 'Kami berinvestasi dalam peningkatan skill tim — dari pelatihan software desain hingga manajemen proyek profesional.',
+    icon: 'solar:chart-square-linear',
+    title: 'Jenjang Karir & Mentorship Nyata',
+    description: 'Investasi berkelanjutan pada pengembangan kapabilitas tim: pelatihan software arsitektur terbaru (BIM, Enscape), sertifikasi teknis, dan mentoring langsung.',
   },
 ];
 ---
 
-<section class="py-16 sm:py-24">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Section Header -->
-    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-      <span class="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider mb-4">
-        Life at Bina Project
+<section id="budaya" class="py-20 bg-[#F1F5F9]/60 border-y border-[#E2E8F0] relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Title -->
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-bold uppercase tracking-wider bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] mb-3">
+        Budaya & Kehidupan Kerja
       </span>
-      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-        Mengapa Berkarir di <span class="text-gradient-amber">Bina Project</span>?
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#17202A] tracking-tight">
+        Mengapa Membangun Karir di <span class="text-[#22416D]">Bina Project</span>?
       </h2>
-      <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-        Kami percaya bahwa karyawan yang bahagia dan berkembang akan menghasilkan karya arsitektur dan interior yang luar biasa.
+      <p class="text-[#475569] font-body text-sm sm:text-base mt-3 leading-relaxed">
+        Kami percaya karya konstruksi dan interior berkualitas berakar dari tim yang bertumbuh, dihargai, dan bangga atas setiap detail yang dibangun.
       </p>
     </div>
 
-    <!-- Pillars Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-      {pillars.map((pillar) => (
-        <div class="group relative rounded-2xl bg-gradient-to-br from-[#0E1E38]/80 to-[#0B132B]/60 border border-white/5 p-6 sm:p-8 hover:border-amber-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5">
-          <!-- Icon -->
-          <div class="text-3xl mb-4">{pillar.icon}</div>
-          
-          <!-- Content -->
-          <h3 class="text-lg font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
-            {pillar.title}
-          </h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            {pillar.description}
-          </p>
+    <!-- Bento 4-Pillar Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {pillars.map((pillar, idx) => (
+        <div class="bento-card bento-card-hover p-7 sm:p-8 bg-white flex items-start gap-5">
+          <!-- Icon Box -->
+          <div class="flex-shrink-0 w-13 h-13 rounded-xl bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] flex items-center justify-center shadow-xs">
+            <span class="font-technical text-lg font-bold">0{idx + 1}</span>
+          </div>
 
-          <!-- Hover glow -->
-          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/0 to-amber-500/0 group-hover:from-amber-500/3 group-hover:to-transparent transition-all duration-500 pointer-events-none"></div>
+          <!-- Text -->
+          <div>
+            <h3 class="text-lg font-heading font-bold text-[#17202A] mb-2 group-hover:text-[#22416D] transition-colors">
+              {pillar.title}
+            </h3>
+            <p class="text-sm font-body text-[#475569] leading-relaxed">
+              {pillar.description}
+            </p>
+          </div>
         </div>
       ))}
     </div>
+
   </div>
 </section>

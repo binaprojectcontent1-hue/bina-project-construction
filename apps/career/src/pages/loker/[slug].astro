@@ -31,7 +31,7 @@ if (!job) {
   return Astro.redirect('/');
 }
 
-// Employment type mapping for Schema.org
+// Employment type mapping for Google for Jobs Schema.org
 const employmentTypeMap: Record<string, string> = {
   'Full-time': 'FULL_TIME',
   'Kontrak': 'CONTRACTOR',
@@ -39,12 +39,11 @@ const employmentTypeMap: Record<string, string> = {
   'Freelance': 'OTHER',
 };
 
-// Google for Jobs JSON-LD
 const jsonLd = {
   '@context': 'https://schema.org/',
   '@type': 'JobPosting',
   title: job.title,
-  description: job.description,
+  description: job.description || job.title,
   identifier: {
     '@type': 'PropertyValue',
     name: 'Bina Project',
@@ -59,7 +58,7 @@ const jsonLd = {
     '@type': 'Organization',
     name: 'Bina Project Construction & Interior',
     sameAs: 'https://binaproject.id',
-    logo: 'https://binaproject.id/favicon.png',
+    logo: 'https://binaproject.id/assets/img/logo.svg',
   },
   jobLocation: {
     '@type': 'Place',
@@ -72,137 +71,245 @@ const jsonLd = {
   },
 };
 
-const deptColors: Record<string, string> = {
-  'Arsitektur & Desain': 'bg-violet-500/15 text-violet-300 border-violet-500/20',
-  'Konstruksi & Lapangan': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/20',
-  'Estimator & RAB': 'bg-blue-500/15 text-blue-300 border-blue-500/20',
-  'Marketing & Finance': 'bg-pink-500/15 text-pink-300 border-pink-500/20',
-  'Magang': 'bg-amber-500/15 text-amber-300 border-amber-500/20',
-};
-const badgeClass = deptColors[job.department] || 'bg-slate-500/15 text-slate-300 border-slate-500/20';
-
 const shareUrl = `https://karir.binaproject.id/loker/${slug}`;
-const shareText = `Lowongan Kerja: ${job.title} di Bina Project — ${job.location}`;
+const shareText = `Lowongan Kerja ${job.title} di Bina Project:`;
+
+// Department styling
+const deptStyles: Record<string, { bg: string; text: string; border: string }> = {
+  'Arsitektur & Desain': { bg: 'bg-[#EFF6FF]', text: 'text-[#22416D]', border: 'border-[#BFDBFE]' },
+  'Konstruksi & Lapangan': { bg: 'bg-[#F0FDF4]', text: 'text-[#166534]', border: 'border-[#BBF7D0]' },
+  'Estimator & RAB': { bg: 'bg-[#F8FAFC]', text: 'text-[#1E293B]', border: 'border-[#CBD5E1]' },
+  'Marketing & Finance': { bg: 'bg-[#FAF5FF]', text: 'text-[#6B21A8]', border: 'border-[#E9D5FF]' },
+  'Magang': { bg: 'bg-[#FFFBEB]', text: 'text-[#92400E]', border: 'border-[#FDE68A]' },
+};
+
+const badgeTheme = deptStyles[job.department] || { bg: 'bg-[#EFF6FF]', text: 'text-[#22416D]', border: 'border-[#BFDBFE]' };
 ---
 
 <CareerLayout
-  title={job.title}
-  description={`Lowongan kerja ${job.title} di Bina Project Construction & Interior, ${job.location}. ${job.job_type} — ${job.experience_level}. Lamar sekarang!`}
+  title={`${job.title} — Karir`}
+  description={`Lowongan kerja ${job.title} di Bina Project Construction & Interior (${job.location}). ${job.job_type} — ${job.experience_level}. Kirimkan lamaran Anda sekarang!`}
   jsonLd={jsonLd}
 >
   <Header />
 
-  <main class="py-8 sm:py-12">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Page Header Sub-strip -->
+  <section class="bg-gradient-to-b from-[#0D192B] to-[#152B49] text-white pt-10 pb-12 border-b border-[#22416D] relative overflow-hidden">
+    <div class="absolute inset-0 blueprint-grid opacity-60 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <!-- Breadcrumb -->
-      <nav class="mb-6 text-sm">
-        <ol class="flex items-center gap-2 text-slate-500">
-          <li><a href="/" class="hover:text-amber-400 transition-colors">Karir</a></li>
+      <nav class="mb-4 text-xs font-technical text-[#84ACDF]" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 flex-wrap">
+          <li><a href="/" class="hover:text-white transition-colors">Karir</a></li>
           <li>/</li>
-          <li><a href="/#lowongan" class="hover:text-amber-400 transition-colors">Lowongan</a></li>
+          <li><a href="/#lowongan" class="hover:text-white transition-colors">Lowongan</a></li>
           <li>/</li>
-          <li class="text-slate-300 truncate max-w-[200px]">{job.title}</li>
+          <li class="text-slate-300 font-semibold truncate max-w-[240px]">{job.title}</li>
         </ol>
       </nav>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-6">
-          <!-- Job Header -->
-          <div class="rounded-2xl bg-[#0E1E38]/80 border border-white/5 p-6 sm:p-8">
-            <div class="flex flex-wrap items-center gap-2 mb-4">
-              <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${badgeClass}`}>
-                {job.department}
-              </span>
-              <span class="px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-slate-400 border border-white/5">
-                {job.job_type}
-              </span>
-              <span class="px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-slate-400 border border-white/5">
-                {job.workplace_type}
-              </span>
+      <!-- Position Headline -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2.5 flex-wrap mb-2.5">
+            <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-bold border ${badgeTheme.bg} ${badgeTheme.text} ${badgeTheme.border}`}>
+              {job.department}
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-technical font-medium bg-white/10 text-slate-200 border border-white/15">
+              {job.job_type}
+            </span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-technical font-medium bg-white/10 text-slate-200 border border-white/15">
+              {job.workplace_type}
+            </span>
+          </div>
+
+          <h1 class="text-2xl sm:text-4xl font-heading font-black tracking-tight text-white">
+            {job.title}
+          </h1>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="#formulir-lamaran"
+            class="th-btn bg-white text-[#22416D]! hover:bg-[#EFF6FF]! border-white shadow-md text-sm whitespace-nowrap"
+          >
+            <span>Lamar Sekarang</span>
+            <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       2-COLUMN ARCHITECTURAL CONTENT LAYOUT
+       ========================================================================= -->
+  <main class="py-12 sm:py-16 bg-[#F8FAFC]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        
+        <!-- LEFT COLUMN (65%): Position Details & Requirements -->
+        <div class="lg:col-span-7 space-y-8">
+          
+          <!-- Section 1: Overview & Description -->
+          <div class="bento-card p-6 sm:p-8 bg-white">
+            <h2 class="text-xl font-heading font-extrabold text-[#17202A] mb-4 pb-3 border-b border-[#F1F5F9]">
+              Deskripsi Posisi
+            </h2>
+            <div class="text-sm font-body text-[#475569] leading-relaxed whitespace-pre-line space-y-4">
+              {job.description}
             </div>
+          </div>
 
-            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-4">{job.title}</h1>
+          <!-- Section 2: Responsibilities -->
+          {job.responsibilities && (
+            <div class="bento-card p-6 sm:p-8 bg-white">
+              <h2 class="text-xl font-heading font-extrabold text-[#17202A] mb-4 pb-3 border-b border-[#F1F5F9]">
+                Tanggung Jawab Utama
+              </h2>
+              <div class="text-sm font-body text-[#475569] leading-relaxed whitespace-pre-line space-y-2">
+                {job.responsibilities}
+              </div>
+            </div>
+          )}
 
-            <div class="flex flex-wrap gap-4 text-sm text-slate-400">
-              <span class="flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                {job.location}
-              </span>
-              <span class="flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                {job.experience_level}
-              </span>
+          <!-- Section 3: Requirements & Qualifications -->
+          {job.requirements && (
+            <div class="bento-card p-6 sm:p-8 bg-white">
+              <h2 class="text-xl font-heading font-extrabold text-[#17202A] mb-4 pb-3 border-b border-[#F1F5F9]">
+                Kualifikasi & Persyaratan
+              </h2>
+              <div class="text-sm font-body text-[#475569] leading-relaxed whitespace-pre-line space-y-2">
+                {job.requirements}
+              </div>
+            </div>
+          )}
+
+          <!-- Section 4: Benefits & Perks -->
+          {job.benefits && (
+            <div class="bento-card p-6 sm:p-8 bg-white">
+              <h2 class="text-xl font-heading font-extrabold text-[#17202A] mb-4 pb-3 border-b border-[#F1F5F9]">
+                Benefit & Fasilitas
+              </h2>
+              <div class="text-sm font-body text-[#475569] leading-relaxed whitespace-pre-line space-y-2">
+                {job.benefits}
+              </div>
+            </div>
+          )}
+
+          <!-- Section 5: About Company -->
+          <div class="bento-card p-6 sm:p-8 bg-gradient-to-br from-[#EFF6FF] to-white border border-[#BFDBFE]">
+            <h3 class="text-lg font-heading font-bold text-[#22416D] mb-2">
+              Tentang Bina Project Construction & Interior
+            </h3>
+            <p class="text-sm font-body text-[#475569] leading-relaxed">
+              Bina Project adalah perusahaan arsitektur, kontraktor konstruksi dan interior yang berpusat di Malang, Jawa Timur. Dengan rekam jejak lebih dari 200 proyek selesai, kami mengedepankan kualitas konstruksi amanah, kepastian struktur, dan estetika desain kontemporer.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN (35%): Sticky Sidebar Info & Application Form -->
+        <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+          
+          <!-- Summary Info Card -->
+          <div class="bento-card p-6 sm:p-7 bg-white">
+            <h3 class="text-base font-heading font-bold text-[#17202A] mb-4 pb-3 border-b border-[#E2E8F0]">
+              Ringkasan Lowongan
+            </h3>
+
+            <div class="space-y-3.5 text-sm font-body">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-technical text-[#64748B]">Departemen:</span>
+                <span class="font-semibold text-[#17202A] text-right">{job.department}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-technical text-[#64748B]">Tipe Pekerjaan:</span>
+                <span class="font-semibold text-[#17202A] text-right">{job.job_type}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-technical text-[#64748B]">Lokasi Penempatan:</span>
+                <span class="font-semibold text-[#17202A] text-right">{job.location}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-technical text-[#64748B]">Pengalaman:</span>
+                <span class="font-semibold text-[#17202A] text-right">{job.experience_level}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-technical text-[#64748B]">Sistem Kerja:</span>
+                <span class="font-semibold text-[#17202A] text-right">{job.workplace_type}</span>
+              </div>
               {job.show_salary && job.salary_range && (
-                <span class="flex items-center gap-1.5 text-amber-400 font-semibold">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  {job.salary_range}
-                </span>
+                <div class="flex items-center justify-between pt-2 border-t border-[#F1F5F9]">
+                  <span class="text-xs font-technical text-[#64748B]">Rentang Gaji:</span>
+                  <span class="font-technical font-bold text-[#065F46] bg-[#ECFDF5] px-2.5 py-0.5 rounded-md border border-[#A7F3D0]">
+                    {job.salary_range}
+                  </span>
+                </div>
+              )}
+              {job.application_deadline && (
+                <div class="flex items-center justify-between pt-2 border-t border-[#F1F5F9]">
+                  <span class="text-xs font-technical text-[#64748B]">Batas Lamaran:</span>
+                  <span class="font-technical font-semibold text-[#EF4444]">
+                    {new Date(job.application_deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                </div>
               )}
             </div>
 
-            {job.application_deadline && (
-              <div class="mt-4 pt-4 border-t border-white/5">
-                <span class="text-xs text-slate-500">
-                  Batas Lamaran: {new Date(job.application_deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </span>
+            <!-- Share Buttons -->
+            <div class="mt-6 pt-5 border-t border-[#E2E8F0]">
+              <span class="block text-xs font-technical text-[#64748B] mb-2.5">Bagikan lowongan ini:</span>
+              <div class="flex items-center gap-2">
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 py-2 px-3 rounded-lg bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 font-technical text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <span>WhatsApp</span>
+                </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 py-2 px-3 rounded-lg bg-[#0A66C2]/10 text-[#0A66C2] hover:bg-[#0A66C2]/20 font-technical text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <span>LinkedIn</span>
+                </a>
+                <button
+                  type="button"
+                  id="copy-link-btn"
+                  data-url={shareUrl}
+                  class="py-2 px-3 rounded-lg bg-[#F1F5F9] text-[#475569] hover:bg-[#E2E8F0] font-technical text-xs font-bold transition-colors cursor-pointer"
+                  title="Salin tautan"
+                >
+                  Salin Link
+                </button>
               </div>
-            )}
-          </div>
-
-          <!-- Description -->
-          <div class="rounded-2xl bg-[#0E1E38]/80 border border-white/5 p-6 sm:p-8 space-y-8">
-            <div>
-              <h2 class="text-lg font-bold text-white mb-3">Tentang Pekerjaan Ini</h2>
-              <div class="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{job.description}</div>
             </div>
 
-            {job.responsibilities && job.responsibilities.length > 0 && (
-              <div>
-                <h2 class="text-lg font-bold text-white mb-3">Tanggung Jawab Utama</h2>
-                <ul class="space-y-2">
-                  {job.responsibilities.map((item: string) => (
-                    <li class="flex items-start gap-2.5 text-sm text-slate-300">
-                      <svg class="w-4 h-4 mt-0.5 shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" /></svg>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {job.requirements && job.requirements.length > 0 && (
-              <div>
-                <h2 class="text-lg font-bold text-white mb-3">Kualifikasi & Persyaratan</h2>
-                <ul class="space-y-2">
-                  {job.requirements.map((item: string) => (
-                    <li class="flex items-start gap-2.5 text-sm text-slate-300">
-                      <svg class="w-4 h-4 mt-0.5 shrink-0 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {job.benefits && job.benefits.length > 0 && (
-              <div>
-                <h2 class="text-lg font-bold text-white mb-3">Benefit & Fasilitas</h2>
-                <ul class="space-y-2">
-                  {job.benefits.map((item: string) => (
-                    <li class="flex items-start gap-2.5 text-sm text-slate-300">
-                      <svg class="w-4 h-4 mt-0.5 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
 
-          <!-- Application Form -->
-          <div id="lamar" class="rounded-2xl bg-[#0E1E38]/80 border border-white/5 p-6 sm:p-8 scroll-mt-24">
-            <h2 class="text-xl font-bold text-white mb-6">Lamar Posisi Ini</h2>
+          <!-- Application Form Card -->
+          <div id="formulir-lamaran" class="bento-card p-6 sm:p-7 bg-white scroll-mt-24 shadow-md">
+            <div class="mb-5 pb-3 border-b border-[#E2E8F0]">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-technical font-semibold bg-[#EFF6FF] text-[#22416D] mb-1.5">
+                Pendaftaran Online
+              </span>
+              <h3 class="text-lg font-heading font-extrabold text-[#17202A]">
+                Formulir Lamaran Kerja
+              </h3>
+              <p class="text-xs font-body text-[#64748B]">
+                Isi data diri dan lampirkan CV Anda untuk melamar posisi ini.
+              </p>
+            </div>
+
             <ApplicationForm
               client:load
               jobId={job.id}
@@ -211,61 +318,11 @@ const shareText = `Lowongan Kerja: ${job.title} di Bina Project — ${job.locati
               customQuestions={job.custom_questions || []}
             />
           </div>
+
         </div>
 
-        <!-- Sidebar -->
-        <div class="space-y-6">
-          <!-- Sticky Apply CTA -->
-          <div class="lg:sticky lg:top-24 space-y-4">
-            <a
-              href="#lamar"
-              class="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-[#F68A0A] to-[#E07800] text-white font-bold text-sm shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all hover:-translate-y-0.5"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-              Lamar Sekarang
-            </a>
-
-            <!-- Share -->
-            <div class="rounded-2xl bg-[#0E1E38]/60 border border-white/5 p-5">
-              <h3 class="text-sm font-bold text-white mb-3">Bagikan Lowongan</h3>
-              <div class="flex items-center gap-2">
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-xs font-bold hover:bg-emerald-500/20 transition-colors"
-                >
-                  WhatsApp
-                </a>
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-blue-500/10 text-blue-300 text-xs font-bold hover:bg-blue-500/20 transition-colors"
-                >
-                  LinkedIn
-                </a>
-                <button
-                  type="button"
-                  id="copy-link-btn"
-                  data-url={shareUrl}
-                  class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-white/5 text-slate-300 text-xs font-bold hover:bg-white/10 transition-colors"
-                >
-                  Salin Link
-                </button>
-              </div>
-            </div>
-
-            <!-- Back to all jobs -->
-            <a
-              href="/#lowongan"
-              class="block text-center text-sm text-slate-400 hover:text-amber-400 transition-colors"
-            >
-              ← Lihat Semua Lowongan
-            </a>
-          </div>
-        </div>
       </div>
+
     </div>
   </main>
 
@@ -273,13 +330,22 @@ const shareText = `Lowongan Kerja: ${job.title} di Bina Project — ${job.locati
 </CareerLayout>
 
 <script>
-  const btn = document.getElementById('copy-link-btn');
-  btn?.addEventListener('click', async () => {
-    const url = btn.getAttribute('data-url');
-    if (url) {
-      await navigator.clipboard.writeText(url);
-      btn.textContent = 'Tersalin!';
-      setTimeout(() => { btn.textContent = 'Salin Link'; }, 2000);
-    }
-  });
+  const copyBtn = document.getElementById('copy-link-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const url = copyBtn.getAttribute('data-url') || window.location.href;
+      try {
+        await navigator.clipboard.writeText(url);
+        const originalText = copyBtn.innerText;
+        copyBtn.innerText = 'Tersalin!';
+        copyBtn.classList.add('text-[#22416D]', 'bg-[#EFF6FF]');
+        setTimeout(() => {
+          copyBtn.innerText = originalText;
+          copyBtn.classList.remove('text-[#22416D]', 'bg-[#EFF6FF]');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy link', err);
+      }
+    });
+  }
 </script>

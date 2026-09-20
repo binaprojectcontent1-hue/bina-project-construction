@@ -7,6 +7,17 @@ interface Env {
   HRD_EMAIL: string;
 }
 
+interface PagesFunctionContext<TEnv = unknown> {
+  request: Request;
+  env: TEnv;
+  params: Record<string, string | string[]>;
+  waitUntil: (promise: Promise<unknown>) => void;
+  next: (input?: Request | string, init?: RequestInit) => Promise<Response>;
+  data: Record<string, unknown>;
+}
+
+type PagesFunction<TEnv = unknown> = (context: PagesFunctionContext<TEnv>) => Promise<Response> | Response;
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
