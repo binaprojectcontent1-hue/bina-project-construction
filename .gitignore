@@ -25,6 +25,8 @@ apps/dashboard/.env
 apps/dashboard/.env.local
 apps/biolink/.env
 apps/biolink/.env.local
+apps/career/.env
+apps/career/.env.local
 
 # IDE & Editor
 .vscode/
