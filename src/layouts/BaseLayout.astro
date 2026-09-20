@@ -219,6 +219,7 @@ const connectedSchemaGraph = {
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="generator" content={Astro.generator} />
     <meta name="author" content="Bina Project" />
@@ -369,8 +370,9 @@ const connectedSchemaGraph = {
 
     <!-- Optimized Stylesheet Cascade (Eliminates FOUC & Stabilizes Layout) -->
     <link rel="stylesheet" href="/assets/css/style.min.css" />
-    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
     <Fragment set:html={`
+      <link rel="preload" as="style" href="/assets/css/swiper-bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" /></noscript>
       <link rel="preload" as="style" href="/assets/css/bootstrap.min.css" onload="this.onload=null;this.rel='stylesheet'" />
       <noscript><link rel="stylesheet" href="/assets/css/bootstrap.min.css" /></noscript>
     `} />

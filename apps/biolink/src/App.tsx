@@ -59,6 +59,15 @@ const DEFAULT_LINKS: BioLink[] = [
     sort_order: 6,
     click_count: 0,
   },
+  {
+    id: 'demo-7',
+    title: 'LinkedIn Perusahaan Resmi',
+    url: 'https://linkedin.com/company/bina-project-construction',
+    icon: 'linkedin',
+    is_active: true,
+    sort_order: 7,
+    click_count: 0,
+  },
 ];
 
 const DEFAULT_SETTINGS: BioLinkSettings = {

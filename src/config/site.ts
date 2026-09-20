@@ -36,10 +36,17 @@ export const siteConfig: SiteConfig = {
   socials: [
     {
       platform: 'Google Business',
-      url: 'https://share.google/bF9i03JuwxrcOQo7y',
+      url: 'https://share.google/p7BrsXstvH3tQTVP8',
       icon: 'simple-icons:google',
       label: 'Google Business Profile Resmi Bina Project',
-    },    {
+    },
+    {
+      platform: 'LinkedIn',
+      url: 'https://linkedin.com/company/bina-project-construction',
+      icon: 'simple-icons:linkedin',
+      label: 'Profil LinkedIn Resmi Bina Project',
+    },
+    {
       platform: 'Instagram',
       url: 'https://www.instagram.com/binaproject.id',
       icon: 'simple-icons:instagram',

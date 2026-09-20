@@ -52,9 +52,15 @@ export async function getSiteSettings(): Promise<SiteConfig> {
     const mergedSocials: SocialLink[] = [
       {
         platform: 'Google Business',
-        url: data.google_business_url || 'https://share.google/bF9i03JuwxrcOQo7y',
+        url: data.google_business_url || 'https://share.google/p7BrsXstvH3tQTVP8',
         icon: 'simple-icons:google',
         label: 'Google Business Profile Resmi Bina Project',
+      },
+      {
+        platform: 'LinkedIn',
+        url: data.linkedin_url || 'https://linkedin.com/company/bina-project-construction',
+        icon: 'simple-icons:linkedin',
+        label: 'Profil LinkedIn Resmi Bina Project',
       },
       {
         platform: 'Instagram',
