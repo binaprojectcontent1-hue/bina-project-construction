@@ -198,6 +198,8 @@ const connectedSchemaGraph = {
       "url": canonicalUrl,
       "name": title,
       "description": description,
+      "datePublished": "2024-01-15T08:00:00+07:00",
+      "dateModified": new Date().toISOString(),
       "isPartOf": {
         "@id": `${cleanSiteUrl}/#website`
       },
@@ -208,7 +210,7 @@ const connectedSchemaGraph = {
         "@type": "ImageObject",
         "url": resolvedOgImage
       },
-      "inLanguage": "id-ID"
+      "inLanguage": currentLang === 'en' ? 'en-US' : 'id-ID'
     }
   ]
 };
@@ -282,6 +284,11 @@ const connectedSchemaGraph = {
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Bina Project" />
     <meta property="og:locale" content={currentLang === 'en' ? 'en_US' : 'id_ID'} />
+
+    <!-- Content Freshness & Recency Signals (GEO & Search Engine Quality Rating) -->
+    <meta property="article:published_time" content="2024-01-15T08:00:00+07:00" />
+    <meta property="article:modified_time" content={new Date().toISOString()} />
+    <meta name="revised" content={new Date().toISOString().split('T')[0]} />
 
     <!-- Twitter Card Meta -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -368,9 +375,10 @@ const connectedSchemaGraph = {
       }
     </style>
 
-    <!-- Optimized Stylesheet Cascade (Eliminates FOUC & Stabilizes Layout) -->
-    <link rel="stylesheet" href="/assets/css/style.min.css" />
+    <!-- Optimized Stylesheet Cascade (Eliminates Render Blocking & Stabilizes Layout) -->
     <Fragment set:html={`
+      <link rel="preload" as="style" href="/assets/css/style.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+      <noscript><link rel="stylesheet" href="/assets/css/style.min.css" /></noscript>
       <link rel="preload" as="style" href="/assets/css/swiper-bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" />
       <noscript><link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" /></noscript>
       <link rel="preload" as="style" href="/assets/css/bootstrap.min.css" onload="this.onload=null;this.rel='stylesheet'" />

@@ -47,7 +47,7 @@ const navLinks = [
             href={item.href}
             class={`drawer-nav-link ${item.isActive ? 'active' : ''}`}
           >
-            <div class="d-flex align-items-center" style="gap: 12px;">
+            <div class="d-flex align-items-center drawer-item-content">
               <div class="drawer-item-icon">
                 <Icon name={item.icon} width="18" height="18" />
               </div>
@@ -62,9 +62,9 @@ const navLinks = [
       <div class="drawer-studio-info mt-25 p-3 rounded-3 bg-light border">
         <div class="d-flex align-items-center mb-2">
           <Icon name="solar:pen-new-square-linear" width="14" height="14" class="text-theme me-2" />
-          <span style="font-size: 12px; font-weight: 700; color: var(--bina-slate-900, #17202A); text-transform: uppercase; letter-spacing: 0.5px;">Bina Project Studio</span>
+          <span class="drawer-studio-name">Bina Project Studio</span>
         </div>
-        <p class="mb-0" style="font-size: 13px; color: #334155; line-height: 1.5;">
+        <p class="mb-0 drawer-studio-address">
           {siteConfig.contact.address}
         </p>
       </div>
@@ -76,8 +76,8 @@ const navLinks = [
         href={siteConfig.contact.whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="th-btn style1 w-100 py-3 mb-15 text-center d-flex align-items-center justify-content-center"
-        style="border-radius: 12px; font-weight: 700; font-size: 14px;"
+        class="th-btn style1 w-100 py-3 mb-15 text-center d-flex align-items-center justify-content-center drawer-cta-btn"
+        onclick="if(typeof window.trackLead==='function') window.trackLead('mobile_drawer_wa', 'mobile_menu');"
       >
         <Icon name="simple-icons:whatsapp" width="18" height="18" class="me-2" /> {t('cta.consultation')}
       </a>
@@ -223,6 +223,30 @@ const navLinks = [
     background: var(--bina-navy, #22416D);
     border-color: var(--bina-navy, #22416D);
     color: #FFFFFF;
+  }
+
+  .drawer-item-content {
+    gap: 12px;
+  }
+
+  .drawer-studio-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--bina-slate-900, #17202A);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .drawer-studio-address {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.5;
+  }
+
+  .drawer-cta-btn {
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
   }
 </style>
 

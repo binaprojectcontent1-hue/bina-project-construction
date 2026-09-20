@@ -158,7 +158,7 @@ const ogImageUrl =
         <div class="row">
           <div class="col-12">
             <h2 class="sec-title mb-20">{project.title}</h2>
-            <p class="mb-30 text-start" style="font-size: 1.05rem; line-height: 1.8;">
+            <p class="mb-30 text-start project-desc-text">
               {project.description}
             </p>
           </div>
@@ -190,7 +190,7 @@ const ogImageUrl =
             <div class="d-flex align-items-center justify-content-between mb-30 flex-wrap gap-2">
               <div>
                 <span class="gallery-badge-subtitle">Dokumentasi Visual</span>
-                <h3 class="sec-title mb-0" style="font-size: 24px;">Galeri Hasil Pengerjaan</h3>
+                <h3 class="sec-title mb-0 gallery-sec-title">Galeri Hasil Pengerjaan</h3>
               </div>
               <span class="gallery-count-text">
                 <Icon name="solar:gallery-linear" width="16" height="16" class="me-1" />
@@ -452,6 +452,15 @@ const ogImageUrl =
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0, 128, 105, 0.45);
       color: #FFFFFF !important;
+    }
+
+    .project-desc-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .gallery-sec-title {
+      font-size: 24px;
     }
   </style>
 </BaseLayout>

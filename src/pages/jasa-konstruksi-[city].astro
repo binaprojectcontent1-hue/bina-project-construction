@@ -535,7 +535,7 @@ const cityKeywords = `jasa konstruksi ${city.cityName.toLowerCase()}, kontraktor
         height={450}
         format="webp"
         quality={85}
-        style="height: 100%; width: auto; object-fit: cover;"
+        class="consultation-bg-img"
       />
     </div>
     <div class="container">
@@ -569,7 +569,7 @@ const cityKeywords = `jasa konstruksi ${city.cityName.toLowerCase()}, kontraktor
               height={260}
               format="webp"
               quality={85}
-              style="max-height: 220px; width: auto; object-fit: contain;"
+              class="consultation-thumb-img"
             />
           </div>
         </div>
@@ -925,5 +925,17 @@ const cityKeywords = `jasa konstruksi ${city.cityName.toLowerCase()}, kontraktor
     color: var(--bina-slate-600, #475569);
     font-size: 14px;
     line-height: 1.65;
+  }
+
+  .consultation-bg-img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+  }
+
+  .consultation-thumb-img {
+    max-height: 220px;
+    width: auto;
+    object-fit: contain;
   }
 </style>

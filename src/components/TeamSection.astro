@@ -28,7 +28,7 @@ const t = useTranslations(currentLang);
 
 <section class="team-section" id="our-team">
 
-  <div class="container" style="max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1;">
+  <div class="container team-container">
     <!-- Section Header -->
     <SectionHeader
       badge={t('team.badge')}
@@ -44,10 +44,7 @@ const t = useTranslations(currentLang);
       {TEAM_MEMBERS.map((member) => (
         <article class="team-card">
           <!-- Avatar Frame (Seamless, Zero Border/Ring, Natural Uncropped 5:6 Aspect Ratio) -->
-          <div
-            class="team-avatar-frame"
-            style="width: 135px; height: 162px; margin: 0 auto 16px !important; background: transparent !important; padding: 0 !important; border: none !important; box-shadow: none !important; overflow: visible !important;"
-          >
+          <div class="team-avatar-frame">
             {teamPhotos[member.id] ? (
               <Image
                 src={teamPhotos[member.id]}
@@ -57,7 +54,6 @@ const t = useTranslations(currentLang);
                 width={250}
                 height={300}
                 class="team-avatar-img"
-                style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important;"
               />
             ) : (
               <img
@@ -68,7 +64,6 @@ const t = useTranslations(currentLang);
                 width={135}
                 height={162}
                 class="team-avatar-img"
-                style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important;"
               />
             )}
           </div>
@@ -96,6 +91,14 @@ const t = useTranslations(currentLang);
     overflow: hidden;
     color: var(--bina-slate-900, #17202A);
     font-family: var(--font-body, 'Archivo', sans-serif);
+  }
+
+  .team-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
   }
 
 

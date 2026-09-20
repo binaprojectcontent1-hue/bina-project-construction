@@ -7,6 +7,9 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: import.meta.env.SITE || 'https://binaproject.id', // Safe production fallback
   compressHTML: true,
+  build: {
+    inlineStylesheets: 'always',
+  },
   i18n: {
     defaultLocale: 'id',
     locales: ['id', 'en'],
