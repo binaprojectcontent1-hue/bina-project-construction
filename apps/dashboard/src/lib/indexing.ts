@@ -4,8 +4,8 @@
  */
 
 export const INDEXNOW_KEY = '5f4b238382c448d5b123ad841d1bfd30';
-export const INDEXNOW_HOST = 'binaproject.com';
-export const SITE_ORIGIN = 'https://binaproject.com';
+export const INDEXNOW_HOST = 'binaproject.id';
+export const SITE_ORIGIN = 'https://binaproject.id';
 
 export interface IndexingResult {
   success: boolean;
@@ -33,7 +33,7 @@ export async function submitToIndexNow(urls: string[]): Promise<IndexingResult> 
     };
   }
 
-  // Ensure absolute URLs on binaproject.com
+  // Ensure absolute URLs on binaproject.id
   const cleanUrls = urls.map((u) => {
     if (u.startsWith('http://') || u.startsWith('https://')) return u;
     return `${SITE_ORIGIN}${u.startsWith('/') ? '' : '/'}${u}`;

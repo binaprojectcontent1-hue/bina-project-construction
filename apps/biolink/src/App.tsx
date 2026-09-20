@@ -17,7 +17,7 @@ const DEFAULT_LINKS: BioLink[] = [
   {
     id: 'demo-2',
     title: 'Kunjungi Website Resmi Bina Project',
-    url: 'https://binaproject.com',
+    url: 'https://binaproject.id',
     icon: 'globe',
     is_active: true,
     sort_order: 2,
@@ -26,7 +26,7 @@ const DEFAULT_LINKS: BioLink[] = [
   {
     id: 'demo-3',
     title: 'Lihat Portofolio Proyek & Desain',
-    url: 'https://binaproject.com/portfolio',
+    url: 'https://binaproject.id/portfolio',
     icon: 'briefcase',
     is_active: true,
     sort_order: 3,
@@ -35,7 +35,7 @@ const DEFAULT_LINKS: BioLink[] = [
   {
     id: 'demo-4',
     title: 'Hitung Estimasi Biaya Bangun & Renovasi',
-    url: 'https://binaproject.com/kontak',
+    url: 'https://binaproject.id/kontak',
     icon: 'calculator',
     is_active: true,
     sort_order: 4,
@@ -44,10 +44,19 @@ const DEFAULT_LINKS: BioLink[] = [
   {
     id: 'demo-5',
     title: 'Baca Artikel & Tips Konstruksi',
-    url: 'https://binaproject.com/blog',
+    url: 'https://binaproject.id/blog',
     icon: 'book-open',
     is_active: true,
     sort_order: 5,
+    click_count: 0,
+  },
+  {
+    id: 'demo-6',
+    title: 'Karir & Open Recruitment',
+    url: 'https://karir.binaproject.id',
+    icon: 'briefcase',
+    is_active: true,
+    sort_order: 6,
     click_count: 0,
   },
 ];

@@ -751,7 +751,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 <CardTitle className="text-sm flex items-center gap-1.5">
                   <Globe className="w-4 h-4 text-slate-500" />
                   <span>Alamat Link Halaman (URL)</span>
-                  <HelpTooltip content="Ini adalah alamat tautan proyek di website (misal: binaproject.com/portfolio/nama-proyek). Sistem membuatnya secara otomatis dari judul proyek agar rapi dan ramah Google." />
+                  <HelpTooltip content="Ini adalah alamat tautan proyek di website (misal: binaproject.id/portfolio/nama-proyek). Sistem membuatnya secara otomatis dari judul proyek agar rapi dan ramah Google." />
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {!isSlugLocked && (

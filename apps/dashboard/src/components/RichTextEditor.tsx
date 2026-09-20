@@ -116,7 +116,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const setLink = () => {
     if (!editor) return;
     const previousUrl = editor.getAttributes('link').href;
-    const url = window.prompt('Masukkan URL tautan (contoh: https://binaproject.com):', previousUrl || 'https://');
+    const url = window.prompt('Masukkan URL tautan (contoh: https://binaproject.id):', previousUrl || 'https://');
 
     if (url === null) return;
     if (url === '') {

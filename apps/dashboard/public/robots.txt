@@ -1,4 +1,4 @@
-# Strict Search Engine Isolation for dash.binaproject.com
+# Strict Search Engine Isolation for dash.binaproject.id
 # Internal Admin Dashboard - Zero Indexing Allowed
 User-agent: *
 Disallow: /

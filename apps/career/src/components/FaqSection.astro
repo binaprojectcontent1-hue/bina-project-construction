@@ -1,0 +1,55 @@
+---
+const faqs = [
+  {
+    question: 'Bagaimana tahapan proses rekrutmen di Bina Project?',
+    answer: 'Proses seleksi kami terdiri dari: (1) Screening berkas & CV, (2) Tes kompetensi atau portofolio review, (3) Wawancara dengan tim HRD & Manajemen, (4) Penawaran kerja. Seluruh proses biasanya memakan waktu 1-2 minggu.',
+  },
+  {
+    question: 'Berapa lama waktu respons setelah mengirim lamaran?',
+    answer: 'Tim HRD kami akan meninjau lamaran Anda dalam 3-5 hari kerja. Kandidat yang lolos tahap screening akan dihubungi melalui WhatsApp atau email untuk jadwal wawancara.',
+  },
+  {
+    question: 'Format CV/Portofolio apa yang diterima?',
+    answer: 'Kami menerima CV dalam format PDF dengan ukuran maksimal 10MB. Untuk portofolio, Anda dapat melampirkan link ke Google Drive, Behance, atau website pribadi.',
+  },
+  {
+    question: 'Di mana lokasi kantor Bina Project?',
+    answer: 'Kantor pusat kami berlokasi di Kota Malang, Jawa Timur. Sebagian besar posisi membutuhkan kehadiran on-site, namun beberapa posisi tertentu memungkinkan kerja hybrid.',
+  },
+  {
+    question: 'Apakah saya bisa melamar meskipun tidak ada lowongan yang sesuai?',
+    answer: 'Tentu! Kami menyediakan fitur Talent Pool. Anda dapat mengirimkan CV dan data diri untuk kami simpan dalam database. Ketika ada posisi yang cocok, tim HRD akan menghubungi Anda.',
+  },
+];
+---
+
+<section class="py-16 sm:py-24 bg-[#070D1A]/50">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-10 sm:mb-14">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4">
+        FAQ
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-white">
+        Pertanyaan Umum Rekrutmen
+      </h2>
+    </div>
+
+    <!-- FAQ Items -->
+    <div class="space-y-3">
+      {faqs.map((faq, index) => (
+        <details class="group rounded-2xl bg-[#0E1E38]/60 border border-white/5 hover:border-white/10 transition-colors">
+          <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none text-sm sm:text-base font-semibold text-white select-none">
+            <span>{faq.question}</span>
+            <svg class="w-5 h-5 shrink-0 text-slate-400 transition-transform duration-300 group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-400 leading-relaxed border-t border-white/5 pt-4">
+            {faq.answer}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

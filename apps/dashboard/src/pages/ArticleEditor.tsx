@@ -548,7 +548,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                 <CardTitle className="text-sm flex items-center gap-1.5 font-semibold text-slate-900">
                   <Globe className="w-4 h-4 text-slate-500" />
                   <span>Alamat Link Artikel (URL)</span>
-                  <HelpTooltip content="Alamat tautan permanen artikel di web (misal: binaproject.com/blog/tips-memilih-kontraktor). Otomatis dibuat dari judul agar rapi dan ramah SEO Google." />
+                  <HelpTooltip content="Alamat tautan permanen artikel di web (misal: binaproject.id/blog/tips-memilih-kontraktor). Otomatis dibuat dari judul agar rapi dan ramah SEO Google." />
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {!isSlugLocked && (

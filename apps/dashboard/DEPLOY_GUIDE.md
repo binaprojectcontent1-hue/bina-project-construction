@@ -1,6 +1,6 @@
-# Panduan Deployment Cloudflare Pages: dash.binaproject.com
+# Panduan Deployment Cloudflare Pages: dash.binaproject.id
 
-Panduan langkah demi langkah untuk mendeploy dashboard admin ke subdomain **`dash.binaproject.com`** di **Cloudflare Pages**.
+Panduan langkah demi langkah untuk mendeploy dashboard admin ke subdomain **`dash.binaproject.id`** di **Cloudflare Pages**.
 
 ---
 
@@ -32,18 +32,18 @@ Klik **Save and Deploy**.
 
 ---
 
-## 3. Hubungkan Subdomain `dash.binaproject.com`
+## 3. Hubungkan Subdomain `dash.binaproject.id`
 
 1. Setelah build pertama selesai, masuk ke tab **Custom domains** pada project `binaproject-dashboard`.
 2. Klik **Set up a custom domain**.
-3. Masukkan domain: `dash.binaproject.com`.
+3. Masukkan domain: `dash.binaproject.id`.
 4. Cloudflare otomatis membuat DNS CNAME record yang aman dengan sertifikat SSL Cloudflare aktif.
 
 ---
 
 ## 4. Cara Membuat Deploy Hook untuk Website Utama
 
-Agar tombol *"Publish & Deploy"* di dashboard dapat me-rebuild website utama (`binaproject.com`):
+Agar tombol *"Publish & Deploy"* di dashboard dapat me-rebuild website utama (`binaproject.id`):
 
 1. Masuk ke Cloudflare Dashboard → **Workers & Pages** → Pilih project website utama (`binaproject`).
 2. Masuk ke **Settings** → **Builds & deployments** → Scroll ke bawah ke bagian **Deploy hooks**.
@@ -51,7 +51,7 @@ Agar tombol *"Publish & Deploy"* di dashboard dapat me-rebuild website utama (`b
    - **Hook name:** `Dashboard Publish Hook`
    - **Branch:** `main`
 4. Copy URL yang dihasilkan (berawalan `https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/...`).
-5. Masukkan URL tersebut ke menu **Pengaturan** di `dash.binaproject.com` (atau tambahkan ke variable `VITE_CLOUDFLARE_DEPLOY_HOOK_URL`).
+5. Masukkan URL tersebut ke menu **Pengaturan** di `dash.binaproject.id` (atau tambahkan ke variable `VITE_CLOUDFLARE_DEPLOY_HOOK_URL`).
 
 ---
 

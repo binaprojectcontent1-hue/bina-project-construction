@@ -28,18 +28,18 @@ if (fs.existsSync('dist')) {
 
 // Ensure homepage & core pages are present as fallback if sitemap was empty
 if (urls.size === 0) {
-  urls.add('https://binaproject.com/');
-  urls.add('https://binaproject.com/portfolio');
-  urls.add('https://binaproject.com/blog');
-  urls.add('https://binaproject.com/about');
-  urls.add('https://binaproject.com/contact');
+  urls.add('https://binaproject.id/');
+  urls.add('https://binaproject.id/portfolio');
+  urls.add('https://binaproject.id/blog');
+  urls.add('https://binaproject.id/about');
+  urls.add('https://binaproject.id/contact');
 }
 
 const urlList = Array.from(urls);
 console.log(`📡 Discovered ${urlList.length} live URLs from sitemaps for search engine indexing.`);
 
 // 3. Ping Bing Search Engine
-const sitemapUrl = encodeURIComponent('https://binaproject.com/sitemap.xml');
+const sitemapUrl = encodeURIComponent('https://binaproject.id/sitemap.xml');
 const bingEndpoint = `https://www.bing.com/ping?sitemap=${sitemapUrl}`;
 
 console.log('📡 Notifying Bing search engine about sitemap update...');
@@ -53,9 +53,9 @@ try {
 // 4. Trigger Dynamic IndexNow Broadcast for ALL Live URLs
 try {
   const indexNowPayload = {
-    host: 'binaproject.com',
+    host: 'binaproject.id',
     key: '5f4b238382c448d5b123ad841d1bfd30',
-    keyLocation: 'https://binaproject.com/5f4b238382c448d5b123ad841d1bfd30.txt',
+    keyLocation: 'https://binaproject.id/5f4b238382c448d5b123ad841d1bfd30.txt',
     urlList: urlList,
   };
 

@@ -136,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
         {/* View Live Website Button */}
         <a
-          href="https://binaproject.com"
+          href="https://binaproject.id"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:inline-flex"

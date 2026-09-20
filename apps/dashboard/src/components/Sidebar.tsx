@@ -13,6 +13,7 @@ import {
   Link2,
   MapPin,
   Building2,
+  Users,
 } from 'lucide-react';
 
 export type TabType =
@@ -26,7 +27,10 @@ export type TabType =
   | 'settings'
   | 'portfolio-new'
   | 'article-new'
-  | 'live-project-new';
+  | 'live-project-new'
+  | 'recruitment-jobs'
+  | 'recruitment-job-edit'
+  | 'recruitment-candidates';
 
 interface SidebarProps {
   activeTab: TabType;
@@ -54,6 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (tab === 'portfolio' && activeTab === 'portfolio-new') return true;
     if (tab === 'articles' && activeTab === 'article-new') return true;
     if (tab === 'live-projects' && activeTab === 'live-project-new') return true;
+    if (tab === 'recruitment-jobs' && activeTab === 'recruitment-job-edit') return true;
     return activeTab === tab;
   };
 
@@ -251,7 +256,44 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
           </div>
 
-          {/* Navigation Section 3: Settings & Tools */}
+          {/* Navigation Section 3: Rekrutmen */}
+          <div className="space-y-1">
+            <div className="px-4 py-1 text-xs font-semibold text-blue-200/50 uppercase tracking-wider">
+              Rekrutmen
+            </div>
+
+            {/* Lowongan Kerja */}
+            <button
+              type="button"
+              onClick={() => handleSelect('recruitment-jobs')}
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${isTabActive('recruitment-jobs')
+                  ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <Briefcase className={`w-5 h-5 shrink-0 ${isTabActive('recruitment-jobs') ? 'text-white' : 'text-blue-300/70'}`} />
+                <span className="truncate">Lowongan Kerja</span>
+              </div>
+            </button>
+
+            {/* Kandidat Pelamar */}
+            <button
+              type="button"
+              onClick={() => handleSelect('recruitment-candidates')}
+              className={`w-full flex items-center justify-between gap-3 rounded-full px-4 h-11 text-sm font-semibold transition-all cursor-pointer ${activeTab === 'recruitment-candidates'
+                  ? 'bg-[#22416D] text-white shadow-md shadow-[#22416D]/30 border border-blue-400/30'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <Users className={`w-5 h-5 shrink-0 ${activeTab === 'recruitment-candidates' ? 'text-white' : 'text-blue-300/70'}`} />
+                <span className="truncate">Kandidat Pelamar</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Navigation Section 4: Settings & Tools */}
           <div className="space-y-1">
             <div className="px-4 py-1 text-xs font-semibold text-blue-200/50 uppercase tracking-wider">
               Sistem & Pengaturan
@@ -290,7 +332,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Sidebar Footer: Website link & Status */}
         <div className="space-y-2 pt-4 border-t border-slate-700/50 shrink-0">
           <a
-            href="https://binaproject.com"
+            href="https://binaproject.id"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-between w-full px-4 h-10 rounded-full bg-[#12233B]/80 hover:bg-[#1A3356] border border-blue-400/20 text-xs font-bold text-slate-200 transition-colors shadow-xs"

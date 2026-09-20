@@ -15,6 +15,7 @@ const quickLinks = [
   { name: t('nav.portfolio'), href: getLocalizedPath('/portfolio', currentLang) },
   { name: t('nav.liveProjects'), href: `${getLocalizedPath('/about', currentLang)}#proyek-berjalan` },
   { name: t('nav.articles'), href: getLocalizedPath('/blog', currentLang) },
+  { name: currentLang === 'en' ? 'Careers' : 'Karir', href: 'https://karir.binaproject.id' },
   { name: t('nav.contact'), href: getLocalizedPath('/contact', currentLang) },
   { name: currentLang === 'en' ? 'Terms & Conditions' : 'Syarat & Ketentuan', href: getLocalizedPath('/syarat-ketentuan', currentLang) },
 ];

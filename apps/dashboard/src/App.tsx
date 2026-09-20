@@ -15,6 +15,9 @@ import { BioLinkEditor } from './pages/BioLinkEditor';
 import { LiveProjectsManager } from './pages/LiveProjectsManager';
 import { LiveProjectEditor } from './pages/LiveProjectEditor';
 import { BusinessProfileSettings } from './pages/BusinessProfileSettings';
+import { JobManager } from './pages/JobManager';
+import { JobEditor } from './pages/JobEditor';
+import { CandidateManager } from './pages/CandidateManager';
 import { Login } from './pages/Login';
 import { sessionManager } from './lib/session-manager';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -25,6 +28,7 @@ interface RouteState {
   portfolioId?: string;
   articleId?: string;
   liveProjectId?: string;
+  jobId?: string;
 }
 
 function parseHash(rawHash: string): RouteState {
@@ -55,6 +59,13 @@ function parseHash(rawHash: string): RouteState {
     };
   }
 
+  if (path === 'recruitment-job-edit') {
+    return {
+      tab: 'recruitment-job-edit',
+      jobId: params.get('id') || undefined,
+    };
+  }
+
   const validTabs: TabType[] = [
     'overview',
     'portfolio',
@@ -67,6 +78,9 @@ function parseHash(rawHash: string): RouteState {
     'site-settings',
     'redirects',
     'settings',
+    'recruitment-jobs',
+    'recruitment-job-edit',
+    'recruitment-candidates',
   ];
 
   if (validTabs.includes(path as TabType)) {
@@ -75,13 +89,14 @@ function parseHash(rawHash: string): RouteState {
       portfolioId: params.get('portfolioId') || undefined,
       articleId: params.get('articleId') || undefined,
       liveProjectId: params.get('liveProjectId') || undefined,
+      jobId: params.get('jobId') || undefined,
     };
   }
 
   return { tab: 'overview' };
 }
 
-function buildHash(tab: TabType, portfolioId?: string, articleId?: string, liveProjectId?: string): string {
+function buildHash(tab: TabType, portfolioId?: string, articleId?: string, liveProjectId?: string, jobId?: string): string {
   if (tab === 'article-new' && articleId) {
     return `#article-edit?id=${encodeURIComponent(articleId)}`;
   }
@@ -90,6 +105,9 @@ function buildHash(tab: TabType, portfolioId?: string, articleId?: string, liveP
   }
   if (tab === 'live-project-new' && liveProjectId) {
     return `#live-project-edit?id=${encodeURIComponent(liveProjectId)}`;
+  }
+  if (tab === 'recruitment-job-edit' && jobId) {
+    return `#recruitment-job-edit?id=${encodeURIComponent(jobId)}`;
   }
   return `#${tab}`;
 }
@@ -103,14 +121,15 @@ export function App() {
   const [editingPortfolioId, setEditingPortfolioId] = useState<string | undefined>(initialRoute.portfolioId);
   const [editingArticleId, setEditingArticleId] = useState<string | undefined>(initialRoute.articleId);
   const [editingLiveProjectId, setEditingLiveProjectId] = useState<string | undefined>(initialRoute.liveProjectId);
+  const [editingJobId, setEditingJobId] = useState<string | undefined>(initialRoute.jobId);
 
   // Counts
   const [portfolioCount, setPortfolioCount] = useState(0);
   const [articleCount, setArticleCount] = useState(0);
 
   // Sync state to URL Hash
-  const syncRouteToHash = useCallback((tab: TabType, pId?: string, aId?: string, lId?: string) => {
-    const targetHash = buildHash(tab, pId, aId, lId);
+  const syncRouteToHash = useCallback((tab: TabType, pId?: string, aId?: string, lId?: string, jId?: string) => {
+    const targetHash = buildHash(tab, pId, aId, lId, jId);
     if (window.location.hash !== targetHash) {
       window.history.replaceState(null, '', targetHash);
     }
@@ -124,6 +143,7 @@ export function App() {
       setEditingPortfolioId(route.portfolioId);
       setEditingArticleId(route.articleId);
       setEditingLiveProjectId(route.liveProjectId);
+      setEditingJobId(route.jobId);
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -132,8 +152,8 @@ export function App() {
 
   // Update hash when tab or IDs change
   useEffect(() => {
-    syncRouteToHash(activeTab, editingPortfolioId, editingArticleId, editingLiveProjectId);
-  }, [activeTab, editingPortfolioId, editingArticleId, editingLiveProjectId, syncRouteToHash]);
+    syncRouteToHash(activeTab, editingPortfolioId, editingArticleId, editingLiveProjectId, editingJobId);
+  }, [activeTab, editingPortfolioId, editingArticleId, editingLiveProjectId, editingJobId, syncRouteToHash]);
 
   // Initialize session management when user logs in
   useEffect(() => {
@@ -154,7 +174,7 @@ export function App() {
           if (data?.session) {
             setSession(data.session);
           } else if (typeof window !== 'undefined' && localStorage.getItem('bina_dev_session') === 'true') {
-            setSession({ user: { email: 'admin@binaproject.com' } } as any);
+            setSession({ user: { email: 'admin@binaproject.id' } } as any);
           } else {
             setSession(null);
           }
@@ -163,7 +183,7 @@ export function App() {
             if (newSession) {
               setSession(newSession);
             } else if (typeof window !== 'undefined' && localStorage.getItem('bina_dev_session') === 'true') {
-              setSession({ user: { email: 'admin@binaproject.com' } } as any);
+              setSession({ user: { email: 'admin@binaproject.id' } } as any);
             } else {
               setSession(null);
             }
@@ -173,7 +193,7 @@ export function App() {
           console.warn('Supabase auth session check warning:', e);
         }
       } else if (typeof window !== 'undefined' && localStorage.getItem('bina_dev_session') === 'true') {
-        setSession({ user: { email: 'admin@binaproject.com' } } as any);
+        setSession({ user: { email: 'admin@binaproject.id' } } as any);
       }
       setAuthChecked(true);
     }
@@ -260,6 +280,9 @@ export function App() {
     if (tab === 'live-projects' || tab === 'live-project-new') {
       setEditingLiveProjectId(undefined);
     }
+    if (tab === 'recruitment-jobs' || tab === 'recruitment-job-edit') {
+      setEditingJobId(undefined);
+    }
     setActiveTab(tab);
   };
 
@@ -305,6 +328,9 @@ export function App() {
       'site-settings': 'Profil & Kontak Bisnis - Bina Project Studio',
       'redirects': 'Pengalihan Tautan (301) - Bina Project Studio',
       'settings': 'Pengaturan & Publikasi - Bina Project Studio',
+      'recruitment-jobs': 'Lowongan Kerja - Bina Project Studio',
+      'recruitment-job-edit': editingJobId ? 'Edit Lowongan - Bina Project Studio' : 'Buat Lowongan Baru - Bina Project Studio',
+      'recruitment-candidates': 'Kandidat Pelamar - Bina Project Studio',
     };
 
     if (isSupabaseConfigured && !session) {
@@ -416,6 +442,36 @@ export function App() {
         return <RedirectsList />;
       case 'settings':
         return <Settings user={session?.user} />;
+      case 'recruitment-jobs':
+        return (
+          <JobManager
+            onNew={() => {
+              setEditingJobId(undefined);
+              setActiveTab('recruitment-job-edit');
+            }}
+            onEdit={(id) => {
+              setEditingJobId(id);
+              setActiveTab('recruitment-job-edit');
+            }}
+          />
+        );
+      case 'recruitment-job-edit':
+        return (
+          <JobEditor
+            key={editingJobId || 'new-job'}
+            jobId={editingJobId}
+            onBack={() => {
+              setEditingJobId(undefined);
+              setActiveTab('recruitment-jobs');
+            }}
+            onSave={() => {
+              setEditingJobId(undefined);
+              setActiveTab('recruitment-jobs');
+            }}
+          />
+        );
+      case 'recruitment-candidates':
+        return <CandidateManager />;
       default:
         return (
           <Overview
@@ -449,7 +505,7 @@ export function App() {
 
             <Navbar
               activeTab={activeTab}
-              userEmail={session?.user?.email || 'admin@binaproject.com'}
+              userEmail={session?.user?.email || 'admin@binaproject.id'}
               onLogout={session ? () => handleLogout('Manual logout') : undefined}
               onToggleMobile={() => setMobileNavOpen((prev) => !prev)}
               onNavigate={handleNavigate}

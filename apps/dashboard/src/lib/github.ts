@@ -214,7 +214,7 @@ export async function uploadToGitHubStorage(
 
     const result = await uploadResponse.json();
     const cdn_url = `https://cdn.jsdelivr.net/gh/${config.owner}/${config.repo}@${config.branch}/${finalPath}`;
-    const own_domain_url = `https://binaproject.com/media/${finalPath}`;
+    const own_domain_url = `https://binaproject.id/media/${finalPath}`;
 
     return {
       url: result.content.html_url,

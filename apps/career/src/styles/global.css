@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/* ============================================
+   BINA PROJECT CAREER PORTAL — Design Tokens
+   ============================================ */
+
+@theme {
+  /* Brand Colors */
+  --color-slate-deep: #0B132B;
+  --color-slate-dark: #0E1E38;
+  --color-slate-mid: #152B49;
+  --color-navy: #22416D;
+  --color-navy-light: #1A3356;
+  --color-amber: #F68A0A;
+  --color-amber-light: #FFA94D;
+  --color-amber-dark: #E07800;
+
+  /* Semantic */
+  --color-success: #22C55E;
+  --color-danger: #EF4444;
+  --color-info: #3B82F6;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Radius */
+  --radius-card: 1rem;
+  --radius-button: 0.75rem;
+  --radius-pill: 9999px;
+}
+
+/* Global Reset & Base */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-slate-deep);
+  color: #f1f5f9;
+}
+
+::selection {
+  background-color: var(--color-navy);
+  color: white;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-slate-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy);
+  border-radius: 9999px;
+}
+
+/* Focus ring utility */
+.focus-ring {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+/* Gradient text helper */
+.text-gradient-amber {
+  background: linear-gradient(135deg, var(--color-amber), var(--color-amber-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

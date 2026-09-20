@@ -269,7 +269,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </div>
 
             <a
-              href="https://binaproject.com"
+              href="https://binaproject.id"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-slate-500 hover:text-[#22416D] flex items-center gap-1.5 transition-colors font-medium group py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-full hover:bg-slate-100 border border-slate-200/80"
@@ -285,7 +285,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               Sign In
             </h1>
             <p className="text-xs text-slate-500 mb-6 font-medium">
-              Masuk ke panel editorial <span className="font-mono text-slate-700">dash.binaproject.com</span>
+              Masuk ke panel editorial <span className="font-mono text-slate-700">dash.binaproject.id</span>
             </p>
 
             {error && (
@@ -422,7 +422,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                 required
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
-                placeholder="admin@binaproject.com"
+                placeholder="admin@binaproject.id"
                 className="w-full h-11 px-5 rounded-full text-sm bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#22416D] focus:ring-4 focus:ring-[#22416D]/15 transition-all"
               />
 

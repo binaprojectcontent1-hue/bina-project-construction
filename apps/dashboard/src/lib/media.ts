@@ -17,8 +17,8 @@ export function resolveDashboardMediaUrl(url: string | undefined | null): string
   const repo = gh?.repo || 'bina-media';
   const branch = gh?.branch || 'main';
 
-  // If it's the own-domain production URL (https://binaproject.com/media/...)
-  const ownDomainMatch = url.match(/^https?:\/\/(?:www\.)?binaproject\.com\/media\/(.+)$/);
+  // If it's the own-domain production URL (https://binaproject.id/media/... or legacy https://binaproject.com/media/...)
+  const ownDomainMatch = url.match(/^https?:\/\/(?:www\.)?binaproject\.(?:com|id)\/media\/(.+)$/);
   if (ownDomainMatch && ownDomainMatch[1]) {
     const subpath = ownDomainMatch[1];
     return `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/${subpath}`;

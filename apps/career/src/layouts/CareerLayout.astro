@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonicalURL?: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = 'Bergabunglah bersama Bina Project Construction & Interior. Temukan peluang karir dan lowongan kerja terbaru di bidang arsitektur, desain interior, dan konstruksi di Malang, Jawa Timur.',
+  canonicalURL = Astro.url.href,
+  ogImage = '/og-career.png',
+  jsonLd,
+} = Astro.props;
+
+const fullTitle = `${title} — Karir Bina Project`;
+---
+
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Karir Bina Project" />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://binaproject.id/favicon.png" />
+
+    <!-- JSON-LD Structured Data -->
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+  </head>
+  <body class="min-h-screen bg-[#0B132B] text-slate-100 font-sans antialiased">
+    <!-- Ambient Glow Effects -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-[#22416D]/20 via-[#152B49]/10 to-transparent rounded-full blur-[160px]"></div>
+      <div class="absolute -bottom-60 -right-40 w-[700px] h-[700px] bg-gradient-to-tl from-[#F68A0A]/8 via-[#22416D]/10 to-transparent rounded-full blur-[180px]"></div>
+    </div>
+
+    <div class="relative z-10">
+      <slot />
+    </div>
+  </body>
+</html>

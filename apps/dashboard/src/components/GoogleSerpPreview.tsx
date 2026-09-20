@@ -44,7 +44,7 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
     description ||
     'Deskripsi ringkas halaman belum diisi. Google akan menampilkan ringkasan ini di bawah judul halaman pada hasil pencarian (SERP).'
   ).trim();
-  const displayUrl = `https://binaproject.com › ${type} › ${slug || 'nama-slug'}`;
+  const displayUrl = `https://binaproject.id › ${type} › ${slug || 'nama-slug'}`;
 
   const titleLength = displayTitle.length;
   const descLength = displayDesc.length;

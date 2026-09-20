@@ -55,7 +55,7 @@ export function createWhatsAppUrl(options: WhatsAppUrlOptions = {}): string {
       `📱 *No. HP/WhatsApp:* ${phone}\n` +
       `🛠️ *Jenis Layanan:* ${service}\n` +
       `📝 *Detail Rencana Proyek:*\n${message}\n\n` +
-      `_Dikirimkan melalui formulir kontak binaproject.com_`;
+      `_Dikirimkan melalui formulir kontak binaproject.id_`;
     return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
   }
 

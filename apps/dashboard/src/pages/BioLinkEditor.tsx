@@ -524,7 +524,7 @@ export const BioLinkEditor: React.FC = () => {
               Bio Link Manager
             </h1>
             <Badge variant="outline" className="text-xs font-semibold bg-blue-50 text-[#22416D] border-blue-200 rounded-full px-2.5">
-              bio.binaproject.com
+              bio.binaproject.id
             </Badge>
           </div>
           <p className="text-sm text-slate-500 mt-1">
@@ -546,13 +546,13 @@ export const BioLinkEditor: React.FC = () => {
           </Button>
 
           <a
-            href="https://bio.binaproject.com"
+            href="https://bio.binaproject.id"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-1.5 h-10 rounded-full px-4.5 text-xs font-bold bg-[#22416D] text-white hover:bg-[#1A3356] transition-colors shadow-xs cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>Buka bio.binaproject.com</span>
+            <span>Buka bio.binaproject.id</span>
           </a>
         </div>
       </div>

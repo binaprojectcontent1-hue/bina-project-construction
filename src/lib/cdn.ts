@@ -1,7 +1,7 @@
 /**
  * Bina Project Unified Media & Image CDN Helper
  * - In local dev (localhost): Directly serves from jsDelivr CDN for instant 100% reliable rendering.
- * - In production (binaproject.com): Serves via own-domain /media/... Cloudflare Edge Proxy for Google Images SEO.
+ * - In production (binaproject.id): Serves via own-domain /media/... Cloudflare Edge Proxy for Google Images SEO.
  */
 export function getMediaUrl(path: string): string {
   if (!path) return '';
@@ -20,8 +20,8 @@ export function getMediaUrl(path: string): string {
     return `/media/${subpath}`;
   }
 
-  // 2. If path is own-domain https://binaproject.com/media/...
-  const ownDomainPattern = /^https?:\/\/(?:www\.)?binaproject\.com\/media\/(.+)$/;
+  // 2. If path is own-domain https://binaproject.id/media/... or legacy https://binaproject.com/media/...
+  const ownDomainPattern = /^https?:\/\/(?:www\.)?binaproject\.(?:com|id)\/media\/(.+)$/;
   const ownMatch = path.match(ownDomainPattern);
   if (ownMatch && ownMatch[1]) {
     const subpath = ownMatch[1];

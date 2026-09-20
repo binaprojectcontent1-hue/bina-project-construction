@@ -103,7 +103,7 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
   };
 
   const handleCopyLink = (slug: string) => {
-    const url = `https://binaproject.com/blog/${slug}`;
+    const url = `https://binaproject.id/blog/${slug}`;
     navigator.clipboard.writeText(url);
     toast.success('Tautan Publik Disalin!', url);
   };
@@ -425,7 +425,7 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
                           <Copy className="w-4 h-4" />
                         </button>
                         <a
-                          href={`https://binaproject.com/blog/${item.slug}`}
+                          href={`https://binaproject.id/blog/${item.slug}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
@@ -525,7 +525,7 @@ export function ArticleList({ onEdit, onNew, onDelete: onDeleteProp }: ArticleLi
                     <Copy className="w-3.5 h-3.5" />
                   </button>
                   <a
-                    href={`https://binaproject.com/blog/${item.slug}`}
+                    href={`https://binaproject.id/blog/${item.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-slate-600 hover:text-[#22416D] inline-flex items-center gap-1 font-semibold"

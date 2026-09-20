@@ -5,7 +5,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config - reloaded for new favicons
 export default defineConfig({
-  site: import.meta.env.SITE || 'https://binaproject.com', // Safe production fallback
+  site: import.meta.env.SITE || 'https://binaproject.id', // Safe production fallback
   compressHTML: true,
   i18n: {
     defaultLocale: 'id',

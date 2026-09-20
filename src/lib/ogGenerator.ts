@@ -128,7 +128,7 @@ function createLeftPanelSvg(options: OgImageOptions): Buffer {
 
     <!-- Footer Watermark & Domain Badge -->
     <g transform="translate(70, 545)">
-      <text font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#F68A0A" letter-spacing="0.5">binaproject.com</text>
+      <text font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#F68A0A" letter-spacing="0.5">binaproject.id</text>
       <text x="135" y="0" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="400" fill="#64748B">• Jasa Konstruksi &amp; Interior Terpercaya</text>
     </g>
 

@@ -1,0 +1,29 @@
+{
+  "name": "binaproject-career",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4323",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.5",
+    "@astrojs/sitemap": "^3.2.1",
+    "@supabase/supabase-js": "^2.48.1",
+    "astro": "^5.3.0",
+    "lucide-react": "^1.44.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  }
+}

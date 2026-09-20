@@ -71,11 +71,11 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
       // 1. Primary: Upload to GitHub Storage and assign own domain proxy URL
       if (ghConfigured && ghConfig) {
         const ghRes = await uploadToGitHubStorage(file, folder, ghConfig);
-        // Save own domain URL (https://binaproject.com/media/live-projects/...)
+        // Save own domain URL (https://binaproject.id/media/live-projects/...)
         onChange(ghRes.own_domain_url);
         toast.success(
           'Foto Berhasil Diunggah!',
-          `Tersimpan di Cloud Media Resmi (https://binaproject.com/media/${folder}/...)`
+          `Tersimpan di Cloud Media Resmi (https://binaproject.id/media/${folder}/...)`
         );
         setStatusMessage(null);
         return;
@@ -99,7 +99,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
 
         const { data } = supabase.storage.from('media').getPublicUrl(filePath);
         if (data?.publicUrl) {
-          onChange(`https://binaproject.com/media/${filePath}`);
+          onChange(`https://binaproject.id/media/${filePath}`);
           toast.success('Foto Diunggah ke Media Cloud');
           setStatusMessage(null);
           return;
@@ -142,7 +142,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
     }
   };
 
-  const isOwnDomainUrl = value.includes('binaproject.com/media') || value.startsWith('/media');
+  const isOwnDomainUrl = value.includes('binaproject.id/media') || value.includes('binaproject.com/media') || value.startsWith('/media');
 
   return (
     <div className="space-y-3">
@@ -165,7 +165,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
           className="text-[10px] font-semibold gap-1 text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded-full py-0.5 px-2.5"
         >
           <Globe className="w-3 h-3 text-emerald-600" />
-          <span>Cloud Media Resmi (binaproject.com)</span>
+          <span>Cloud Media Resmi (binaproject.id)</span>
         </Badge>
       </div>
 
@@ -208,7 +208,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
               {isOwnDomainUrl && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-sm flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
-                  <span>binaproject.com</span>
+                  <span>binaproject.id</span>
                 </span>
               )}
             </div>
@@ -273,11 +273,11 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
             Klik atau Geser Foto Lapangan
           </h4>
           <p className="text-xs text-slate-500 mt-1 max-w-[210px] leading-relaxed">
-            Format JPG, PNG, atau WebP. Otomatis dikompresi & disajikan via domain resmi binaproject.com.
+            Format JPG, PNG, atau WebP. Otomatis dikompresi & disajikan via domain resmi binaproject.id.
           </p>
           <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-semibold border border-emerald-200/60">
             <Globe className="w-3 h-3 text-emerald-600" />
-            <span>Target: https://binaproject.com/media/live-projects/...</span>
+            <span>Target: https://binaproject.id/media/live-projects/...</span>
           </div>
         </div>
       )}
@@ -292,7 +292,7 @@ export const LiveProjectImageUploader: React.FC<LiveProjectImageUploaderProps> =
             pill
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="https://binaproject.com/media/... atau URL gambar"
+            placeholder="https://binaproject.id/media/... atau URL gambar"
             className="text-xs placeholder:text-slate-400 border-slate-200"
           />
         </div>

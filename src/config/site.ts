@@ -13,7 +13,7 @@ export const siteConfig: SiteConfig = {
   tagline: 'Jasa Konstruksi & Desain Interior Malang',
   description:
     'Jasa konstruksi, renovasi rumah, desain interior & kitchen set di Malang & Jawa Timur. Pengerjaan profesional, bergaransi & gratis survei lokasi.',
-  siteUrl: 'https://binaproject.com',
+  siteUrl: 'https://binaproject.id',
 
   contact: {
     phoneDisplay: '+62 81 335 335 304',
