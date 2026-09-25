@@ -274,11 +274,11 @@ export const IconPickerModal: React.FC<IconPickerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
-      <div className="bg-white rounded-[28px] max-w-2xl w-full p-6 shadow-2xl border-0 flex flex-col max-h-[85vh] space-y-4">
+      <div className="bg-white rounded-xl max-w-2xl w-full p-5 shadow-2xl border border-slate-200 flex flex-col max-h-[85vh] space-y-3.5">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
           <div>
-            <h3 className="text-base font-bold text-slate-900 tracking-tight">
+            <h3 className="text-sm font-semibold text-slate-900 tracking-tight">
               Pilih Ikon Bio Link
             </h3>
             <p className="text-xs text-slate-500 font-medium">
@@ -288,7 +288,7 @@ export const IconPickerModal: React.FC<IconPickerModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
             aria-label="Tutup modal"
           >
             <X className="w-5 h-5" />
@@ -306,14 +306,14 @@ export const IconPickerModal: React.FC<IconPickerModalProps> = ({
               setDisplayLimit(72);
             }}
             placeholder="Cari ikon (cth: rumah, wa, tukang, hammer, building, phone, star)..."
-            className="w-full h-10 pl-10 pr-10 text-xs rounded-full border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#22416D]/20 focus:border-[#22416D] font-medium"
+            className="w-full h-9 pl-9 pr-9 text-xs rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1B365D]/20 focus:border-[#1B365D] font-medium"
             autoFocus
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -333,9 +333,9 @@ export const IconPickerModal: React.FC<IconPickerModalProps> = ({
                     setActiveCategory(catKey);
                     setDisplayLimit(72);
                   }}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#22416D] text-white shadow-xs'
+                      ? 'bg-[#1B365D] text-white shadow-2xs'
                       : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
                   }`}
                 >
@@ -373,14 +373,14 @@ export const IconPickerModal: React.FC<IconPickerModalProps> = ({
                       onClose();
                     }}
                     title={iconName}
-                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all text-center group cursor-pointer ${
+                    className={`flex flex-col items-center justify-center p-2.5 rounded-lg border transition-all text-center group cursor-pointer ${
                       isSelected
-                        ? 'bg-[#22416D] text-white border-[#22416D] shadow-sm ring-2 ring-[#22416D]/30'
+                        ? 'bg-[#1B365D] text-white border-[#1B365D] shadow-2xs'
                         : 'bg-white text-slate-700 border-slate-100 hover:border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    <IconComponent className={`w-5 h-5 mb-1.5 transition-transform group-hover:scale-110 ${isSelected ? 'text-white' : 'text-slate-700'}`} />
-                    <span className={`text-[11px] font-medium truncate w-full px-1 ${isSelected ? 'text-blue-100' : 'text-slate-600'}`}>
+                    <IconComponent className={`w-4 h-4 mb-1 transition-transform group-hover:scale-110 ${isSelected ? 'text-white' : 'text-slate-700'}`} />
+                    <span className={`text-[10px] font-medium truncate w-full px-1 ${isSelected ? 'text-blue-100' : 'text-slate-600'}`}>
                       {iconName}
                     </span>
                     {isSelected && (
@@ -394,11 +394,11 @@ export const IconPickerModal: React.FC<IconPickerModalProps> = ({
 
           {/* Load More Button for large list */}
           {filteredIcons.length > displayLimit && (
-            <div className="text-center pt-4 pb-2">
+            <div className="text-center pt-3 pb-1">
               <button
                 type="button"
                 onClick={() => setDisplayLimit((prev) => prev + 72)}
-                className="px-5 py-2 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
+                className="px-4 py-1.5 rounded-md text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
               >
                 Tampilkan Lebih Banyak ({filteredIcons.length - displayLimit} lagi)
               </button>

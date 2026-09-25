@@ -10,14 +10,11 @@ import {
   Info,
   CheckCircle2,
   Clock,
-  ExternalLink,
   X,
   ShieldCheck,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Badge } from '../components/ui/badge';
 import { Card } from '../components/ui/card';
 import { Skeleton } from '../components/ui/skeleton';
 import { useToast } from '../components/ui/Toast';
@@ -131,30 +128,30 @@ export const RedirectsList: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* 1. Signature Oceanic Page Header */}
+      {/* 1. Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <div className="p-2 rounded-xl bg-[#22416D] text-white shadow-sm">
+            <div className="p-2 rounded-lg bg-[#1B365D] text-white shadow-2xs">
               <Shuffle className="w-5 h-5" />
             </div>
-            <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Manajemen 301 Redirects
+            <h1 className="text-xl md:text-2xl font-semibold text-slate-900 tracking-tight">
+              Pengalihan Tautan
             </h1>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Mencegah link rusak (Error 404) & mempertahankan ranking kata kunci Google saat URL portofolio atau artikel diubah.
+            Mencegah halaman tidak ditemukan jika link portofolio atau artikel diubah, sehingga pengunjung otomatis diarahkan ke link baru.
           </p>
         </div>
 
-        {/* Primary Action Buttons (Pill-shaped) */}
+        {/* Primary Action Buttons */}
         <div className="flex items-center gap-2.5 flex-wrap">
           <button
             type="button"
             onClick={fetchRedirects}
             title="Segarkan Data"
             disabled={loading}
-            className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
+            className="p-2 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -162,10 +159,10 @@ export const RedirectsList: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold transition-all shadow-md shadow-[#22416D]/20 cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1B365D] hover:bg-[#132845] text-white text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>+ Tambah Redirect Manual</span>
+            <span>+ Tambah Pengalihan Manual</span>
           </button>
         </div>
       </div>
@@ -173,96 +170,96 @@ export const RedirectsList: React.FC = () => {
       {/* 2. 3-Grid KPI Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* KPI 1: Total */}
-        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
+        <Card className="p-4 rounded-xl border border-slate-200/80 bg-white shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Aturan Pengalihan</span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
-              <Shuffle className="w-4.5 h-4.5" />
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Pengalihan</span>
+            <div className="w-8 h-8 rounded-lg bg-slate-100 text-[#1B365D] flex items-center justify-center">
+              <Shuffle className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
+          <div className="mt-2.5 flex items-baseline gap-2">
             {loading ? (
-              <Skeleton className="h-9 w-16 my-0.5" />
+              <Skeleton className="h-8 w-16 my-0.5" />
             ) : (
-              <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
+              <span className="text-2xl font-semibold text-slate-900 tracking-tight font-mono tabular-nums">
                 {redirects.length}
               </span>
             )}
-            <span className="text-xs text-slate-500 font-medium">aturan tersimpan</span>
+            <span className="text-xs text-slate-500 font-medium">tautan aktif</span>
           </div>
-          <p className="mt-2 text-xs text-slate-500 flex items-center gap-1">
-            <span>Dijalankan di edge server Cloudflare</span>
+          <p className="mt-1.5 text-xs text-slate-500 flex items-center gap-1">
+            <span>Diterapkan langsung ke website</span>
           </p>
         </Card>
 
         {/* KPI 2: 301 Permanent */}
-        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
+        <Card className="p-4 rounded-xl border border-slate-200/80 bg-white shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">301 Permanent (SEO Safe)</span>
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shadow-2xs">
-              <CheckCircle2 className="w-4.5 h-4.5" />
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pengalihan Permanen</span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
+          <div className="mt-2.5 flex items-baseline gap-2">
             {loading ? (
-              <Skeleton className="h-9 w-16 my-0.5" />
+              <Skeleton className="h-8 w-16 my-0.5" />
             ) : (
-              <span className="text-3xl font-extrabold text-emerald-700 tracking-tight font-mono tabular-nums">
+              <span className="text-2xl font-semibold text-emerald-700 tracking-tight font-mono tabular-nums">
                 {count301}
               </span>
             )}
-            <span className="text-xs text-slate-500 font-medium">standar Google</span>
+            <span className="text-xs text-slate-500 font-medium">selamanya</span>
           </div>
-          <p className="mt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1">
+          <p className="mt-1.5 text-xs text-emerald-700 font-medium flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Mewariskan 100% PageRank & Backlink</span>
+            <span>Pengunjung & Google tetap diarahkan lancar</span>
           </p>
         </Card>
 
         {/* KPI 3: 302 Temporary */}
-        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
+        <Card className="p-4 rounded-xl border border-slate-200/80 bg-white shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">302 Sementara (Temporary)</span>
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shadow-2xs">
-              <Clock className="w-4.5 h-4.5" />
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pengalihan Sementara</span>
+            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+              <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
+          <div className="mt-2.5 flex items-baseline gap-2">
             {loading ? (
-              <Skeleton className="h-9 w-16 my-0.5" />
+              <Skeleton className="h-8 w-16 my-0.5" />
             ) : (
-              <span className="text-3xl font-extrabold text-slate-700 tracking-tight font-mono tabular-nums">
+              <span className="text-2xl font-semibold text-slate-700 tracking-tight font-mono tabular-nums">
                 {count302}
               </span>
             )}
-            <span className="text-xs text-slate-500 font-medium">pengalihan sementara</span>
+            <span className="text-xs text-slate-500 font-medium">sementara</span>
           </div>
-          <p className="mt-2 text-xs text-slate-500">
-            Digunakan untuk promo berkala atau pemeliharaan halaman
+          <p className="mt-1.5 text-xs text-slate-500">
+            Untuk keperluan promo atau perbaikan sesaat
           </p>
         </Card>
       </div>
 
       {/* 3. Modern Callout Box */}
-      <div className="rounded-[20px] bg-gradient-to-r from-blue-50/70 via-slate-50 to-white border border-blue-100 p-4 text-xs text-slate-600 flex items-start gap-3 shadow-2xs">
-        <div className="p-1.5 rounded-lg bg-[#22416D] text-white shrink-0 mt-0.5">
-          <Info className="w-4 h-4" />
+      <div className="rounded-xl bg-slate-50 border border-slate-200 p-3.5 text-xs text-slate-600 flex items-start gap-3 shadow-2xs">
+        <div className="p-1 rounded-md bg-[#1B365D] text-white shrink-0 mt-0.5">
+          <Info className="w-3.5 h-3.5" />
         </div>
         <div className="leading-relaxed">
-          <strong className="text-slate-900 font-semibold">Sistem Proteksi SEO Otomatis:</strong> Setiap kali admin mengubah slug pada portofolio atau artikel yang telah berstatus <em>Published</em>, sistem akan otomatis mencatat aturan 301 Permanent Redirect ke tabel ini. Pengunjung dan Googlebot yang membuka URL lama akan langsung diarahkan ke URL baru tanpa kehilangan ranking SEO.
+          <strong className="text-slate-900 font-semibold">Pengalihan Otomatis:</strong> Setiap kali Anda mengubah alamat link artikel atau portofolio yang sudah tayang, sistem secara otomatis mencatat pengalihan di sini agar pengunjung yang membuka link lama tidak mengalami halaman error.
         </div>
       </div>
 
       {/* 4. Search & Filter Bar */}
-      <Card className="p-4 shadow-sm rounded-[24px] border-0 bg-white">
+      <Card className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-xs">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative flex-1 w-full">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari URL asal (/portfolio/...) atau URL tujuan..."
-              className="pl-10 h-10 rounded-full text-xs border-slate-200 bg-slate-50/50 focus:bg-white"
+              placeholder="Cari link lama (/portfolio/...) atau link tujuan..."
+              className="pl-9 h-9 rounded-lg text-xs border-slate-200 bg-white"
             />
           </div>
 
@@ -270,9 +267,9 @@ export const RedirectsList: React.FC = () => {
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 statusFilter === 'all'
-                  ? 'bg-[#22416D] text-white shadow-xs'
+                  ? 'bg-[#1B365D] text-white shadow-xs'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
               }`}
             >
@@ -281,108 +278,108 @@ export const RedirectsList: React.FC = () => {
             <button
               type="button"
               onClick={() => setStatusFilter('301')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 statusFilter === '301'
-                  ? 'bg-[#22416D] text-white shadow-xs'
+                  ? 'bg-[#1B365D] text-white shadow-xs'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
               }`}
             >
-              301 Permanent ({count301})
+              Permanen ({count301})
             </button>
             <button
               type="button"
               onClick={() => setStatusFilter('302')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 statusFilter === '302'
-                  ? 'bg-[#22416D] text-white shadow-xs'
+                  ? 'bg-[#1B365D] text-white shadow-xs'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
               }`}
             >
-              302 Sementara ({count302})
+              Sementara ({count302})
             </button>
           </div>
         </div>
       </Card>
 
-      {/* 5. Modern Table Container */}
+      {/* 5. Table Container */}
       {loading ? (
-        <Card className="p-16 text-center text-slate-400 shadow-sm rounded-[24px] border-0 bg-white">
-          <RefreshCw className="w-7 h-7 animate-spin mx-auto mb-3 text-[#22416D]" />
-          <span className="text-xs font-semibold text-slate-600">Memuat basis data redirect...</span>
+        <Card className="p-16 text-center text-slate-400 rounded-xl border border-slate-200 bg-white shadow-xs">
+          <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-3 text-[#1B365D]" />
+          <span className="text-xs font-medium text-slate-600">Memuat data pengalihan tautan...</span>
         </Card>
       ) : filtered.length === 0 ? (
-        <Card className="p-16 text-center space-y-3 shadow-sm rounded-[24px] border-0 bg-white">
-          <div className="w-14 h-14 rounded-2xl bg-blue-50 text-[#22416D] flex items-center justify-center mx-auto">
-            <Shuffle className="w-7 h-7" />
+        <Card className="p-14 text-center space-y-3 rounded-xl border border-slate-200 bg-white shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-slate-100 text-[#1B365D] flex items-center justify-center mx-auto">
+            <Shuffle className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-bold text-slate-800">
-              {search ? 'Tidak ada hasil yang cocok' : 'Belum ada aturan redirect'}
+            <p className="text-sm font-semibold text-slate-900">
+              {search ? 'Tidak ada hasil yang cocok' : 'Belum ada aturan pengalihan'}
             </p>
             <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
               {search
-                ? `Tidak ditemukan aturan redirect yang mengandung kata kunci "${search}".`
-                : 'Aturan redirect akan otomatis tercatat saat Anda memperbarui slug portofolio atau artikel yang sudah live.'}
+                ? `Tidak ditemukan pengalihan yang mengandung kata kunci "${search}".`
+                : 'Pengalihan tautan akan otomatis tercatat saat Anda memperbarui alamat link portofolio atau artikel yang sudah live.'}
             </p>
           </div>
           {search && (
             <button
               type="button"
               onClick={() => setSearch('')}
-              className="text-xs font-bold text-blue-600 hover:underline pt-2"
+              className="text-xs font-semibold text-[#1B365D] hover:underline pt-2 cursor-pointer"
             >
               Reset Pencarian
             </button>
           )}
         </Card>
       ) : (
-        <Card className="overflow-hidden shadow-sm rounded-[24px] border-0 bg-white">
+        <Card className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 font-semibold border-b border-slate-100 uppercase tracking-wider text-xs">
+              <thead className="bg-slate-50/80 text-slate-600 font-semibold border-b border-slate-200 uppercase tracking-wider text-xs">
                 <tr>
-                  <th className="py-3.5 px-5">URL Asal (Source Path)</th>
-                  <th className="py-3.5 px-4 text-center">Status Code</th>
-                  <th className="py-3.5 px-5">URL Tujuan (Target Path)</th>
-                  <th className="py-3.5 px-5 text-right">Aksi</th>
+                  <th className="py-3 px-4">Alamat Link Lama (Asal)</th>
+                  <th className="py-3 px-4 text-center">Tipe Pengalihan</th>
+                  <th className="py-3 px-4">Alamat Link Baru (Tujuan)</th>
+                  <th className="py-3 px-4 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filtered.map((item) => (
-                  <tr key={item.id} className="hover:bg-blue-50/30 transition-colors group">
-                    <td className="py-3.5 px-5">
+                  <tr key={item.id} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
-                        <code className="font-mono text-xs font-medium text-rose-700 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200/60">
+                        <code className="font-mono text-xs font-medium text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200/60">
                           {item.source_path}
                         </code>
                       </div>
                     </td>
 
-                    <td className="py-3.5 px-4 text-center">
+                    <td className="py-3 px-4 text-center">
                       <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold font-mono border ${
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
                           item.status_code === 302
                             ? 'bg-amber-50 text-amber-800 border-amber-200/60'
                             : 'bg-emerald-50 text-emerald-800 border-emerald-200/60'
                         }`}
                       >
-                        {item.status_code || 301}
+                        {item.status_code === 302 ? 'Sementara' : 'Permanen'}
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2 font-mono text-xs font-medium text-emerald-800 bg-emerald-50/80 px-2.5 py-1 rounded-full border border-emerald-200/60 w-fit">
-                        <ArrowRight className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2 font-mono text-xs font-medium text-emerald-800 bg-emerald-50/80 px-2.5 py-0.5 rounded border border-emerald-200/60 w-fit">
+                        <ArrowRight className="w-3 h-3 text-emerald-600 shrink-0" />
                         <span>{item.target_path}</span>
                       </div>
                     </td>
 
-                    <td className="py-3.5 px-5 text-right">
+                    <td className="py-3 px-4 text-right">
                       <button
                         type="button"
                         onClick={() => handleDelete(item.id, item.source_path)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                        title="Hapus Aturan"
+                        className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                        title="Hapus Pengalihan"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -395,50 +392,50 @@ export const RedirectsList: React.FC = () => {
         </Card>
       )}
 
-      {/* 6. Modern Oceanic Modal Add Manual */}
+      {/* 6. Modal Add Manual */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-[24px] max-w-md w-full p-6 shadow-2xl border-0 space-y-4 animate-in fade-in zoom-in-95 duration-150 relative">
+          <div className="bg-white rounded-xl max-w-md w-full p-5 shadow-xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95 duration-150 relative">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-[#22416D] text-white shadow-xs">
+                <div className="p-2 rounded-lg bg-[#1B365D] text-white shadow-2xs">
                   <Shuffle className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 tracking-tight">
-                    Tambah 301 Redirect Manual
+                  <h3 className="text-sm font-semibold text-slate-900 tracking-tight">
+                    Tambah Pengalihan Tautan
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Arahkan URL lama yang sudah usang ke link halaman baru
+                    Arahkan link lama ke halaman baru secara otomatis
                   </p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {error && (
-              <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 p-3 rounded-xl flex items-center gap-2">
+              <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 p-2.5 rounded-lg flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
-            <form onSubmit={handleAddRedirect} className="space-y-4 pt-1">
-              <div className="space-y-1.5">
+            <form onSubmit={handleAddRedirect} className="space-y-3.5 pt-1">
+              <div className="space-y-1">
                 <label className="text-xs font-semibold text-slate-700">
-                  Path Asal (URL Lama)
+                  Alamat Link Lama (Asal)
                 </label>
                 <Input
                   placeholder="/portfolio/villa-lama"
                   value={sourcePath}
                   onChange={(e) => setSourcePath(e.target.value)}
-                  className="font-mono text-xs h-10 rounded-xl"
+                  className="font-mono text-xs h-9 rounded-lg"
                   required
                 />
                 <span className="text-[11px] text-slate-400 block">
@@ -446,52 +443,52 @@ export const RedirectsList: React.FC = () => {
                 </span>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <label className="text-xs font-semibold text-slate-700">
-                  Path Tujuan (URL Baru)
+                  Alamat Link Baru (Tujuan)
                 </label>
                 <Input
                   placeholder="/portfolio/villa-modern-batu"
                   value={targetPath}
                   onChange={(e) => setTargetPath(e.target.value)}
-                  className="font-mono text-xs h-10 rounded-xl"
+                  className="font-mono text-xs h-9 rounded-lg"
                   required
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <label className="text-xs font-semibold text-slate-700">
-                  HTTP Status Code
+                  Jenis Pengalihan
                 </label>
                 <select
                   value={statusCode}
                   onChange={(e) => setStatusCode(Number(e.target.value))}
-                  className="w-full h-10 px-3 text-xs border border-slate-200 rounded-xl bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#22416D]/20 focus:border-[#22416D]"
+                  className="w-full h-9 px-3 text-xs border border-slate-200 rounded-lg bg-white text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#1B365D]/20 focus:border-[#1B365D]"
                 >
-                  <option value={301}>301 - Moved Permanently (Direkomendasikan SEO Google)</option>
-                  <option value={302}>302 - Temporary Redirect (Pengalihan Sementara)</option>
+                  <option value={301}>Permanen (Direkomendasikan - Link lama diganti selamanya)</option>
+                  <option value={302}>Sementara (Hanya untuk keperluan promo / perbaikan sesaat)</option>
                 </select>
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-full text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="px-3.5 py-2 rounded-md text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold transition-all shadow-md shadow-[#22416D]/20 cursor-pointer disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-[#1B365D] hover:bg-[#132845] text-white text-xs font-semibold transition-all shadow-2xs cursor-pointer disabled:opacity-50"
                 >
                   {saving ? (
                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                   ) : (
                     <CheckCircle2 className="w-3.5 h-3.5" />
                   )}
-                  <span>{saving ? 'Menyimpan...' : 'Simpan Aturan'}</span>
+                  <span>{saving ? 'Menyimpan...' : 'Simpan Pengalihan'}</span>
                 </button>
               </div>
             </form>

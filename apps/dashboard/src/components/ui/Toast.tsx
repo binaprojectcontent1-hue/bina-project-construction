@@ -110,7 +110,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               </div>
 
               <div className="flex-1 min-w-0 pr-1">
-                <p className="text-xs font-bold leading-tight">{t.title}</p>
+                <p className="text-xs font-semibold leading-tight">{t.title}</p>
                 {t.description && (
                   <p
                     className={`text-[11px] mt-0.5 leading-relaxed ${

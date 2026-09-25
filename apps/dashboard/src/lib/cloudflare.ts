@@ -27,7 +27,7 @@ export async function triggerCloudflareDeploy(
   if (!hookUrl) {
     return {
       success: false,
-      message: 'Cloudflare Pages Deploy Hook URL belum dikonfigurasi di Pengaturan.',
+      message: 'Tautan integrasi pembaruan website belum dikonfigurasi di menu Pengaturan.',
     };
   }
 
@@ -39,7 +39,7 @@ export async function triggerCloudflareDeploy(
     const resetTime = new Date(rateStatus.blockedUntil!).toLocaleString('id-ID');
     return {
       success: false,
-      message: `Terlalu banyak permintaan deploy. Silakan coba lagi setelah ${resetTime}.`,
+      message: `Terlalu sering melakukan pembaruan website. Silakan coba lagi setelah ${resetTime}.`,
     };
   }
 
@@ -51,21 +51,21 @@ export async function triggerCloudflareDeploy(
     if (response.ok) {
       return {
         success: true,
-        message: 'Deployment terpicu! Cloudflare sedang mem-build ulang halaman statis dan sitemap (~45 detik).',
+        message: 'Permintaan publikasi terkirim! Sistem sedang memperbarui tampilan website (~45 detik).',
         timestamp: new Date().toLocaleTimeString('id-ID'),
       };
     } else {
       const text = await response.text();
       return {
         success: false,
-        message: `Gagal memicu deployment (${response.status}): ${text || 'Respons tidak valid dari Cloudflare.'}`,
+        message: `Gagal memperbarui website (${response.status}): ${text || 'Respons tidak valid dari server.'}`,
       };
     }
   } catch (err: any) {
-    console.error('Cloudflare hook error:', err);
+    console.error('Publishing webhook error:', err);
     return {
       success: false,
-      message: `Terjadi kendala jaringan saat menghubungi Cloudflare: ${err?.message || 'Network error'}`,
+      message: `Terjadi kendala jaringan saat menghubungi server publikasi: ${err?.message || 'Network error'}`,
     };
   }
 }

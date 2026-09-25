@@ -13,6 +13,7 @@ import {
   ExternalLink,
   RefreshCw,
 } from 'lucide-react';
+import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Skeleton } from '../components/ui/skeleton';
 
@@ -118,20 +119,20 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
     switch (status) {
       case 'published':
         return (
-          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             Aktif
           </span>
         );
       case 'closed':
         return (
-          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
             Ditutup
           </span>
         );
       case 'draft':
       default:
         return (
-          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
             Draft
           </span>
         );
@@ -141,87 +142,88 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
   return (
     <div className="space-y-6 min-h-[720px]">
       {/* 1. Stable Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Lowongan Kerja</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-xl font-semibold text-slate-900 tracking-tight">Lowongan Kerja</h1>
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
             Kelola lowongan pekerjaan yang tampil di karir.binaproject.id
           </p>
         </div>
-        <div className="flex items-center gap-2.5">
-          <button
-            type="button"
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => fetchJobs(false)}
-            className="w-10 h-10 flex items-center justify-center border border-slate-200 rounded-xl hover:bg-white text-slate-600 transition-colors shadow-xs"
+            className="h-8 w-8 text-slate-600"
             title="Segarkan Data"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          </button>
-          <button
-            type="button"
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+          </Button>
+          <Button
+            size="sm"
             onClick={onNew}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#22416D] text-white text-sm font-bold hover:bg-[#1A3356] transition-colors shadow-sm cursor-pointer"
+            className="gap-1.5 font-medium"
           >
             <Plus className="w-4 h-4" />
             <span>Buat Lowongan Baru</span>
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* 2. Top Metric Anchors (Prevents vertical viewport jump) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <Card className="p-4 border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shrink-0">
-            <Briefcase className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-blue-50 text-[#1B365D] flex items-center justify-center shrink-0">
+            <Briefcase className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-500 truncate">Total Posisi</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Total Posisi</p>
             {loading ? (
               <Skeleton className="h-6 w-12 mt-1 rounded-md" />
             ) : (
-              <p className="text-lg font-bold text-slate-800 mt-0.5">{totalJobs}</p>
+              <p className="text-xl font-semibold text-slate-900 mt-0.5 font-mono tabular-nums">{totalJobs}</p>
             )}
           </div>
         </Card>
 
         <Card className="p-4 border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <CheckCircle2 className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-500 truncate">Lowongan Aktif</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Lowongan Aktif</p>
             {loading ? (
               <Skeleton className="h-6 w-12 mt-1 rounded-md" />
             ) : (
-              <p className="text-lg font-bold text-slate-800 mt-0.5">{activeJobs}</p>
+              <p className="text-xl font-semibold text-emerald-600 mt-0.5 font-mono tabular-nums">{activeJobs}</p>
             )}
           </div>
         </Card>
 
         <Card className="p-4 border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-            <Clock className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <Clock className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-500 truncate">Draft / Tertutup</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Draft / Tertutup</p>
             {loading ? (
               <Skeleton className="h-6 w-12 mt-1 rounded-md" />
             ) : (
-              <p className="text-lg font-bold text-slate-800 mt-0.5">{totalJobs - activeJobs}</p>
+              <p className="text-xl font-semibold text-slate-700 mt-0.5 font-mono tabular-nums">{totalJobs - activeJobs}</p>
             )}
           </div>
         </Card>
 
         <Card className="p-4 border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
-            <Users className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
+            <Users className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-slate-500 truncate">Total Pelamar</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Total Pelamar</p>
             {loading ? (
               <Skeleton className="h-6 w-12 mt-1 rounded-md" />
             ) : (
-              <p className="text-lg font-bold text-slate-800 mt-0.5">{totalApplicants}</p>
+              <p className="text-xl font-semibold text-slate-900 mt-0.5 font-mono tabular-nums">{totalApplicants}</p>
             )}
           </div>
         </Card>
@@ -236,10 +238,10 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
             placeholder="Cari posisi atau departemen..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[#22416D] focus:ring-2 focus:ring-[#22416D]/15 focus:outline-none shadow-xs transition-all"
+            className="w-full pl-10 pr-4 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/20 focus:outline-none shadow-2xs transition-all"
           />
         </div>
-        <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl">
+        <div className="flex items-center gap-1 p-0.5 bg-slate-100 rounded-lg">
           {[
             { id: 'all', label: 'Semua' },
             { id: 'published', label: 'Aktif' },
@@ -250,9 +252,9 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
               key={s.id}
               type="button"
               onClick={() => setStatusFilter(s.id)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 statusFilter === s.id
-                  ? 'bg-white text-slate-900 shadow-xs'
+                  ? 'bg-white text-slate-900 shadow-2xs'
                   : 'text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -266,16 +268,16 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
       <div className="min-h-[460px] flex flex-col">
         {loading ? (
           /* Stable Skeleton Table (No CLS) */
-          <div className="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+          <div className="overflow-x-auto rounded-xl border border-slate-200/80 bg-white shadow-xs">
             <table className="table-fixed w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="w-[34%] text-left px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Posisi</th>
-                  <th className="w-[20%] text-left px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Departemen</th>
-                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                  <th className="w-[10%] text-center px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">Pelamar</th>
-                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Deadline</th>
-                  <th className="w-[12%] text-right px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="w-[34%] text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Posisi</th>
+                  <th className="w-[20%] text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Departemen</th>
+                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                  <th className="w-[10%] text-center px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Pelamar</th>
+                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Deadline</th>
+                  <th className="w-[12%] text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -311,55 +313,54 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
           </div>
         ) : filteredJobs.length === 0 ? (
           /* Empty State within same bounded container */
-          <div className="flex-1 flex flex-col items-center justify-center p-12 text-center rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
-              <Briefcase className="w-6 h-6" />
+          <div className="flex-1 flex flex-col items-center justify-center p-12 text-center rounded-xl bg-white border border-slate-200/80 shadow-xs">
+            <div className="w-12 h-12 rounded-lg bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+              <Briefcase className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-slate-700 mb-1">
+            <h3 className="text-sm font-semibold text-slate-700 mb-1">
               {search || statusFilter !== 'all' ? 'Tidak Ada Lowongan yang Cocok' : 'Belum Ada Lowongan'}
             </h3>
-            <p className="text-sm text-slate-400 max-w-sm mx-auto mb-5">
+            <p className="text-xs text-slate-500 max-w-sm mx-auto mb-4">
               {search || statusFilter !== 'all'
                 ? 'Coba ganti kata kunci pencarian atau ubah filter status lowongan.'
                 : 'Buat lowongan pertama Anda untuk mulai menerima berkas lamaran dari publik.'}
             </p>
             {search || statusFilter !== 'all' ? (
-              <button
-                type="button"
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => { setSearch(''); setStatusFilter('all'); }}
-                className="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-colors"
               >
                 Reset Filter
-              </button>
+              </Button>
             ) : (
-              <button
-                type="button"
+              <Button
+                size="sm"
                 onClick={onNew}
-                className="px-5 py-2.5 rounded-xl bg-[#22416D] text-white text-sm font-bold hover:bg-[#1A3356] transition-colors"
               >
                 + Buat Lowongan Baru
-              </button>
+              </Button>
             )}
           </div>
         ) : (
           /* Real Data Table with Rigid Table-Fixed Column Geometry */
-          <div className="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+          <div className="overflow-x-auto rounded-xl border border-slate-200/80 bg-white shadow-xs">
             <table className="table-fixed w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="w-[34%] text-left px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Posisi</th>
-                  <th className="w-[20%] text-left px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Departemen</th>
-                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                  <th className="w-[10%] text-center px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">Pelamar</th>
-                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Deadline</th>
-                  <th className="w-[12%] text-right px-5 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="w-[34%] text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Posisi</th>
+                  <th className="w-[20%] text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Departemen</th>
+                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                  <th className="w-[10%] text-center px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Pelamar</th>
+                  <th className="w-[12%] text-center px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Deadline</th>
+                  <th className="w-[12%] text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredJobs.map((job) => (
                   <tr key={job.id} className="h-[68px] hover:bg-slate-50/70 transition-colors">
                     <td className="px-5 py-3.5">
-                      <div className="font-bold text-slate-800 truncate" title={job.title}>
+                      <div className="font-semibold text-slate-900 truncate" title={job.title}>
                         {job.title}
                       </div>
                       <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
@@ -369,7 +370,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
                           href={`https://karir.binaproject.id/loker/${job.slug}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[#22416D] hover:underline flex items-center gap-0.5"
+                          className="text-[#1B365D] hover:underline flex items-center gap-0.5 font-medium"
                           title="Lihat halaman publik"
                         >
                           <span>Lihat Web</span>
@@ -378,13 +379,13 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
                       </div>
                     </td>
                     <td className="px-5 py-3.5 hidden sm:table-cell truncate" title={job.department}>
-                      <span className="text-sm font-medium text-slate-600">{job.department}</span>
+                      <span className="text-xs font-medium text-slate-600">{job.department}</span>
                     </td>
                     <td className="px-5 py-3.5 text-center whitespace-nowrap">
                       {statusBadge(job.status)}
                     </td>
                     <td className="px-5 py-3.5 text-center hidden md:table-cell">
-                      <span className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-700">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                         <Users className="w-3.5 h-3.5 text-slate-400" />
                         {job.applicant_count || 0}
                       </span>
@@ -407,7 +408,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
                         <button
                           type="button"
                           onClick={() => onEdit(job.id)}
-                          className="p-1.5 rounded-lg hover:bg-blue-50 text-slate-400 hover:text-blue-600 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-900 transition-colors"
                           title="Edit Spesifikasi Lowongan"
                         >
                           <Edit3 className="w-4 h-4" />
@@ -429,14 +430,14 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
                             <button
                               type="button"
                               onClick={() => handleDelete(job.id)}
-                              className="px-2 py-1 rounded-md bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 transition-colors"
+                              className="px-2 py-1 rounded-md bg-rose-600 text-white text-xs font-semibold hover:bg-rose-700 transition-colors"
                             >
                               Ya
                             </button>
                             <button
                               type="button"
                               onClick={() => setDeleteConfirm(null)}
-                              className="px-2 py-1 rounded-md bg-white text-slate-600 text-xs font-bold hover:bg-slate-100 transition-colors border border-slate-200"
+                              className="px-2 py-1 rounded-md bg-white text-slate-600 text-xs font-semibold hover:bg-slate-100 transition-colors border border-slate-200"
                             >
                               Batal
                             </button>

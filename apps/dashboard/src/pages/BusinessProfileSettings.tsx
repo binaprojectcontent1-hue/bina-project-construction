@@ -11,11 +11,7 @@ import {
   Save,
   Rocket,
   RefreshCw,
-  CheckCircle2,
-  AlertCircle,
   Eye,
-  Info,
-  Send,
   Zap,
 } from 'lucide-react';
 
@@ -35,7 +31,6 @@ const YouTubeIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Badge } from '../components/ui/badge';
 import { HelpTooltip } from '../components/ui/HelpTooltip';
 import { useToast } from '../components/ui/Toast';
 import { fetchSiteSettings, saveSiteSettings } from '../lib/settingsService';
@@ -105,13 +100,13 @@ export const BusinessProfileSettings: React.FC = () => {
       if (res.success) {
         toast.success(
           'Publikasi Dimulai!',
-          'Cloudflare sedang mem-build ulang website statis. Perubahan profil & kontak akan live dalam 30–60 detik.'
+          'Website sedang diperbarui. Perubahan profil & kontak akan tampil langsung di website publik dalam beberapa saat.'
         );
       } else {
         toast.error('Gagal Memulai Publikasi', res.message);
       }
     } catch (err: any) {
-      toast.error('Kesalahan Deploy', err?.message || 'Gagal menghubungi Cloudflare webhook.');
+      toast.error('Gagal Memperbarui Web', err?.message || 'Gagal menghubungi server pembaruan website.');
     } finally {
       setDeploying(false);
     }
@@ -129,7 +124,7 @@ export const BusinessProfileSettings: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center space-y-3">
-          <RefreshCw className="w-7 h-7 text-[#22416D] animate-spin mx-auto" />
+          <RefreshCw className="w-6 h-6 text-[#1B365D] animate-spin mx-auto" />
           <p className="text-xs font-medium text-slate-500">Memuat profil & kontak bisnis...</p>
         </div>
       </div>
@@ -142,11 +137,11 @@ export const BusinessProfileSettings: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-5">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-[#22416D] text-white shadow-sm">
+            <div className="p-2 rounded-lg bg-[#1B365D] text-white shadow-2xs">
               <Building2 className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-xl font-semibold tracking-tight text-slate-900">
                 Profil & Kontak Bisnis
               </h1>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -163,7 +158,7 @@ export const BusinessProfileSettings: React.FC = () => {
             size="sm"
             onClick={() => loadSettings()}
             disabled={saving || deploying}
-            className="text-xs gap-1.5 h-9 bg-white"
+            className="text-xs gap-1.5 h-9 bg-white font-medium"
           >
             <RefreshCw className="w-3.5 h-3.5 text-slate-600" />
             <span>Reset / Muat Ulang</span>
@@ -174,7 +169,7 @@ export const BusinessProfileSettings: React.FC = () => {
             size="sm"
             onClick={() => handleSave()}
             disabled={saving}
-            className="bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-semibold h-9 px-4 gap-1.5 shadow-xs"
+            className="bg-[#1B365D] hover:bg-[#132845] text-white text-xs font-semibold h-9 px-4 gap-1.5 shadow-xs"
           >
             {saving ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -191,10 +186,10 @@ export const BusinessProfileSettings: React.FC = () => {
         {/* ================= LEFT COLUMN: FORM SECTIONS ================= */}
         <div className="lg:col-span-7 space-y-5">
           {/* Section 1: WhatsApp & CS Direct Channels */}
-          <Card className="shadow-xs border-slate-200">
+          <Card className="shadow-xs border-slate-200 rounded-xl bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700">
+                <div className="p-1.5 rounded-md bg-emerald-50 text-emerald-700">
                   <MessageCircle className="w-4 h-4" />
                 </div>
                 <div>
@@ -218,7 +213,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.whatsapp_number}
                   onChange={(e) => handleChange('whatsapp_number', e.target.value)}
                   placeholder="6281335335304"
-                  className="font-mono text-xs h-9"
+                  className="font-mono text-xs h-9 rounded-lg"
                 />
                 <span className="text-[11px] text-slate-400">
                   Tautan otomatis: <span className="font-mono text-slate-600">{formData.whatsapp_url || 'https://wa.me/...'}</span>
@@ -235,7 +230,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.whatsapp_default_message}
                   onChange={(e) => handleChange('whatsapp_default_message', e.target.value)}
                   placeholder="Halo Bina Project, saya ingin konsultasi rencana proyek..."
-                  className="w-full text-xs rounded-md border border-slate-200 p-2.5 focus:outline-hidden focus:ring-2 focus:ring-[#22416D]/30 focus:border-[#22416D]"
+                  className="w-full text-xs rounded-lg border border-slate-200 p-2.5 focus:outline-hidden focus:ring-2 focus:ring-[#1B365D]/20 focus:border-[#1B365D]"
                 />
               </div>
 
@@ -250,7 +245,7 @@ export const BusinessProfileSettings: React.FC = () => {
                     value={formData.phone_display}
                     onChange={(e) => handleChange('phone_display', e.target.value)}
                     placeholder="+62 81-335-335-304"
-                    className="text-xs h-9"
+                    className="text-xs h-9 rounded-lg"
                   />
                 </div>
 
@@ -264,7 +259,7 @@ export const BusinessProfileSettings: React.FC = () => {
                     value={formData.phone_tel}
                     onChange={(e) => handleChange('phone_tel', e.target.value)}
                     placeholder="tel:+6281335335304"
-                    className="font-mono text-xs h-9"
+                    className="font-mono text-xs h-9 rounded-lg"
                   />
                 </div>
               </div>
@@ -279,17 +274,17 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
                   placeholder="binaproject.info@gmail.com"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Section 2: Address & Google Maps */}
-          <Card className="shadow-xs border-slate-200">
+          <Card className="shadow-xs border-slate-200 rounded-xl bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-blue-50 text-[#22416D]">
+                <div className="p-1.5 rounded-md bg-slate-100 text-[#1B365D]">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
@@ -312,7 +307,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.address}
                   onChange={(e) => handleChange('address', e.target.value)}
                   placeholder="Jl. Watumujur II No.6, Kota Malang"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
 
@@ -324,7 +319,7 @@ export const BusinessProfileSettings: React.FC = () => {
                     value={formData.city}
                     onChange={(e) => handleChange('city', e.target.value)}
                     placeholder="Kota Malang"
-                    className="text-xs h-9"
+                    className="text-xs h-9 rounded-lg"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -334,7 +329,7 @@ export const BusinessProfileSettings: React.FC = () => {
                     value={formData.province}
                     onChange={(e) => handleChange('province', e.target.value)}
                     placeholder="Jawa Timur"
-                    className="text-xs h-9"
+                    className="text-xs h-9 rounded-lg"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -344,7 +339,7 @@ export const BusinessProfileSettings: React.FC = () => {
                     value={formData.postal_code}
                     onChange={(e) => handleChange('postal_code', e.target.value)}
                     placeholder="65145"
-                    className="text-xs h-9"
+                    className="text-xs h-9 rounded-lg"
                   />
                 </div>
               </div>
@@ -359,7 +354,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.google_maps_url}
                   onChange={(e) => handleChange('google_maps_url', e.target.value)}
                   placeholder="https://maps.app.goo.gl/..."
-                  className="font-mono text-xs h-9"
+                  className="font-mono text-xs h-9 rounded-lg"
                 />
               </div>
 
@@ -373,17 +368,17 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.google_maps_embed_url}
                   onChange={(e) => handleChange('google_maps_embed_url', e.target.value)}
                   placeholder="https://www.google.com/maps/embed?pb=..."
-                  className="font-mono text-xs h-9"
+                  className="font-mono text-xs h-9 rounded-lg"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Section 3: Operating Hours */}
-          <Card className="shadow-xs border-slate-200">
+          <Card className="shadow-xs border-slate-200 rounded-xl bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-amber-50 text-amber-700">
+                <div className="p-1.5 rounded-md bg-amber-50 text-amber-700">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
@@ -406,7 +401,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.opening_hours}
                   onChange={(e) => handleChange('opening_hours', e.target.value)}
                   placeholder="Senin - Sabtu: 08:00 - 16:00 WIB"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
 
@@ -419,17 +414,17 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.opening_hours_detail}
                   onChange={(e) => handleChange('opening_hours_detail', e.target.value)}
                   placeholder="Senin - Sabtu: 08:00 - 16:00 WIB | Minggu / Libur: Khusus Janji Temu"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Section 4: Social Media Links */}
-          <Card className="shadow-xs border-slate-200">
+          <Card className="shadow-xs border-slate-200 rounded-xl bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-purple-50 text-purple-700">
+                <div className="p-1.5 rounded-md bg-purple-50 text-purple-700">
                   <Globe className="w-4 h-4" />
                 </div>
                 <div>
@@ -453,13 +448,13 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.instagram_url}
                   onChange={(e) => handleChange('instagram_url', e.target.value)}
                   placeholder="https://www.instagram.com/binaproject.id"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                  <span className="font-bold text-xs text-slate-900">TikTok</span>
+                  <span className="font-semibold text-xs text-slate-900">TikTok</span>
                   <span className="text-[11px] text-slate-400">(@binaproject.id)</span>
                 </label>
                 <Input
@@ -467,7 +462,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.tiktok_url}
                   onChange={(e) => handleChange('tiktok_url', e.target.value)}
                   placeholder="https://www.tiktok.com/@binaproject.id"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
 
@@ -481,7 +476,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.youtube_url}
                   onChange={(e) => handleChange('youtube_url', e.target.value)}
                   placeholder="https://www.youtube.com/@binaproject.id"
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
 
@@ -495,7 +490,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   value={formData.google_business_url}
                   onChange={(e) => handleChange('google_business_url', e.target.value)}
                   placeholder="https://share.google/..."
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-lg"
                 />
               </div>
             </CardContent>
@@ -505,32 +500,32 @@ export const BusinessProfileSettings: React.FC = () => {
         {/* ================= RIGHT COLUMN: LIVE INTERACTIVE PREVIEW & ACTIONS ================= */}
         <div className="lg:col-span-5 space-y-5 lg:sticky lg:top-4">
           {/* Action & Publication Status Box */}
-          <Card className="bg-gradient-to-br from-[#0B172C] via-[#0E1E38] to-[#142646] text-white border-0 rounded-[24px] shadow-lg">
+          <Card className="bg-[#1B365D] text-white border border-[#1B365D] rounded-xl shadow-sm">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-amber-400" />
-                  <CardTitle className="text-sm font-semibold text-white">
+                  <CardTitle className="text-xs font-semibold text-white">
                     Status Sinkronisasi
                   </CardTitle>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
                   Database Online
                 </span>
               </div>
               <CardDescription className="text-xs text-blue-200/70">
-                Simpan perubahan ke database dan publikasikan live ke Cloudflare
+                Simpan perubahan ke database dan publikasikan langsung ke website resmi
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 pt-1">
-              <div className="p-3 rounded-xl bg-[#08101E]/70 border border-blue-500/20 text-xs space-y-1">
+            <CardContent className="space-y-3.5 pt-1">
+              <div className="p-3 rounded-lg bg-[#132845] border border-blue-400/20 text-xs space-y-1">
                 <div className="flex items-center justify-between text-xs text-blue-200/80">
                   <span>Terakhir Tersimpan:</span>
                   <span className="font-mono text-white font-medium">
                     {lastSavedTime ? `${lastSavedTime} WIB` : 'Sesi Aktif'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300/80 leading-relaxed pt-1">
+                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
                   Setelah menyimpan, Anda dapat langsung menekan tombol <strong>Publikasikan ke Website</strong> agar seluruh halaman publik di-refresh otomatis.
                 </p>
               </div>
@@ -540,7 +535,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   type="button"
                   onClick={() => handleSave()}
                   disabled={saving}
-                  className="w-full bg-[#22416D] hover:bg-[#1A3356] text-white font-semibold text-xs h-10 shadow-xs gap-2"
+                  className="w-full bg-white text-[#1B365D] hover:bg-slate-100 font-semibold text-xs h-9 shadow-xs gap-2"
                 >
                   {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   <span>{saving ? 'Sedang Menyimpan...' : 'Simpan Profil & Kontak'}</span>
@@ -550,71 +545,71 @@ export const BusinessProfileSettings: React.FC = () => {
                   type="button"
                   onClick={handleDeploy}
                   disabled={deploying}
-                  className="w-full rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white font-semibold text-xs h-10 shadow-md gap-2 transition-colors cursor-pointer"
+                  className="w-full rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 shadow-xs gap-2 transition-colors cursor-pointer"
                 >
                   {deploying ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
-                  <span>{deploying ? 'Memicu Cloudflare Build...' : 'Publikasikan ke Website Live'}</span>
+                  <span>{deploying ? 'Memperbarui Website Publik...' : 'Publikasikan ke Website Live'}</span>
                 </Button>
               </div>
             </CardContent>
           </Card>
 
           {/* Interactive Live Card Preview */}
-          <Card className="shadow-sm hover:shadow-md transition-shadow border-0 bg-white rounded-[24px] overflow-hidden">
-            <CardHeader className="pb-3 border-b border-slate-100 bg-slate-50/50">
+          <Card className="shadow-xs border border-slate-200 bg-white rounded-xl overflow-hidden">
+            <CardHeader className="pb-2.5 border-b border-slate-100 bg-slate-50/50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Eye className="w-4 h-4 text-[#22416D]" />
-                  <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-800">
+                  <Eye className="w-4 h-4 text-[#1B365D]" />
+                  <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-800">
                     Live Preview Kartu Kontak
                   </CardTitle>
                 </div>
-                <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                  Pratinjau Langsung
+                <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                  Pratinjau
                 </span>
               </div>
             </CardHeader>
-            <CardContent className="p-4 space-y-4">
-              {/* Mock Contact Card (matches website aesthetic) */}
-              <div className="p-4 rounded-2xl bg-gradient-to-b from-[#0F203B] to-[#0A1527] text-white shadow-md border border-blue-900/40 space-y-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#22416D] flex items-center justify-center font-bold text-white shadow-inner">
+            <CardContent className="p-4 space-y-3.5">
+              {/* Mock Contact Card */}
+              <div className="p-4 rounded-xl bg-[#1B365D] text-white shadow-sm space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-white text-[#1B365D] flex items-center justify-center font-semibold text-xs shadow-2xs">
                     B
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs text-white leading-tight">
+                    <h4 className="font-semibold text-xs text-white leading-tight">
                       Bina Project Construction
                     </h4>
-                    <p className="text-[11px] text-blue-200/60 font-medium">
+                    <p className="text-[11px] text-blue-200/70 font-medium">
                       {formData.city || 'Kota Malang'}, {formData.province || 'Jawa Timur'}
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-1 text-xs">
-                  <div className="flex items-start gap-2 text-slate-300">
-                    <MapPin className="w-3.5 h-3.5 text-blue-400 mt-0.5 shrink-0" />
+                <div className="space-y-1.5 pt-1 text-xs">
+                  <div className="flex items-start gap-2 text-slate-200">
+                    <MapPin className="w-3.5 h-3.5 text-blue-300 mt-0.5 shrink-0" />
                     <span className="text-[11px] leading-snug line-clamp-2">
                       {formData.address || 'Jl. Watumujur II No.6, Kota Malang'}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-slate-200">
+                    <Phone className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
                     <span className="text-[11px] font-mono">
                       {formData.phone_display || '+62 81-335-335-304'}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <Mail className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-slate-200">
+                    <Mail className="w-3.5 h-3.5 text-amber-300 shrink-0" />
                     <span className="text-[11px] font-mono truncate">
                       {formData.email || 'binaproject.info@gmail.com'}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <Clock className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-slate-200">
+                    <Clock className="w-3.5 h-3.5 text-purple-300 shrink-0" />
                     <span className="text-[11px] truncate">
                       {formData.opening_hours || 'Senin - Sabtu: 08:00 - 16:00 WIB'}
                     </span>
@@ -622,27 +617,27 @@ export const BusinessProfileSettings: React.FC = () => {
                 </div>
 
                 {/* Social Icons Strip in Preview */}
-                <div className="pt-2 border-t border-slate-700/60 flex items-center gap-2">
-                  <span className="text-[10px] text-slate-400">Sosial:</span>
+                <div className="pt-2 border-t border-white/15 flex items-center gap-2">
+                  <span className="text-[10px] text-slate-300">Sosial:</span>
                   <div className="flex items-center gap-1.5">
                     {formData.instagram_url && (
-                      <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-pink-400">
-                        <InstagramIcon className="w-3 h-3" />
+                      <span className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center text-pink-300">
+                        <InstagramIcon className="w-2.5 h-2.5" />
                       </span>
                     )}
                     {formData.youtube_url && (
-                      <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-red-400">
-                        <YouTubeIcon className="w-3 h-3" />
+                      <span className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center text-red-300">
+                        <YouTubeIcon className="w-2.5 h-2.5" />
                       </span>
                     )}
                     {formData.tiktok_url && (
-                      <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-cyan-300 font-bold text-[9px]">
+                      <span className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center text-cyan-300 font-semibold text-[8px]">
                         TT
                       </span>
                     )}
                     {formData.google_business_url && (
-                      <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-blue-400">
-                        <Globe className="w-3 h-3" />
+                      <span className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center text-blue-300">
+                        <Globe className="w-2.5 h-2.5" />
                       </span>
                     )}
                   </div>
@@ -650,21 +645,21 @@ export const BusinessProfileSettings: React.FC = () => {
               </div>
 
               {/* Direct WhatsApp Test Button */}
-              <div className="space-y-2 pt-1">
-                <label className="text-xs font-semibold text-slate-700 uppercase tracking-wide block">
+              <div className="space-y-1.5 pt-1">
+                <label className="text-[11px] font-semibold text-slate-700 uppercase tracking-wide block">
                   Uji Coba Tautan WhatsApp Langsung:
                 </label>
                 <a
                   href={testWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full h-10 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-semibold transition-colors shadow-xs"
+                  className="flex items-center justify-center gap-2 w-full h-9 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-2xs"
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
                   <span>Buka Chat WhatsApp Klien</span>
-                  <ExternalLink className="w-3 h-3 text-blue-200" />
+                  <ExternalLink className="w-3 h-3 text-emerald-100" />
                 </a>
-                <p className="text-xs text-slate-500 text-center">
+                <p className="text-[11px] text-slate-500 text-center">
                   Menguji pesan template pembuka dengan nomor saat ini.
                 </p>
               </div>
@@ -675,7 +670,7 @@ export const BusinessProfileSettings: React.FC = () => {
                   <label className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide block">
                     Pratinjau Peta Embed:
                   </label>
-                  <div className="rounded-xl overflow-hidden border border-slate-200 h-36 bg-slate-100 relative">
+                  <div className="rounded-lg overflow-hidden border border-slate-200 h-32 bg-slate-100 relative">
                     <iframe
                       title="Google Maps Preview"
                       src={formData.google_maps_embed_url}

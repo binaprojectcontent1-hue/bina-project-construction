@@ -42,25 +42,25 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
   const displayDesc = (
     metaDescription ||
     description ||
-    'Deskripsi ringkas halaman belum diisi. Google akan menampilkan ringkasan ini di bawah judul halaman pada hasil pencarian (SERP).'
+    'Deskripsi ringkas halaman belum diisi. Google akan menampilkan ringkasan ini di bawah judul halaman pada hasil pencarian.'
   ).trim();
-  const displayUrl = `https://binaproject.id › ${type} › ${slug || 'nama-slug'}`;
+  const displayUrl = `https://binaproject.id › ${type} › ${slug || 'nama-halaman'}`;
 
   const titleLength = displayTitle.length;
   const descLength = displayDesc.length;
 
   const getTitleStatus = () => {
     if (titleLength === 0) return { label: 'Kosong', color: 'text-slate-400', bar: 'bg-slate-200', icon: AlertCircle, badge: 'secondary' as const };
-    if (titleLength < 35) return { label: 'Terlalu Pendek', color: 'text-amber-600', bar: 'bg-amber-500', icon: AlertTriangle, badge: 'outline' as const };
-    if (titleLength <= 60) return { label: 'Optimal (Google Friendly)', color: 'text-emerald-600', bar: 'bg-emerald-500', icon: CheckCircle2, badge: 'success' as const };
-    return { label: 'Terpotong di Google (> 60)', color: 'text-rose-600', bar: 'bg-rose-500', icon: AlertCircle, badge: 'destructive' as const };
+    if (titleLength < 35) return { label: 'Bisa Ditambah Lagi', color: 'text-amber-600', bar: 'bg-amber-500', icon: AlertTriangle, badge: 'outline' as const };
+    if (titleLength <= 60) return { label: 'Sangat Pas untuk Google', color: 'text-emerald-600', bar: 'bg-emerald-500', icon: CheckCircle2, badge: 'success' as const };
+    return { label: 'Terlalu Panjang (Bisa Terpotong)', color: 'text-rose-600', bar: 'bg-rose-500', icon: AlertCircle, badge: 'destructive' as const };
   };
 
   const getDescStatus = () => {
     if (descLength === 0) return { label: 'Kosong', color: 'text-slate-400', bar: 'bg-slate-200', icon: AlertCircle, badge: 'secondary' as const };
     if (descLength < 90) return { label: 'Bisa Ditambah Lagi', color: 'text-amber-600', bar: 'bg-amber-500', icon: AlertTriangle, badge: 'outline' as const };
-    if (descLength <= 160) return { label: 'Optimal (Google Friendly)', color: 'text-emerald-600', bar: 'bg-emerald-500', icon: CheckCircle2, badge: 'success' as const };
-    return { label: 'Terpotong di Google (> 160)', color: 'text-rose-600', bar: 'bg-rose-500', icon: AlertCircle, badge: 'destructive' as const };
+    if (descLength <= 160) return { label: 'Sangat Pas untuk Google', color: 'text-emerald-600', bar: 'bg-emerald-500', icon: CheckCircle2, badge: 'success' as const };
+    return { label: 'Terlalu Panjang (Bisa Terpotong)', color: 'text-rose-600', bar: 'bg-rose-500', icon: AlertCircle, badge: 'destructive' as const };
   };
 
   const titleStatus = getTitleStatus();
@@ -73,15 +73,15 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-[#0D192B] text-white flex items-center justify-center font-bold text-xs">
+            <div className="w-7 h-7 rounded-md bg-[#1B365D] text-white flex items-center justify-center font-semibold text-xs">
               G
             </div>
             <div>
-              <CardTitle className="text-sm font-bold text-slate-900">
-                Simulasi Hasil Pencarian Google (SERP)
+              <CardTitle className="text-sm font-semibold text-slate-900">
+                Pratinjau Hasil Pencarian Google
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
-                Pratinjau tampilan judul & deskripsi saat dicari calon klien di Google
+                Tampilan judul & ringkasan yang akan dilihat pengunjung di Google
               </CardDescription>
             </div>
           </div>
@@ -98,7 +98,7 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
               }`}
             >
               <Monitor className="w-3 h-3" />
-              <span>Desktop</span>
+              <span>Komputer</span>
             </button>
             <button
               type="button"
@@ -110,7 +110,7 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
               }`}
             >
               <Smartphone className="w-3 h-3" />
-              <span>Mobile</span>
+              <span>HP / Mobile</span>
             </button>
           </div>
         </div>
@@ -121,10 +121,10 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="p-3.5 rounded-xl bg-slate-50 space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-slate-700">Panjang Title</span>
+              <span className="font-medium text-slate-700">Panjang Judul Halaman</span>
               <span className={`flex items-center gap-1 font-semibold text-xs ${titleStatus.color}`}>
                 <TitleIcon className="w-3 h-3" />
-                {titleLength}/60 char
+                {titleLength}/60 karakter
               </span>
             </div>
             <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
@@ -137,10 +137,10 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
 
           <div className="p-3.5 rounded-xl bg-slate-50 space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-medium text-slate-700">Panjang Meta Description</span>
+              <span className="font-medium text-slate-700">Panjang Kalimat Ringkasan</span>
               <span className={`flex items-center gap-1 font-semibold text-xs ${descStatus.color}`}>
                 <DescIcon className="w-3 h-3" />
-                {descLength}/160 char
+                {descLength}/160 karakter
               </span>
             </div>
             <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
@@ -161,7 +161,7 @@ export const GoogleSerpPreview: React.FC<GoogleSerpPreviewProps> = ({
           >
             {/* Favicon + Brand URL */}
             <div className="flex items-center gap-2 mb-1.5">
-              <div className="w-4 h-4 rounded-full bg-[#22416D] flex items-center justify-center text-xs text-white font-bold flex-shrink-0">
+              <div className="w-4 h-4 rounded-full bg-[#1B365D] flex items-center justify-center text-xs text-white font-semibold flex-shrink-0">
                 B
               </div>
               <div className="flex flex-col leading-tight min-w-0">

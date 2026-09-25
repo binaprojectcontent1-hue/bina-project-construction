@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, Save, Plus, Trash2, GripVertical, ChevronDown, AlertTriangle } from 'lucide-react';
+import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Skeleton } from '../components/ui/skeleton';
 
@@ -182,27 +183,27 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
   return (
     <div className="space-y-6 max-w-4xl">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div className="flex items-center gap-3">
-          <button type="button" onClick={onBack} className="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl font-bold text-slate-800">{isEdit ? 'Edit Lowongan' : 'Buat Lowongan Baru'}</h1>
+          <Button variant="outline" size="icon" onClick={onBack} className="h-8 w-8 text-slate-600">
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+          <h1 className="text-xl font-semibold text-slate-900 tracking-tight">{isEdit ? 'Edit Lowongan' : 'Buat Lowongan Baru'}</h1>
         </div>
-        <button
-          type="button"
+        <Button
           onClick={handleSave}
           disabled={saving || !title.trim() || !description.trim()}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#22416D] text-white text-sm font-bold hover:bg-[#1A3356] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          size="sm"
+          className="gap-2 font-medium"
         >
           <Save className="w-4 h-4" />
-          {saving ? 'Menyimpan...' : 'Simpan'}
-        </button>
+          <span>{saving ? 'Menyimpan...' : 'Simpan'}</span>
+        </Button>
       </div>
 
       {/* Basic Info */}
-      <div className="rounded-2xl bg-white border border-slate-100 p-6 space-y-5 shadow-sm">
-        <h2 className="text-base font-bold text-slate-800 mb-2">Informasi Dasar</h2>
+      <div className="rounded-xl bg-white border border-slate-200/80 p-6 space-y-5 shadow-xs">
+        <h2 className="text-sm font-semibold text-slate-900 mb-2">Informasi Dasar</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
@@ -210,7 +211,7 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
             <input type="text" className={inputClass} placeholder="Contoh: Arsitek & Desainer Interior" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="sm:col-span-2">
-            <label className={labelClass}>Slug URL</label>
+            <label className={labelClass}>Alamat Link Halaman Lowongan</label>
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-400 shrink-0">karir.binaproject.id/loker/</span>
               <input type="text" className={inputClass} value={slug} onChange={(e) => setSlug(e.target.value)} />
@@ -263,8 +264,8 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
       </div>
 
       {/* Description */}
-      <div className="rounded-2xl bg-white border border-slate-100 p-6 space-y-5 shadow-sm">
-        <h2 className="text-base font-bold text-slate-800 mb-2">Deskripsi Pekerjaan</h2>
+      <div className="rounded-xl bg-white border border-slate-200/80 p-6 space-y-5 shadow-xs">
+        <h2 className="text-sm font-semibold text-slate-900 mb-2">Deskripsi Pekerjaan</h2>
         <div>
           <label className={labelClass}>Deskripsi *</label>
           <textarea className={`${inputClass} min-h-[120px]`} placeholder="Jelaskan peran dan tanggung jawab posisi ini..." value={description} onChange={(e) => setDescription(e.target.value)} />
@@ -281,7 +282,7 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
               )}
             </div>
           ))}
-          <button type="button" onClick={() => addListItem(setResponsibilities)} className="text-xs text-blue-500 font-bold hover:text-blue-700">+ Tambah</button>
+          <button type="button" onClick={() => addListItem(setResponsibilities)} className="text-xs text-blue-600 font-semibold hover:text-blue-800 cursor-pointer">+ Tambah</button>
         </div>
 
         {/* Requirements */}
@@ -295,7 +296,7 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
               )}
             </div>
           ))}
-          <button type="button" onClick={() => addListItem(setRequirements)} className="text-xs text-blue-500 font-bold hover:text-blue-700">+ Tambah</button>
+          <button type="button" onClick={() => addListItem(setRequirements)} className="text-xs text-blue-600 font-semibold hover:text-blue-800 cursor-pointer">+ Tambah</button>
         </div>
 
         {/* Benefits */}
@@ -309,18 +310,18 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
               )}
             </div>
           ))}
-          <button type="button" onClick={() => addListItem(setBenefits)} className="text-xs text-blue-500 font-bold hover:text-blue-700">+ Tambah</button>
+          <button type="button" onClick={() => addListItem(setBenefits)} className="text-xs text-blue-600 font-semibold hover:text-blue-800 cursor-pointer">+ Tambah</button>
         </div>
       </div>
 
       {/* Custom Questions Builder */}
-      <div className="rounded-2xl bg-white border border-slate-100 p-6 space-y-5 shadow-sm">
+      <div className="rounded-xl bg-white border border-slate-200/80 p-6 space-y-5 shadow-xs">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-slate-800">Pertanyaan Khusus Posisi</h2>
-            <p className="text-xs text-slate-400 mt-1">Tambahkan pertanyaan kualifikasi yang wajib dijawab pelamar.</p>
+            <h2 className="text-sm font-semibold text-slate-900">Pertanyaan Khusus Posisi</h2>
+            <p className="text-xs text-slate-400 mt-0.5">Tambahkan pertanyaan kualifikasi yang wajib dijawab pelamar.</p>
           </div>
-          <button type="button" onClick={addQuestion} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-50 text-amber-700 text-xs font-bold hover:bg-amber-100 transition-colors">
+          <button type="button" onClick={addQuestion} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 text-amber-800 text-xs font-semibold hover:bg-amber-100 transition-colors border border-amber-200/60 cursor-pointer">
             <Plus className="w-3.5 h-3.5" />
             Tambah Pertanyaan
           </button>
@@ -358,11 +359,12 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
                       {q.type !== 'text' && (
                         <label className="flex items-center gap-1.5 cursor-pointer">
                           <AlertTriangle className="w-3 h-3 text-amber-500" />
-                          <span className="text-xs text-slate-500">Knockout:</span>
+                          <span className="text-xs text-slate-500">Diskualifikasi jika:</span>
                           <input
                             type="text"
-                            className="w-20 px-2 py-1 rounded-lg bg-white border border-slate-200 text-xs text-slate-600"
-                            placeholder="Jawaban"
+                            className="w-28 px-2 py-1 rounded-lg bg-white border border-slate-200 text-xs text-slate-600"
+                            placeholder="Jawaban salah"
+                            title="Jika pelamar memilih jawaban ini, status lamaran otomatis ditandai tidak lolos kualifikasi."
                             value={q.knockout_value}
                             onChange={(e) => updateQuestion(i, { knockout_value: e.target.value })}
                           />
@@ -387,7 +389,7 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
                             )}
                           </div>
                         ))}
-                        <button type="button" onClick={() => updateQuestion(i, { options: [...q.options, ''] })} className="text-xs text-blue-500 font-bold">+ Tambah Opsi</button>
+                        <button type="button" onClick={() => updateQuestion(i, { options: [...q.options, ''] })} className="text-xs text-blue-600 font-semibold cursor-pointer">+ Tambah Opsi</button>
                       </div>
                     )}
                   </div>
@@ -403,8 +405,8 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
       </div>
 
       {/* Status & Publish */}
-      <div className="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
-        <h2 className="text-base font-bold text-slate-800 mb-4">Status Publikasi</h2>
+      <div className="rounded-xl bg-white border border-slate-200/80 p-6 shadow-xs">
+        <h2 className="text-sm font-semibold text-slate-900 mb-4">Status Publikasi</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { value: 'draft', label: 'Draft', desc: 'Simpan sebagai draft, belum tampil di portal' },
@@ -415,16 +417,16 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
               key={s.value}
               type="button"
               onClick={() => setStatus(s.value)}
-              className={`p-4 rounded-xl border-2 text-left cursor-pointer transition-all ${
+              className={`p-4 rounded-lg border text-left cursor-pointer transition-all ${
                 status === s.value
-                  ? 'border-blue-500 bg-blue-50/50 shadow-xs'
-                  : 'border-slate-100 hover:border-slate-200 bg-white'
+                  ? 'border-[#1B365D] bg-blue-50/50 ring-1 ring-[#1B365D]'
+                  : 'border-slate-200 hover:border-slate-300 bg-white'
               }`}
             >
-              <div className={`text-sm font-bold ${status === s.value ? 'text-blue-700' : 'text-slate-700'}`}>
+              <div className={`text-xs font-semibold ${status === s.value ? 'text-[#1B365D]' : 'text-slate-700'}`}>
                 {s.label}
               </div>
-              <div className="text-xs text-slate-400 mt-0.5">{s.desc}</div>
+              <div className="text-[11px] text-slate-400 mt-0.5">{s.desc}</div>
             </button>
           ))}
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'success';
+  variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info';
 }
 
 export const Badge: React.FC<BadgeProps> = ({
@@ -10,14 +10,16 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#22416D] focus:ring-offset-2';
+    'inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-semibold tracking-wide transition-colors border';
 
   const variants = {
-    default: 'border-transparent bg-[#22416D] text-white shadow-xs',
-    secondary: 'border-transparent bg-slate-100 text-slate-800 hover:bg-slate-200/80',
-    destructive: 'border-transparent bg-rose-500 text-white shadow-xs',
-    outline: 'text-slate-800 border-slate-200 bg-white',
-    success: 'border-emerald-200 bg-emerald-50 text-emerald-700 font-medium',
+    default: 'border-[#1B365D]/20 bg-[#1B365D]/10 text-[#1B365D]',
+    secondary: 'border-slate-200 bg-slate-100 text-slate-700',
+    destructive: 'border-rose-200 bg-rose-50 text-rose-700',
+    outline: 'border-slate-300 bg-white text-slate-800',
+    success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    warning: 'border-amber-200 bg-amber-50 text-amber-800',
+    info: 'border-blue-200 bg-blue-50 text-blue-700',
   };
 
   return <div className={`${baseStyles} ${variants[variant]} ${className}`} {...props} />;

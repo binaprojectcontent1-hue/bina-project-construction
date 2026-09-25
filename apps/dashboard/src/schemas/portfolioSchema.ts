@@ -9,10 +9,10 @@ export const portfolioFormSchema = z.object({
   slug: z
     .string()
     .trim()
-    .min(3, 'Slug URL wajib diisi minimal 3 karakter.')
+    .min(3, 'Alamat link wajib diisi minimal 3 karakter.')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      'Format slug tidak valid. Gunakan huruf kecil, angka, dan tanda hubung (-) saja.'
+      'Format alamat link tidak valid. Gunakan huruf kecil, angka, dan tanda hubung (-) saja.'
     ),
   category: z.string().trim().min(1, 'Kategori proyek wajib dipilih.'),
   location: z.string().trim().min(1, 'Lokasi proyek wajib diisi.'),
@@ -25,11 +25,11 @@ export const portfolioFormSchema = z.object({
   coverImage: z
     .string()
     .trim()
-    .min(1, 'Foto utama proyek (cover image) wajib dipilih.'),
+    .min(1, 'Foto utama proyek wajib dipilih.'),
   altCoverImage: z
     .string()
     .trim()
-    .min(1, 'Alt text foto wajib diisi untuk Google Image SEO.'),
+    .min(1, 'Deskripsi foto utama wajib diisi agar muncul di Google.'),
   galleryImages: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
   status: z.enum(['published', 'draft']).default('published'),
@@ -42,13 +42,13 @@ export const portfolioFormSchema = z.object({
   metaTitle: z
     .string()
     .trim()
-    .max(70, 'Meta Title Google disarankan di bawah 70 karakter.')
+    .max(70, 'Judul tampilan Google disarankan maksimal 70 karakter.')
     .optional()
     .or(z.literal('')),
   metaDescription: z
     .string()
     .trim()
-    .max(160, 'Meta Description Google disarankan di bawah 160 karakter.')
+    .max(160, 'Ringkasan tampilan Google disarankan maksimal 160 karakter.')
     .optional()
     .or(z.literal('')),
   og_image_type: z.enum(['branded', 'raw_cover']).default('branded').optional(),

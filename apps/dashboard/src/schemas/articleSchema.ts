@@ -9,10 +9,10 @@ export const articleFormSchema = z.object({
   slug: z
     .string()
     .trim()
-    .min(3, 'Slug URL wajib diisi minimal 3 karakter.')
+    .min(3, 'Alamat link wajib diisi minimal 3 karakter.')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      'Format slug tidak valid. Gunakan huruf kecil, angka, dan tanda hubung (-) saja.'
+      'Format alamat link tidak valid. Gunakan huruf kecil, angka, dan tanda hubung (-) saja.'
     ),
   category: z.string().trim().min(1, 'Kategori wajib dipilih.'),
   excerpt: z
@@ -28,21 +28,21 @@ export const articleFormSchema = z.object({
   cover_image: z
     .string()
     .trim()
-    .min(1, 'Foto sampul (cover image) wajib diunggah atau dipilih.'),
+    .min(1, 'Foto sampul utama wajib diunggah atau dipilih.'),
   alt_cover_image: z
     .string()
     .trim()
-    .min(1, 'Alt text cover wajib diisi untuk Google Image SEO.'),
+    .min(1, 'Deskripsi foto sampul wajib diisi agar foto mudah ditemukan di pencarian Google.'),
   meta_title: z
     .string()
     .trim()
-    .max(70, 'Meta Title Google disarankan di bawah 70 karakter.')
+    .max(70, 'Judul tampilan Google disarankan maksimal 70 karakter.')
     .optional()
     .or(z.literal('')),
   meta_description: z
     .string()
     .trim()
-    .max(160, 'Meta Description Google disarankan di bawah 160 karakter.')
+    .max(160, 'Ringkasan tampilan Google disarankan maksimal 160 karakter.')
     .optional()
     .or(z.literal('')),
   focus_keyword: z.string().trim().optional().or(z.literal('')),

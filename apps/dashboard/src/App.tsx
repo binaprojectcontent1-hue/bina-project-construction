@@ -127,6 +127,25 @@ export function App() {
   const [portfolioCount, setPortfolioCount] = useState(0);
   const [articleCount, setArticleCount] = useState(0);
 
+  // Sidebar collapse state
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('bina_dashboard_sidebar_collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleSidebarCollapse = useCallback(() => {
+    setIsSidebarCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('bina_dashboard_sidebar_collapsed', String(next));
+      } catch {}
+      return next;
+    });
+  }, []);
+
   // Sync state to URL Hash
   const syncRouteToHash = useCallback((tab: TabType, pId?: string, aId?: string, lId?: string, jId?: string) => {
     const targetHash = buildHash(tab, pId, aId, lId, jId);
@@ -326,8 +345,8 @@ export function App() {
       'live-project-new': editingLiveProjectId ? 'Edit Proyek Berjalan - Bina Project Studio' : 'Tambah Proyek Berjalan Baru - Bina Project Studio',
       'biolink': 'Bio Link Manager - Bina Project Studio',
       'site-settings': 'Profil & Kontak Bisnis - Bina Project Studio',
-      'redirects': 'Pengalihan Tautan (301) - Bina Project Studio',
-      'settings': 'Pengaturan & Publikasi - Bina Project Studio',
+      'redirects': 'Pengalihan Tautan - Bina Project Studio',
+      'settings': 'Pengaturan & Publikasi Web - Bina Project Studio',
       'recruitment-jobs': 'Lowongan Kerja - Bina Project Studio',
       'recruitment-job-edit': editingJobId ? 'Edit Lowongan - Bina Project Studio' : 'Buat Lowongan Baru - Bina Project Studio',
       'recruitment-candidates': 'Kandidat Pelamar - Bina Project Studio',
@@ -345,7 +364,7 @@ export function App() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center space-y-3">
-          <div className="w-8 h-8 rounded-lg bg-[#22416D] text-white flex items-center justify-center font-bold text-sm mx-auto animate-pulse">B</div>
+          <div className="w-8 h-8 rounded-lg bg-[#1B365D] text-white flex items-center justify-center font-semibold text-sm mx-auto animate-pulse">B</div>
           <p className="text-xs text-slate-500">Memverifikasi sesi...</p>
         </div>
       </div>
@@ -498,31 +517,33 @@ export function App() {
     <ErrorBoundary>
       <ToastProvider>
         {session ? (
-          <div className="h-screen bg-[#080E18] text-slate-100 flex flex-col font-sans overflow-hidden relative selection:bg-[#22416D] selection:text-white">
-            {/* Ambient Background Glows */}
-            <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-[#22416D]/25 via-[#152B49]/15 to-transparent rounded-full blur-[160px] pointer-events-none" />
-            <div className="absolute -bottom-40 -right-40 w-[650px] h-[650px] bg-gradient-to-tl from-[#0E1E38]/40 via-[#1A3356]/20 to-transparent rounded-full blur-[170px] pointer-events-none" />
-
-            <Navbar
+          <div className="h-screen bg-[#F8FAFC] text-slate-900 flex font-sans overflow-hidden selection:bg-[#1B365D] selection:text-white">
+            <Sidebar
               activeTab={activeTab}
-              userEmail={session?.user?.email || 'admin@binaproject.id'}
-              onLogout={session ? () => handleLogout('Manual logout') : undefined}
-              onToggleMobile={() => setMobileNavOpen((prev) => !prev)}
               onNavigate={handleNavigate}
+              mobileOpen={mobileNavOpen}
+              onCloseMobile={() => setMobileNavOpen(false)}
+              portfolioCount={portfolioCount}
+              articleCount={articleCount}
+              isCollapsed={isSidebarCollapsed}
+              onToggleCollapse={toggleSidebarCollapse}
             />
 
-            <div className="flex flex-1 min-h-0 overflow-hidden p-2 sm:p-3 md:p-4 gap-3 md:gap-4 relative z-10">
-              <Sidebar
+            <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
+              <Navbar
                 activeTab={activeTab}
+                userEmail={session?.user?.email || 'admin@binaproject.id'}
+                onLogout={session ? () => handleLogout('Manual logout') : undefined}
+                onToggleMobile={() => setMobileNavOpen((prev) => !prev)}
+                onToggleCollapse={toggleSidebarCollapse}
+                isCollapsed={isSidebarCollapsed}
                 onNavigate={handleNavigate}
-                mobileOpen={mobileNavOpen}
-                onCloseMobile={() => setMobileNavOpen(false)}
-                portfolioCount={portfolioCount}
-                articleCount={articleCount}
               />
 
-              <main className="flex-1 min-h-0 overflow-y-auto relative bg-[#F8FAFC] text-slate-900 rounded-[24px] sm:rounded-[32px] shadow-2xl border border-slate-700/40 p-4 sm:p-6 lg:p-8">
-                {renderContent()}
+              <main className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 lg:p-8 bg-[#F8FAFC]">
+                <div className="max-w-7xl mx-auto w-full">
+                  {renderContent()}
+                </div>
               </main>
             </div>
           </div>

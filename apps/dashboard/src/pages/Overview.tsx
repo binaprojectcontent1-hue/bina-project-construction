@@ -3,22 +3,21 @@ import {
   Briefcase,
   BookOpen,
   Plus,
-  ExternalLink,
-  Globe,
-  Clock,
   ArrowRight,
   Edit3,
   CheckCircle2,
   RefreshCw,
-  TrendingUp,
   FolderPlus,
   PenTool,
-  Shuffle,
   MapPin,
+  Users,
+  Link2,
+  Calendar,
+  Sparkles,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { resolveDashboardMediaUrl } from '../lib/media';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Skeleton } from '../components/ui/skeleton';
@@ -46,6 +45,8 @@ export const Overview: React.FC<OverviewProps> = ({
   const [portfolioPublishedCount, setPortfolioPublishedCount] = useState(0);
   const [articleCount, setArticleCount] = useState(0);
   const [articlePublishedCount, setArticlePublishedCount] = useState(0);
+  const [liveProjectsCount, setLiveProjectsCount] = useState(0);
+  const [candidatesCount, setCandidatesCount] = useState(0);
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
   const [recentArticles, setRecentArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,28 +55,40 @@ export const Overview: React.FC<OverviewProps> = ({
     setLoading(true);
     try {
       if (supabase) {
-        // Counts
+        // Portfolio counts
         const { count: pCount } = await supabase
           .from('projects')
           .select('*', { count: 'exact', head: true });
-        const { count: aCount } = await supabase
-          .from('articles')
-          .select('*', { count: 'exact', head: true });
-
         const { count: pPubCount } = await supabase
           .from('projects')
           .select('*', { count: 'exact', head: true })
           .eq('status', 'published');
 
+        // Article counts
+        const { count: aCount } = await supabase
+          .from('articles')
+          .select('*', { count: 'exact', head: true });
         const { count: aPubCount } = await supabase
           .from('articles')
           .select('*', { count: 'exact', head: true })
           .eq('status', 'published');
 
+        // Live projects count
+        const { count: lpCount } = await supabase
+          .from('live_projects')
+          .select('*', { count: 'exact', head: true });
+
+        // Candidates count
+        const { count: cCount } = await supabase
+          .from('candidates')
+          .select('*', { count: 'exact', head: true });
+
         if (typeof pCount === 'number') setPortfolioCount(pCount);
-        if (typeof aCount === 'number') setArticleCount(aCount);
         if (typeof pPubCount === 'number') setPortfolioPublishedCount(pPubCount);
+        if (typeof aCount === 'number') setArticleCount(aCount);
         if (typeof aPubCount === 'number') setArticlePublishedCount(aPubCount);
+        if (typeof lpCount === 'number') setLiveProjectsCount(lpCount);
+        if (typeof cCount === 'number') setCandidatesCount(cCount);
 
         // Recent 4 projects
         const { data: pData } = await supabase
@@ -112,267 +125,271 @@ export const Overview: React.FC<OverviewProps> = ({
   }).format(new Date());
 
   return (
-    <div className="space-y-6 pb-12">
-      {/* 1. Executive Header (Compact, High-Hierarchy & Functional) */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-[28px] shadow-sm border-0">
-        <div className="space-y-1">
-          <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
-            Selamat Datang di Studio
+    <div className="space-y-6">
+      {/* 1. Studio Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
+        <div>
+          <h1 className="text-xl font-semibold text-slate-900 tracking-tight">
+            Ringkasan Studio
           </h1>
-          <p className="text-xs md:text-sm text-slate-500 font-medium">
-            {todayFormatted} • Pantau portofolio bangunan dan naskah artikel edukasi Bina Project.
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
+            {todayFormatted} • Pusat manajemen portofolio, artikel edukasi, dan operasional website Bina Project.
           </p>
         </div>
 
-        {/* Primary Action Buttons */}
-        <div className="flex items-center gap-2.5 flex-wrap">
-          <button
-            type="button"
+        {/* Primary Actions */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
             onClick={fetchData}
             title="Segarkan Data"
-            className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors shadow-2xs cursor-pointer"
+            className="text-slate-600"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </Button>
 
-          <button
-            type="button"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={onNewArticle}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors shadow-2xs cursor-pointer"
+            className="text-slate-800"
           >
-            <PenTool className="w-3.5 h-3.5 text-[#22416D]" />
-            <span>+ Tulis Artikel</span>
-          </button>
+            <PenTool className="w-3.5 h-3.5 text-[#1B365D]" />
+            <span>Tulis Artikel</span>
+          </Button>
 
-          <button
-            type="button"
+          <Button
+            variant="default"
+            size="sm"
             onClick={onNewPortfolio}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold transition-all shadow-md shadow-[#22416D]/20 cursor-pointer active:scale-95"
           >
             <FolderPlus className="w-3.5 h-3.5" />
-            <span>+ Tambah Proyek</span>
-          </button>
+            <span>Tambah Proyek</span>
+          </Button>
         </div>
       </div>
 
-      {/* 2. 4-Grid Balanced KPI Stat Cards */}
+      {/* 2. Real-Data KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Portfolio */}
-        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Portofolio Proyek</span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
-              <Briefcase className="w-4.5 h-4.5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            {loading ? (
-              <Skeleton className="h-9 w-16 my-0.5" />
-            ) : (
-              <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
-                {portfolioCount}
+        <Card className="hover:border-slate-300 transition-colors">
+          <CardContent className="p-4 pt-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Portofolio Proyek
               </span>
-            )}
-            <span className="text-xs text-slate-500 font-medium">total proyek</span>
-          </div>
-          <div className="mt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-            <span>{portfolioPublishedCount} Tayang Live</span>
-            {portfolioCount - portfolioPublishedCount > 0 && (
-              <span className="text-slate-400 font-normal">• {portfolioCount - portfolioPublishedCount} Draft</span>
-            )}
-          </div>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1B365D] flex items-center justify-center">
+                <Briefcase className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="mt-3 flex items-baseline gap-2">
+              {loading ? (
+                <Skeleton className="h-8 w-14" />
+              ) : (
+                <span className="text-2xl font-semibold text-slate-900 font-mono tabular-nums">
+                  {portfolioCount}
+                </span>
+              )}
+              <span className="text-xs text-slate-500 font-medium">total karya</span>
+            </div>
+            <div className="mt-2.5 text-xs text-slate-600 flex items-center gap-2">
+              <Badge variant="success" className="text-[11px] py-0 px-1.5">
+                {portfolioPublishedCount} Live
+              </Badge>
+              {portfolioCount - portfolioPublishedCount > 0 && (
+                <span className="text-slate-400 text-xs font-medium">
+                  {portfolioCount - portfolioPublishedCount} Draft
+                </span>
+              )}
+            </div>
+          </CardContent>
         </Card>
 
         {/* KPI 2: Articles */}
-        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Artikel & Edukasi</span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
-              <BookOpen className="w-4.5 h-4.5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            {loading ? (
-              <Skeleton className="h-9 w-16 my-0.5" />
-            ) : (
-              <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
-                {articleCount}
+        <Card className="hover:border-slate-300 transition-colors">
+          <CardContent className="p-4 pt-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Artikel & Berita
               </span>
-            )}
-            <span className="text-xs text-slate-500 font-medium">total naskah</span>
-          </div>
-          <div className="mt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-            <span>{articlePublishedCount} Live Google</span>
-            {articleCount - articlePublishedCount > 0 && (
-              <span className="text-slate-400 font-normal">• {articleCount - articlePublishedCount} Draft</span>
-            )}
-          </div>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1B365D] flex items-center justify-center">
+                <BookOpen className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="mt-3 flex items-baseline gap-2">
+              {loading ? (
+                <Skeleton className="h-8 w-14" />
+              ) : (
+                <span className="text-2xl font-semibold text-slate-900 font-mono tabular-nums">
+                  {articleCount}
+                </span>
+              )}
+              <span className="text-xs text-slate-500 font-medium">total naskah</span>
+            </div>
+            <div className="mt-2.5 text-xs text-slate-600 flex items-center gap-2">
+              <Badge variant="success" className="text-[11px] py-0 px-1.5">
+                {articlePublishedCount} Live
+              </Badge>
+              {articleCount - articlePublishedCount > 0 && (
+                <span className="text-slate-400 text-xs font-medium">
+                  {articleCount - articlePublishedCount} Draft
+                </span>
+              )}
+            </div>
+          </CardContent>
         </Card>
 
-        {/* KPI 3: Cloudflare Server Status */}
-        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Server Publikasi</span>
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shadow-2xs">
-              <Globe className="w-4.5 h-4.5" />
+        {/* KPI 3: Live Projects Map */}
+        <Card className="hover:border-slate-300 transition-colors">
+          <CardContent className="p-4 pt-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Proyek Lapangan
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <MapPin className="w-4 h-4" />
+              </div>
             </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-emerald-600 tracking-tight">100% Online</span>
-          </div>
-          <div className="mt-2 text-xs text-slate-500 font-medium flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>Cloudflare Edge Global</span>
-          </div>
+            <div className="mt-3 flex items-baseline gap-2">
+              {loading ? (
+                <Skeleton className="h-8 w-14" />
+              ) : (
+                <span className="text-2xl font-semibold text-slate-900 font-mono tabular-nums">
+                  {liveProjectsCount}
+                </span>
+              )}
+              <span className="text-xs text-slate-500 font-medium">titik peta aktif</span>
+            </div>
+            <div className="mt-2.5 text-xs text-emerald-700 font-medium flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Transparansi progress klien</span>
+            </div>
+          </CardContent>
         </Card>
 
-        {/* KPI 4: URL Protection */}
-        <Card className="p-5 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Proteksi URL (301)</span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center shadow-2xs">
-              <Shuffle className="w-4.5 h-4.5" />
+        {/* KPI 4: Recruitment & Candidates */}
+        <Card className="hover:border-slate-300 transition-colors">
+          <CardContent className="p-4 pt-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Karir & Pelamar
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
+                <Users className="w-4 h-4" />
+              </div>
             </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-slate-900 tracking-tight">Aktif Aman</span>
-          </div>
-          <div className="mt-2 text-xs text-slate-500 font-medium flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-            <span>Anti Broken Link Otomatis</span>
-          </div>
+            <div className="mt-3 flex items-baseline gap-2">
+              {loading ? (
+                <Skeleton className="h-8 w-14" />
+              ) : (
+                <span className="text-2xl font-semibold text-slate-900 font-mono tabular-nums">
+                  {candidatesCount}
+                </span>
+              )}
+              <span className="text-xs text-slate-500 font-medium">berkas masuk</span>
+            </div>
+            <div className="mt-2.5 text-xs text-purple-700 font-medium flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+              <span>Database talent studio</span>
+            </div>
+          </CardContent>
         </Card>
       </div>
 
-      {/* 3. Recent Dual Feeds */}
+      {/* 3. Dual Recent Data Grids */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left Column: Recent Portfolios */}
-        <Card className="border-0 shadow-sm hover:shadow-md transition-shadow rounded-[28px] overflow-hidden flex flex-col bg-white">
-          {/* Card Header */}
-          <div className="p-5 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center flex-shrink-0 shadow-2xs">
-                <Briefcase className="w-4.5 h-4.5" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold text-slate-900 truncate">
-                    Portofolio Proyek Terkini
-                  </h2>
-                  <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                    {portfolioCount}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 truncate">
-                  Dokumentasi karya arsitektur & interior terbaru
-                </p>
-              </div>
+        {/* Left: Recent Portfolios */}
+        <Card>
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Briefcase className="w-4 h-4 text-[#1B365D]" />
+              <h2 className="text-sm font-semibold text-slate-900">
+                Portofolio Proyek Terbaru
+              </h2>
             </div>
 
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              pill
               onClick={onViewAllPortfolios}
-              className="text-xs font-semibold h-8 px-4 gap-1.5 text-slate-700 hover:text-[#22416D] hover:bg-slate-100/80 shrink-0 border-slate-200 rounded-full"
+              className="text-xs text-slate-600 gap-1 h-7 px-2"
             >
               <span>Lihat Semua</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </div>
 
-          {/* Card Body */}
-          <div className="p-4 md:p-5 flex-1 flex flex-col justify-between">
+          <div className="p-3">
             {loading ? (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="p-3 rounded-xl border border-slate-100 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
-                      <div className="space-y-1.5 flex-1">
-                        <Skeleton className="h-4 w-3/4" />
-                        <Skeleton className="h-3 w-1/3" />
-                      </div>
+                  <div key={i} className="p-2 rounded-lg border border-slate-100 flex items-center gap-3">
+                    <Skeleton className="w-10 h-10 rounded-md shrink-0" />
+                    <div className="space-y-1 flex-1">
+                      <Skeleton className="h-3.5 w-2/3" />
+                      <Skeleton className="h-3 w-1/3" />
                     </div>
                   </div>
                 ))}
               </div>
             ) : recentProjects.length === 0 ? (
-              <div className="my-auto py-10 text-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#22416D] flex items-center justify-center mx-auto shadow-2xs">
-                  <Briefcase className="w-5 h-5" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-bold text-slate-900">Belum Ada Portofolio</p>
-                  <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
-                    Unggah karya pertama Anda untuk menampilkan portofolio Bina Project.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={onNewPortfolio}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white bg-[#22416D] hover:bg-[#1A3356] transition-colors shadow-xs cursor-pointer"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Tambah Proyek Pertama</span>
-                </button>
+              <div className="py-8 text-center space-y-2">
+                <p className="text-xs font-semibold text-slate-700">Belum ada data portofolio</p>
+                <Button variant="outline" size="sm" onClick={onNewPortfolio}>
+                  + Tambah Proyek
+                </Button>
               </div>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-1.5">
                 {recentProjects.map((p) => {
                   const img = resolveDashboardMediaUrl(p.cover_image);
                   return (
                     <div
                       key={p.id}
-                      className="p-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:bg-slate-50/80 hover:shadow-xs transition-all flex items-center justify-between gap-3 group"
+                      className="p-2.5 rounded-lg border border-slate-100 hover:border-slate-200 hover:bg-slate-50/70 transition-all flex items-center justify-between gap-3 group"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0 shadow-2xs border border-slate-100">
+                        <div className="w-10 h-10 rounded-md bg-slate-100 overflow-hidden shrink-0 border border-slate-200/60">
                           {img ? (
-                            <img src={img} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <img src={img} alt={p.title} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-slate-400">
-                              <Briefcase className="w-5 h-5" />
+                              <Briefcase className="w-4 h-4" />
                             </div>
                           )}
                         </div>
                         <div className="min-w-0">
-                          <div className="text-sm font-bold text-slate-900 group-hover:text-[#22416D] transition-colors truncate">
+                          <h3 className="text-xs font-semibold text-slate-900 group-hover:text-[#1B365D] transition-colors truncate">
                             {p.title}
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                            <span className="font-semibold text-[#22416D] bg-blue-50 px-2.5 py-0.5 rounded-md text-xs">
+                          </h3>
+                          <div className="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5">
+                            <span className="font-medium text-[#1B365D]">
                               {p.category}
                             </span>
                             <span>•</span>
-                            <span className="truncate flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-slate-400" />
-                              {p.location || 'Jawa Timur'}
-                            </span>
+                            <span className="truncate">{p.location || 'Jawa Timur'}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <span
-                          className={`hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                            p.status === 'published'
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : 'bg-slate-100 text-slate-600'
-                          }`}
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Badge
+                          variant={p.status === 'published' ? 'success' : 'secondary'}
+                          className="text-[10px] py-0 px-1.5"
                         >
                           {p.status === 'published' ? 'Live' : 'Draft'}
-                        </span>
-                        <button
-                          type="button"
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={() => onEditPortfolio(p.id)}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-all cursor-pointer"
+                          className="h-7 px-2 text-xs"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          <span>Edit</span>
-                        </button>
+                          <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                          <span className="hidden sm:inline">Edit</span>
+                        </Button>
                       </div>
                     </div>
                   );
@@ -382,118 +399,105 @@ export const Overview: React.FC<OverviewProps> = ({
           </div>
         </Card>
 
-        {/* Right Column: Recent Articles */}
-        <Card className="border-0 shadow-sm hover:shadow-md transition-shadow rounded-[28px] overflow-hidden flex flex-col bg-white">
-          {/* Card Header */}
-          <div className="p-5 border-b border-slate-100 flex items-center justify-between gap-3 bg-slate-50/50">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#22416D] flex items-center justify-center flex-shrink-0 shadow-2xs">
-                <BookOpen className="w-4.5 h-4.5" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold text-slate-900 truncate">
-                    Artikel Blog Terkini
-                  </h2>
-                  <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                    {articleCount}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 truncate">
-                  Naskah artikel & tips edukasi yang tayang di web
-                </p>
-              </div>
+        {/* Right: Recent Articles */}
+        <Card>
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-[#1B365D]" />
+              <h2 className="text-sm font-semibold text-slate-900">
+                Artikel & Berita Terbaru
+              </h2>
             </div>
 
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              pill
               onClick={onViewAllArticles}
-              className="text-xs font-semibold h-8 px-4 gap-1.5 text-slate-700 hover:text-[#22416D] hover:bg-slate-100/80 shrink-0 border-slate-200 rounded-full"
+              className="text-xs text-slate-600 gap-1 h-7 px-2"
             >
               <span>Lihat Semua</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </div>
 
-          {/* Card Body */}
-          <div className="p-4 md:p-5 flex-1 flex flex-col justify-between">
+          <div className="p-3">
             {loading ? (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="p-3 rounded-xl border border-slate-100 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
-                      <div className="space-y-1.5 flex-1">
-                        <Skeleton className="h-4 w-3/4" />
-                        <Skeleton className="h-3 w-1/3" />
-                      </div>
+                  <div key={i} className="p-2 rounded-lg border border-slate-100 flex items-center gap-3">
+                    <Skeleton className="w-10 h-10 rounded-md shrink-0" />
+                    <div className="space-y-1 flex-1">
+                      <Skeleton className="h-3.5 w-2/3" />
+                      <Skeleton className="h-3 w-1/3" />
                     </div>
                   </div>
                 ))}
               </div>
             ) : recentArticles.length === 0 ? (
-              <div className="my-auto py-10 text-center space-y-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#22416D] flex items-center justify-center mx-auto shadow-2xs">
-                  <PenTool className="w-5 h-5 text-[#22416D]" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-bold text-slate-900">Belum Ada Artikel yang Diterbitkan</p>
-                  <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
-                    Tulis tips renovasi atau panduan arsitektur untuk meningkatkan ranking website Bina Project di Google dan memikat calon klien.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={onNewArticle}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#22416D] hover:bg-[#1A3356] transition-colors shadow-xs"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Tulis Artikel Pertama</span>
-                </button>
+              <div className="py-8 text-center space-y-2">
+                <p className="text-xs font-semibold text-slate-700">Belum ada naskah artikel</p>
+                <Button variant="outline" size="sm" onClick={onNewArticle}>
+                  + Tulis Artikel
+                </Button>
               </div>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-1.5">
                 {recentArticles.map((a) => {
                   const img = resolveDashboardMediaUrl(a.cover_image);
                   return (
                     <div
                       key={a.id}
-                      className="p-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:bg-slate-50/80 hover:shadow-xs transition-all flex items-center justify-between gap-3 group"
+                      className="p-2.5 rounded-lg border border-slate-100 hover:border-slate-200 hover:bg-slate-50/70 transition-all flex items-center justify-between gap-3 group"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0 shadow-2xs border border-slate-100">
+                        <div className="w-10 h-10 rounded-md bg-slate-100 overflow-hidden shrink-0 border border-slate-200/60">
                           {img ? (
-                            <img src={img} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <img src={img} alt={a.title} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-slate-400">
-                              <BookOpen className="w-5 h-5" />
+                              <BookOpen className="w-4 h-4" />
                             </div>
                           )}
                         </div>
                         <div className="min-w-0">
-                          <div className="text-sm font-bold text-slate-900 group-hover:text-[#22416D] transition-colors truncate">
+                          <h3 className="text-xs font-semibold text-slate-900 group-hover:text-[#1B365D] transition-colors truncate">
                             {a.title}
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                            <span className="font-semibold text-[#22416D] bg-blue-50 px-2.5 py-0.5 rounded-md text-xs">
+                          </h3>
+                          <div className="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5">
+                            <span className="font-medium text-[#1B365D]">
                               {a.category}
                             </span>
                             <span>•</span>
-                            <span className="truncate">{a.publish_date || 'Baru'}</span>
+                            <span className="truncate">
+                              {a.publish_date
+                                ? new Date(a.publish_date).toLocaleDateString('id-ID', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                  })
+                                : 'Draft'}
+                            </span>
                           </div>
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => onEditArticle(a.id)}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-[#22416D] hover:text-white transition-all shrink-0 cursor-pointer"
-                      >
-                        <Edit3 className="w-3.5 h-3.5" />
-                        <span>Edit</span>
-                      </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Badge
+                          variant={a.status === 'published' ? 'success' : 'secondary'}
+                          className="text-[10px] py-0 px-1.5"
+                        >
+                          {a.status === 'published' ? 'Live' : 'Draft'}
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onEditArticle(a.id)}
+                          className="h-7 px-2 text-xs"
+                        >
+                          <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                          <span className="hidden sm:inline">Edit</span>
+                        </Button>
+                      </div>
                     </div>
                   );
                 })}

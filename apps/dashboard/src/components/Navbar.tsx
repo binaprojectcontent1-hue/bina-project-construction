@@ -7,14 +7,11 @@ import {
   ExternalLink,
   LogOut,
   ChevronRight,
-  Slash,
-  Search,
   Menu,
-  User,
+  PanelLeftClose,
+  PanelLeft,
 } from 'lucide-react';
 import { triggerCloudflareDeploy } from '../lib/cloudflare';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
 import { useToast } from './ui/Toast';
 
 interface NavbarProps {
@@ -22,6 +19,8 @@ interface NavbarProps {
   userEmail?: string;
   onLogout?: () => void;
   onToggleMobile?: () => void;
+  onToggleCollapse?: () => void;
+  isCollapsed?: boolean;
   onNavigate?: (tab: any) => void;
 }
 
@@ -30,6 +29,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   userEmail,
   onLogout,
   onToggleMobile,
+  onToggleCollapse,
+  isCollapsed = false,
   onNavigate,
 }) => {
   const [deploying, setDeploying] = useState(false);
@@ -39,102 +40,105 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleDeploy = async () => {
     setDeploying(true);
     setDeployResult(null);
-    const toastId = toast.loading('Memulai deployment Cloudflare Pages...');
+    const toastId = toast.loading('Memperbarui halaman website publik...');
     try {
       const res = await triggerCloudflareDeploy();
       setDeployResult(res);
       toast.dismiss(toastId);
       if (res.success) {
-        toast.success('Deployment Berhasil Terpicu!', 'Cloudflare sedang memproses build terbaru (~45 detik).');
+        toast.success('Pembaruan Berhasil Terkirim!', 'Sistem sedang memperbarui halaman website utama (~45 detik).');
         setTimeout(() => setDeployResult(null), 7000);
       } else {
-        toast.error('Deployment Gagal', res.message);
+        toast.error('Pembaruan Gagal', res.message);
       }
     } catch (err: any) {
       toast.dismiss(toastId);
-      toast.error('Gagal memicu deployment', err?.message || 'Koneksi bermasalah');
+      toast.error('Gagal memperbarui website', err?.message || 'Koneksi bermasalah');
     } finally {
       setDeploying(false);
     }
   };
 
+  const getBreadcrumbTitle = () => {
+    switch (activeTab) {
+      case 'overview':
+        return 'Beranda & Ringkasan';
+      case 'portfolio':
+        return 'Portofolio Proyek';
+      case 'portfolio-new':
+        return 'Editor Portofolio';
+      case 'articles':
+        return 'Artikel & Berita';
+      case 'article-new':
+        return 'Editor Artikel';
+      case 'live-projects':
+        return 'Proyek Berjalan';
+      case 'live-project-new':
+        return 'Editor Proyek Berjalan';
+      case 'biolink':
+        return 'Bio Link';
+      case 'site-settings':
+        return 'Profil & Kontak Bisnis';
+      case 'recruitment-jobs':
+        return 'Lowongan Kerja';
+      case 'recruitment-job-edit':
+        return 'Editor Lowongan';
+      case 'recruitment-candidates':
+        return 'Kandidat Pelamar';
+      case 'redirects':
+        return 'Pengalihan Tautan';
+      case 'settings':
+        return 'Pengaturan & Publikasi Web';
+      default:
+        return 'Beranda';
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-slate-200/90 bg-white/95 backdrop-blur-md px-4 md:px-8 shadow-xs">
-      {/* Left: Mobile Toggle & Interactive Breadcrumbs */}
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 md:px-6">
+      {/* Left: Sidebar Toggle & Breadcrumbs */}
       <div className="flex items-center gap-3 min-w-0">
+        {/* Mobile menu button */}
         {onToggleMobile && (
           <button
             type="button"
             onClick={onToggleMobile}
-            className="p-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 md:hidden flex-shrink-0 transition-colors"
+            className="p-1.5 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-100 md:hidden flex-shrink-0 transition-colors"
             aria-label="Buka Menu Navigasi"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4" />
           </button>
         )}
 
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm font-semibold text-slate-500 min-w-0">
+        {/* Desktop collapse toggle */}
+        {onToggleCollapse && (
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            className="hidden md:flex p-1.5 rounded-md border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 flex-shrink-0 transition-colors"
+            title={isCollapsed ? 'Buka Sidebar' : 'Ciutkan Sidebar'}
+          >
+            {isCollapsed ? <PanelLeft className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+          </button>
+        )}
+
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-medium text-slate-500 min-w-0">
           <button
             type="button"
             onClick={() => onNavigate && onNavigate('overview')}
-            className="text-[#22416D] font-extrabold hover:text-[#172D4B] hover:underline hidden sm:inline cursor-pointer transition-colors"
-            title="Kembali ke Beranda"
+            className="text-[#1B365D] font-semibold hover:underline hidden sm:inline cursor-pointer transition-colors"
           >
-            Bina Project
+            Studio
           </button>
-          <ChevronRight className="w-4 h-4 text-slate-300 hidden sm:inline flex-shrink-0" />
-
-          {activeTab === 'portfolio-new' ? (
-            <>
-              <button
-                type="button"
-                onClick={() => onNavigate && onNavigate('portfolio')}
-                className="hover:text-[#22416D] hover:underline cursor-pointer transition-colors truncate"
-              >
-                Portofolio Proyek
-              </button>
-              <ChevronRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
-              <span className="text-slate-900 font-bold truncate text-sm md:text-base">
-                Editor Proyek
-              </span>
-            </>
-          ) : activeTab === 'article-new' ? (
-            <>
-              <button
-                type="button"
-                onClick={() => onNavigate && onNavigate('articles')}
-                className="hover:text-[#22416D] hover:underline cursor-pointer transition-colors truncate"
-              >
-                Artikel
-              </button>
-              <ChevronRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
-              <span className="text-slate-900 font-bold truncate text-sm md:text-base">
-                Tulis Artikel
-              </span>
-            </>
-          ) : (
-            <span className="text-slate-900 font-bold truncate text-sm md:text-base">
-              {activeTab === 'overview'
-                ? 'Beranda & Ringkasan'
-                : activeTab === 'portfolio'
-                  ? 'Portofolio Proyek'
-                  : activeTab === 'articles'
-                    ? 'Artikel'
-                    : activeTab === 'biolink'
-                      ? 'Bio Link (Linktree)'
-                      : activeTab === 'redirects'
-                        ? 'Pengalihan Link (301)'
-                        : activeTab === 'settings'
-                          ? 'Pengaturan & Cloudflare'
-                          : 'Beranda'}
-            </span>
-          )}
+          <ChevronRight className="w-3.5 h-3.5 text-slate-300 hidden sm:inline flex-shrink-0" />
+          <span className="text-slate-900 font-semibold truncate text-xs md:text-sm">
+            {getBreadcrumbTitle()}
+          </span>
         </nav>
       </div>
 
-      {/* Right: Global Actions & User Profile */}
-      <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
-        {/* View Live Website Button */}
+      {/* Right: Actions & User */}
+      <div className="flex items-center gap-2.5 flex-shrink-0">
         <a
           href="https://binaproject.id"
           target="_blank"
@@ -143,37 +147,36 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-4 h-9 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full transition-colors shadow-xs cursor-pointer"
-            title="Lihat website publik di tab baru"
+            className="inline-flex items-center gap-1.5 px-3 h-8 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-md transition-colors shadow-2xs cursor-pointer"
           >
-            <span>Lihat Web Publik</span>
+            <span>Lihat Web</span>
             <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </button>
         </a>
 
-        {/* Deploy to Cloudflare Button */}
+        {/* Cloudflare Deploy Button */}
         <button
           type="button"
           onClick={handleDeploy}
           disabled={deploying}
-          className="inline-flex items-center gap-2 h-9 px-4 bg-[#22416D] hover:bg-[#1A3356] text-white text-xs font-bold rounded-full shadow-md shadow-[#22416D]/20 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
-          title="Publikasikan semua perubahan data terbaru langsung ke website live"
+          className="inline-flex items-center gap-1.5 h-8 px-3.5 bg-[#1B365D] hover:bg-[#132845] text-white text-xs font-semibold rounded-md shadow-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+          title="Publikasikan perubahan data terbaru langsung ke website live"
         >
           {deploying ? (
             <RefreshCw className="w-3.5 h-3.5 animate-spin" />
           ) : (
             <Rocket className="w-3.5 h-3.5" />
           )}
-          <span className="hidden sm:inline">{deploying ? 'Mempublikasikan...' : 'Publikasikan ke Website'}</span>
+          <span className="hidden sm:inline">{deploying ? 'Mempublikasikan...' : 'Publikasi Live'}</span>
           <span className="sm:hidden">{deploying ? 'Proses...' : 'Publikasi'}</span>
         </button>
 
-        {/* User Avatar & Logout */}
+        {/* User Profile & Logout */}
         {userEmail && (
           <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#22416D] text-xs font-bold text-white shadow-xs"
-              title={`Logged in as ${userEmail}`}
+              className="flex h-8 w-8 items-center justify-center rounded-md bg-slate-100 text-slate-800 text-xs font-semibold border border-slate-200 shadow-2xs"
+              title={`Masuk sebagai ${userEmail}`}
             >
               {userEmail.charAt(0).toUpperCase()}
             </div>
@@ -181,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onLogout}
-                className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                 title="Keluar dari Dashboard"
                 aria-label="Logout"
               >
@@ -192,13 +195,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </div>
 
-      {/* Floating Notification Toast if deploy status active */}
+      {/* Deploy Notification */}
       {deployResult && (
         <div
-          className={`absolute top-18 right-6 z-50 flex items-center gap-3 rounded-xl border p-3.5 text-xs font-medium shadow-xl transition-all animate-in fade-in slide-in-from-top-2 ${deployResult.success
-            ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-            : 'border-rose-200 bg-rose-50 text-rose-900'
-            }`}
+          className={`absolute top-16 right-4 z-50 flex items-center gap-2.5 rounded-lg border p-3 text-xs font-medium shadow-lg transition-all animate-in fade-in slide-in-from-top-2 ${
+            deployResult.success
+              ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+              : 'border-rose-200 bg-rose-50 text-rose-900'
+          }`}
         >
           {deployResult.success ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
@@ -208,7 +212,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>{deployResult.message}</span>
           <button
             onClick={() => setDeployResult(null)}
-            className="text-xs font-bold underline ml-2 text-slate-700 hover:text-slate-950"
+            className="text-xs font-semibold underline ml-2 text-slate-700 hover:text-slate-950 cursor-pointer"
           >
             Tutup
           </button>

@@ -462,7 +462,6 @@ export const BioLinkEditor: React.FC = () => {
             })
             .eq('id', settings.id);
           if (error) {
-            // fallback if social_links column not yet migrated
             await supabase
               .from('biolink_settings')
               .update({
@@ -508,8 +507,8 @@ export const BioLinkEditor: React.FC = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-        <RefreshCw className="w-8 h-8 text-[#22416D] animate-spin" />
-        <span className="text-sm font-semibold text-slate-500">Memuat data Bio Link...</span>
+        <RefreshCw className="w-6 h-6 text-[#1B365D] animate-spin" />
+        <span className="text-xs font-medium text-slate-500">Memuat data Bio Link...</span>
       </div>
     );
   }
@@ -517,31 +516,30 @@ export const BioLinkEditor: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-[28px] border border-slate-200/90 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900">
               Bio Link Manager
             </h1>
-            <Badge variant="outline" className="text-xs font-semibold bg-blue-50 text-[#22416D] border-blue-200 rounded-full px-2.5">
+            <Badge variant="outline" className="text-xs font-semibold bg-slate-50 text-[#1B365D] border-slate-200 rounded-md px-2">
               bio.binaproject.id
             </Badge>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Kelola daftar tautan resmi, profil brand, dan pantau statistik klik pengunjung.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button
-            pill
             variant="outline"
             size="sm"
             onClick={fetchData}
             title="Muat Ulang Data"
-            className="flex items-center gap-1.5 px-4"
+            className="flex items-center gap-1.5 px-3 h-8 text-xs font-medium rounded-lg"
           >
-            <RefreshCw className="w-4 h-4 text-slate-500" />
+            <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
             <span>Segarkan</span>
           </Button>
 
@@ -549,7 +547,7 @@ export const BioLinkEditor: React.FC = () => {
             href="https://bio.binaproject.id"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 h-10 rounded-full px-4.5 text-xs font-bold bg-[#22416D] text-white hover:bg-[#1A3356] transition-colors shadow-xs cursor-pointer"
+            className="inline-flex items-center justify-center gap-1.5 h-8 rounded-lg px-3.5 text-xs font-semibold bg-[#1B365D] text-white hover:bg-[#132845] transition-colors shadow-xs cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>Buka bio.binaproject.id</span>
@@ -559,66 +557,66 @@ export const BioLinkEditor: React.FC = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-5 flex items-center gap-4 bg-white border-0 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700">
-            <Link2 className="w-6 h-6" />
+        <Card className="p-4 flex items-center gap-3.5 bg-white border border-slate-200/80 rounded-xl shadow-xs">
+          <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 shrink-0">
+            <Link2 className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Tautan</p>
-            <p className="text-2xl font-black text-slate-900 mt-0.5 font-mono">{links.length}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Tautan</p>
+            <p className="text-xl font-semibold text-slate-900 mt-0.5 font-mono tabular-nums">{links.length}</p>
           </div>
         </Card>
 
-        <Card className="p-5 flex items-center gap-4 bg-white border-0 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <Eye className="w-6 h-6" />
+        <Card className="p-4 flex items-center gap-3.5 bg-white border border-slate-200/80 rounded-xl shadow-xs">
+          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <Eye className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tautan Aktif</p>
-            <p className="text-2xl font-black text-emerald-600 mt-0.5 font-mono">{activeCount}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tautan Aktif</p>
+            <p className="text-xl font-semibold text-emerald-600 mt-0.5 font-mono tabular-nums">{activeCount}</p>
           </div>
         </Card>
 
-        <Card className="p-5 flex items-center gap-4 bg-white border-0 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-[#F68A0A] flex items-center justify-center">
-            <BarChart3 className="w-6 h-6" />
+        <Card className="p-4 flex items-center gap-3.5 bg-white border border-slate-200/80 rounded-xl shadow-xs">
+          <div className="w-10 h-10 rounded-lg bg-amber-50 text-[#F68A0A] flex items-center justify-center shrink-0">
+            <BarChart3 className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Klik</p>
-            <p className="text-2xl font-black text-[#F68A0A] mt-0.5 font-mono">{totalClicks}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Klik</p>
+            <p className="text-xl font-semibold text-[#F68A0A] mt-0.5 font-mono tabular-nums">{totalClicks}</p>
           </div>
         </Card>
       </div>
 
-      {/* Main Grid: Management Panel (Left) & Mobile Mockup Preview (Right) */}
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Management Controls (8 cols) */}
-        <div className="lg:col-span-7 space-y-6">
+        {/* Left Column: Management Controls (7 cols) */}
+        <div className="lg:col-span-7 space-y-5">
           {/* Profile & Branding Settings */}
-          <Card className="border-0 bg-white rounded-[28px] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-            <CardHeader className="pb-4 border-b border-slate-100">
-              <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-[#22416D]" />
+          <Card className="border border-slate-200 bg-white rounded-xl shadow-xs overflow-hidden">
+            <CardHeader className="pb-3 border-b border-slate-100">
+              <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                <Building2 className="w-4 h-4 text-[#1B365D]" />
                 Pengaturan Profil & Identitas Brand
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
                 Nama dan deskripsi yang tampil di bagian atas halaman bio link.
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-4 space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700">Nama Profil / Brand</label>
+            <CardContent className="pt-3.5 space-y-3.5">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-700">Nama Profil / Brand</label>
                 <Input
-                  pill
                   value={editProfileName}
                   onChange={(e) => setEditProfileName(e.target.value)}
                   placeholder="Contoh: Bina Project"
+                  className="rounded-lg h-9 text-xs"
                 />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-slate-700">Tagline / Deskripsi Singkat</label>
+                  <label className="text-xs font-semibold text-slate-700">Tagline / Deskripsi Singkat</label>
                   <span className="text-[10px] text-slate-400 font-medium">Bisa ditekan Enter untuk baris baru</span>
                 </div>
                 <textarea
@@ -626,17 +624,16 @@ export const BioLinkEditor: React.FC = () => {
                   onChange={(e) => setEditTagline(e.target.value)}
                   placeholder="Contoh:&#10;Jasa Konstruksi & Interior Terpercaya&#10;Melayani Area Malang & Sekitarnya"
                   rows={3}
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30 focus:border-[#22416D] transition-all resize-y leading-relaxed font-sans shadow-xs"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1B365D]/20 focus:border-[#1B365D] transition-all resize-y leading-relaxed font-sans shadow-2xs"
                 />
               </div>
 
               <div className="flex justify-end pt-1">
                 <Button
-                  pill
                   onClick={handleSaveSettings}
                   disabled={saving}
                   size="sm"
-                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold px-5"
+                  className="bg-[#1B365D] hover:bg-[#132845] text-white flex items-center gap-1.5 font-semibold px-4 rounded-lg h-8 text-xs"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>{saving ? 'Menyimpan...' : 'Simpan Profil'}</span>
@@ -646,11 +643,11 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
 
           {/* Links Management Panel */}
-          <Card className="border-0 bg-white rounded-[28px] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-            <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
+          <Card className="border border-slate-200 bg-white rounded-xl shadow-xs overflow-hidden">
+            <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <Link2 className="w-4 h-4 text-[#22416D]" />
+                <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                  <Link2 className="w-4 h-4 text-[#1B365D]" />
                   Daftar Tombol Tautan
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-500 mt-0.5">
@@ -660,10 +657,9 @@ export const BioLinkEditor: React.FC = () => {
 
               {!showAddForm && (
                 <Button
-                  pill
                   onClick={() => setShowAddForm(true)}
                   size="sm"
-                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold shadow-xs px-4"
+                  className="bg-[#1B365D] hover:bg-[#132845] text-white flex items-center gap-1.5 font-semibold shadow-xs px-3.5 rounded-lg h-8 text-xs"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Tambah Link</span>
@@ -671,19 +667,19 @@ export const BioLinkEditor: React.FC = () => {
               )}
             </CardHeader>
 
-            <CardContent className="pt-4 space-y-4">
+            <CardContent className="pt-3.5 space-y-3.5">
               {/* Form Tambah Link Baru */}
               {showAddForm && (
-                <div className="p-4.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3.5 animate-fadeIn">
+                <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 space-y-3 animate-fadeIn">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                      <Plus className="w-3.5 h-3.5 text-[#22416D]" />
+                    <span className="text-xs font-semibold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                      <Plus className="w-3.5 h-3.5 text-[#1B365D]" />
                       Tambah Tautan Baru
                     </span>
                     <button
                       type="button"
                       onClick={() => setShowAddForm(false)}
-                      className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
+                      className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -691,50 +687,47 @@ export const BioLinkEditor: React.FC = () => {
 
                   <div className="space-y-2.5">
                     <div>
-                      <label className="text-xs font-bold text-slate-600 block mb-1">Judul Tombol</label>
+                      <label className="text-xs font-semibold text-slate-600 block mb-1">Judul Tombol</label>
                       <Input
-                        pill
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
                         placeholder="Contoh: Konsultasi Gratis via WhatsApp"
-                        className="bg-white"
+                        className="bg-white rounded-lg h-8.5 text-xs"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-slate-600 block mb-1">Tujuan URL</label>
+                      <label className="text-xs font-semibold text-slate-600 block mb-1">Tujuan URL</label>
                       <Input
-                        pill
                         value={newUrl}
                         onChange={(e) => setNewUrl(e.target.value)}
                         placeholder="Contoh: https://wa.me/6281335335304"
-                        className="bg-white"
+                        className="bg-white rounded-lg h-8.5 text-xs"
                       />
                     </div>
 
                     <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="text-xs font-bold text-slate-700">Pilih Ikon</label>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-xs font-semibold text-slate-700">Pilih Ikon</label>
                         <button
                           type="button"
                           onClick={() => {
                             setPickerTarget('new');
                             setPickerOpen(true);
                           }}
-                          className="text-xs font-bold text-[#22416D] hover:underline flex items-center gap-1 cursor-pointer"
+                          className="text-xs font-semibold text-[#1B365D] hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <span>Buka 1.800+ Ikon Lucide →</span>
                         </button>
                       </div>
 
                       {/* Selected Icon Trigger Display */}
-                      <div className="flex items-center gap-2.5 mb-2.5 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-                        <div className="w-8 h-8 rounded-xl bg-[#22416D] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                          {React.createElement(resolveLucideIcon(newIcon), { className: 'w-4 h-4' })}
+                      <div className="flex items-center gap-2 mb-2 p-2 rounded-lg bg-white border border-slate-200">
+                        <div className="w-7 h-7 rounded-md bg-[#1B365D] text-white flex items-center justify-center shrink-0">
+                          {React.createElement(resolveLucideIcon(newIcon), { className: 'w-3.5 h-3.5' })}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-bold text-slate-900 truncate">Ikon Terpilih: {newIcon}</p>
-                          <p className="text-xs text-slate-500 font-medium">Klik preset cepat atau jelajahi katalog 1.800+ ikon</p>
+                          <p className="text-xs font-semibold text-slate-900 truncate">Ikon Terpilih: {newIcon}</p>
                         </div>
                         <button
                           type="button"
@@ -742,7 +735,7 @@ export const BioLinkEditor: React.FC = () => {
                             setPickerTarget('new');
                             setPickerOpen(true);
                           }}
-                          className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer shadow-2xs"
+                          className="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
                         >
                           Cari Ikon
                         </button>
@@ -758,9 +751,9 @@ export const BioLinkEditor: React.FC = () => {
                               key={p.id}
                               type="button"
                               onClick={() => setNewIcon(p.id)}
-                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all text-left cursor-pointer ${
+                              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border transition-all text-left cursor-pointer ${
                                 isSelected
-                                  ? 'bg-[#22416D] text-white border-[#22416D] shadow-xs'
+                                  ? 'bg-[#1B365D] text-white border-[#1B365D] shadow-2xs'
                                   : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
                               }`}
                             >
@@ -774,7 +767,6 @@ export const BioLinkEditor: React.FC = () => {
 
                     <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200/80">
                       <Button
-                        pill
                         variant="outline"
                         size="sm"
                         onClick={() => {
@@ -782,16 +774,15 @@ export const BioLinkEditor: React.FC = () => {
                           setNewTitle('');
                           setNewUrl('');
                         }}
-                        className="px-4 text-xs font-semibold"
+                        className="px-3 rounded-lg h-8 text-xs font-medium"
                       >
                         Batal
                       </Button>
                       <Button
-                        pill
                         size="sm"
                         onClick={handleAddLink}
                         disabled={saving || !newTitle.trim() || !newUrl.trim()}
-                        className="bg-[#22416D] hover:bg-[#1A3356] text-white font-bold px-4"
+                        className="bg-[#1B365D] hover:bg-[#132845] text-white font-semibold px-3.5 rounded-lg h-8 text-xs"
                       >
                         {saving ? 'Menyimpan...' : 'Simpan Tautan'}
                       </Button>
@@ -801,7 +792,7 @@ export const BioLinkEditor: React.FC = () => {
               )}
 
               {/* List of Links */}
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {links.map((link, index) => {
                   const isEditing = editingId === link.id;
 
@@ -813,11 +804,11 @@ export const BioLinkEditor: React.FC = () => {
                       onDragEnter={() => handleDragEnter(index)}
                       onDragEnd={handleDragEnd}
                       onDragOver={(e) => e.preventDefault()}
-                      className={`group flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${
+                      className={`group flex items-center gap-2.5 p-3 rounded-lg border transition-all ${
                         isEditing
-                          ? 'bg-blue-50/50 border-[#22416D] shadow-xs'
+                          ? 'bg-slate-50 border-[#1B365D] shadow-2xs'
                           : link.is_active
-                          ? 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
+                          ? 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
                           : 'bg-slate-50/80 border-dashed border-slate-200 opacity-60'
                       }`}
                     >
@@ -850,49 +841,47 @@ export const BioLinkEditor: React.FC = () => {
 
                       {/* Content / Inline Edit Form */}
                       {isEditing ? (
-                        <div className="flex-1 space-y-2.5 py-1">
+                        <div className="flex-1 space-y-2 py-0.5">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div>
-                              <label className="text-[11px] font-bold text-slate-600 block mb-1">Judul</label>
+                              <label className="text-[11px] font-semibold text-slate-600 block mb-1">Judul</label>
                               <Input
-                                pill
                                 value={editTitle}
                                 onChange={(e) => setEditTitle(e.target.value)}
-                                className="bg-white"
+                                className="bg-white rounded-lg h-8 text-xs"
                               />
                             </div>
                             <div>
-                              <label className="text-[11px] font-bold text-slate-600 block mb-1">URL</label>
+                              <label className="text-[11px] font-semibold text-slate-600 block mb-1">URL</label>
                               <Input
-                                pill
                                 value={editUrl}
                                 onChange={(e) => setEditUrl(e.target.value)}
-                                className="bg-white"
+                                className="bg-white rounded-lg h-8 text-xs"
                               />
                             </div>
                           </div>
 
                           <div>
-                            <div className="flex items-center justify-between mb-1.5">
-                              <label className="text-xs font-bold text-slate-700">Pilih Ikon</label>
+                            <div className="flex items-center justify-between mb-1">
+                              <label className="text-xs font-semibold text-slate-700">Pilih Ikon</label>
                               <button
                                 type="button"
                                 onClick={() => {
                                   setPickerTarget('edit');
                                   setPickerOpen(true);
                                 }}
-                                className="text-xs font-bold text-[#22416D] hover:underline flex items-center gap-1 cursor-pointer"
+                                className="text-xs font-semibold text-[#1B365D] hover:underline flex items-center gap-1 cursor-pointer"
                               >
                                 <span>Katalog 1.800+ Ikon →</span>
                               </button>
                             </div>
 
                             {/* Active Icon Display */}
-                            <div className="flex items-center gap-2.5 mb-2 p-2 rounded-xl bg-slate-50 border border-slate-200">
-                              <div className="w-7 h-7 rounded-lg bg-[#22416D] text-white flex items-center justify-center shrink-0">
-                                {React.createElement(resolveLucideIcon(editIcon), { className: 'w-3.5 h-3.5' })}
+                            <div className="flex items-center gap-2 mb-1.5 p-1.5 rounded-lg bg-white border border-slate-200">
+                              <div className="w-6 h-6 rounded-md bg-[#1B365D] text-white flex items-center justify-center shrink-0">
+                                {React.createElement(resolveLucideIcon(editIcon), { className: 'w-3 h-3' })}
                               </div>
-                              <span className="text-xs font-bold text-slate-800 flex-1 truncate">
+                              <span className="text-xs font-semibold text-slate-800 flex-1 truncate">
                                 {editIcon}
                               </span>
                               <button
@@ -901,7 +890,7 @@ export const BioLinkEditor: React.FC = () => {
                                   setPickerTarget('edit');
                                   setPickerOpen(true);
                                 }}
-                                className="px-3 py-1 rounded-full text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer"
+                                className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
                               >
                                 Ganti
                               </button>
@@ -917,9 +906,9 @@ export const BioLinkEditor: React.FC = () => {
                                     key={p.id}
                                     type="button"
                                     onClick={() => setEditIcon(p.id)}
-                                    className={`px-3 py-1 rounded-full text-xs font-medium border flex items-center gap-1 cursor-pointer ${
+                                    className={`px-2.5 py-0.5 rounded-md text-xs font-medium border flex items-center gap-1 cursor-pointer ${
                                       isSelected
-                                        ? 'bg-[#22416D] text-white border-[#22416D]'
+                                        ? 'bg-[#1B365D] text-white border-[#1B365D]'
                                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                                     }`}
                                   >
@@ -933,20 +922,18 @@ export const BioLinkEditor: React.FC = () => {
 
                           <div className="flex justify-end gap-1.5 pt-1">
                             <Button
-                              pill
                               variant="outline"
                               size="sm"
                               onClick={() => setEditingId(null)}
-                              className="h-8 px-3 text-xs font-semibold"
+                              className="h-7 px-2.5 text-xs font-medium rounded-md"
                             >
                               <X className="w-3 h-3 mr-1" /> Batal
                             </Button>
                             <Button
-                              pill
                               size="sm"
                               onClick={handleSaveEdit}
                               disabled={saving || !editTitle.trim() || !editUrl.trim()}
-                              className="h-8 px-3 text-xs bg-[#22416D] text-white font-bold"
+                              className="h-7 px-3 text-xs bg-[#1B365D] text-white font-semibold rounded-md"
                             >
                               <Check className="w-3 h-3 mr-1" /> Simpan
                             </Button>
@@ -956,56 +943,56 @@ export const BioLinkEditor: React.FC = () => {
                         <>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-slate-900 text-sm truncate">
+                              <span className="font-semibold text-slate-900 text-xs truncate">
                                 {link.title}
                               </span>
                               {!link.is_active && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">
+                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
                                   Nonaktif
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-slate-400 truncate mt-0.5">{link.url}</p>
+                            <p className="text-[11px] text-slate-400 truncate mt-0.5">{link.url}</p>
                           </div>
 
                           {/* Stats Badge */}
                           <div className="shrink-0 text-right">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-50 text-[#F68A0A] border border-amber-200/60">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-semibold bg-amber-50 text-[#F68A0A] border border-amber-200/60">
                               {link.click_count || 0} klik
                             </span>
                           </div>
 
                           {/* Action Buttons */}
-                          <div className="flex items-center gap-1 shrink-0">
+                          <div className="flex items-center gap-0.5 shrink-0">
                             <button
                               type="button"
                               onClick={() => handleToggleActive(link.id, link.is_active)}
                               title={link.is_active ? 'Nonaktifkan tautan' : 'Aktifkan tautan'}
-                              className={`p-1.5 rounded-lg transition-colors ${
+                              className={`p-1.5 rounded-md transition-colors ${
                                 link.is_active
                                   ? 'text-emerald-600 hover:bg-emerald-50'
                                   : 'text-slate-400 hover:bg-slate-100'
                               }`}
                             >
-                              {link.is_active ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                              {link.is_active ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
                             </button>
 
                             <button
                               type="button"
                               onClick={() => handleStartEdit(link)}
                               title="Edit Tautan"
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                              className="p-1.5 rounded-md text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                             >
-                              <Edit2 className="w-4 h-4" />
+                              <Edit2 className="w-3.5 h-3.5" />
                             </button>
 
                             <button
                               type="button"
                               onClick={() => handleDeleteLink(link.id, link.title)}
                               title="Hapus Tautan"
-                              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                              className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
                         </>
@@ -1015,17 +1002,16 @@ export const BioLinkEditor: React.FC = () => {
                 })}
 
                 {links.length === 0 && !showAddForm && (
-                  <div className="text-center py-12 px-4 rounded-2xl border-2 border-dashed border-slate-200">
-                    <Link2 className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                    <p className="text-sm font-bold text-slate-700">Belum ada tautan bio</p>
-                    <p className="text-xs text-slate-400 mt-1 mb-4">
+                  <div className="text-center py-10 px-4 rounded-lg border-2 border-dashed border-slate-200">
+                    <Link2 className="w-7 h-7 text-slate-300 mx-auto mb-2" />
+                    <p className="text-xs font-semibold text-slate-700">Belum ada tautan bio</p>
+                    <p className="text-[11px] text-slate-400 mt-0.5 mb-3">
                       Tambahkan tautan WhatsApp, Website, atau Portofolio untuk bio profil Anda.
                     </p>
                     <Button
-                      pill
                       size="sm"
                       onClick={() => setShowAddForm(true)}
-                      className="bg-[#22416D] text-white font-bold px-4"
+                      className="bg-[#1B365D] text-white font-semibold px-3.5 rounded-lg h-8 text-xs"
                     >
                       <Plus className="w-3.5 h-3.5 mr-1" /> Tambah Tautan Pertama
                     </Button>
@@ -1036,11 +1022,11 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
 
           {/* Social Media Links Card */}
-          <Card className="border-0 bg-white rounded-[28px] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-            <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
+          <Card className="border border-slate-200 bg-white rounded-xl shadow-xs overflow-hidden">
+            <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <Share2 className="w-4 h-4 text-[#22416D]" />
+                <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                  <Share2 className="w-4 h-4 text-[#1B365D]" />
                   Pengaturan Akun Media Sosial
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-500 mt-0.5">
@@ -1050,11 +1036,10 @@ export const BioLinkEditor: React.FC = () => {
 
               {!showAddSocial && (
                 <Button
-                  pill
                   onClick={() => setShowAddSocial(true)}
                   size="sm"
                   variant="outline"
-                  className="text-xs flex items-center gap-1 font-semibold px-4"
+                  className="text-xs flex items-center gap-1 font-medium px-3 rounded-lg h-8"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Tambah Akun</span>
@@ -1062,18 +1047,18 @@ export const BioLinkEditor: React.FC = () => {
               )}
             </CardHeader>
 
-            <CardContent className="pt-4 space-y-4">
+            <CardContent className="pt-3.5 space-y-3.5">
               {/* Form Tambah Social Baru */}
               {showAddSocial && (
-                <div className="p-4.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 animate-fadeIn">
+                <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 space-y-3 animate-fadeIn">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-slate-800 uppercase tracking-wider">
                       Tambah Akun Media Sosial
                     </span>
                     <button
                       type="button"
                       onClick={() => setShowAddSocial(false)}
-                      className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
+                      className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -1081,21 +1066,20 @@ export const BioLinkEditor: React.FC = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <div>
-                      <label className="text-xs font-bold text-slate-600 block mb-1">Nama Platform</label>
+                      <label className="text-xs font-semibold text-slate-600 block mb-1">Nama Platform</label>
                       <Input
-                        pill
                         value={newSocialPlatform}
                         onChange={(e) => setNewSocialPlatform(e.target.value)}
                         placeholder="Contoh: WhatsApp, Instagram"
-                        className="bg-white"
+                        className="bg-white rounded-lg h-8.5 text-xs"
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-slate-600 block mb-1">Pilih Ikon</label>
+                      <label className="text-xs font-semibold text-slate-600 block mb-1">Pilih Ikon</label>
                       <select
                         value={newSocialIcon}
                         onChange={(e) => setNewSocialIcon(e.target.value)}
-                        className="w-full h-11 rounded-full border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30"
+                        className="w-full h-8.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#1B365D]/20"
                       >
                         <option value="whatsapp">WhatsApp</option>
                         <option value="instagram">Instagram</option>
@@ -1107,31 +1091,28 @@ export const BioLinkEditor: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-slate-600 block mb-1">URL Profil / Kontak</label>
+                    <label className="text-xs font-semibold text-slate-600 block mb-1">URL Profil / Kontak</label>
                     <Input
-                      pill
                       value={newSocialUrl}
                       onChange={(e) => setNewSocialUrl(e.target.value)}
                       placeholder="https://wa.me/6281335335304"
-                      className="bg-white"
+                      className="bg-white rounded-lg h-8.5 text-xs"
                     />
                   </div>
 
                   <div className="flex justify-end gap-2 pt-1">
                     <Button
-                      pill
                       variant="outline"
                       size="sm"
                       onClick={() => setShowAddSocial(false)}
-                      className="px-4 text-xs font-semibold"
+                      className="px-3 rounded-lg h-8 text-xs font-medium"
                     >
                       Batal
                     </Button>
                     <Button
-                      pill
                       size="sm"
                       onClick={handleAddSocial}
-                      className="px-4 text-xs bg-[#22416D] text-white font-bold"
+                      className="px-3.5 rounded-lg h-8 text-xs bg-[#1B365D] text-white font-semibold"
                     >
                       Tambahkan
                     </Button>
@@ -1140,57 +1121,56 @@ export const BioLinkEditor: React.FC = () => {
               )}
 
               {/* Daftar Akun Social Media */}
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {socials.map((s, idx) => (
                   <div
                     key={s.platform + idx}
-                    className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${
+                    className={`flex items-center gap-2.5 p-3 rounded-lg border transition-all ${
                       s.is_active
-                        ? 'bg-white border-slate-200 shadow-xs'
+                        ? 'bg-white border-slate-200 shadow-2xs'
                         : 'bg-slate-50/70 border-dashed border-slate-200 opacity-60'
                     }`}
                   >
-                    <div className="w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-xs">
-                      <SocialPreviewIcon name={s.icon} className="w-4 h-4 text-white fill-white" />
+                    <div className="w-8 h-8 rounded-md bg-[#1B365D] flex items-center justify-center text-white shrink-0 shadow-2xs">
+                      <SocialPreviewIcon name={s.icon} className="w-3.5 h-3.5 text-white fill-white" />
                     </div>
 
                     <div className="flex-1 min-w-0 space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-slate-900">{s.platform}</span>
+                        <span className="text-xs font-semibold text-slate-900">{s.platform}</span>
                         {!s.is_active && (
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">
+                          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">
                             Nonaktif
                           </span>
                         )}
                       </div>
                       <Input
-                        pill
                         value={s.url}
                         onChange={(e) => handleUpdateSocialUrl(idx, e.target.value)}
                         placeholder="https://..."
-                        className="bg-slate-50/50"
+                        className="bg-slate-50 h-7 text-xs rounded-md"
                       />
                     </div>
 
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-0.5 shrink-0">
                       <button
                         type="button"
                         onClick={() => handleToggleSocial(idx)}
                         title={s.is_active ? 'Nonaktifkan' : 'Aktifkan'}
-                        className={`p-1.5 rounded-lg transition-colors ${
+                        className={`p-1.5 rounded-md transition-colors ${
                           s.is_active ? 'text-emerald-600 hover:bg-emerald-50' : 'text-slate-400 hover:bg-slate-100'
                         }`}
                       >
-                        {s.is_active ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        {s.is_active ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
                       </button>
 
                       <button
                         type="button"
                         onClick={() => handleDeleteSocial(idx)}
                         title="Hapus"
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                        className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -1199,11 +1179,10 @@ export const BioLinkEditor: React.FC = () => {
 
               <div className="flex justify-end pt-2 border-t border-slate-100">
                 <Button
-                  pill
                   onClick={handleSaveSocials}
                   disabled={savingSocials}
                   size="sm"
-                  className="bg-[#22416D] hover:bg-[#1A3356] text-white flex items-center gap-1.5 font-bold px-5"
+                  className="bg-[#1B365D] hover:bg-[#132845] text-white flex items-center gap-1.5 font-semibold px-4 rounded-lg h-8 text-xs"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>{savingSocials ? 'Menyimpan...' : 'Simpan Media Sosial'}</span>
@@ -1213,40 +1192,36 @@ export const BioLinkEditor: React.FC = () => {
           </Card>
         </div>
 
-        {/* Right Column: Live Mobile Mockup Preview (1:1 with Bio Link) */}
+        {/* Right Column: Live Mobile Mockup Preview */}
         <div className="lg:col-span-5 sticky top-6">
-          <Card className="border-0 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow rounded-[28px]">
-            <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
+          <Card className="border border-slate-200 bg-white overflow-hidden shadow-xs rounded-xl">
+            <CardHeader className="pb-2.5 border-b border-slate-100 flex flex-row items-center justify-between">
               <div className="flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-[#22416D]" />
-                <CardTitle className="text-sm font-bold text-slate-900">Live Preview 1:1</CardTitle>
+                <Smartphone className="w-4 h-4 text-[#1B365D]" />
+                <CardTitle className="text-xs font-semibold text-slate-900">Live Preview 1:1</CardTitle>
               </div>
-              <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+              <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
                 Pratinjau Mobile
               </span>
             </CardHeader>
 
             <CardContent className="p-4 bg-slate-100 flex justify-center">
-              {/* Phone Frame Mockup - 1:1 Bio Link Replica */}
+              {/* Phone Frame Mockup */}
               <div
-                className="w-[340px] sm:w-[350px] rounded-[42px] border-[8px] border-slate-800 shadow-2xl p-4 flex flex-col items-center min-h-[660px] text-white relative overflow-hidden select-none"
+                className="w-[320px] sm:w-[330px] rounded-[36px] border-[6px] border-slate-800 shadow-xl p-4 flex flex-col items-center min-h-[620px] text-white relative overflow-hidden select-none"
                 style={{
-                  background: 'radial-gradient(circle at 50% 15%, #152B49 0%, #0E1E38 45%, #070F1E 100%)',
+                  background: 'radial-gradient(circle at 50% 15%, #1B365D 0%, #11223B 45%, #0B1729 100%)',
                 }}
               >
-                {/* Ambient particle star dots */}
-                <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]" />
-                <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#152B49] rounded-full blur-2xl pointer-events-none opacity-60" />
-
-                {/* Speaker Notch / Island */}
-                <div className="w-24 h-4 bg-slate-900/90 rounded-full mb-5 z-20" />
+                {/* Speaker Notch */}
+                <div className="w-20 h-3.5 bg-slate-900/90 rounded-full mb-4 z-20" />
 
                 {/* Profile Brand Logo */}
-                <div className="relative z-10 w-[84px] h-[60px] mb-3 flex items-center justify-center">
+                <div className="relative z-10 w-[72px] h-[52px] mb-2.5 flex items-center justify-center">
                   <img
                     src="/logo.webp"
                     alt="Logo"
-                    className="w-[84px] h-[60px] object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)]"
+                    className="w-[72px] h-[52px] object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/assets/img/favicons/favicon.ico';
                     }}
@@ -1254,18 +1229,18 @@ export const BioLinkEditor: React.FC = () => {
                 </div>
 
                 {/* Profile Title & Tagline */}
-                <div className="text-center z-10 mb-5 px-3 w-full">
-                  <h3 className="font-extrabold text-[15px] tracking-tight text-white flex items-center justify-center gap-1.5">
+                <div className="text-center z-10 mb-4 px-3 w-full">
+                  <h3 className="font-semibold text-sm tracking-tight text-white flex items-center justify-center gap-1.5">
                     <span>{editProfileName || 'Bina Project'}</span>
-                    <CheckCircle2 className="w-4 h-4 text-white fill-white/20 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white fill-white/20 shrink-0" />
                   </h3>
-                  <p className="text-[11.5px] text-white/70 mt-1 whitespace-pre-line leading-relaxed">
+                  <p className="text-[11px] text-white/75 mt-1 whitespace-pre-line leading-relaxed font-normal">
                     {editTagline || 'Jasa Konstruksi & Interior Terpercaya di Malang'}
                   </p>
                 </div>
 
                 {/* 1:1 Glass Pill Buttons List */}
-                <div className="w-full space-y-2.5 z-10 flex-1 overflow-y-auto pr-0.5 scrollbar-none">
+                <div className="w-full space-y-2 z-10 flex-1 overflow-y-auto pr-0.5 scrollbar-none">
                   {links
                     .filter((l) => l.is_active)
                     .map((link) => {
@@ -1277,36 +1252,27 @@ export const BioLinkEditor: React.FC = () => {
 
                       return (
                         <div key={link.id} className="relative w-full group select-none">
-                          {/* Ambient Underneath Shadow */}
                           <div
-                            className="absolute inset-0 rounded-full pointer-events-none opacity-50 blur-[8px] transition-all group-hover:opacity-100 group-hover:blur-[10px]"
+                            className="relative z-10 w-full min-h-[46px] flex items-center justify-center px-4 py-2.5 rounded-full cursor-pointer transition-all duration-200 group-hover:-translate-y-0.5 group-hover:bg-white/15"
                             style={{
-                              background:
-                                'radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.18), transparent 70%)',
-                            }}
-                          />
-                          {/* Main Glass Pill Button */}
-                          <div
-                            className="relative z-10 w-full min-h-[50px] flex items-center justify-center px-4 py-3 rounded-full cursor-pointer transition-all duration-200 group-hover:-translate-y-0.5 group-hover:bg-white/15"
-                            style={{
-                              background: 'rgba(255, 255, 255, 0.08)',
-                              backdropFilter: 'blur(18px)',
-                              WebkitBackdropFilter: 'blur(18px)',
+                              background: 'rgba(255, 255, 255, 0.09)',
+                              backdropFilter: 'blur(16px)',
+                              WebkitBackdropFilter: 'blur(16px)',
                               boxShadow:
-                                'inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.25)',
+                                'inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2), 0 3px 12px rgba(0, 0, 0, 0.2)',
                             }}
                           >
                             {/* Left Pinned Icon */}
-                            <div className="absolute left-4 flex items-center justify-center pointer-events-none">
-                              <IconCmp className="w-4 h-4 text-white shrink-0 group-hover:scale-110 transition-transform" />
+                            <div className="absolute left-3.5 flex items-center justify-center pointer-events-none">
+                              <IconCmp className="w-3.5 h-3.5 text-white shrink-0 group-hover:scale-105 transition-transform" />
                             </div>
                             {/* Centered Title */}
-                            <span className="font-semibold text-xs text-white tracking-normal text-center px-7 truncate">
+                            <span className="font-semibold text-xs text-white tracking-normal text-center px-6 truncate">
                               {cleanTitle}
                             </span>
                             {/* Right Pinned Arrow */}
-                            <div className="absolute right-4 flex items-center justify-center pointer-events-none">
-                              <ArrowUpRight className="w-3.5 h-3.5 text-white/60 shrink-0 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                            <div className="absolute right-3.5 flex items-center justify-center pointer-events-none">
+                              <ArrowUpRight className="w-3 h-3 text-white/60 shrink-0 group-hover:text-white transition-transform" />
                             </div>
                           </div>
                         </div>
@@ -1314,40 +1280,39 @@ export const BioLinkEditor: React.FC = () => {
                     })}
 
                   {links.filter((l) => l.is_active).length === 0 && (
-                    <div className="text-center py-8 text-white/50 text-xs bg-white/5 rounded-2xl">
+                    <div className="text-center py-6 text-white/50 text-xs bg-white/5 rounded-xl">
                       Belum ada link aktif.
                     </div>
                   )}
                 </div>
 
-                {/* 1:1 Social Media Bar (Without YouTube) */}
-                <div className="flex items-center justify-center gap-2.5 mt-5 mb-2 z-10">
+                {/* Social Media Bar */}
+                <div className="flex items-center justify-center gap-2 mt-4 mb-1.5 z-10">
                   {socials
                     .filter((s) => s.is_active !== false)
                     .map((s) => (
                       <div
                         key={s.platform}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-white transition-all hover:scale-110 cursor-pointer shadow-md"
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-white transition-all hover:scale-105 cursor-pointer shadow-sm"
                         style={{
-                          background: 'rgba(255, 255, 255, 0.08)',
-                          backdropFilter: 'blur(10px)',
-                          WebkitBackdropFilter: 'blur(10px)',
-                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                          background: 'rgba(255, 255, 255, 0.09)',
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
                         }}
                         title={s.platform}
                       >
-                        <SocialPreviewIcon name={s.icon} className="w-3.5 h-3.5 text-white fill-white" />
+                        <SocialPreviewIcon name={s.icon} className="w-3 h-3 text-white fill-white" />
                       </div>
                     ))}
                 </div>
 
-                {/* 1:1 Phone Footer */}
-                <div className="z-10 text-center text-xs text-white/50 pt-3 pb-1">
+                {/* Phone Footer */}
+                <div className="z-10 text-center text-[10px] text-white/50 pt-2 pb-0.5">
                   <p>© 2026 Bina Project</p>
                 </div>
 
                 {/* Home Indicator bar */}
-                <div className="w-24 h-1 bg-slate-700 rounded-full mt-2 z-10" />
+                <div className="w-20 h-1 bg-slate-700 rounded-full mt-1.5 z-10" />
               </div>
             </CardContent>
           </Card>

@@ -59,7 +59,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         autolink: true,
         defaultProtocol: 'https',
         HTMLAttributes: {
-          class: 'text-[#22416D] underline font-medium hover:text-[#1B3457]',
+          class: 'text-[#1B365D] underline font-medium hover:text-[#132845]',
         },
       }),
     ],
@@ -132,7 +132,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     if (!editor) return;
     const calloutHtml = `
       <div class="article-callout" style="background:#F0FDF4; border-left:4px solid #10B981; padding:16px; border-radius:8px; margin:20px 0;">
-        <strong style="color:#065F46;">💡 Tips Ahli Bina Project:</strong>
+        <strong style="color:#065F46; font-weight:600;">💡 Tips Ahli Bina Project:</strong>
         <p style="margin-top:4px; color:#1E293B;">Tulis catatan penting, rekomendasi material, atau standar arsitektur di sini.</p>
       </div>
     `;
@@ -143,9 +143,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     if (!editor) return;
     const ctaHtml = `
       <div class="article-cta-box" style="background:linear-gradient(135deg, #F8FAFC, #EFF6FF); border:1px solid #BFDBFE; border-radius:12px; padding:24px; margin:24px 0; text-align:center;">
-        <h4 style="color:#22416D; font-size:1.25rem; font-weight:700; margin:0 0 8px 0;">Wujudkan Bangunan & Interior Impian Anda</h4>
+        <h4 style="color:#1B365D; font-size:1.25rem; font-weight:600; margin:0 0 8px 0;">Wujudkan Bangunan & Interior Impian Anda</h4>
         <p style="color:#334155; font-size:0.95rem; margin:0 0 16px 0;">Konsultasikan kebutuhan gambar 3D, RAB transparan, dan pengerjaan bergaransi bersama tim ahli Bina Project.</p>
-        <a href="/contact" style="display:inline-block; background:#22416D; color:#FFFFFF; padding:10px 20px; border-radius:8px; font-weight:600; text-decoration:none;">Konsultasi Gratis Sekarang</a>
+        <a href="/contact" style="display:inline-block; background:#1B365D; color:#FFFFFF; padding:10px 20px; border-radius:8px; font-weight:600; text-decoration:none;">Konsultasi Gratis Sekarang</a>
       </div>
     `;
     editor.chain().focus().insertContent(ctaHtml).run();
@@ -158,11 +158,11 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const estimatedMin = Math.max(1, Math.ceil(words / 180));
 
   return (
-    <div className="rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-xs">
+    <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-xs">
       {/* Top Header & Mode Switcher */}
       <div className="flex flex-wrap items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-900">{label}</span>
+          <span className="text-xs font-semibold text-slate-900">{label}</span>
           <span className="text-[11px] font-medium text-slate-400 hidden sm:inline">
             (Visual WYSIWYG ala WordPress & Notion)
           </span>
@@ -173,9 +173,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => handleTabChange('visual')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
               activeTab === 'visual'
-                ? 'bg-white text-[#22416D] shadow-xs'
+                ? 'bg-white text-[#1B365D] shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -185,9 +185,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => handleTabChange('code')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
               activeTab === 'code'
-                ? 'bg-white text-[#22416D] shadow-xs'
+                ? 'bg-white text-[#1B365D] shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -197,9 +197,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => handleTabChange('preview')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
               activeTab === 'preview'
-                ? 'bg-white text-[#22416D] shadow-xs'
+                ? 'bg-white text-[#1B365D] shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -217,9 +217,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <button
               type="button"
               onClick={() => editor.chain().focus().setParagraph().run()}
-              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors ${
+              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
                 editor.isActive('paragraph')
-                  ? 'bg-[#22416D] text-white shadow-2xs'
+                  ? 'bg-[#1B365D] text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
               title="Teks Paragraf Normal"
@@ -229,9 +229,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-0.5 ${
+              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-0.5 cursor-pointer ${
                 editor.isActive('heading', { level: 2 })
-                  ? 'bg-[#22416D] text-white shadow-2xs'
+                  ? 'bg-[#1B365D] text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
               title="Judul Bab (Heading 2)"
@@ -242,9 +242,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-0.5 ${
+              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-0.5 cursor-pointer ${
                 editor.isActive('heading', { level: 3 })
-                  ? 'bg-[#22416D] text-white shadow-2xs'
+                  ? 'bg-[#1B365D] text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
               title="Sub-Judul (Heading 3)"
@@ -255,9 +255,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-0.5 ${
+              className={`px-2 py-1 text-xs font-semibold rounded-md transition-colors flex items-center gap-0.5 cursor-pointer ${
                 editor.isActive('heading', { level: 4 })
-                  ? 'bg-[#22416D] text-white shadow-2xs'
+                  ? 'bg-[#1B365D] text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
               title="Sub-Poin Kecil (Heading 4)"
@@ -273,9 +273,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('bold')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Tebal (Ctrl+B)"
@@ -285,9 +285,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('italic')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Miring (Ctrl+I)"
@@ -297,9 +297,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('strike')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Coret Teks (Strikethrough)"
@@ -309,9 +309,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleCode().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('code')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Kode Inline"
@@ -325,9 +325,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('bulletList')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Daftar Poin (Bullet List)"
@@ -337,9 +337,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('orderedList')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Daftar Nomor (Numbered List)"
@@ -353,9 +353,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('blockquote')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Kutipan / Blockquote"
@@ -365,7 +365,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-700 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-700 transition-colors cursor-pointer"
             title="Garis Pembatas (Divider)"
           >
             <Minus className="w-4 h-4" />
@@ -375,9 +375,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={setLink}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               editor.isActive('link')
-                ? 'bg-[#22416D] text-white shadow-2xs'
+                ? 'bg-[#1B365D] text-white shadow-2xs'
                 : 'hover:bg-slate-100 text-slate-700'
             }`}
             title="Sisipkan Tautan URL"
@@ -388,7 +388,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <button
               type="button"
               onClick={() => editor.chain().focus().unsetLink().run()}
-              className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer"
               title="Hapus Tautan"
             >
               <Unlink className="w-4 h-4" />
@@ -401,7 +401,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={insertCalloutBox}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 transition-colors shadow-2xs cursor-pointer"
             title="Sisipkan Kotak Tips Hijau"
           >
             <Lightbulb className="w-3.5 h-3.5 text-emerald-600" />
@@ -411,7 +411,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={insertCtaBox}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200/80 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200/80 transition-colors shadow-2xs cursor-pointer"
             title="Sisipkan Box Call to Action Konsultasi"
           >
             <PhoneCall className="w-3.5 h-3.5 text-blue-600" />
@@ -422,7 +422,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={handleAutoFormat}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80 transition-colors shadow-2xs cursor-pointer"
             title="Rapikan struktur teks polos otomatis menjadi paragraf, H2, dan list"
           >
             <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
@@ -435,7 +435,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               type="button"
               onClick={() => editor.chain().focus().undo().run()}
               disabled={!editor.can().undo()}
-              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
               title="Urungkan Perubahan (Ctrl+Z)"
             >
               <Undo2 className="w-4 h-4" />
@@ -444,7 +444,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               type="button"
               onClick={() => editor.chain().focus().redo().run()}
               disabled={!editor.can().redo()}
-              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
               title="Ulangi Perubahan (Ctrl+Y)"
             >
               <Redo2 className="w-4 h-4" />
@@ -481,17 +481,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       {activeTab === 'preview' && (
         <div className="p-6 md:p-8 min-h-[400px] bg-white">
           <div className="mb-5 pb-3 border-b border-slate-100 flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Pratinjau Tampilan Live Website:
             </span>
-            <span className="text-xs font-bold text-[#22416D]">
+            <span className="text-xs font-semibold text-[#1B365D]">
               Format Desain Editorial Bina Project
             </span>
           </div>
 
           {value && value.trim() ? (
             <div
-              className="prose prose-slate max-w-none text-slate-800 space-y-4 leading-relaxed font-sans text-sm md:text-base [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h2]:border-b [&_h2]:border-slate-200 [&_h2]:pb-2 [&_h2]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-slate-800 [&_h3]:mt-4 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_blockquote]:border-l-4 [&_blockquote]:border-[#22416D] [&_blockquote]:bg-slate-50 [&_blockquote]:p-3 [&_blockquote]:rounded-r-lg"
+              className="prose prose-slate max-w-none text-slate-800 space-y-4 leading-relaxed font-sans text-sm md:text-base [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-slate-900 [&_h2]:border-b [&_h2]:border-slate-200 [&_h2]:pb-2 [&_h2]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-slate-800 [&_h3]:mt-4 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_blockquote]:border-l-4 [&_blockquote]:border-[#1B365D] [&_blockquote]:bg-slate-50 [&_blockquote]:p-3 [&_blockquote]:rounded-r-lg"
               dangerouslySetInnerHTML={{ __html: formatAndSanitizeArticleContent(value) }}
             />
           ) : (
@@ -506,17 +506,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       <div className="flex flex-wrap items-center justify-between px-4 py-2.5 border-t border-slate-200 bg-slate-50 text-xs text-slate-600 gap-2">
         <div className="flex items-center gap-4">
           <span>
-            <strong className="text-slate-900">{words}</strong> kata
+            <strong className="text-slate-900 font-semibold">{words}</strong> kata
           </span>
           <span>
-            <strong className="text-slate-900">{chars}</strong> karakter
+            <strong className="text-slate-900 font-semibold">{chars}</strong> karakter
           </span>
           <span>
-            Waktu Baca: <strong className="text-slate-900">±{readingTime || estimatedMin} menit</strong>
+            Waktu Baca: <strong className="text-slate-900 font-semibold">±{readingTime || estimatedMin} menit</strong>
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
+        <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
           <Check className="w-4 h-4 text-emerald-600" />
           <span>Format semantik aman tersimpan</span>
         </div>
@@ -536,7 +536,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         }
         .tiptap h2 {
           font-size: 1.45rem;
-          font-weight: 700;
+          font-weight: 600;
           color: #17202A;
           margin-top: 2rem;
           margin-bottom: 0.75rem;
@@ -546,7 +546,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         }
         .tiptap h3 {
           font-size: 1.25rem;
-          font-weight: 700;
+          font-weight: 600;
           color: #17202A;
           margin-top: 1.6rem;
           margin-bottom: 0.5rem;
@@ -577,7 +577,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           color: #334155;
         }
         .tiptap blockquote {
-          border-left: 4px solid #22416D;
+          border-left: 4px solid #1B365D;
           background: #F8FAFC;
           padding: 1rem 1.25rem;
           border-radius: 0 8px 8px 0;

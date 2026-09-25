@@ -244,12 +244,12 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
           </Button>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 truncate">
+              <h2 className="text-base font-semibold tracking-tight text-slate-900 truncate">
                 {projectId ? 'Edit Proyek Berjalan' : 'Tambah Proyek Berjalan Baru'}
               </h2>
               <Badge
                 variant="outline"
-                className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0 ${
+                className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-md shrink-0 ${
                   isActive
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                     : 'bg-amber-50 text-amber-700 border-amber-200'
@@ -264,24 +264,22 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <Button
             variant="outline"
             size="sm"
-            pill
             onClick={handleBack}
             disabled={saving}
-            className="text-xs font-bold h-9 px-4 rounded-full border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
+            className="text-xs font-semibold h-8 px-3.5 text-slate-700 cursor-pointer"
           >
             Batal
           </Button>
 
           <Button
             size="sm"
-            pill
             onClick={handleSave}
             disabled={saving}
-            className="text-xs font-bold gap-2 h-9 px-5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white shadow-md shadow-[#22416D]/20 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            className="text-xs font-semibold gap-2 h-8 px-4 bg-[#1B365D] hover:bg-[#152B4A] text-white transition-colors cursor-pointer disabled:opacity-50"
           >
             {saving ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -312,20 +310,19 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
         {/* Left Column (7/12): Main Details & Interactive Map */}
         <div className="lg:col-span-7 space-y-6">
           {/* Card 1: Informasi Proyek */}
-          <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+          <Card className="shadow-xs rounded-xl border border-slate-200/80 bg-white">
             <CardHeader className="pb-4">
-              <CardTitle className="text-base font-bold text-slate-900">Informasi Proyek</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-900">Informasi Proyek</CardTitle>
               <CardDescription className="text-xs text-slate-500">
                 Nama proyek dan pengelompokan kategori yang akan dikenali oleh pengunjung.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-800 block mb-1.5 uppercase tracking-wider">
+                <label className="text-xs font-semibold text-slate-800 block mb-1.5 uppercase tracking-wider">
                   Nama Proyek <span className="text-rose-500">*</span>
                 </label>
                 <Input
-                  pill
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
@@ -338,7 +335,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-800 block mb-1.5 uppercase tracking-wider">
+                  <label className="text-xs font-semibold text-slate-800 block mb-1.5 uppercase tracking-wider">
                     Kategori <span className="text-rose-500">*</span>
                   </label>
                   <select
@@ -347,7 +344,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                       setCategory(e.target.value as any);
                       setIsDirty(true);
                     }}
-                    className="w-full h-11 px-4 text-xs font-semibold border border-slate-200 rounded-full bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30 shadow-xs"
+                    className="w-full h-9 px-3 text-xs font-medium border border-slate-200 rounded-lg bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1B365D]/20 shadow-2xs"
                   >
                     <option value="Konstruksi">Konstruksi</option>
                     <option value="Interior">Interior</option>
@@ -356,11 +353,10 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-800 block mb-1.5 uppercase tracking-wider">
+                  <label className="text-xs font-semibold text-slate-800 block mb-1.5 uppercase tracking-wider">
                     Kawasan / Area Umum <span className="text-rose-500">*</span>
                   </label>
                   <Input
-                    pill
                     value={areaName}
                     onChange={(e) => {
                       setAreaName(e.target.value);
@@ -378,24 +374,24 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
           </Card>
 
           {/* Card 2: Interactive Location Picker Map (No Cropping!) */}
-          <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+          <Card className="shadow-xs rounded-xl border border-slate-200/80 bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-base font-bold text-slate-900">
+                  <CardTitle className="text-sm font-semibold text-slate-900">
                     Titik Lokasi Proyek di Peta
                   </CardTitle>
                   <CardDescription className="text-xs text-slate-500 mt-0.5">
                     Klik atau geser pin pada peta untuk menentukan posisi proyek.
                   </CardDescription>
                 </div>
-                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-bold rounded-full">
+                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-semibold rounded-md">
                   ✓ Lokasi Ditentukan
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
+              <div className="rounded-lg overflow-hidden border border-slate-200 shadow-inner">
                 <LocationPickerMap
                   lat={lat}
                   lng={lng}
@@ -410,20 +406,19 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
           </Card>
 
           {/* Card 3: Progres Lapangan */}
-          <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+          <Card className="shadow-xs rounded-xl border border-slate-200/80 bg-white">
             <CardHeader className="pb-4">
-              <CardTitle className="text-base font-bold text-slate-900">Tahap & Progres Pengerjaan</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-900">Tahap & Progres Pengerjaan</CardTitle>
               <CardDescription className="text-xs text-slate-500">
                 Informasi progres fisik aktual di lapangan yang ditampilkan pada kartu peta.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-800 block mb-1.5 uppercase tracking-wider">
+                <label className="text-xs font-semibold text-slate-800 block mb-1.5 uppercase tracking-wider">
                   Tahap Pengerjaan Saat Ini <span className="text-rose-500">*</span>
                 </label>
                 <Input
-                  pill
                   value={stage}
                   onChange={(e) => {
                     setStage(e.target.value);
@@ -434,12 +429,12 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                 />
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-2">
+              <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                     Persentase Progres Fisik:
                   </span>
-                  <span className="text-lg font-extrabold text-amber-600 font-mono">
+                  <span className="text-base font-semibold text-amber-600 font-mono">
                     {progress}%
                   </span>
                 </div>
@@ -452,7 +447,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                     setProgress(parseInt(e.target.value, 10));
                     setIsDirty(true);
                   }}
-                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600 mt-1"
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600 mt-1"
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-medium pt-1">
                   <span>0% (Pondasi Awal)</span>
@@ -467,9 +462,9 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
         {/* Right Column (5/12): 1:1 Photo Documentation & Live Preview */}
         <div className="lg:col-span-5 space-y-6">
           {/* Card 1: Foto Dokumentasi Lapangan (1:1 Ratio) */}
-          <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+          <Card className="shadow-xs rounded-xl border border-slate-200/80 bg-white">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base font-bold text-slate-900">
+              <CardTitle className="text-sm font-semibold text-slate-900">
                 Foto Dokumentasi Lapangan
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
@@ -489,15 +484,15 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
           </Card>
 
           {/* Card 2: Visibilitas Peta */}
-          <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <Card className="shadow-xs rounded-xl border border-slate-200/80 bg-white">
+            <CardContent className="pt-4 pb-4">
+              <div className="flex items-center justify-between p-3.5 rounded-lg bg-slate-50 border border-slate-200">
                 <div className="space-y-0.5 pr-4">
-                  <p className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <p className="text-xs font-semibold text-slate-900 flex items-center gap-2">
                     {isActive ? <Eye className="w-4 h-4 text-emerald-600" /> : <EyeOff className="w-4 h-4 text-amber-600" />}
                     <span>Tampilkan di Peta Website</span>
                   </p>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
                     {isActive
                       ? 'Proyek aktif dan dapat dilihat langsung oleh pengunjung pada peta publik.'
                       : 'Proyek diarsipkan di database dan disembunyikan dari peta publik.'}
@@ -510,16 +505,16 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                     setIsActive(e.target.checked);
                     setIsDirty(true);
                   }}
-                  className="w-5 h-5 rounded border-slate-300 text-[#22416D] focus:ring-[#22416D] cursor-pointer"
+                  className="w-4 h-4 rounded border-slate-300 text-[#1B365D] focus:ring-[#1B365D] cursor-pointer"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Card 3: Simulasi Pop-up Peta Publik (Live Card Preview) */}
-          <Card className="shadow-xs rounded-[28px] border border-slate-200/80 bg-white">
+          <Card className="shadow-xs rounded-xl border border-slate-200/80 bg-white">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base font-bold text-slate-900">
+              <CardTitle className="text-sm font-semibold text-slate-900">
                 Simulasi Pop-up di Peta Publik
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
@@ -527,7 +522,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="max-w-[280px] mx-auto rounded-[20px] overflow-hidden border border-slate-200/90 bg-white shadow-xl">
+              <div className="max-w-[280px] mx-auto rounded-xl overflow-hidden border border-slate-200/90 bg-white shadow-sm">
                 {imageUrl && !imgError ? (
                   <div className="w-full aspect-square relative overflow-hidden bg-slate-100">
                     <img
@@ -535,20 +530,20 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                       alt={title || 'Preview Proyek'}
                       className="w-full h-full object-cover"
                     />
-                    <span className="absolute top-2.5 left-2.5 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22416D] text-white shadow-sm z-10">
+                    <span className="absolute top-2.5 left-2.5 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#1B365D] text-white shadow-xs z-10">
                       {category}
                     </span>
                   </div>
                 ) : (
                   <div className="px-3.5 pt-3.5 pb-1">
-                    <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22416D] text-white">
+                    <span className="inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#1B365D] text-white">
                       {category}
                     </span>
                   </div>
                 )}
 
                 <div className="p-3.5 space-y-2">
-                  <h4 className="font-extrabold text-sm text-slate-900 leading-snug line-clamp-2">
+                  <h4 className="font-semibold text-sm text-slate-900 leading-snug line-clamp-2">
                     {title || 'Nama Proyek Baru'}
                   </h4>
                   <div className="flex items-center gap-1 text-xs text-slate-500 font-medium">
@@ -556,17 +551,17 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                     <span className="truncate">{areaName || 'Nama Kawasan'}</span>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1 mt-2">
+                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1 mt-2">
                     <div className="flex justify-between items-center text-[11px]">
-                      <span className="text-slate-500 font-semibold">Tahap Pekerjaan:</span>
-                      <span className="font-mono font-extrabold text-amber-600">{progress}%</span>
+                      <span className="text-slate-500 font-medium">Tahap Pekerjaan:</span>
+                      <span className="font-mono font-semibold text-amber-600">{progress}%</span>
                     </div>
-                    <p className="text-xs font-semibold text-slate-800 leading-tight line-clamp-2">
+                    <p className="text-xs font-medium text-slate-800 leading-tight line-clamp-2">
                       {stage || 'Belum diisi'}
                     </p>
                     <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-1.5">
                       <div
-                        className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full transition-all duration-300"
+                        className="h-full bg-amber-500 rounded-full transition-all duration-300"
                         style={{ width: `${progress}%` }}
                       />
                     </div>

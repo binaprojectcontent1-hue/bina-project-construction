@@ -167,7 +167,7 @@ create policy "Authenticated users have full access to live projects" on public.
 
     navigator.clipboard.writeText(migrationSql);
     setCopiedSql(true);
-    toast.success('SQL Disalin!', 'Salin dan jalankan di SQL Editor Supabase.');
+    toast.success('Pengaturan Disalin!', 'Silakan kirimkan ke tim IT atau administrator sistem.');
     setTimeout(() => setCopiedSql(false), 3000);
   };
 
@@ -199,44 +199,43 @@ create policy "Authenticated users have full access to live projects" on public.
     <div className="space-y-6 pb-10">
       {/* Missing table banner */}
       {isTableMissing && (
-        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+        <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
           <div className="flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
             <div className="text-xs">
-              <p className="font-bold text-amber-900">Tabel `live_projects` belum dibuat di Supabase Remote</p>
+              <p className="font-semibold text-amber-900">Penyimpanan Proyek Lapangan Belum Aktif di Database Server</p>
               <p className="text-amber-700 mt-0.5">
-                Dashboard saat ini menampilkan data starter lokal. Jalankan SQL migration untuk sinkronisasi penuh.
+                Dashboard saat ini menampilkan data lokal sementara. Berikan kode pengaturan ini ke administrator/IT untuk mengaktifkan sinkronisasi online penuh.
               </p>
             </div>
           </div>
           <Button
             size="sm"
-            pill
             variant="outline"
             onClick={handleCopySql}
-            className="text-xs font-bold border-amber-300 text-amber-900 hover:bg-amber-100 shrink-0 gap-1.5 bg-white"
+            className="text-xs font-semibold border-amber-300 text-amber-900 hover:bg-amber-100 shrink-0 gap-1.5 bg-white"
           >
             {copiedSql ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copiedSql ? 'Tersalin' : 'Salin SQL Migration'}</span>
+            <span>{copiedSql ? 'Tersalin' : 'Salin Kode Pengaturan'}</span>
           </Button>
         </div>
       )}
 
       {/* Page Header (Unified Theme) */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+          <h1 className="text-xl font-semibold tracking-tight text-slate-900">
             Peta Proyek Berjalan
           </h1>
-          <p className="text-sm text-slate-600 mt-1">
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
             Kelola titik sebaran proyek aktif dan progres lapangan yang tampil di peta publik website.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Button
             onClick={onNew}
-            pill
-            className="gap-2 shadow-xs bg-[#22416D] hover:bg-[#1A3356] text-white font-bold h-10 px-5 text-xs cursor-pointer"
+            size="sm"
+            className="gap-1.5 font-medium"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Proyek Baru</span>
@@ -246,68 +245,67 @@ create policy "Authenticated users have full access to live projects" on public.
 
       {/* Stats Metric Cards Row (Unified Theme) */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
+        <Card className="p-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-600">Total Proyek Berjalan</p>
-            <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Proyek Berjalan</p>
+            <div className="p-1.5 rounded-md bg-slate-100 text-slate-600">
               <Building2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 font-mono tabular-nums">
-            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : totalSaved}
+          <div className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-7 w-14 my-0.5" /> : totalSaved}
           </div>
-          <p className="text-xs text-slate-500 mt-1 font-medium">Aktif maupun arsip tersimpan</p>
+          <p className="text-[11px] text-slate-500 mt-1 font-medium">Aktif maupun arsip tersimpan</p>
         </Card>
 
-        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
+        <Card className="p-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-600">Rata-rata Progres</p>
-            <div className="p-2 rounded-xl bg-amber-50 text-amber-600">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rata-rata Progres</p>
+            <div className="p-1.5 rounded-md bg-amber-50 text-amber-600">
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-amber-600 font-mono tabular-nums">
-            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : `${avgProgress}%`}
+          <div className="mt-2 text-2xl font-semibold tracking-tight text-amber-600 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-7 w-14 my-0.5" /> : `${avgProgress}%`}
           </div>
-          <p className="text-xs text-slate-500 mt-1 font-medium">Akumulasi pengerjaan lapangan</p>
+          <p className="text-[11px] text-slate-500 mt-1 font-medium">Akumulasi pengerjaan lapangan</p>
         </Card>
 
-        <Card className="p-5 shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-shadow">
+        <Card className="p-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-600">Tayang di Peta Website</p>
-            <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tayang di Peta Website</p>
+            <div className="p-1.5 rounded-md bg-emerald-50 text-emerald-600">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-emerald-600 font-mono tabular-nums">
-            {loading ? <Skeleton className="h-8 w-16 my-0.5 rounded-lg" /> : activeCount}
+          <div className="mt-2 text-2xl font-semibold tracking-tight text-emerald-600 font-mono tabular-nums">
+            {loading ? <Skeleton className="h-7 w-14 my-0.5" /> : activeCount}
           </div>
-          <p className="text-xs text-slate-500 mt-1 font-medium">Tampil pada halaman peta publik</p>
+          <p className="text-[11px] text-slate-500 mt-1 font-medium">Tampil pada halaman peta publik</p>
         </Card>
       </div>
 
       {/* Filter Toolbar (Unified Theme) */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3.5 rounded-[28px] border-0 shadow-sm">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200/80 shadow-xs">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1">
           <div className="relative w-full sm:max-w-xs">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <Input
-              pill
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari proyek, kawasan, tahap..."
-              className="pl-10 text-xs placeholder:text-slate-400 border-slate-200"
+              className="pl-9 text-xs h-8"
             />
           </div>
 
           {/* Quick Status Filter Tabs */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-full">
+          <div className="flex items-center gap-1 p-0.5 bg-slate-100 rounded-lg">
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 statusFilter === 'all'
-                  ? 'bg-white text-slate-900 shadow-xs'
+                  ? 'bg-white text-slate-900 shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -316,9 +314,9 @@ create policy "Authenticated users have full access to live projects" on public.
             <button
               type="button"
               onClick={() => setStatusFilter('active')}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                 statusFilter === 'active'
-                  ? 'bg-emerald-600 text-white shadow-xs'
+                  ? 'bg-emerald-600 text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -328,9 +326,9 @@ create policy "Authenticated users have full access to live projects" on public.
             <button
               type="button"
               onClick={() => setStatusFilter('archived')}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
                 statusFilter === 'archived'
-                  ? 'bg-amber-600 text-white shadow-xs'
+                  ? 'bg-amber-600 text-white shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -340,11 +338,11 @@ create policy "Authenticated users have full access to live projects" on public.
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-end">
+        <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="h-11 px-4 text-xs font-semibold border border-slate-200 rounded-full bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#22416D]/30 shadow-xs"
+            className="h-8 px-2.5 text-xs font-medium border border-slate-200 rounded-lg bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#1B365D]/20 shadow-2xs"
           >
             <option value="all">Semua Kategori</option>
             <option value="Konstruksi">Konstruksi</option>
@@ -354,12 +352,12 @@ create policy "Authenticated users have full access to live projects" on public.
           </select>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center border border-slate-200 rounded-full p-1 bg-slate-50">
+          <div className="flex items-center border border-slate-200 rounded-lg p-0.5 bg-slate-100">
             <button
               type="button"
               onClick={() => setViewMode('table')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-                viewMode === 'table' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+              className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
+                viewMode === 'table' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Tabel
@@ -367,8 +365,8 @@ create policy "Authenticated users have full access to live projects" on public.
             <button
               type="button"
               onClick={() => setViewMode('cards')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-                viewMode === 'cards' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+              className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
+                viewMode === 'cards' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Kartu
@@ -379,42 +377,47 @@ create policy "Authenticated users have full access to live projects" on public.
 
       {/* Loading Skeletons */}
       {loading ? (
-        <Card className="p-6 rounded-[28px] border-0 bg-white space-y-4 shadow-sm">
-          <Skeleton className="h-6 w-48 rounded-lg" />
+        <Card className="p-6">
           <div className="space-y-3">
-            <Skeleton className="h-14 w-full rounded-2xl" />
-            <Skeleton className="h-14 w-full rounded-2xl" />
-            <Skeleton className="h-14 w-full rounded-2xl" />
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="flex items-center gap-3">
+                <Skeleton className="h-12 w-12 rounded-lg shrink-0" />
+                <div className="space-y-1.5 flex-1">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-3 w-1/4" />
+                </div>
+              </div>
+            ))}
           </div>
         </Card>
       ) : filteredProjects.length === 0 ? (
-        <Card className="p-12 text-center space-y-4 rounded-[28px] border-0 bg-white shadow-sm">
-          <Globe className="w-12 h-12 text-slate-300 mx-auto" />
+        <Card className="p-12 text-center space-y-4">
+          <Globe className="w-10 h-10 text-slate-300 mx-auto" />
           <div>
-            <h4 className="text-base font-bold text-slate-800">Tidak ada proyek yang sesuai</h4>
+            <h4 className="text-sm font-semibold text-slate-800">Tidak ada proyek yang sesuai</h4>
             <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
               {search || categoryFilter !== 'all' || statusFilter !== 'all'
                 ? 'Coba ubah filter pencarian atau status kategori Anda.'
                 : 'Mulai tambahkan titik sebaran proyek baru untuk ditampilkan pada peta publik website.'}
             </p>
           </div>
-          <Button onClick={onNew} pill size="sm" className="text-xs font-bold bg-[#22416D] hover:bg-[#1A3356] text-white px-5 cursor-pointer">
+          <Button onClick={onNew} size="sm">
             Tambah Proyek Baru
           </Button>
         </Card>
       ) : viewMode === 'table' ? (
-        /* TABLE VIEW (With 1:1 image thumbnails) */
-        <Card className="overflow-hidden shadow-sm rounded-[28px] border-0 bg-white">
+        /* TABLE VIEW */
+        <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-100 text-xs uppercase tracking-wider">
+              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-100 text-xs uppercase tracking-wider">
                 <tr>
-                  <th className="py-3.5 px-4">Proyek & Dokumentasi (1:1)</th>
-                  <th className="py-3.5 px-4">Kategori</th>
-                  <th className="py-3.5 px-4">Kawasan Lapangan</th>
-                  <th className="py-3.5 px-4">Progres Pekerjaan</th>
-                  <th className="py-3.5 px-4 text-center">Status di Peta</th>
-                  <th className="py-3.5 px-4 text-right">Aksi</th>
+                  <th className="py-3.5 px-4 font-semibold">Proyek & Dokumentasi</th>
+                  <th className="py-3.5 px-4 font-semibold">Kategori</th>
+                  <th className="py-3.5 px-4 font-semibold">Kawasan Lapangan</th>
+                  <th className="py-3.5 px-4 font-semibold">Progres Pekerjaan</th>
+                  <th className="py-3.5 px-4 font-semibold text-center">Status di Peta</th>
+                  <th className="py-3.5 px-4 font-semibold text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -426,15 +429,15 @@ create policy "Authenticated users have full access to live projects" on public.
                           <img
                             src={resolveDashboardMediaUrl(item.image_url)}
                             alt={item.title}
-                            className="w-12 h-12 rounded-xl object-cover aspect-square bg-slate-100 flex-shrink-0 shadow-2xs border border-slate-200"
+                            className="w-12 h-12 rounded-lg object-cover bg-slate-100 flex-shrink-0 shadow-2xs border border-slate-200"
                           />
                         ) : (
-                          <div className="w-12 h-12 rounded-xl aspect-square bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
+                          <div className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
                             <ImageIcon className="w-5 h-5 text-slate-300" />
                           </div>
                         )}
                         <div className="min-w-0">
-                          <p className="font-bold text-slate-900 truncate max-w-xs">{item.title}</p>
+                          <p className="font-semibold text-slate-900 truncate max-w-xs">{item.title}</p>
                           <p className="text-xs text-slate-500 truncate max-w-xs font-medium mt-0.5">
                             {item.stage}
                           </p>
@@ -443,7 +446,7 @@ create policy "Authenticated users have full access to live projects" on public.
                     </td>
 
                     <td className="py-3.5 px-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-[#22416D] border border-blue-200/60">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-[#1B365D]">
                         {item.category}
                       </span>
                     </td>
@@ -459,11 +462,11 @@ create policy "Authenticated users have full access to live projects" on public.
                       <div className="w-36 space-y-1">
                         <div className="flex justify-between text-[11px]">
                           <span className="text-slate-500 font-medium">Progres:</span>
-                          <span className="font-mono font-extrabold text-amber-600">{item.progress}%</span>
+                          <span className="font-mono font-semibold text-amber-600">{item.progress}%</span>
                         </div>
-                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
+                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
                           <div
-                            className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full"
+                            className="h-full bg-amber-500 rounded-full"
                             style={{ width: `${item.progress}%` }}
                           />
                         </div>
@@ -474,7 +477,7 @@ create policy "Authenticated users have full access to live projects" on public.
                       <button
                         type="button"
                         onClick={() => handleToggleActive(item)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition-all hover:scale-105 active:scale-95 ${
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors ${
                           item.is_active
                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
                             : 'bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100'
@@ -491,7 +494,7 @@ create policy "Authenticated users have full access to live projects" on public.
                         <button
                           type="button"
                           onClick={() => onEdit && onEdit(item.id)}
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-[#22416D] hover:bg-slate-100 transition-colors cursor-pointer"
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition-colors cursor-pointer"
                           title="Edit Proyek"
                           aria-label={`Edit ${item.title}`}
                         >
@@ -515,21 +518,20 @@ create policy "Authenticated users have full access to live projects" on public.
           </div>
         </Card>
       ) : (
-        /* CARD GRID VIEW (Unified with 1:1 image thumbnails) */
+        /* CARD GRID VIEW */
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((item) => (
             <Card
               key={item.id}
-              className="overflow-hidden shadow-sm rounded-[24px] border-0 bg-white hover:shadow-md transition-all flex flex-col justify-between"
+              className="overflow-hidden flex flex-col justify-between hover:border-slate-300 transition-colors"
             >
               <div>
-                {/* 1:1 Ratio Thumbnail Box */}
                 <div className="relative w-full aspect-square bg-slate-100 overflow-hidden">
                   {item.image_url ? (
                     <img
                       src={resolveDashboardMediaUrl(item.image_url)}
                       alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-102"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1">
@@ -537,16 +539,16 @@ create policy "Authenticated users have full access to live projects" on public.
                       <span className="text-xs font-medium">Belum ada foto</span>
                     </div>
                   )}
-                  <span className="absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22416D] text-white shadow-sm">
+                  <span className="absolute top-2.5 left-2.5 text-xs font-medium px-2 py-0.5 rounded-md bg-slate-900/80 text-white backdrop-blur-xs">
                     {item.category}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleToggleActive(item)}
-                    className={`absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-xs font-bold shadow-sm backdrop-blur-md cursor-pointer transition-all ${
+                    className={`absolute top-2.5 right-2.5 px-2.5 py-1 rounded-md text-xs font-medium shadow-xs backdrop-blur-md cursor-pointer transition-colors ${
                       item.is_active
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-amber-600 text-white'
+                        ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                        : 'bg-amber-600 text-white hover:bg-amber-700'
                     }`}
                   >
                     {item.is_active ? '● Aktif di Peta' : '○ Arsip'}
@@ -556,7 +558,7 @@ create policy "Authenticated users have full access to live projects" on public.
                 {/* Card Content */}
                 <div className="p-4 space-y-3">
                   <div>
-                    <h3 className="font-extrabold text-slate-900 text-sm leading-snug line-clamp-2">
+                    <h3 className="font-semibold text-slate-900 text-sm leading-snug line-clamp-2">
                       {item.title}
                     </h3>
                     <div className="flex items-center gap-1 text-xs text-slate-500 font-medium mt-1">
@@ -565,17 +567,17 @@ create policy "Authenticated users have full access to live projects" on public.
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-slate-50 border-0 space-y-1.5">
+                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 space-y-1.5">
                     <div className="flex justify-between items-center text-[11px]">
                       <span className="text-slate-500 font-medium">Tahap:</span>
-                      <span className="font-mono font-extrabold text-amber-600">{item.progress}%</span>
+                      <span className="font-mono font-semibold text-amber-600">{item.progress}%</span>
                     </div>
-                    <p className="text-xs font-semibold text-slate-800 line-clamp-1">
+                    <p className="text-xs font-medium text-slate-800 line-clamp-1">
                       {item.stage}
                     </p>
                     <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full"
+                        className="h-full bg-amber-500 rounded-full"
                         style={{ width: `${item.progress}%` }}
                       />
                     </div>
@@ -584,25 +586,25 @@ create policy "Authenticated users have full access to live projects" on public.
               </div>
 
               {/* Action Footer */}
-              <div className="p-4 pt-0 border-t border-slate-100 flex items-center justify-between mt-2">
+              <div className="p-4 border-t border-slate-100 flex items-center justify-between">
                 <span className="text-[11px] text-slate-400 font-medium">
-                  Privasi: koordinat disembunyikan
+                  Koordinat disembunyikan
                 </span>
                 <div className="flex items-center gap-1.5">
                   <Button
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                     onClick={() => onEdit && onEdit(item.id)}
-                    className="h-8 px-2.5 text-xs text-slate-600 hover:text-[#22416D] gap-1 cursor-pointer font-bold"
+                    className="h-8 px-2.5 text-xs text-slate-600 hover:text-[#1B365D] gap-1 cursor-pointer font-medium"
                   >
-                    <Edit3 className="w-3.5 h-3.5" />
+                    <Edit3 className="w-3.5 h-3.5 mr-1" />
                     <span>Edit</span>
                   </Button>
                   <Button
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                     onClick={() => setDeletingId(item.id)}
-                    className="h-8 px-2.5 text-xs text-rose-500 hover:text-rose-700 hover:bg-rose-50 gap-1 cursor-pointer font-bold"
+                    className="h-8 px-2.5 text-xs text-rose-500 hover:text-rose-700 hover:bg-rose-50 gap-1 cursor-pointer font-medium"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Hapus</span>
@@ -617,14 +619,14 @@ create policy "Authenticated users have full access to live projects" on public.
       {/* Delete Confirmation Dialog */}
       {deletingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-[28px] p-6 space-y-4 shadow-2xl">
+          <div className="w-full max-w-md bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xl">
             <div className="flex items-center gap-3 text-rose-600">
-              <span className="p-2.5 rounded-xl bg-rose-50 border border-rose-200">
-                <Trash2 className="w-6 h-6" />
+              <span className="p-2 rounded-lg bg-rose-50 border border-rose-200">
+                <Trash2 className="w-5 h-5" />
               </span>
-              <h3 className="text-lg font-bold text-slate-900">Konfirmasi Hapus Proyek</h3>
+              <h3 className="text-base font-semibold text-slate-900">Konfirmasi Hapus Proyek</h3>
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed">
               Apakah Anda yakin ingin menghapus data proyek ini? Data yang dihapus tidak dapat dipulihkan kembali.
             </p>
             <div className="flex items-center justify-end gap-2.5 pt-3">
@@ -632,14 +634,14 @@ create policy "Authenticated users have full access to live projects" on public.
                 variant="outline"
                 size="sm"
                 onClick={() => setDeletingId(null)}
-                className="rounded-full border-slate-300 text-slate-700 font-semibold px-4 cursor-pointer"
+                className="text-slate-700 font-medium px-4 cursor-pointer"
               >
                 Batal
               </Button>
               <Button
                 size="sm"
                 onClick={() => handleDelete(deletingId)}
-                className="rounded-full bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 cursor-pointer"
+                className="bg-rose-600 hover:bg-rose-700 text-white font-medium px-5 cursor-pointer"
               >
                 Hapus Permanen
               </Button>

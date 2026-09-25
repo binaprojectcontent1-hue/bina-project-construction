@@ -378,24 +378,24 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-28">
       {/* Sticky Action Bar */}
-      <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3.5 bg-[#F8FAFC]/95 backdrop-blur-md border-b border-slate-200/80 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all">
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-xl p-3.5 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <Button
             variant="outline"
             size="icon"
             onClick={handleBack}
-            className="h-9 w-9 rounded-full text-slate-600 hover:bg-white shadow-xs cursor-pointer shrink-0"
+            className="h-8 w-8 text-slate-600 shrink-0"
             title="Kembali ke Daftar Artikel"
           >
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 truncate">
+              <h2 className="text-base font-semibold tracking-tight text-slate-900 truncate">
                 {articleId ? 'Edit Artikel' : 'Tulis Artikel Baru'}
               </h2>
-              <Badge variant="outline" className={`text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                {status === 'published' ? '🟢 Tayang di Web' : '🟡 Draft (Konsep)'}
+              <Badge variant={status === 'published' ? 'success' : 'warning'} className="text-[11px] py-0 px-2">
+                {status === 'published' ? 'Live di Web' : 'Draft'}
               </Badge>
             </div>
             <p className="text-xs text-slate-500 mt-0.5 truncate">
@@ -404,14 +404,13 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <Button
             variant="outline"
             size="sm"
-            pill
             onClick={() => handleSave(false)}
             disabled={saving || deploying}
-            className="text-xs font-bold gap-1.5 h-9 px-4 rounded-full border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
+            className="text-xs font-semibold gap-1.5"
             title="Simpan draf artikel tanpa langsung memicu perubahan di website publik"
           >
             <Save className="w-3.5 h-3.5 text-slate-500" />
@@ -420,10 +419,9 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
           <Button
             size="sm"
-            pill
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="text-xs font-bold gap-2 h-9 px-5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white shadow-md shadow-[#22416D]/20 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            className="text-xs font-semibold gap-1.5"
             title="Simpan artikel dan publikasikan langsung ke website live"
           >
             {deploying ? (
@@ -453,7 +451,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Content */}
         <div className="lg:col-span-7 space-y-6">
-          <Card className="rounded-[28px] shadow-xs">
+          <Card className="rounded-xl shadow-xs">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold text-slate-900">
                 Konten & Naskah Artikel
@@ -465,11 +463,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
             <CardContent className="pt-4 space-y-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-bold text-slate-800 block">
+                <label className="text-xs font-semibold text-slate-800 block">
                   Judul Artikel <span className="text-rose-500">*</span>
                 </label>
                 <Input
-                  pill
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="Contoh: 7 Tips Memilih Kontraktor Bangunan Terpercaya di Malang"
@@ -478,11 +475,11 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-bold text-slate-800 block">Kategori Artikel</label>
+                  <label className="text-xs font-semibold text-slate-800 block">Kategori Artikel</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="flex h-11 w-full rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-800 shadow-xs focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#22416D]/15 focus-visible:border-[#22416D]"
+                    className="flex h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-800 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B365D]/20 focus-visible:border-[#1B365D]"
                   >
                     <option value="Interior">Interior</option>
                     <option value="Konstruksi">Konstruksi</option>
@@ -492,9 +489,8 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-bold text-slate-800 block">Penulis (Author)</label>
+                  <label className="text-xs font-semibold text-slate-800 block">Penulis (Author)</label>
                   <Input
-                    pill
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
                     placeholder="Bina Project Editorial"
@@ -503,7 +499,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-bold text-slate-800 flex items-center">
+                <label className="text-xs font-semibold text-slate-800 flex items-center">
                   Ringkasan Singkat Artikel <span className="text-rose-500 ml-0.5">*</span>
                   <HelpTooltip content="Paragraf pendek (1-2 kalimat) yang muncul di kartu artikel pada blog utama dan cuplikan pencarian Google untuk memikat pembaca." />
                 </label>
@@ -542,13 +538,13 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         {/* Right Column: SEO Configuration */}
         <div className="lg:col-span-5 space-y-6">
           {/* Smart Slug Engine with Padlock */}
-          <Card className="shadow-xs rounded-[28px]">
+          <Card className="shadow-xs rounded-xl">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm flex items-center gap-1.5 font-semibold text-slate-900">
                   <Globe className="w-4 h-4 text-slate-500" />
-                  <span>Alamat Link Artikel (URL)</span>
-                  <HelpTooltip content="Alamat tautan permanen artikel di web (misal: binaproject.id/blog/tips-memilih-kontraktor). Otomatis dibuat dari judul agar rapi dan ramah SEO Google." />
+                  <span>Alamat Link Halaman</span>
+                  <HelpTooltip content="Alamat link halaman artikel di website (misal: binaproject.id/blog/tips-memilih-kontraktor). Dibuat otomatis dari judul agar rapi." />
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {!isSlugLocked && (
@@ -560,7 +556,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                         setSlug(generated);
                         validateSlug(generated);
                       }}
-                      className="text-xs text-[#22416D] hover:underline font-semibold cursor-pointer"
+                      className="text-xs text-[#1B365D] hover:underline font-semibold cursor-pointer"
                     >
                       Reset dari Judul
                     </button>
@@ -568,7 +564,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <button
                     type="button"
                     onClick={() => setIsSlugLocked((prev) => !prev)}
-                    className={`flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full border transition-colors cursor-pointer ${
+                    className={`flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-md border transition-colors cursor-pointer ${
                       isSlugLocked
                         ? 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                         : 'border-amber-200 bg-amber-50 text-amber-800'
@@ -598,10 +594,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
             <CardContent className="pt-2 space-y-3">
               <div className="space-y-1.5">
-                <div className={`flex rounded-full border shadow-xs transition-all overflow-hidden ${
-                  isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#22416D] ring-4 ring-[#22416D]/10'
+                <div className={`flex rounded-lg border shadow-2xs transition-all overflow-hidden ${
+                  isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#1B365D] ring-2 ring-[#1B365D]/10'
                 }`}>
-                  <span className="inline-flex items-center px-4 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
+                  <span className="inline-flex items-center px-3 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
                     /blog/
                   </span>
                   <input
@@ -610,7 +606,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                     readOnly={isSlugLocked}
                     onChange={(e) => handleSlugChange(e.target.value)}
                     placeholder="tips-memilih-kontraktor-malang"
-                    className={`flex-1 px-4 py-2.5 text-xs font-mono focus:outline-none ${
+                    className={`flex-1 px-3 py-2 text-xs font-mono focus:outline-none ${
                       isSlugLocked ? 'text-slate-600 bg-slate-50/80 cursor-not-allowed' : 'text-slate-900 bg-white'
                     }`}
                   />
@@ -629,7 +625,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   )}
                   {initialSlug && initialSlug !== slug && (
                     <span className="text-amber-600 text-[11px] font-medium">
-                      (Pengalihan otomatis dari /{initialSlug} aktif agar link lama tidak error 404)
+                      (Pengalihan otomatis dari /{initialSlug} aktif agar link lama tidak error)
                     </span>
                   )}
                 </div>
@@ -637,11 +633,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
               <div className="space-y-1.5 pt-1">
                 <label className="text-xs font-semibold text-slate-700 flex items-center">
-                  Target Kata Kunci Google (Focus Keyword)
-                  <HelpTooltip content="Kata atau kalimat pencarian yang sering diketikkan orang di Google saat mencari topik ini (misal: 'biaya bangun rumah di malang')." />
+                  Target Kata Kunci Google
+                  <HelpTooltip content="Kata atau kalimat pencarian yang sering dicari orang di Google (misal: 'biaya bangun rumah di malang')." />
                 </label>
                 <Input
-                  pill
                   value={focusKeyword}
                   onChange={(e) => setFocusKeyword(e.target.value)}
                   placeholder="Contoh: kontraktor rumah malang"
@@ -651,28 +646,28 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           </Card>
 
           {/* Visibility & Status Card */}
-          <Card className="shadow-xs rounded-[28px]">
+          <Card className="shadow-xs rounded-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold text-slate-900">
                 Status Publikasi
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
                 <div>
                   <label className="text-xs font-medium text-slate-700 block flex items-center">
                     Status Publikasi
-                    <HelpTooltip content="Pilih 'Live' agar artikel tayang di website bina-project.com dan bisa dibaca publik, atau 'Draft' jika naskah masih disunting." />
+                    <HelpTooltip content="Pilih 'Live' agar artikel tayang di website binaproject.id dan bisa dibaca publik, atau 'Draft' jika naskah masih disunting." />
                   </label>
                   <span className="text-[11px] text-slate-400">
-                    {status === 'published' ? '🟢 Live di Website & Google' : '📝 Draft Tersimpan'}
+                    {status === 'published' ? '🟢 Tayang di Website Publik' : '📝 Draft Tersimpan'}
                   </span>
                 </div>
-                <div className="flex items-center p-1 bg-white rounded-full shadow-xs">
+                <div className="flex items-center p-1 bg-white rounded-lg border border-slate-200 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setStatus('draft')}
-                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
+                    className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
                       status === 'draft' ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-500'
                     }`}
                   >
@@ -681,8 +676,8 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                   <button
                     type="button"
                     onClick={() => setStatus('published')}
-                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
-                      status === 'published' ? 'bg-[#22416D] text-white font-semibold shadow-xs' : 'text-slate-500'
+                    className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                      status === 'published' ? 'bg-[#1B365D] text-white font-semibold shadow-2xs' : 'text-slate-500'
                     }`}
                   >
                     Published
@@ -693,11 +688,11 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
           </Card>
 
           {/* Custom Meta Tag Card */}
-          <Card className="shadow-xs rounded-[28px]">
+          <Card className="shadow-xs rounded-xl">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-1.5">
                 <CardTitle className="text-sm font-semibold text-slate-900">
-                  Pengaturan Google SEO (Opsional)
+                  Pengaturan Hasil Pencarian Google (Opsional)
                 </CardTitle>
                 <HelpTooltip content="Pengaturan ini opsional. Jika dikosongkan, Google akan otomatis mengambil Judul Artikel dan Ringkasan Anda." />
               </div>
@@ -709,11 +704,10 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
             <CardContent className="pt-4 space-y-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-700 flex items-center">
-                  Judul Tampilan Google (Meta Title)
-                  <HelpTooltip content="Judul biru yang tampil di hasil pencarian Google. Disarankan 50-60 karakter." />
+                  Judul Tampilan Google
+                  <HelpTooltip content="Judul yang tampil di hasil pencarian Google. Disarankan 50-60 karakter." />
                 </label>
                 <Input
-                  pill
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   placeholder="Contoh: 7 Tips Kontraktor Rumah Malang Terbaik (Panduan 2026)"
@@ -722,7 +716,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-700 flex items-center">
-                  Kalimat Ringkasan Google (Meta Description)
+                  Kalimat Ringkasan Google
                   <HelpTooltip content="Kalimat 1-2 baris di bawah judul pada hasil pencarian Google. Disarankan 120-160 karakter." />
                 </label>
                 <Textarea
@@ -737,8 +731,8 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
               <div className="pt-3 border-t border-slate-100 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                    Tampilan Media Sosial (OG Image)
-                    <HelpTooltip content="Pilih tampilan gambar kartu ketika tautan dibagikan ke WhatsApp, Facebook, LinkedIn, atau Twitter." />
+                    Tampilan Gambar saat Dibagikan ke WhatsApp & Medsos
+                    <HelpTooltip content="Pilih tampilan gambar kartu ketika tautan dibagikan ke WhatsApp, Facebook, LinkedIn, atau media sosial." />
                   </label>
                   <span className="text-[10px] bg-amber-100 text-amber-800 font-medium px-2 py-0.5 rounded-full">
                     1200 × 630 px
@@ -760,7 +754,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                     <div className="flex items-center gap-1.5 font-medium text-xs text-slate-900">
                       <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
                       Split-Screen Otomatis
-                      <span className="text-[9px] text-amber-700 font-bold bg-amber-100 px-1 py-0.2 rounded">Rekomendasi</span>
+                      <span className="text-[9px] text-amber-700 font-semibold bg-amber-100 px-1 py-0.2 rounded">Rekomendasi</span>
                     </div>
                     <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
                       Kartu modern berlogo resmi, judul rapi, badge kategori, dan foto cover di sisi kanan.
@@ -809,7 +803,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Status Publikasi:</span>
           <span
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ${
               status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
             }`}
           >
@@ -818,7 +812,7 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
                 status === 'published' ? 'bg-emerald-500' : 'bg-amber-500'
               }`}
             />
-            {status === 'published' ? 'Tayang (Published)' : 'Draft'}
+            {status === 'published' ? 'Tayang (Live)' : 'Draft'}
           </span>
           <span className="text-xs text-slate-400 hidden md:inline">
             • {readingTime} menit baca
@@ -859,17 +853,17 @@ export function ArticleEditor({ articleId, onBack, onSave }: ArticleEditorProps)
             size="sm"
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="text-xs h-9 px-4 gap-1.5 bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs font-semibold"
+            className="text-xs h-9 px-4 gap-1.5 bg-[#1B365D] hover:bg-[#132845] text-white shadow-xs font-semibold"
           >
             {deploying ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Rocket className="w-3.5 h-3.5" />
             )}
-            <span>{deploying ? 'Deploying...' : 'Simpan & Deploy'}</span>
+            <span>{deploying ? 'Mempublikasikan...' : 'Simpan & Publikasikan'}</span>
           </Button>
         </div>
       </div>
     </div>
   );
-};
+}

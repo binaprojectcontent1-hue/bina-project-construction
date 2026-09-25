@@ -281,7 +281,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
 
       if (autoDeploy) {
         setDeploying(true);
-        const deployToastId = toast.loading('Memicu deployment & sinyal pengindeksan...');
+        const deployToastId = toast.loading('Memperbarui halaman website publik...');
         const [deployRes] = await Promise.all([
           triggerCloudflareDeploy(),
           submitContentUrl('portfolio', slug).catch(() => null),
@@ -289,13 +289,13 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
         toast.dismiss(deployToastId);
         if (deployRes.success) {
           toast.success(
-            'Deploy & Indexing Terpicu',
-            'Website sedang diperbarui & URL telah dikirim ke IndexNow untuk pengindeksan instan.'
+            'Website Berhasil Diperbarui',
+            'Perubahan data portofolio telah diterapkan dan dikirimkan ke mesin pencari Google.'
           );
-          setSuccess('Proyek berhasil disimpan, Deployment Cloudflare & IndexNow terkirim!');
+          setSuccess('Proyek berhasil disimpan dan website publik berhasil diperbarui!');
         } else {
-          toast.error('Deploy Gagal', deployRes.message);
-          setError('Proyek tersimpan, respon Cloudflare: ' + deployRes.message);
+          toast.error('Gagal Memperbarui Web', deployRes.message);
+          setError('Proyek tersimpan di database, tetapi pembaruan web tertunda: ' + deployRes.message);
         }
         setDeploying(false);
       }
@@ -379,18 +379,18 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-28">
       {/* Sticky Action Bar */}
-      <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3.5 bg-[#F8FAFC]/95 backdrop-blur-md border-b border-slate-200/80 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all">
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-xl p-3.5 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <Button variant="outline" size="icon" onClick={handleBack} className="h-9 w-9 rounded-xl text-slate-600 hover:bg-white shadow-xs cursor-pointer shrink-0">
+          <Button variant="outline" size="icon" onClick={handleBack} className="h-8 w-8 text-slate-600 shrink-0" title="Kembali ke Daftar Portofolio">
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 truncate">
+              <h2 className="text-base font-semibold tracking-tight text-slate-900 truncate">
                 {projectId ? 'Edit Portofolio Proyek' : 'Tambah Proyek Baru'}
               </h2>
-              <Badge variant="outline" className={`text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 ${status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                {status === 'published' ? '🟢 Tayang di Web' : '🟡 Draft (Konsep)'}
+              <Badge variant={status === 'published' ? 'success' : 'warning'} className="text-[11px] py-0 px-2">
+                {status === 'published' ? 'Live di Web' : 'Draft'}
               </Badge>
             </div>
             <p className="text-xs text-slate-500 mt-0.5 truncate">
@@ -399,14 +399,13 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <Button
             variant="outline"
             size="sm"
-            pill
             onClick={() => handleSave(false)}
             disabled={saving || deploying}
-            className="text-xs font-bold gap-1.5 h-9 px-4 rounded-full border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer shadow-xs"
+            className="text-xs font-semibold gap-1.5"
             title="Simpan data ke database tanpa langsung memicu perubahan di website publik"
           >
             <Save className="w-3.5 h-3.5 text-slate-500" />
@@ -415,10 +414,9 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
 
           <Button
             size="sm"
-            pill
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="text-xs font-bold gap-2 h-9 px-5 rounded-full bg-[#22416D] hover:bg-[#1A3356] text-white shadow-md shadow-[#22416D]/20 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            className="text-xs font-semibold gap-1.5"
             title="Simpan ke database dan publikasikan langsung ke website live"
           >
             {deploying ? (
@@ -449,7 +447,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Form Details */}
         <div className="lg:col-span-7 space-y-6">
-          <Card className="shadow-xs rounded-[28px]">
+          <Card className="shadow-xs rounded-xl">
             <CardHeader className="pb-4">
               <CardTitle className="text-base">Informasi Proyek</CardTitle>
               <CardDescription>
@@ -459,11 +457,10 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             <CardContent className="space-y-4">
               {/* Title */}
               <div>
-                <label className="text-sm font-bold text-slate-800 block mb-1.5">
+                <label className="text-xs font-semibold text-slate-800 block mb-1.5">
                   Judul Proyek <span className="text-rose-500">*</span>
                 </label>
                 <Input
-                  pill
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="Contoh: Villa Tropis Modern Batu"
@@ -473,11 +470,11 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
               {/* Category & Location */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-bold text-slate-800 block mb-1.5">Kategori</label>
+                  <label className="text-xs font-semibold text-slate-800 block mb-1.5">Kategori</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="flex h-11 w-full rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-800 shadow-xs focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#22416D]/15 focus-visible:border-[#22416D]"
+                    className="flex h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-800 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B365D]/20 focus-visible:border-[#1B365D]"
                   >
                     <option value="Konstruksi">Konstruksi</option>
                     <option value="Eksterior">Eksterior</option>
@@ -488,9 +485,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 </div>
 
                 <div>
-                  <label className="text-sm font-bold text-slate-800 block mb-1.5">Lokasi</label>
+                  <label className="text-xs font-semibold text-slate-800 block mb-1.5">Lokasi</label>
                   <Input
-                    pill
                     value={location}
                     onChange={(e) => {
                       setLocation(e.target.value);
@@ -504,9 +500,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
               {/* Client & Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-bold text-slate-800 block mb-1.5">Nama Klien (Opsional)</label>
+                  <label className="text-xs font-semibold text-slate-800 block mb-1.5">Nama Klien (Opsional)</label>
                   <Input
-                    pill
                     value={client}
                     onChange={(e) => {
                       setClient(e.target.value);
@@ -517,9 +512,8 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 </div>
 
                 <div>
-                  <label className="text-sm font-bold text-slate-800 block mb-1.5">Tahun / Tanggal</label>
+                  <label className="text-xs font-semibold text-slate-800 block mb-1.5">Tahun / Tanggal</label>
                   <Input
-                    pill
                     value={projectDate}
                     onChange={(e) => {
                       setProjectDate(e.target.value);
@@ -532,7 +526,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
 
               {/* Description */}
               <div>
-                <label className="text-sm font-bold text-slate-800 block mb-1.5">
+                <label className="text-xs font-semibold text-slate-800 block mb-1.5">
                   Deskripsi Hasil Karya <span className="text-rose-500">*</span>
                 </label>
                 <Textarea
@@ -550,7 +544,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             <CardHeader className="pb-4">
               <CardTitle className="text-base">Media & Dokumentasi</CardTitle>
               <CardDescription>
-                Foto utama beresolusi tinggi dengan alt-text untuk optimasi Google Images.
+                Foto utama beresolusi tinggi dengan deskripsi foto untuk mempermudah pencarian gambar Google.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -583,10 +577,10 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 <div>
                   <CardTitle className="text-base flex items-center gap-2">
                     <SlidersHorizontal className="w-4 h-4 text-sky-500" />
-                    Perbandingan Sebelum & Sesudah (Before-After Slider)
+                    Perbandingan Sebelum & Sesudah Renovasi
                   </CardTitle>
                   <CardDescription>
-                    Tampilkan slider interaktif split-screen untuk membandingkan foto sebelum vs sesudah renovasi.
+                    Tampilkan perbandingan interaktif geser kiri-kanan untuk foto sebelum vs sesudah renovasi.
                   </CardDescription>
                 </div>
                 {/* Custom Accessible Toggle Switch */}
@@ -594,7 +588,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   type="button"
                   onClick={() => setEnableBeforeAfter(!enableBeforeAfter)}
                   className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                    enableBeforeAfter ? 'bg-[#22416D]' : 'bg-slate-300'
+                    enableBeforeAfter ? 'bg-[#1B365D]' : 'bg-slate-300'
                   }`}
                   role="switch"
                   aria-checked={enableBeforeAfter}
@@ -611,7 +605,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             {enableBeforeAfter && (
               <CardContent className="space-y-4 pt-0 border-t border-slate-100 mt-2">
                 <div className="p-3 bg-sky-50 rounded-xl text-xs text-sky-800 flex items-start gap-2 mt-4">
-                  <span className="font-semibold text-sky-900 shrink-0">ℹ️ Info:</span>
+                  <span className="font-semibold text-sky-900 shrink-0">ℹ️ Petunjuk:</span>
                   <span>
                     Fitur perbandingan ini akan ditampilkan di halaman detail proyek (<code>/portfolio/{slug || 'nama-slug'}</code>) tepat di bawah deskripsi dan di atas galeri foto.
                   </span>
@@ -621,7 +615,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   {/* Before Image */}
                   <div>
                     <ImageUploader
-                      label="Foto Kondisi Sebelum (Before Image)"
+                      label="Foto Kondisi Bangunan Sebelum Renovasi"
                       value={beforeImage}
                       onChange={setBeforeImage}
                       altText={`Foto sebelum renovasi - ${title}`}
@@ -635,7 +629,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   {/* After Image */}
                   <div>
                     <ImageUploader
-                      label="Foto Hasil Sesudah (After Image - Opsional)"
+                      label="Foto Hasil Sesudah Renovasi (Opsional)"
                       value={afterImage}
                       onChange={setAfterImage}
                       altText={`Foto hasil renovasi - ${title}`}
@@ -645,14 +639,14 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                       requiredAlt={false}
                     />
                     <p className="text-[11px] text-slate-500 mt-1">
-                      Kosongkan jika ingin otomatis memakai <strong>Foto Utama (Cover)</strong> proyek.
+                      Kosongkan jika ingin otomatis memakai <strong>Foto Utama</strong> proyek di atas.
                     </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                    <label className="text-xs font-semibold text-slate-700 block mb-1">
                       Durasi Pengerjaan Renovasi
                     </label>
                     <Input
@@ -663,7 +657,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                    <label className="text-xs font-semibold text-slate-700 block mb-1">
                       Lingkup Pekerjaan / Transformasi
                     </label>
                     <Input
@@ -681,7 +675,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
         {/* Right Column: SEO Engine & Live Google Preview */}
         <div className="lg:col-span-5 space-y-6">
           {/* Status Card */}
-          <Card className="shadow-xs rounded-[28px]">
+          <Card className="shadow-xs rounded-xl">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-1.5">
                 <CardTitle className="text-sm">Status & Keterlihatan Halaman</CardTitle>
@@ -690,7 +684,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
               <CardDescription>Tentukan apakah halaman proyek ini langsung aktif di website publik.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
                 <div className="text-xs">
                   <span className="font-semibold text-slate-800 block">
                     {status === 'published' ? '🟢 Live di Website' : '📝 Draft (Tersimpan Saja)'}
@@ -699,11 +693,11 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                     {status === 'published' ? 'Bisa dibuka oleh umum & Google' : 'Hanya tampak di dashboard admin'}
                   </span>
                 </div>
-                <div className="flex items-center gap-1 bg-white p-1 rounded-full shadow-xs">
+                <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setStatus('draft')}
-                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
+                    className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
                       status === 'draft' ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-500'
                     }`}
                   >
@@ -712,17 +706,17 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   <button
                     type="button"
                     onClick={() => setStatus('published')}
-                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
-                      status === 'published' ? 'bg-[#22416D] text-white font-semibold shadow-xs' : 'text-slate-500'
+                    className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                      status === 'published' ? 'bg-[#1B365D] text-white font-semibold shadow-2xs' : 'text-slate-500'
                     }`}
                   >
-                    Published
+                    Live di Web
                   </button>
                 </div>
               </div>
 
               {/* Featured Project Switch */}
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
                 <div className="flex items-center gap-2">
                   <Star className={`w-4 h-4 ${featured ? 'text-amber-500 fill-amber-500' : 'text-slate-400'}`} />
                   <div>
@@ -736,7 +730,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 <button
                   type="button"
                   onClick={() => setFeatured(!featured)}
-                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${featured ? 'bg-[#22416D]' : 'bg-slate-200'}`}
+                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${featured ? 'bg-[#1B365D]' : 'bg-slate-200'}`}
                 >
                   <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${featured ? 'translate-x-4' : 'translate-x-0'}`} />
                 </button>
@@ -745,7 +739,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
           </Card>
 
           {/* Smart Slug Engine Card with Padlock */}
-          <Card className="shadow-xs rounded-[28px]">
+          <Card className="shadow-xs rounded-xl">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm flex items-center gap-1.5">
@@ -763,7 +757,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                         setSlug(generated);
                         validateSlug(generated);
                       }}
-                      className="text-xs text-[#22416D] hover:underline font-semibold cursor-pointer"
+                      className="text-xs text-[#1B365D] hover:underline font-semibold cursor-pointer"
                     >
                       Reset dari Judul
                     </button>
@@ -771,7 +765,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   <button
                     type="button"
                     onClick={() => setIsSlugLocked((prev) => !prev)}
-                    className={`flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full border transition-colors cursor-pointer ${
+                    className={`flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-md border transition-colors cursor-pointer ${
                       isSlugLocked
                         ? 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                         : 'border-amber-200 bg-amber-50 text-amber-800'
@@ -799,10 +793,10 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className={`flex rounded-full border shadow-xs transition-all overflow-hidden ${
-                isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#22416D] ring-4 ring-[#22416D]/10'
+              <div className={`flex rounded-lg border shadow-2xs transition-all overflow-hidden ${
+                isSlugLocked ? 'bg-slate-50/80 border-slate-200' : 'bg-white border-[#1B365D] ring-2 ring-[#1B365D]/10'
               }`}>
-                <span className="inline-flex items-center px-4 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
+                <span className="inline-flex items-center px-3 bg-slate-100 text-slate-500 text-xs font-mono select-none border-r border-slate-200">
                   /portfolio/
                 </span>
                 <input
@@ -811,7 +805,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   readOnly={isSlugLocked}
                   onChange={(e) => handleSlugChange(e.target.value)}
                   placeholder="villa-tropis-modern-batu"
-                  className={`flex-1 px-4 py-2.5 text-xs font-mono focus:outline-none ${
+                  className={`flex-1 px-3 py-2 text-xs font-mono focus:outline-none ${
                     isSlugLocked ? 'text-slate-600 bg-slate-50/80 cursor-not-allowed' : 'text-slate-900 bg-white'
                   }`}
                 />
@@ -879,7 +873,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
               <div className="pt-3 border-t border-slate-100 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                    Tampilan Media Sosial (OG Image)
+                    Tampilan Gambar Saat Dibagikan ke WhatsApp & Medsos
                     <HelpTooltip content="Pilih tampilan gambar kartu ketika portofolio dibagikan ke WhatsApp, Facebook, LinkedIn, atau Twitter." />
                   </label>
                   <span className="text-[10px] bg-amber-100 text-amber-800 font-medium px-2 py-0.5 rounded-full">
@@ -901,11 +895,11 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   >
                     <div className="flex items-center gap-1.5 font-medium text-xs text-slate-900">
                       <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-                      Split-Screen Otomatis
-                      <span className="text-[9px] text-amber-700 font-bold bg-amber-100 px-1 py-0.2 rounded">Rekomendasi</span>
+                      Format Kartu Ringkasan Resmi
+                      <span className="text-[9px] text-amber-700 font-semibold bg-amber-100 px-1 py-0.2 rounded">Rekomendasi</span>
                     </div>
                     <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                      Kartu modern berlogo resmi, judul rapi, badge kategori, dan foto proyek di sisi kanan.
+                      Kartu modern berlogo resmi, judul rapi, kategori, dan foto proyek di sisi kanan.
                     </p>
                   </button>
                   <button
@@ -922,7 +916,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                   >
                     <div className="flex items-center gap-1.5 font-medium text-xs text-slate-900">
                       <span className="w-2 h-2 rounded-full bg-slate-400 shrink-0" />
-                      Foto Sampul Asli
+                      Foto Sampul Proyek Asli
                     </div>
                     <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
                       Menggunakan file foto cover proyek polos tanpa grafis tambahan.
@@ -951,7 +945,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Status Publikasi:</span>
           <span
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ${
               status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
             }`}
           >
@@ -960,7 +954,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
                 status === 'published' ? 'bg-emerald-500' : 'bg-amber-500'
               }`}
             />
-            {status === 'published' ? 'Tayang (Published)' : 'Draft'}
+            {status === 'published' ? 'Aktif di Website Publik' : 'Draft'}
           </span>
           {isDirty && (
             <span className="text-xs text-amber-600 font-medium hidden sm:inline flex items-center gap-1">
@@ -990,7 +984,7 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             className="text-xs h-9 px-3.5 gap-1.5 text-slate-800 font-semibold"
           >
             <Save className="w-3.5 h-3.5 text-slate-500" />
-            <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Saja'}</span>
+            <span>{saving && !deploying ? 'Menyimpan...' : 'Simpan Draft'}</span>
           </Button>
 
           <Button
@@ -998,14 +992,14 @@ export function PortfolioEditor({ projectId, onBack, onSave }: PortfolioEditorPr
             size="sm"
             onClick={() => handleSave(true)}
             disabled={saving || deploying}
-            className="text-xs h-9 px-4 gap-1.5 bg-[#22416D] hover:bg-[#1A3356] text-white shadow-xs font-semibold"
+            className="text-xs h-9 px-4 gap-1.5 bg-[#1B365D] hover:bg-[#152a48] text-white shadow-xs font-semibold"
           >
             {deploying ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Rocket className="w-3.5 h-3.5" />
             )}
-            <span>{deploying ? 'Deploying...' : 'Simpan & Deploy'}</span>
+            <span>{deploying ? 'Mempublikasikan...' : 'Simpan & Publikasikan Web'}</span>
           </Button>
         </div>
       </div>
