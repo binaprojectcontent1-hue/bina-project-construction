@@ -172,7 +172,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {(!isCollapsed || mobileOpen) && (
                 <div className="min-w-0 flex-1">
                   <h2 className="text-xs font-semibold text-slate-900 truncate leading-tight">
-                    Bina Project Studio
+                    Bina Project Construction
                   </h2>
                   <span className="text-[11px] font-medium text-slate-500 truncate block">
                     Panel Manajemen

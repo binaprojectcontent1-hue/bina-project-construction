@@ -494,7 +494,7 @@ export type TabType =
 2. Add `'live-projects'` to `validTabs` array.
 3. Update browser tab title map:
 ```typescript
-'live-projects': 'Peta Proyek Berjalan - Bina Project Studio',
+'live-projects': 'Peta Proyek Berjalan - Bina Project Construction',
 ```
 4. Render `<LiveProjectsManager />` when `activeTab === 'live-projects'`.
 

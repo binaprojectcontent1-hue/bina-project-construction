@@ -31,7 +31,7 @@ export default defineConfig({
     '/portfolio/kitchen-set-pasuruan': '/portfolio',
   },
   image: {
-    domains: ['cdn.jsdelivr.net', 'images.unsplash.com', 'raw.githubusercontent.com'],
+    domains: ['binaproject.id', 'cdn.jsdelivr.net', 'images.unsplash.com', 'raw.githubusercontent.com'],
   },
   vite: {
     resolve: {
@@ -46,9 +46,8 @@ export default defineConfig({
       },
       proxy: {
         '/media': {
-          target: 'https://cdn.jsdelivr.net/gh/binaprojectcontent1-hue/bina-media@main',
+          target: 'https://binaproject.id',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/media/, ''),
         },
       },
     },

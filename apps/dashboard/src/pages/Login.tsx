@@ -91,7 +91,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                 B
               </div>
               <div>
-                <span className="font-semibold text-sm block leading-tight">Bina Project Studio</span>
+                <span className="font-semibold text-sm block leading-tight">Bina Project Construction</span>
                 <span className="text-[11px] text-blue-200/80 block">Panel Redaksi & Manajemen</span>
               </div>
             </div>
@@ -122,7 +122,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           </div>
 
           <div className="pt-8 text-[11px] text-blue-200/60 flex items-center justify-between relative z-10 border-t border-white/10">
-            <span>PT Bina Project Studio</span>
+            <span>PT Bina Project Construction</span>
             <span className="font-mono">v2.0</span>
           </div>
         </div>

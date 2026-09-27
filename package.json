@@ -2,7 +2,7 @@
   "name": "binaproject",
   "type": "module",
   "version": "2.0.0",
-  "description": "Bina Project Construction & Interior Official Website",
+  "description": "Bina Project Construction Official Website",
   "engines": {
     "node": ">=22.0.0"
   },

@@ -468,7 +468,7 @@ export function LiveProjectEditor({ projectId, onBack, onSave }: LiveProjectEdit
                 Foto Dokumentasi Lapangan
               </CardTitle>
               <CardDescription className="text-xs text-slate-500">
-                Unggah foto dokumentasi proyek langsung ke GitHub Media via jsDelivr CDN (rasio 1:1).
+                Unggah foto dokumentasi proyek langsung ke Cloud Media Resmi binaproject.id (rasio 1:1).
               </CardDescription>
             </CardHeader>
             <CardContent>

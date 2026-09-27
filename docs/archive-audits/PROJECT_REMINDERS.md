@@ -1,6 +1,6 @@
 # 📌 PROJECT REMINDERS & CONTEXT SUMMARY: BINA PROJECT
 
-Dokumen ini berisi rangkuman arsitektur modern, tumpukan teknologi (**Astro 5 + TypeScript + Supabase + jsDelivr CDN**), struktur komponen, panduan konfigurasi, dan catatan kritis untuk website **Bina Project (Bina Project Construction & Interior)**.
+Dokumen ini berisi rangkuman arsitektur modern, tumpukan teknologi (**Astro 5 + TypeScript + Supabase + jsDelivr CDN**), struktur komponen, panduan konfigurasi, dan catatan kritis untuk website **Bina Project (Bina Project Construction)**.
 
 ---
 

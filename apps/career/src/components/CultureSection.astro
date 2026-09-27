@@ -23,29 +23,29 @@ const pillars = [
 ];
 ---
 
-<section id="budaya" class="py-20 bg-[#F1F5F9]/60 border-y border-[#E2E8F0] relative">
+<section id="budaya" class="py-24 bg-[#F8FAFC]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Section Title -->
     <div class="text-center max-w-2xl mx-auto mb-14">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-bold uppercase tracking-wider bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] mb-3">
-        Budaya & Kehidupan Kerja
+      <span class="text-xs font-technical font-bold uppercase tracking-widest text-[#22416D] block mb-2">
+        Budaya &amp; Nilai Kerja
       </span>
       <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#17202A] tracking-tight">
-        Mengapa Membangun Karir di <span class="text-[#22416D]">Bina Project</span>?
+        Mengapa Membangun Karir di Bina Project?
       </h2>
       <p class="text-[#475569] font-body text-sm sm:text-base mt-3 leading-relaxed">
         Kami percaya karya konstruksi dan interior berkualitas berakar dari tim yang bertumbuh, dihargai, dan bangga atas setiap detail yang dibangun.
       </p>
     </div>
 
-    <!-- Bento 4-Pillar Grid -->
+    <!-- 4-Pillar Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {pillars.map((pillar, idx) => (
-        <div class="bento-card bento-card-hover p-7 sm:p-8 bg-white flex items-start gap-5">
-          <!-- Icon Box -->
-          <div class="flex-shrink-0 w-13 h-13 rounded-xl bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] flex items-center justify-center shadow-xs">
-            <span class="font-technical text-lg font-bold">0{idx + 1}</span>
+        <div class="bg-white rounded-2xl p-7 sm:p-8 shadow-[0_2px_14px_rgba(13,25,43,0.04)] hover:shadow-[0_12px_28px_rgba(13,25,43,0.07)] hover:-translate-y-1 transition-all duration-300 flex items-start gap-5 border border-slate-200/60 group">
+          <!-- Number Marker -->
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 text-[#22416D] flex items-center justify-center font-technical text-base font-bold group-hover:bg-[#22416D] group-hover:text-white transition-colors">
+            0{idx + 1}
           </div>
 
           <!-- Text -->

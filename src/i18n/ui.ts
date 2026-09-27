@@ -242,7 +242,7 @@ export const ui = {
     'faq.allCategories': 'Semua Kategori',
 
     // About Page
-    'about.title': 'Tentang Bina Project Studio',
+    'about.title': 'Tentang Bina Project Construction',
     'about.subtitle':
       'Perjalanan, dedikasi, dan standar profesionalisme dalam setiap karya arsitektur dan konstruksi fisik.',
     'about.missionBadge': 'VISI & MISI KAMI',
@@ -573,7 +573,7 @@ export const ui = {
     'faq.allCategories': 'All Categories',
 
     // About Page
-    'about.title': 'About Bina Project Studio',
+    'about.title': 'About Bina Project Construction',
     'about.subtitle':
       'Our journey, architectural craftsmanship, and unrelenting dedication to structural excellence.',
     'about.missionBadge': 'OUR VISION & MISSION',

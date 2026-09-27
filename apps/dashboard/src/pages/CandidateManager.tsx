@@ -68,7 +68,7 @@ export function CandidateManager() {
   const [viewMode, setViewMode] = useState<'kanban' | 'table'>('kanban');
   const [search, setSearch] = useState('');
   const [jobFilter, setJobFilter] = useState('all');
-  const [jobs, setJobs] = useState<{ id: string; title: string }[]>([]);
+  const [jobs, setJobs] = useState<{ id: string; title: string; custom_questions?: any[] }[]>([]);
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
   const [showWaModal, setShowWaModal] = useState(false);
   const [waApplicant, setWaApplicant] = useState<Applicant | null>(null);
@@ -80,7 +80,7 @@ export function CandidateManager() {
     try {
       const [{ data: appsData }, { data: jobsData }] = await Promise.all([
         supabase.from('job_applications').select('*').order('created_at', { ascending: false }),
-        supabase.from('job_postings').select('id, title').order('title'),
+        supabase.from('job_postings').select('id, title, custom_questions').order('title'),
       ]);
       if (appsData) setApplicants(appsData);
       if (jobsData) setJobs(jobsData);
@@ -556,6 +556,7 @@ export function CandidateManager() {
       {selectedApplicant && (
         <ApplicantDetailModal
           applicant={selectedApplicant}
+          jobs={jobs}
           onClose={() => setSelectedApplicant(null)}
           onUpdate={updateApplicant}
           getResumeUrl={getResumeUrl}
@@ -616,12 +617,14 @@ export function CandidateManager() {
 // === Stable Applicant Detail Modal Sub-Component ===
 function ApplicantDetailModal({
   applicant,
+  jobs,
   onClose,
   onUpdate,
   getResumeUrl,
   onWhatsApp,
 }: {
   applicant: Applicant;
+  jobs: { id: string; title: string; custom_questions?: any[] }[];
   onClose: () => void;
   onUpdate: (id: string, updates: Partial<Applicant>) => Promise<void>;
   getResumeUrl: (path: string) => Promise<string | null>;
@@ -772,13 +775,19 @@ function ApplicantDetailModal({
               <h4 className="text-xs font-semibold text-amber-800 uppercase tracking-wider mb-2">
                 Jawaban Kuesioner Khusus
               </h4>
-              <div className="space-y-1.5">
-                {Object.entries(applicant.custom_answers).map(([key, value]) => (
-                  <div key={key} className="text-xs">
-                    <span className="font-semibold text-amber-900 block">{key}</span>
-                    <span className="text-slate-700 mt-0.5 block">{value}</span>
-                  </div>
-                ))}
+              <div className="space-y-2">
+                {Object.entries(applicant.custom_answers).map(([key, value]) => {
+                  const relatedJob = jobs.find((j) => j.id === applicant.job_id);
+                  const questionObj = relatedJob?.custom_questions?.find((q: any) => q.id === key);
+                  const questionLabel = questionObj?.question || key;
+
+                  return (
+                    <div key={key} className="text-xs rounded-md bg-white/70 p-2.5 border border-amber-200/60">
+                      <span className="font-semibold text-amber-950 block mb-0.5">{questionLabel}</span>
+                      <span className="text-slate-800 block whitespace-pre-wrap">{value}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

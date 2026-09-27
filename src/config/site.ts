@@ -9,7 +9,7 @@ import { MAIN_NAV } from '@data/navigation';
 
 export const siteConfig: SiteConfig = {
   name: 'Bina Project',
-  legalName: 'Bina Project Construction & Interior',
+  legalName: 'Bina Project Construction',
   tagline: 'Jasa Konstruksi & Desain Interior Malang',
   description:
     'Jasa konstruksi, renovasi rumah, desain interior & kitchen set di Malang & Jawa Timur. Pengerjaan profesional, bergaransi & gratis survei lokasi.',

@@ -26,8 +26,8 @@ Tujuan: Menyiapkan repository gratis di GitHub yang akan berfungsi sebagai **"Cl
 
 ### 1.2. Buat GitHub Personal Access Token (PAT)
 Token ini berfungsi sebagai "kunci akses" agar dashboard admin di browser bisa mengunggah file foto langsung ke repository `bina-media`.
-1. Buka link pembuatan token: [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new?scopes=repo&description=BinaProjectStudio).
-2. Di kolom **Note / Description**, isi: `Bina Project Studio Dashboard`.
+1. Buka link pembuatan token: [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new?scopes=repo&description=BinaProjectConstruction).
+2. Di kolom **Note / Description**, isi: `Bina Project Construction Dashboard`.
 3. Di bagian **Expiration**, pilih `No expiration` (atau 90 hari sesuai kebijakan Anda).
 4. Di bagian **Select scopes**, pastikan Anda mencentang:
    - [x] **`repo`** *(Full control of private repositories & contents)*.

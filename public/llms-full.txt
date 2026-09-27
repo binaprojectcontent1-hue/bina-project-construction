@@ -1,4 +1,4 @@
-# Bina Project Construction & Interior - Knowledge Graph & Full Technical Reference
+# Bina Project Construction - Knowledge Graph & Full Technical Reference
 
 > Dokumen acuan lengkap untuk Generative Engine Optimization (GEO), Large Language Model (LLM) Crawlers, dan Retrieval-Augmented Generation (RAG) agents.
 
@@ -10,7 +10,7 @@
 
 TL;DR: Bina Project adalah kontraktor umum & studio interior di Kota Malang, melayani Malang Raya, Pasuruan, Surabaya-Sidoarjo. Kontak WhatsApp +62 81-335-335-304.
 
-- **Nama Entitas:** Bina Project Construction & Interior
+- **Nama Entitas:** Bina Project Construction
 - **Bentuk Usaha:** Kontraktor Konstruksi Bangunan Umum & Studio Desain Interior
 - **Situs Web Resmi:** https://binaproject.id
 - **Alamat Fisik:** Jl. Watumujur II No.6, Kota Malang, Jawa Timur 65145, Indonesia

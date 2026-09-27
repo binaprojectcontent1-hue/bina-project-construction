@@ -4,6 +4,7 @@ import { ArrowLeft, Save, Plus, Trash2, GripVertical, ChevronDown, AlertTriangle
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Skeleton } from '../components/ui/skeleton';
+import { triggerCloudflareDeploy } from '../lib/cloudflare';
 
 interface CustomQuestion {
   id: string;
@@ -56,6 +57,9 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
   const [customQuestions, setCustomQuestions] = useState<CustomQuestion[]>([]);
   const [status, setStatus] = useState('draft');
   const [deadline, setDeadline] = useState('');
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [formLayout, setFormLayout] = useState<'multi_step' | 'single_page'>('multi_step');
+  const [linkCopied, setLinkCopied] = useState(false);
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -84,6 +88,8 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
         setCustomQuestions(data.custom_questions || []);
         setStatus(data.status);
         setDeadline(data.application_deadline || '');
+        setThumbnailUrl(data.thumbnail_url || '');
+        setFormLayout(data.form_layout || 'multi_step');
       }
       setLoading(false);
     })();
@@ -137,6 +143,8 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
       custom_questions: customQuestions.filter((q) => q.question.trim()),
       status,
       application_deadline: deadline || null,
+      thumbnail_url: thumbnailUrl.trim() || null,
+      form_layout: formLayout,
     };
 
     try {
@@ -145,6 +153,7 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
       } else {
         await supabase.from('job_postings').insert(payload);
       }
+      triggerCloudflareDeploy().catch(() => {});
       onSave();
     } catch (err) {
       console.error('Save error:', err);
@@ -248,6 +257,53 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
           <div>
             <label className={labelClass}>Batas Lamaran</label>
             <input type="date" className={inputClass} value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+          </div>
+
+          {/* Thumbnail / Foto Card Lowongan */}
+          <div className="sm:col-span-2 space-y-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-between">
+              <label className={labelClass}>URL Thumbnail / Foto Kartu Lowongan (Opsional)</label>
+              <span className="text-xs text-slate-400 font-normal">Disarankan rasio 1:1 (persegi)</span>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                className={inputClass}
+                placeholder="Contoh: https://images.unsplash.com/... atau URL gambar lainnya"
+                value={thumbnailUrl}
+                onChange={(e) => setThumbnailUrl(e.target.value)}
+              />
+              {thumbnailUrl && (
+                <button
+                  type="button"
+                  onClick={() => setThumbnailUrl('')}
+                  className="px-3.5 py-2 text-xs font-medium text-slate-600 hover:text-red-600 bg-slate-100 hover:bg-red-50 rounded-xl transition-colors shrink-0"
+                >
+                  Hapus
+                </button>
+              )}
+            </div>
+            {thumbnailUrl.trim() ? (
+              <div className="mt-2 space-y-1.5">
+                <div className="relative aspect-square w-36 h-36 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-xs">
+                  <img
+                    src={thumbnailUrl.trim()}
+                    alt="Preview Thumbnail"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop';
+                    }}
+                  />
+                  <span className="absolute bottom-2 left-2 text-[10px] font-mono bg-black/70 text-white px-2 py-0.5 rounded backdrop-blur-xs">
+                    Live Preview 1:1
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-slate-400">
+                Kosongkan untuk otomatis menggunakan visual fotografi arsitektur &amp; konstruksi default kategori <strong className="text-slate-600">{department}</strong>.
+              </p>
+            )}
           </div>
         </div>
 
@@ -404,14 +460,90 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
         )}
       </div>
 
+      {/* Form Settings & Share Link (Google Forms style) */}
+      <div className="rounded-xl bg-white border border-slate-200/80 p-6 space-y-5 shadow-xs">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-900">Pengaturan Formulir &amp; Tautan Berbagi</h2>
+          <p className="text-xs text-slate-400 mt-0.5">Atur tampilan formulir lamaran online dan dapatkan tautan langsung untuk dibagikan ke kandidat.</p>
+        </div>
+
+        {/* Layout Mode Selector */}
+        <div>
+          <label className={labelClass}>Mode Tampilan Formulir</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
+            <button
+              type="button"
+              onClick={() => setFormLayout('multi_step')}
+              className={`p-4 rounded-xl border text-left cursor-pointer transition-all ${
+                formLayout === 'multi_step'
+                  ? 'border-[#1B365D] bg-blue-50/50 ring-1 ring-[#1B365D]'
+                  : 'border-slate-200 hover:border-slate-300 bg-white'
+              }`}
+            >
+              <div className={`text-xs font-semibold ${formLayout === 'multi_step' ? 'text-[#1B365D]' : 'text-slate-700'}`}>
+                Bertahap (Multi-step Wizard)
+              </div>
+              <div className="text-[11px] text-slate-400 mt-1">
+                Formulir dibagi menjadi beberapa tahap pengisian dengan progress bar yang rapi.
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setFormLayout('single_page')}
+              className={`p-4 rounded-xl border text-left cursor-pointer transition-all ${
+                formLayout === 'single_page'
+                  ? 'border-[#1B365D] bg-blue-50/50 ring-1 ring-[#1B365D]'
+                  : 'border-slate-200 hover:border-slate-300 bg-white'
+              }`}
+            >
+              <div className={`text-xs font-semibold ${formLayout === 'single_page' ? 'text-[#1B365D]' : 'text-slate-700'}`}>
+                Satu Halaman Penuh (Single Page)
+              </div>
+              <div className="text-[11px] text-slate-400 mt-1">
+                Semua pertanyaan tampil berurutan dalam kartu-kartu dalam satu halaman seperti Google Forms.
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Shareable Direct Form Link */}
+        <div className="pt-3 border-t border-slate-100">
+          <label className={labelClass}>Tautan Langsung Formulir (Direct Link IG / WA)</label>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              readOnly
+              className={`${inputClass} bg-slate-50 text-slate-600 font-mono text-xs select-all`}
+              value={`https://karir.binaproject.id/loker/${slug || 'posisi'}/lamar`}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(`https://karir.binaproject.id/loker/${slug || 'posisi'}/lamar`);
+                setLinkCopied(true);
+                setTimeout(() => setLinkCopied(false), 2000);
+              }}
+              className="px-4 py-2.5 rounded-xl bg-[#1B365D] text-white hover:bg-[#22416D] text-xs font-medium shrink-0 transition-colors cursor-pointer"
+            >
+              {linkCopied ? 'Tersalin!' : 'Salin Link'}
+            </button>
+          </div>
+          <p className="text-[11px] text-slate-400 mt-1.5">
+            Pelamar dari Instagram (Bio/DM) atau WhatsApp dapat langsung mengisi berkas melalui link ini tanpa perlu mencari di web karir.
+          </p>
+        </div>
+      </div>
+
       {/* Status & Publish */}
       <div className="rounded-xl bg-white border border-slate-200/80 p-6 shadow-xs">
-        <h2 className="text-sm font-semibold text-slate-900 mb-4">Status Publikasi</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <h2 className="text-sm font-semibold text-slate-900 mb-4">Status &amp; Visibilitas Lowongan</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
-            { value: 'draft', label: 'Draft', desc: 'Simpan sebagai draft, belum tampil di portal' },
-            { value: 'published', label: 'Publikasikan', desc: 'Langsung tampil di karir.binaproject.id' },
-            { value: 'closed', label: 'Ditutup', desc: 'Lowongan tidak menerima lamaran lagi' },
+            { value: 'published', label: 'Publik', desc: 'Tampil di web karir & link formulir aktif' },
+            { value: 'unlisted', label: 'Private (Link Only)', desc: 'Tidak muncul di web karir, hanya pelamar dengan link (IG/WA) yang bisa mengisi' },
+            { value: 'closed', label: 'Ditutup', desc: 'Tetap tampil di web dengan label ditutup & formulir terkunci' },
+            { value: 'draft', label: 'Draft', desc: 'Tersimpan hanya di dashboard admin' },
           ].map((s) => (
             <button
               key={s.value}
@@ -426,7 +558,7 @@ export function JobEditor({ jobId, onBack, onSave }: JobEditorProps) {
               <div className={`text-xs font-semibold ${status === s.value ? 'text-[#1B365D]' : 'text-slate-700'}`}>
                 {s.label}
               </div>
-              <div className="text-[11px] text-slate-400 mt-0.5">{s.desc}</div>
+              <div className="text-[11px] text-slate-400 mt-1 leading-snug">{s.desc}</div>
             </button>
           ))}
         </div>

@@ -127,7 +127,7 @@ const Icons = {
 - Need stricter performance requirements
 - Want zero external dependencies
 
-For Bina Project Studio, current state is **PRODUCTION READY** ✅
+For Bina Project Construction, current state is **PRODUCTION READY** ✅
 
 ---
 

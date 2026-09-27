@@ -70,8 +70,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       // Priority 1: GitHub Storage (Dedicated Media Repo)
       if (ghConfigured && ghConfig) {
         const ghRes = await uploadToGitHubStorage(file, folder, ghConfig);
-        // Save CDN URL
-        onChange(ghRes.cdn_url);
+        // Save own domain URL (https://binaproject.id/media/...)
+        onChange(ghRes.own_domain_url);
 
         if (!altText) {
           onAltChange(`Foto ${cleanFileName.replace(/-/g, ' ')} Bina Project`);

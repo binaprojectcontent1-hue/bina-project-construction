@@ -1,4 +1,4 @@
-# Solar Icon Replacement Strategy for Bina Project Studio
+# Solar Icon Replacement Strategy for Bina Project Construction
 
 ## Overview
 Replacing Lucide React icons with @iconify-json/solar via Astro Icon for better performance

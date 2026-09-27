@@ -260,7 +260,7 @@ function wrapText(text: string, maxCharsPerLine: number = 24, maxLines: number =
 function createLeftPanelSvg(options: OgImageOptions): Buffer {
   const category = escapeXml(options.category?.toUpperCase() || (options.type === 'portfolio' ? 'PROYEK ARSITEKTUR' : 'TIPS & EDUKASI'));
   const metaInfo = escapeXml(options.metaInfo || (options.type === 'portfolio' ? 'Bina Project' : '3 Menit Baca'));
-  const titleLines = wrapText(options.title || 'Bina Project Construction & Interior', 24, 3);
+  const titleLines = wrapText(options.title || 'Bina Project Construction', 24, 3);
 
   const titleSvgSpans = titleLines
     .map((line, idx) => `<tspan x="70" dy="${idx === 0 ? 0 : 54}">${escapeXml(line)}</tspan>`)

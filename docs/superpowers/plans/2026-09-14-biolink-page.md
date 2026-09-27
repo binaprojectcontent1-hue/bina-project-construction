@@ -226,11 +226,11 @@ export default defineConfig({
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0E1E38" />
     <title>Bina Project — Link</title>
-    <meta name="description" content="Semua link penting Bina Project Construction & Interior di satu tempat." />
+    <meta name="description" content="Semua link penting Bina Project Construction di satu tempat." />
     
     <!-- OG Tags -->
     <meta property="og:title" content="Bina Project — Link" />
-    <meta property="og:description" content="Semua link penting Bina Project Construction & Interior di satu tempat." />
+    <meta property="og:description" content="Semua link penting Bina Project Construction di satu tempat." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://bio.binaproject.com" />
     <meta property="og:image" content="https://binaproject.com/assets/img/og-image.png" />
@@ -239,7 +239,7 @@ export default defineConfig({
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Bina Project — Link" />
-    <meta name="twitter:description" content="Semua link penting Bina Project Construction & Interior di satu tempat." />
+    <meta name="twitter:description" content="Semua link penting Bina Project Construction di satu tempat." />
     <meta name="twitter:image" content="https://binaproject.com/assets/img/og-image.png" />
 
     <!-- Favicon -->
@@ -893,7 +893,7 @@ export function BioCard({ settings, links }: BioCardProps) {
 
       {/* Footer */}
       <p className="bio-footer">
-        © {new Date().getFullYear()} Bina Project Construction & Interior
+        © {new Date().getFullYear()} Bina Project Construction
       </p>
     </div>
   );
@@ -1620,7 +1620,7 @@ case 'biolink':
 
 4. Add title in the `titles` Record:
 ```typescript
-'biolink': 'Bio Link - Bina Project Studio',
+'biolink': 'Bio Link - Bina Project Construction',
 ```
 
 - [ ] **Step 4: Verify TypeScript**

@@ -81,7 +81,8 @@ export const GalleryUploader: React.FC<GalleryUploaderProps> = ({
 
         if (ghConfigured && ghConfig) {
           const ghRes = await uploadToGitHubStorage(fileToUpload, folder, ghConfig);
-          newUrls.push(ghRes.cdn_url);
+          // Save own domain URL (https://binaproject.id/media/...)
+          newUrls.push(ghRes.own_domain_url);
         } else {
           throw new Error('GitHub Storage belum dikonfigurasi. Hubungkan Token & Repo di Pengaturan.');
         }

@@ -1,0 +1,261 @@
+---
+import CareerLayout from '../../../layouts/CareerLayout.astro';
+import Footer from '../../../components/Footer.astro';
+import { ApplicationForm } from '../../../components/form/ApplicationForm';
+import { supabase } from '../../../lib/supabase';
+
+export async function getStaticPaths() {
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from('job_postings')
+    .select('slug')
+    .in('status', ['published', 'unlisted', 'closed']);
+  return (data || []).map((job) => ({ params: { slug: job.slug } }));
+}
+
+const { slug } = Astro.params;
+
+let job: any = null;
+if (supabase && slug) {
+  const { data } = await supabase
+    .from('job_postings')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+  job = data;
+}
+
+if (!job) {
+  return Astro.redirect('/');
+}
+
+const isClosed = job.status === 'closed' || (job.application_deadline && new Date(job.application_deadline).getTime() < Date.now());
+
+const deptAccentColors: Record<string, string> = {
+  'Arsitektur & Desain': 'bg-blue-600',
+  'Konstruksi & Lapangan': 'bg-emerald-600',
+  'Estimator & RAB': 'bg-slate-700',
+  'Marketing & Finance': 'bg-purple-600',
+  'Magang': 'bg-amber-500',
+};
+
+const topAccent = deptAccentColors[job.department] || 'bg-[#22416D]';
+
+function formatListItems(data: unknown): string[] {
+  if (!data) return [];
+  if (Array.isArray(data)) {
+    return data
+      .flatMap((item) => (typeof item === 'string' ? item.split('\n') : []))
+      .map((s) => s.replace(/^([•\-\*]|\d+[\.\)])\s+/, '').trim())
+      .filter(Boolean);
+  }
+  if (typeof data === 'string') {
+    return data
+      .split('\n')
+      .map((s) => s.replace(/^([•\-\*]|\d+[\.\)])\s+/, '').trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+const requirementsList = formatListItems(job.requirements);
+const responsibilitiesList = formatListItems(job.responsibilities);
+---
+
+<CareerLayout
+  title={`Formulir Lamaran: ${job.title}`}
+  description={`Formulir pendaftaran online resmi posisi ${job.title} di Bina Project Construction. Isi data diri dan lampirkan CV Anda.`}
+  ogImage={job.thumbnail_url || '/og-career.png'}
+>
+  <!-- Architectural Navy Top Sub-header -->
+  <header class="bg-[#0A1320] text-white border-b border-slate-800 py-6 sm:py-8 relative overflow-hidden">
+    {job.thumbnail_url && (
+      <div 
+        class="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity pointer-events-none"
+        style={`background-image: url('${job.thumbnail_url}');`}
+      ></div>
+    )}
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+      
+      <!-- Navigation & Breadcrumb -->
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <a
+          href={`/loker/${job.slug}`}
+          class="inline-flex items-center gap-2 text-xs font-technical font-semibold text-slate-300 hover:text-white transition-colors py-1.5 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Kembali ke Rincian Lowongan</span>
+        </a>
+
+        <span class="text-xs font-technical text-[#84ACDF] hidden sm:inline-block">
+          Portal Rekrutmen Resmi &bull; Bina Project
+        </span>
+      </div>
+
+      <!-- Quick Title -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-technical font-bold uppercase tracking-wider text-[#84ACDF] block mb-1">
+            Formulir Pendaftaran Online
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-heading font-black tracking-tight text-white">
+            {job.title}
+          </h1>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 text-xs font-technical">
+          <span class="font-bold uppercase tracking-wider text-[#84ACDF]">{job.department}</span>
+          <span class="text-slate-500">&bull;</span>
+          <span class="text-slate-300">{job.job_type}</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Google Forms Centered Form Canvas -->
+  <main class="py-10 sm:py-14 bg-[#F8FAFC] min-h-[75vh]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
+
+      {isClosed ? (
+        <div class="bg-white rounded-2xl p-8 sm:p-12 border border-slate-200/80 shadow-[0_2px_14px_rgba(13,25,43,0.04)] text-center space-y-5">
+          <div class="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-heading font-extrabold text-[#17202A] mb-2">
+              Penerimaan Lamaran Telah Ditutup
+            </h2>
+            <p class="text-sm font-body text-slate-600 max-w-md mx-auto leading-relaxed">
+              Formulir untuk posisi <strong class="text-[#17202A]">{job.title}</strong> saat ini sudah tidak menerima tanggapan baru karena masa pendaftaran telah berakhir atau kuota kandidat telah terpenuhi.
+            </p>
+          </div>
+
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="/"
+              class="w-full sm:w-auto th-btn px-6 py-3 text-xs"
+            >
+              <span>Lihat Lowongan Terbuka Lainnya</span>
+            </a>
+            <a
+              href={`/loker/${job.slug}`}
+              class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-heading font-semibold text-xs transition-colors"
+            >
+              <span>Kembali ke Informasi Posisi</span>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_2px_14px_rgba(13,25,43,0.04)]">
+            <div class={`h-2.5 ${topAccent} w-full`}></div>
+            
+            <div class="p-6 sm:p-8 space-y-4">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span class="text-xs font-technical font-bold text-[#22416D] uppercase tracking-wider block mb-1">
+                    Bina Project Recruitment System
+                  </span>
+                  <h2 class="text-xl sm:text-2xl font-heading font-black text-[#17202A] tracking-tight">
+                    {job.title}
+                  </h2>
+                </div>
+
+                <div class="text-right shrink-0">
+                  <span class="text-xs font-technical text-slate-500">
+                    {job.location}
+                  </span>
+                </div>
+              </div>
+
+              <p class="text-xs sm:text-sm font-body text-slate-600 leading-relaxed">
+                Silakan isi data formulir di bawah ini secara lengkap dan benar. Berkas CV yang dilampirkan akan langsung masuk ke sistem evaluasi tim People &amp; Culture Bina Project Construction.
+              </p>
+
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-technical">
+                <span class="text-[#22416D] font-bold">
+                  * Menunjukkan pertanyaan yang wajib diisi
+                </span>
+                <span class="text-slate-400">
+                  Sistem Kerja: <strong class="text-slate-700 font-medium">{job.workplace_type}</strong>
+                </span>
+              </div>
+
+              <!-- Collapsible Quick Position Summary (for candidates coming from social media) -->
+              {(requirementsList.length > 0 || responsibilitiesList.length > 0 || (job.show_salary && job.salary_range)) && (
+                <details class="group mt-4 pt-3 border-t border-slate-100 text-xs font-body">
+                  <summary class="flex items-center justify-between cursor-pointer font-technical font-semibold text-[#22416D] hover:text-[#17202A] select-none py-1">
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-4 h-4 text-[#22416D] transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                      <span>Lihat Ringkasan Kualifikasi &amp; Tanggung Jawab</span>
+                    </span>
+                    <span class="text-[11px] text-slate-400 group-open:hidden">Klik untuk melihat</span>
+                  </summary>
+                  <div class="mt-3 p-4 rounded-xl bg-[#F8FAFC] border border-slate-200/80 text-slate-600 space-y-3.5 leading-relaxed">
+                    {requirementsList.length > 0 && (
+                      <div>
+                        <p class="font-heading font-bold text-[#17202A] mb-1.5 text-[11px] uppercase tracking-wider">Kualifikasi &amp; Persyaratan:</p>
+                        <ul class="space-y-1.5 pl-1">
+                          {requirementsList.map((req) => (
+                            <li class="flex items-start gap-2 text-xs font-body text-[#475569]">
+                              <span class="w-1.5 h-1.5 rounded-full bg-[#22416D] shrink-0 mt-1.5"></span>
+                              <span>{req}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {responsibilitiesList.length > 0 && (
+                      <div class="pt-2.5 border-t border-slate-200/60">
+                        <p class="font-heading font-bold text-[#17202A] mb-1.5 text-[11px] uppercase tracking-wider">Tanggung Jawab Utama:</p>
+                        <ul class="space-y-1.5 pl-1">
+                          {responsibilitiesList.map((resp) => (
+                            <li class="flex items-start gap-2 text-xs font-body text-[#475569]">
+                              <span class="w-1.5 h-1.5 rounded-full bg-[#22416D] shrink-0 mt-1.5"></span>
+                              <span>{resp}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {job.show_salary && job.salary_range && (
+                      <div class="pt-2.5 border-t border-slate-200/60 flex items-center justify-between">
+                        <span class="font-technical text-slate-500">Rentang Gaji:</span>
+                        <span class="font-technical font-bold text-[#22416D]">{job.salary_range}</span>
+                      </div>
+                    )}
+                  </div>
+                </details>
+              )}
+            </div>
+          </div>
+
+          <ApplicationForm
+            client:only="react"
+            jobId={job.id}
+            jobTitle={job.title}
+            jobSlug={job.slug}
+            customQuestions={job.custom_questions}
+            formLayout={job.form_layout || 'multi_step'}
+          />
+
+          <div class="text-center pt-6 pb-2 text-xs font-body text-slate-400 space-y-1">
+            <p>Formulir resmi PT. Bina Rekaprima Kreasi (Bina Project Construction).</p>
+            <p>Data pribadi dan berkas Anda dilindungi dan hanya digunakan untuk keperluan proses rekrutmen kerja.</p>
+          </div>
+        </>
+      )}
+
+    </div>
+  </main>
+
+  <Footer />
+</CareerLayout>

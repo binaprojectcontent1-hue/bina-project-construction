@@ -12,10 +12,13 @@ import {
   Briefcase,
   ExternalLink,
   RefreshCw,
+  Copy,
+  Link as LinkIcon,
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Skeleton } from '../components/ui/skeleton';
+import { triggerCloudflareDeploy } from '../lib/cloudflare';
 
 interface JobPosting {
   id: string;
@@ -28,6 +31,7 @@ interface JobPosting {
   views_count: number;
   created_at: string;
   applicant_count?: number;
+  thumbnail_url?: string | null;
 }
 
 interface JobManagerProps {
@@ -41,6 +45,14 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+
+  const copyFormLink = (slug: string) => {
+    const url = `https://karir.binaproject.id/loker/${slug}/lamar`;
+    navigator.clipboard.writeText(url);
+    setCopiedSlug(slug);
+    setTimeout(() => setCopiedSlug(null), 2000);
+  };
 
   const fetchJobs = async (silent = false) => {
     if (!supabase) return;
@@ -81,6 +93,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
     setDeleteConfirm(null);
     try {
       await supabase.from('job_postings').delete().eq('id', id);
+      triggerCloudflareDeploy().catch(() => {});
       fetchJobs(true);
     } catch (err) {
       console.error('Failed to delete job:', err);
@@ -95,6 +108,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
     setJobs((prev) => prev.map((j) => (j.id === id ? { ...j, status: newStatus } : j)));
     try {
       await supabase.from('job_postings').update({ status: newStatus }).eq('id', id);
+      triggerCloudflareDeploy().catch(() => {});
       fetchJobs(true);
     } catch (err) {
       console.error('Failed to toggle status:', err);
@@ -121,6 +135,12 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
         return (
           <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             Aktif
+          </span>
+        );
+      case 'unlisted':
+        return (
+          <span className="inline-flex items-center justify-center min-w-[62px] px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-violet-50 text-violet-700 border border-violet-200" title="Hanya pelamar yang memiliki tautan langsung yang dapat mengisi formulir">
+            Private Link
           </span>
         );
       case 'closed':
@@ -245,6 +265,7 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
           {[
             { id: 'all', label: 'Semua' },
             { id: 'published', label: 'Aktif' },
+            { id: 'unlisted', label: 'Private' },
             { id: 'closed', label: 'Ditutup' },
             { id: 'draft', label: 'Draft' },
           ].map((s) => (
@@ -360,22 +381,47 @@ export function JobManager({ onNew, onEdit }: JobManagerProps) {
                 {filteredJobs.map((job) => (
                   <tr key={job.id} className="h-[68px] hover:bg-slate-50/70 transition-colors">
                     <td className="px-5 py-3.5">
-                      <div className="font-semibold text-slate-900 truncate" title={job.title}>
-                        {job.title}
-                      </div>
-                      <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
-                        <span>{job.job_type}</span>
-                        <span>&bull;</span>
-                        <a
-                          href={`https://karir.binaproject.id/loker/${job.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#1B365D] hover:underline flex items-center gap-0.5 font-medium"
-                          title="Lihat halaman publik"
-                        >
-                          <span>Lihat Web</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
+                      <div className="flex items-center gap-3">
+                        {job.thumbnail_url ? (
+                          <img
+                            src={job.thumbnail_url}
+                            alt=""
+                            className="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0 bg-slate-100"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+                            <Briefcase className="w-4 h-4" />
+                          </div>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <div className="font-semibold text-slate-900 truncate" title={job.title}>
+                            {job.title}
+                          </div>
+                          <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
+                            <span>{job.job_type}</span>
+                            <span>&bull;</span>
+                            <a
+                              href={`https://karir.binaproject.id/loker/${job.slug}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#1B365D] hover:underline flex items-center gap-0.5 font-medium"
+                              title="Lihat halaman publik"
+                            >
+                              <span>Lihat Web</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                            <span>&bull;</span>
+                            <button
+                              type="button"
+                              onClick={() => copyFormLink(job.slug)}
+                              className="text-[#2563EB] hover:text-[#1D4ED8] hover:underline flex items-center gap-0.5 font-medium cursor-pointer"
+                              title="Salin tautan formulir pendaftaran langsung (untuk pelamar IG/WA)"
+                            >
+                              <span>{copiedSlug === job.slug ? 'Tersalin!' : 'Link Form'}</span>
+                              <Copy className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 hidden sm:table-cell truncate" title={job.department}>

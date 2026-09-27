@@ -2,7 +2,7 @@
 
 **Author:** Antigravity AI  
 **Date:** 2026-09-14  
-**Project:** Bina Project Construction & Interior  
+**Project:** Bina Project Construction  
 **Status:** Approved by User via `/grill-me`
 
 ---

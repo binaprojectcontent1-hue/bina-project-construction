@@ -7,7 +7,7 @@ import JobCard from '../components/JobCard.astro';
 import FaqSection from '../components/FaqSection.astro';
 import { supabase } from '../lib/supabase';
 
-// Fetch published job postings
+// Fetch published and closed job postings (closed jobs remain visible with notification)
 let jobs: any[] = [];
 const departments = ['Semua', 'Arsitektur & Desain', 'Konstruksi & Lapangan', 'Estimator & RAB', 'Marketing & Finance', 'Magang'];
 
@@ -15,87 +15,87 @@ if (supabase) {
   const { data } = await supabase
     .from('job_postings')
     .select('*')
-    .eq('status', 'published')
+    .in('status', ['published', 'closed'])
     .order('created_at', { ascending: false });
-  if (data) jobs = data;
+  if (data) {
+    // Keep published (open) jobs first, closed jobs at the bottom
+    jobs = data.sort((a, b) => {
+      const aClosed = a.status === 'closed';
+      const bClosed = b.status === 'closed';
+      if (!aClosed && bClosed) return -1;
+      if (aClosed && !bClosed) return 1;
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+  }
 }
+
+const openJobsCount = jobs.filter((j) => j.status === 'published' && (!j.application_deadline || new Date(j.application_deadline).getTime() >= Date.now())).length;
+
+// Compute real job counts per department for quick candidate guidance
+const deptCounts: Record<string, number> = {
+  Semua: jobs.length,
+};
+departments.forEach((dept) => {
+  if (dept !== 'Semua') {
+    deptCounts[dept] = jobs.filter(
+      (j) => j.department?.trim().toLowerCase() === dept.trim().toLowerCase()
+    ).length;
+  }
+});
 ---
 
 <CareerLayout title="Lowongan Kerja & Peluang Karir">
   <Header />
 
   <!-- =========================================================================
-       HERO SECTION — Architectural Blueprint & Dark Navy Mesh
+       HERO SECTION — Authentic Architectural Editorial with Real Project Visual
        ========================================================================= -->
-  <section class="relative bg-gradient-to-b from-[#0D192B] via-[#0E1E38] to-[#152B49] text-white pt-20 pb-24 sm:pt-28 sm:pb-32 overflow-hidden border-b border-[#22416D]">
+  <section class="relative bg-[#0A1320] text-white pt-24 pb-28 sm:pt-32 sm:pb-36 overflow-hidden">
     
-    <!-- Subtle Architectural Blueprint Grid Overlay -->
-    <div class="absolute inset-0 blueprint-grid pointer-events-none opacity-80"></div>
+    <!-- Real Architectural Project Image -->
+    <div 
+      class="absolute inset-0 bg-cover bg-center sm:bg-right opacity-45 mix-blend-luminosity pointer-events-none"
+      style="background-image: url('/assets/img/hero-career.webp');"
+    ></div>
+    <!-- Hero Dark Overlay Gradient -->
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0A1320] via-[#0A1320]/85 to-[#0A1320]/45 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0A1320]/60 via-transparent to-[#0A1320] pointer-events-none"></div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto">
+      <div class="text-left max-w-3xl">
         
-        <!-- Kicker Pill Badge -->
-        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#1A3356] border border-[#2B4C7E] shadow-sm mb-6 sm:mb-8">
-          <span class="w-2.5 h-2.5 rounded-full bg-[#84ACDF] animate-pulse"></span>
-          <span class="text-xs sm:text-sm font-technical font-semibold tracking-wider text-[#BFDBFE] uppercase">
-            Portal Rekrutmen Resmi &bull; {jobs.length} Posisi Tersedia
+        <!-- Clean Editorial Eyebrow -->
+        <div class="mb-5 sm:mb-6">
+          <span class="text-xs sm:text-sm font-technical font-medium uppercase tracking-widest text-[#84ACDF]">
+            Portal Rekrutmen Resmi &bull; Bina Project Construction
           </span>
         </div>
 
-        <!-- Hero Headline -->
-        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.15] mb-6">
-          Bangun Mahakarya Arsitektur &
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#84ACDF] via-[#BFDBFE] to-white">
-            Karir Masa Depanmu
-          </span>
+        <!-- Solid Authoritative Headline (Lighter / Clean Weight) -->
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-heading font-medium tracking-tight leading-[1.15] mb-6 text-white">
+          Bangun Mahakarya Arsitektur &amp; Karir Masa Depan Anda
         </h1>
 
         <!-- Hero Description -->
-        <p class="text-base sm:text-lg font-body text-slate-300 leading-relaxed max-w-2xl mx-auto mb-10">
-          Bergabunglah bersama tim profesional <strong class="text-white font-semibold">Bina Project Construction & Interior</strong>. Berkolaborasi dalam proyek arsitektur, perencanaan kawasan, dan konstruksi modern di Malang, Jawa Timur.
+        <p class="text-base sm:text-lg font-body text-slate-300 leading-relaxed max-w-2xl mb-10">
+          Bergabunglah bersama tim profesional Bina Project Construction. Berkolaborasi dalam proyek arsitektur, perencanaan kawasan, dan konstruksi modern di Jawa Timur.
         </p>
 
-        <!-- CTA Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <!-- CTA Action Button -->
+        <div class="flex items-center justify-start">
           <a
             href="#lowongan"
-            class="th-btn w-full sm:w-auto bg-[#345F99]! hover:bg-[#22416D]! border-[#84ACDF]/40 text-white gap-2 shadow-lg"
+            class="th-btn gap-2.5 px-8 py-3.5 shadow-lg"
           >
+            <span>Lihat Lowongan Kerja ({openJobsCount > 0 ? `${openJobsCount} Terbuka` : `${jobs.length} Posisi`})</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <span>Jelajahi Lowongan Kerja</span>
-          </a>
-
-          <a
-            href="/talent-pool"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-heading font-bold text-sm transition-all"
-          >
-            <span>Kirim CV ke Talent Pool</span>
-            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </a>
         </div>
 
       </div>
 
-      <!-- Hero Proof / Stat Counters -->
-      <div class="grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-6 mt-16 sm:mt-20 pt-10 border-t border-[#1E3A5F]">
-        <div class="text-center">
-          <div class="text-2xl sm:text-4xl font-heading font-black text-white">200+</div>
-          <div class="text-xs sm:text-sm font-technical text-slate-300 mt-1">Proyek Konstruksi & Interior</div>
-        </div>
-        <div class="text-center border-x border-[#1E3A5F]">
-          <div class="text-2xl sm:text-4xl font-heading font-black text-white">5+</div>
-          <div class="text-xs sm:text-sm font-technical text-slate-300 mt-1">Tahun Rekam Jejak</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl sm:text-4xl font-heading font-black text-white">100%</div>
-          <div class="text-xs sm:text-sm font-technical text-slate-300 mt-1">Kultur Tim Bergaransi</div>
-        </div>
-      </div>
 
     </div>
   </section>
@@ -108,14 +108,14 @@ if (supabase) {
       
       <!-- Section Header -->
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-bold uppercase tracking-wider bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] mb-3">
-          Peluang Terbuka
+        <span class="text-xs font-technical font-bold uppercase tracking-widest text-[#22416D] block mb-2">
+          Peluang Karir
         </span>
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#17202A] tracking-tight">
           Temukan Posisi yang Sesuai Keahlian Anda
         </h2>
         <p class="text-[#475569] font-body text-sm sm:text-base mt-2">
-          Pilih departemen untuk menyaring posisi kerja aktif di kantor dan proyek lapangan kami.
+          Pilih departemen untuk menyaring posisi kerja aktif di studio desain dan proyek lapangan kami.
         </p>
       </div>
 
@@ -137,21 +137,34 @@ if (supabase) {
           />
         </div>
 
-        <!-- Department Tabs -->
-        <div class="flex flex-wrap justify-center gap-2" id="dept-filters">
-          {departments.map((dept, i) => (
-            <button
-              type="button"
-              data-dept={dept}
-              class={`px-4 py-2 rounded-full text-xs sm:text-sm font-heading font-semibold transition-all cursor-pointer ${
-                i === 0
-                  ? 'bg-[#22416D] text-white shadow-xs'
-                  : 'bg-white text-[#475569] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#22416D]'
-              }`}
-            >
-              {dept}
-            </button>
-          ))}
+        <!-- Department Filter Chips -->
+        <div class="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto" id="dept-filters">
+          {departments.map((dept, i) => {
+            const count = deptCounts[dept] ?? 0;
+            const isActive = i === 0;
+            return (
+              <button
+                type="button"
+                data-dept={dept}
+                class={`group inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs sm:text-sm font-heading font-semibold transition-all duration-200 cursor-pointer border ${
+                  isActive
+                    ? 'active-filter bg-[#22416D] text-white border-[#1E3A5F] shadow-sm shadow-[#22416D]/20'
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-[#22416D]/40 hover:text-[#22416D] hover:bg-slate-50/80 shadow-xs'
+                }`}
+              >
+                <span>{dept}</span>
+                <span
+                  class={`count-badge px-2 py-0.5 rounded-md text-[11px] font-technical transition-colors ${
+                    isActive
+                      ? 'bg-white/20 text-white'
+                      : 'bg-slate-100 text-slate-500 group-hover:bg-[#22416D]/10 group-hover:text-[#22416D]'
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
       </div>
@@ -160,7 +173,7 @@ if (supabase) {
       {jobs.length > 0 ? (
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="jobs-grid">
           {jobs.map((job) => (
-            <div data-department={job.department} data-title={job.title.toLowerCase()}>
+            <div data-department={job.department} data-title={job.title.toLowerCase()} class="h-full flex flex-col">
               <JobCard
                 slug={job.slug}
                 title={job.title}
@@ -169,9 +182,11 @@ if (supabase) {
                 workplaceType={job.workplace_type}
                 location={job.location}
                 experienceLevel={job.experience_level}
+                thumbnailUrl={job.thumbnail_url}
                 deadline={job.application_deadline}
                 salaryRange={job.salary_range}
                 showSalary={job.show_salary}
+                status={job.status}
               />
             </div>
           ))}
@@ -186,12 +201,9 @@ if (supabase) {
           <h3 class="text-lg font-heading font-bold text-[#17202A] mb-2">
             Belum Ada Lowongan Aktif
           </h3>
-          <p class="text-sm font-body text-[#475569] mb-6">
-            Saat ini seluruh posisi telah terisi. Namun kami selalu menyambut talenta luar biasa. Kirimkan CV Anda ke Talent Pool untuk kami hubungi terlebih dahulu saat posisi dibuka.
+          <p class="text-sm font-body text-[#475569] max-w-md mx-auto">
+            Saat ini belum ada lowongan kerja yang dibuka. Silakan pantau halaman ini dan media sosial resmi Bina Project secara berkala untuk pembaruan posisi.
           </p>
-          <a href="/talent-pool" class="th-btn th-btn-sm">
-            Kirimkan CV ke Talent Pool
-          </a>
         </div>
       )}
 
@@ -213,40 +225,7 @@ if (supabase) {
        ========================================================================= -->
   <CultureSection />
 
-  <!-- =========================================================================
-       TALENT POOL BANNER
-       ========================================================================= -->
-  <section class="py-20 bg-[#F8FAFC]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="relative rounded-3xl bg-gradient-to-br from-[#0D192B] via-[#152A47] to-[#22416D] p-8 sm:p-14 overflow-hidden border border-[#2B4C7E] shadow-xl text-white">
-        
-        <!-- Blueprint Grid Pattern in Banner -->
-        <div class="absolute inset-0 blueprint-grid opacity-40 pointer-events-none"></div>
 
-        <div class="relative z-10 max-w-2xl">
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-semibold bg-[#345F99] text-[#BFDBFE] mb-4">
-            Komunitas Bakat Bina Project
-          </span>
-          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-white tracking-tight mb-4">
-            Belum Menemukan Posisi yang Tepat Hari Ini?
-          </h2>
-          <p class="text-sm sm:text-base text-slate-300 font-body leading-relaxed mb-8">
-            Jangan biarkan kesempatan terlewat. Daftarkan resume Anda di <strong class="text-white">Talent Pool Resmi Bina Project</strong>. Tim People & Culture kami akan memprioritaskan profil Anda ketika posisi terkait dibuka.
-          </p>
-          <a
-            href="/talent-pool"
-            class="th-btn bg-white text-[#0D192B]! hover:bg-[#EFF6FF]! border-white shadow-lg font-bold gap-2"
-          >
-            <span>Daftar ke Talent Pool Kami</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
 
   <!-- =========================================================================
        FAQ SECTION
@@ -271,11 +250,13 @@ if (supabase) {
       const cards = grid.querySelectorAll<HTMLElement>('[data-department]');
       let visibleCount = 0;
 
-      cards.forEach((card) => {
-        const cardDept = card.getAttribute('data-department') || '';
-        const cardTitle = card.getAttribute('data-title') || '';
+      const normalizedCurrentDept = currentDept.trim().toLowerCase();
 
-        const matchesDept = currentDept === 'Semua' || cardDept === currentDept;
+      cards.forEach((card) => {
+        const cardDept = (card.getAttribute('data-department') || '').trim().toLowerCase();
+        const cardTitle = (card.getAttribute('data-title') || '').trim().toLowerCase();
+
+        const matchesDept = normalizedCurrentDept === 'semua' || cardDept === normalizedCurrentDept;
         const matchesSearch = currentSearch === '' || cardTitle.includes(currentSearch);
 
         if (matchesDept && matchesSearch) {
@@ -292,16 +273,25 @@ if (supabase) {
     };
 
     if (filters) {
-      const buttons = filters.querySelectorAll('button');
+      const buttons = filters.querySelectorAll<HTMLButtonElement>('button[data-dept]');
       buttons.forEach((btn) => {
         btn.addEventListener('click', () => {
           currentDept = btn.getAttribute('data-dept') || 'Semua';
 
           buttons.forEach((b) => {
-            if (b === btn) {
-              b.className = 'px-4 py-2 rounded-full text-xs sm:text-sm font-heading font-semibold transition-all cursor-pointer bg-[#22416D] text-white shadow-xs';
+            const isTarget = b === btn;
+            const badge = b.querySelector('.count-badge');
+
+            if (isTarget) {
+              b.className = 'group inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs sm:text-sm font-heading font-semibold transition-all duration-200 cursor-pointer border active-filter bg-[#22416D] text-white border-[#1E3A5F] shadow-sm shadow-[#22416D]/20';
+              if (badge) {
+                badge.className = 'count-badge px-2 py-0.5 rounded-md text-[11px] font-technical transition-colors bg-white/20 text-white';
+              }
             } else {
-              b.className = 'px-4 py-2 rounded-full text-xs sm:text-sm font-heading font-semibold transition-all cursor-pointer bg-white text-[#475569] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#22416D]';
+              b.className = 'group inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs sm:text-sm font-heading font-semibold transition-all duration-200 cursor-pointer border bg-white text-slate-600 border-slate-200 hover:border-[#22416D]/40 hover:text-[#22416D] hover:bg-slate-50/80 shadow-xs';
+              if (badge) {
+                badge.className = 'count-badge px-2 py-0.5 rounded-md text-[11px] font-technical transition-colors bg-slate-100 text-slate-500 group-hover:bg-[#22416D]/10 group-hover:text-[#22416D]';
+              }
             }
           });
 

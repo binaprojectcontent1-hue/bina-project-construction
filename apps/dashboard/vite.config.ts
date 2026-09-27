@@ -20,9 +20,8 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/media': {
-        target: 'https://cdn.jsdelivr.net/gh/binaprojectcontent1-hue/bina-media@main',
+        target: 'https://binaproject.id',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/media/, ''),
       },
     },
   },

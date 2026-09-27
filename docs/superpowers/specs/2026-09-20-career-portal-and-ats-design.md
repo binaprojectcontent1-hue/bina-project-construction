@@ -2,7 +2,7 @@
 
 **Author:** Antigravity AI  
 **Date:** 2026-09-20  
-**Project:** Bina Project Construction & Interior  
+**Project:** Bina Project Construction  
 **Status:** Approved by User via `/grill-me`  
 **Target Domain:** `karir.binaproject.id`  
 
@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary & Goal
 
-Bina Project Construction & Interior membutuhkan platform karir resmi terpadu di subdomain `karir.binaproject.id` untuk mempublikasikan lowongan kerja (arsitek, desainer interior, drafter, pelaksana lapangan, estimator RAB, hingga manajemen), mengumpulkan berkas lamaran secara terstruktur, dan menyaring kandidat terbaik secara efisien.
+Bina Project Construction membutuhkan platform karir resmi terpadu di subdomain `karir.binaproject.id` untuk mempublikasikan lowongan kerja (arsitek, desainer interior, drafter, pelaksana lapangan, estimator RAB, hingga manajemen), mengumpulkan berkas lamaran secara terstruktur, dan menyaring kandidat terbaik secara efisien.
 
 Sistem ini terbagi menjadi dua pilar utama:
 1. **Portal Karir Publik (`karir.binaproject.id`)**: Dibangun dengan Astro 5 untuk performa instan dan dominasi SEO (terindeks langsung di Google Search & Google for Jobs), dilengkapi formulir pelamar multi-tahap dengan kuesioner kualifikasi dinamis per posisi.
@@ -167,7 +167,7 @@ graph TD
 ## 5. Rincian Fitur Portal Karir (`apps/career`)
 
 ### 5.1 Halaman Beranda (`src/pages/index.astro`)
-- **Header & Branding**: Navigasi modern dengan logo Bina Project Construction & Interior, tema warna Dark Slate (`#0B132B`) beraksen Amber Gold (`#F68A0A`).
+- **Header & Branding**: Navigasi modern dengan logo Bina Project Construction, tema warna Dark Slate (`#0B132B`) beraksen Amber Gold (`#F68A0A`).
 - **Hero Section**: Tagline inspiratif: *"Bangun Mahakarya Arsitektur & Karir Masa Depanmu Bersama Bina Project"*, lengkap dengan statistik (jumlah proyek terselesaikan, kota operasional, tim profesional).
 - **Life at Bina Project**: Menampilkan 4 pilar budaya kerja:
   1. *Kebebasan Eksplorasi Desain & Presisi Konstruksi*
@@ -303,7 +303,7 @@ Pada halaman `/loker/[slug].astro`, diinjeksi tag Schema.org berstandar Google S
   "employmentType": "FULL_TIME",
   "hiringOrganization": {
     "@type": "Organization",
-    "name": "Bina Project Construction & Interior",
+    "name": "Bina Project Construction",
     "sameAs": "https://binaproject.id",
     "logo": "https://binaproject.id/assets/images/logo.png"
   },

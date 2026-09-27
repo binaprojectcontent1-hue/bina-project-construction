@@ -17,41 +17,41 @@ const faqs = [
     answer: 'Kantor pusat dan studio desain kami berbasis di Kota Malang, Jawa Timur. Sebagian besar posisi konstruksi dan arsitektur beroperasi secara on-site di proyek Malang Raya, Surabaya, dan sekitarnya.',
   },
   {
-    question: 'Apakah saya bisa mengirimkan CV jika posisi yang saya incar belum dibuka?',
-    answer: 'Tentu bisa! Anda dapat mendaftar melalui fitur Talent Pool kami. Database profil Anda akan diprioritaskan saat posisi baru dibuka oleh manajemen Bina Project.',
+    question: 'Bagaimana jika lowongan yang saya minati belum tersedia saat ini?',
+    answer: 'Silakan pantau halaman karir ini dan media sosial resmi Bina Project secara berkala. Setiap posisi baru yang dibuka akan segera diumumkan di sini.',
   },
 ];
 ---
 
-<section id="faq" class="py-20 bg-white relative">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="faq" class="py-24 bg-white relative">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Section Header -->
     <div class="text-center mb-14">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-technical font-bold uppercase tracking-wider bg-[#EFF6FF] text-[#22416D] border border-[#BFDBFE] mb-3">
-        Tanya Jawab
+      <span class="text-xs font-technical font-bold uppercase tracking-widest text-[#22416D] block mb-2">
+        Tanya &amp; Jawab
       </span>
       <h2 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#17202A] tracking-tight">
         Pertanyaan Seputar Proses Rekrutmen
       </h2>
       <p class="text-[#475569] font-body text-sm sm:text-base mt-2">
-        Jawaban atas pertanyaan yang sering diajukan oleh calon rekan kerja kami.
+        Jawaban atas hal-hal yang sering ditanyakan oleh calon rekan kerja Bina Project.
       </p>
     </div>
 
-    <!-- FAQ Accordion List -->
-    <div class="space-y-3.5">
+    <!-- Editorial Divider Accordion -->
+    <div class="divide-y divide-slate-200 border-y border-slate-200">
       {faqs.map((faq) => (
-        <details class="group bento-card bg-white border border-[#E2E8F0] rounded-xl overflow-hidden transition-all duration-200">
-          <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none select-none text-base font-heading font-bold text-[#17202A] group-open:text-[#22416D]">
+        <details class="group py-5 transition-all">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none select-none text-base sm:text-lg font-heading font-bold text-[#17202A] group-open:text-[#22416D] transition-colors">
             <span>{faq.question}</span>
-            <span class="w-7 h-7 rounded-full bg-[#F1F5F9] text-[#22416D] flex items-center justify-center shrink-0 transition-transform duration-300 group-open:rotate-180 group-open:bg-[#22416D] group-open:text-white">
+            <span class="w-6 h-6 shrink-0 text-slate-400 group-open:text-[#22416D] transition-transform duration-300 group-open:rotate-180 flex items-center justify-center">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </span>
           </summary>
-          <div class="px-6 pb-5 pt-1 text-sm font-body text-[#475569] leading-relaxed border-t border-[#F1F5F9]">
+          <div class="pt-3 pb-2 text-sm sm:text-base font-body text-[#475569] leading-relaxed pr-8">
             {faq.answer}
           </div>
         </details>

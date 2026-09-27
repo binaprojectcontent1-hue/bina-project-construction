@@ -1,5 +1,5 @@
 /**
- * GitHub Storage API Service for Bina Project Studio
+ * GitHub Storage API Service for Bina Project Construction
  * Uploads images directly to a designated media repository (e.g. username/bina-media)
  */
 

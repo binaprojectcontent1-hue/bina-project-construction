@@ -336,26 +336,26 @@ export function App() {
   // Dynamic Browser Tab Title Management
   useEffect(() => {
     const titles: Record<TabType, string> = {
-      'overview': 'Beranda & Ringkasan - Bina Project Studio',
-      'portfolio': 'Portofolio Proyek - Bina Project Studio',
-      'portfolio-new': editingPortfolioId ? 'Edit Portofolio Proyek - Bina Project Studio' : 'Tambah Portofolio Baru - Bina Project Studio',
-      'articles': 'Artikel & Berita - Bina Project Studio',
-      'article-new': editingArticleId ? 'Edit Artikel - Bina Project Studio' : 'Tulis Artikel Baru - Bina Project Studio',
-      'live-projects': 'Peta Proyek Berjalan - Bina Project Studio',
-      'live-project-new': editingLiveProjectId ? 'Edit Proyek Berjalan - Bina Project Studio' : 'Tambah Proyek Berjalan Baru - Bina Project Studio',
-      'biolink': 'Bio Link Manager - Bina Project Studio',
-      'site-settings': 'Profil & Kontak Bisnis - Bina Project Studio',
-      'redirects': 'Pengalihan Tautan - Bina Project Studio',
-      'settings': 'Pengaturan & Publikasi Web - Bina Project Studio',
-      'recruitment-jobs': 'Lowongan Kerja - Bina Project Studio',
-      'recruitment-job-edit': editingJobId ? 'Edit Lowongan - Bina Project Studio' : 'Buat Lowongan Baru - Bina Project Studio',
-      'recruitment-candidates': 'Kandidat Pelamar - Bina Project Studio',
+      'overview': 'Beranda & Ringkasan - Bina Project Construction',
+      'portfolio': 'Portofolio Proyek - Bina Project Construction',
+      'portfolio-new': editingPortfolioId ? 'Edit Portofolio Proyek - Bina Project Construction' : 'Tambah Portofolio Baru - Bina Project Construction',
+      'articles': 'Artikel & Berita - Bina Project Construction',
+      'article-new': editingArticleId ? 'Edit Artikel - Bina Project Construction' : 'Tulis Artikel Baru - Bina Project Construction',
+      'live-projects': 'Peta Proyek Berjalan - Bina Project Construction',
+      'live-project-new': editingLiveProjectId ? 'Edit Proyek Berjalan - Bina Project Construction' : 'Tambah Proyek Berjalan Baru - Bina Project Construction',
+      'biolink': 'Bio Link Manager - Bina Project Construction',
+      'site-settings': 'Profil & Kontak Bisnis - Bina Project Construction',
+      'redirects': 'Pengalihan Tautan - Bina Project Construction',
+      'settings': 'Pengaturan & Publikasi Web - Bina Project Construction',
+      'recruitment-jobs': 'Lowongan Kerja - Bina Project Construction',
+      'recruitment-job-edit': editingJobId ? 'Edit Lowongan - Bina Project Construction' : 'Buat Lowongan Baru - Bina Project Construction',
+      'recruitment-candidates': 'Kandidat Pelamar - Bina Project Construction',
     };
 
     if (isSupabaseConfigured && !session) {
-      document.title = 'Masuk ke Studio - Bina Project Studio';
+      document.title = 'Masuk ke Panel - Bina Project Construction';
     } else {
-      document.title = titles[activeTab] || 'Bina Project Studio - Panel Manajemen';
+      document.title = titles[activeTab] || 'Bina Project Construction - Panel Manajemen';
     }
   }, [activeTab, session, isSupabaseConfigured, editingPortfolioId, editingArticleId, editingLiveProjectId]);
 

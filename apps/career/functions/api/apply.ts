@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
 interface Env {
-  SUPABASE_URL: string;
-  SUPABASE_SERVICE_ROLE_KEY: string;
-  RESEND_API_KEY: string;
-  HRD_EMAIL: string;
+  SUPABASE_URL?: string;
+  SUPABASE_SERVICE_ROLE_KEY?: string;
+  SUPABASE_ANON_KEY?: string;
+  PUBLIC_SUPABASE_URL?: string;
+  PUBLIC_SUPABASE_ANON_KEY?: string;
 }
 
 interface PagesFunctionContext<TEnv = unknown> {
@@ -18,27 +19,49 @@ interface PagesFunctionContext<TEnv = unknown> {
 
 type PagesFunction<TEnv = unknown> = (context: PagesFunctionContext<TEnv>) => Promise<Response> | Response;
 
+function getSupabaseClient(env: Partial<Env>) {
+  const supabaseUrl = env.SUPABASE_URL || env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || 'https://jymlsrmilckmphwhsrld.supabase.co';
+  const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY || env.PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY || '';
+  return createClient(supabaseUrl, supabaseKey);
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
+  let uploadedFilePath: string | null = null;
 
   try {
     const formData = await request.formData();
 
-    // Extract fields
-    const jobId = formData.get('jobId') as string || null;
-    const jobTitle = formData.get('jobTitle') as string;
-    const jobSlug = formData.get('jobSlug') as string;
-    const isTalentPool = formData.get('isTalentPool') === 'true';
-    const fullName = formData.get('fullName') as string;
-    const email = formData.get('email') as string;
-    const whatsapp = formData.get('whatsapp') as string;
-    const city = formData.get('city') as string;
-    const lastExperience = formData.get('lastExperience') as string;
-    const joinAvailability = formData.get('joinAvailability') as string || 'Segera';
-    const expectedSalary = formData.get('expectedSalary') as string || '';
-    const portfolioUrl = formData.get('portfolioUrl') as string || '';
-    const customAnswersRaw = formData.get('customAnswers') as string || '{}';
+    // Extract fields with bidirectional fallback (camelCase & snake_case)
+    const jobId = (formData.get('jobId') || formData.get('job_posting_id') || formData.get('job_id')) as string || null;
+    const jobTitle = (formData.get('jobTitle') || formData.get('job_title')) as string || '';
+    const jobSlug = (formData.get('jobSlug') || formData.get('job_slug')) as string || (jobId ? `job-${jobId}` : 'general');
+    const fullName = (formData.get('fullName') || formData.get('full_name')) as string || '';
+    const email = (formData.get('email')) as string || '';
+    
+    // Normalisasi WhatsApp ke format internasional bersih (contoh: 628123456789)
+    const rawWhatsapp = (formData.get('whatsapp') || formData.get('phone')) as string || '';
+    let cleanPhone = rawWhatsapp.replace(/\D/g, '');
+    if (cleanPhone.startsWith('0')) {
+      cleanPhone = '62' + cleanPhone.slice(1);
+    } else if (cleanPhone.startsWith('8')) {
+      cleanPhone = '62' + cleanPhone;
+    }
+    const whatsapp = cleanPhone;
+
+    const city = (formData.get('city')) as string || '';
+    const lastExperience = (formData.get('lastExperience') || formData.get('last_experience')) as string || '';
+    const joinAvailability = (formData.get('joinAvailability') || formData.get('join_availability')) as string || 'Segera';
+    const expectedSalary = (formData.get('expectedSalary') || formData.get('expected_salary')) as string || '';
+    const portfolioUrl = (formData.get('portfolioUrl') || formData.get('portfolio_url')) as string || '';
+    const customAnswersRaw = (formData.get('customAnswers') || formData.get('custom_answers')) as string || '{}';
     const resume = formData.get('resume') as File | null;
+    const honeypot = (formData.get('honeypot') || formData.get('bot_field')) as string || '';
+
+    // Bot trap silent reject: Jika honeypot terisi, kembalikan respons sukses palsu tanpa simpan ke DB
+    if (honeypot.trim().length > 0) {
+      return Response.json({ success: true, id: 'mock-bot-id' }, { status: 200 });
+    }
 
     // Validation
     if (!fullName || !email || !whatsapp || !city || !lastExperience) {
@@ -53,28 +76,23 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return Response.json({ error: 'Ukuran file CV maksimal 10MB.' }, { status: 400 });
     }
 
-    // Initialize Supabase with service role key (server-side)
-    const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
-
-    // Upload CV to private storage
-    const timestamp = Date.now();
-    const sanitizedName = fullName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
-    const filePath = `${jobSlug}/${timestamp}_${sanitizedName}.pdf`;
-
+    // Validasi tipe biner Magic Bytes PDF (%PDF-) untuk mencegah MIME-type spoofing
     const fileBuffer = await resume.arrayBuffer();
-    const { error: uploadError } = await supabase.storage
-      .from('job-applications')
-      .upload(filePath, fileBuffer, {
-        contentType: 'application/pdf',
-        upsert: false,
-      });
+    const headerBytes = new Uint8Array(fileBuffer.slice(0, 4));
+    const isPdfMagic =
+      headerBytes[0] === 0x25 && // %
+      headerBytes[1] === 0x50 && // P
+      headerBytes[2] === 0x44 && // D
+      headerBytes[3] === 0x46;   // F
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError);
-      return Response.json({ error: 'Gagal mengunggah file CV.' }, { status: 500 });
+    if (!isPdfMagic) {
+      return Response.json({ error: 'Integritas berkas tidak valid. Berkas harus berupa dokumen PDF asli.' }, { status: 400 });
     }
 
-    // Parse custom answers and evaluate knockout questions
+    // Initialize Supabase with service role key if available, or anon key fallback
+    const supabase = getSupabaseClient(env);
+
+    // Verifikasi status lowongan & deadline aktif di database
     let customAnswers: Record<string, string> = {};
     try {
       customAnswers = JSON.parse(customAnswersRaw);
@@ -82,13 +100,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     let screeningStatus = 'review';
 
-    // Evaluate knockout if job has custom questions
     if (jobId) {
       const { data: jobData } = await supabase
         .from('job_postings')
-        .select('custom_questions')
+        .select('status, application_deadline, custom_questions')
         .eq('id', jobId)
         .single();
+
+      if (!jobData || jobData.status === 'closed') {
+        return Response.json({ error: 'Penerimaan lamaran untuk posisi ini telah resmi ditutup.' }, { status: 400 });
+      }
+
+      if (jobData.application_deadline && new Date(jobData.application_deadline).getTime() < Date.now()) {
+        return Response.json({ error: 'Batas waktu pendaftaran untuk posisi ini telah berakhir.' }, { status: 400 });
+      }
 
       if (jobData?.custom_questions) {
         const questions = jobData.custom_questions as Array<{
@@ -108,10 +133,32 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }
     }
 
+    // Upload CV to private storage
+    const timestamp = Date.now();
+    const sanitizedName = fullName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+    const filePath = `${jobSlug}/${timestamp}_${sanitizedName}.pdf`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('job-applications')
+      .upload(filePath, fileBuffer, {
+        contentType: 'application/pdf',
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      return Response.json({ error: 'Gagal mengunggah file CV.' }, { status: 500 });
+    }
+    uploadedFilePath = filePath;
+
+    // Generate application ID upfront to avoid RLS SELECT restrictions when anon key is used
+    const applicationId = crypto.randomUUID();
+
     // Insert application record
-    const { data: appData, error: insertError } = await supabase
+    const { error: insertError } = await supabase
       .from('job_applications')
       .insert({
+        id: applicationId,
         job_id: jobId || null,
         job_title: jobTitle,
         full_name: fullName,
@@ -124,74 +171,33 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         resume_path: filePath,
         portfolio_url: portfolioUrl,
         custom_answers: customAnswers,
-        is_talent_pool: isTalentPool,
+        is_talent_pool: false,
         screening_status: screeningStatus,
         pipeline_stage: 'new',
-      })
-      .select('id')
-      .single();
+      });
 
     if (insertError) {
       console.error('Insert error:', insertError);
+      // Rollback: Hapus file yang terlanjur diunggah agar tidak menjadi berkas yatim piatu
+      try {
+        await supabase.storage.from('job-applications').remove([filePath]);
+      } catch (cleanupErr) {
+        console.error('Failed to cleanup file on insert error:', cleanupErr);
+      }
       return Response.json({ error: 'Gagal menyimpan data lamaran.' }, { status: 500 });
     }
 
-    // Send email notification via Resend
-    const hrdEmail = env.HRD_EMAIL || 'hrd@binaproject.id';
-    const resendKey = env.RESEND_API_KEY;
-
-    if (resendKey) {
-      try {
-        const screeningLabel = screeningStatus === 'passed' ? '✅ Lolos Screening Awal'
-          : screeningStatus === 'knocked_out' ? '❌ Tidak Memenuhi Kualifikasi Kunci'
-          : '🔍 Perlu Review Manual';
-
-        const dashboardUrl = `https://dash.binaproject.id/#recruitment-candidates?id=${appData?.id || ''}`;
-
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'Bina Project Karir <karir@binaproject.id>',
-            to: [hrdEmail],
-            subject: `[Pelamar Baru] ${jobTitle} — ${fullName} (${city})`,
-            html: `
-              <div style="font-family: 'Inter', system-ui, sans-serif; max-width: 600px; margin: 0 auto; background: #0B132B; border-radius: 16px; overflow: hidden; border: 1px solid #1e3a5f;">
-                <div style="background: linear-gradient(135deg, #F68A0A, #E07800); padding: 24px 32px;">
-                  <h1 style="color: white; margin: 0; font-size: 18px;">📨 Pelamar Baru Masuk</h1>
-                  <p style="color: rgba(255,255,255,0.8); margin: 4px 0 0; font-size: 13px;">${jobTitle}</p>
-                </div>
-                <div style="padding: 24px 32px; color: #e2e8f0;">
-                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <tr><td style="padding: 8px 0; color: #94a3b8; width: 140px;">Nama</td><td style="padding: 8px 0; font-weight: 600;">${fullName}</td></tr>
-                    <tr><td style="padding: 8px 0; color: #94a3b8;">Email</td><td style="padding: 8px 0;">${email}</td></tr>
-                    <tr><td style="padding: 8px 0; color: #94a3b8;">WhatsApp</td><td style="padding: 8px 0;">${whatsapp}</td></tr>
-                    <tr><td style="padding: 8px 0; color: #94a3b8;">Domisili</td><td style="padding: 8px 0;">${city}</td></tr>
-                    <tr><td style="padding: 8px 0; color: #94a3b8;">Pengalaman</td><td style="padding: 8px 0;">${lastExperience}</td></tr>
-                    <tr><td style="padding: 8px 0; color: #94a3b8;">Status Screening</td><td style="padding: 8px 0; font-weight: 600;">${screeningLabel}</td></tr>
-                  </table>
-                  <div style="margin-top: 24px; text-align: center;">
-                    <a href="${dashboardUrl}" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #F68A0A, #E07800); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px;">
-                      Buka di Dashboard →
-                    </a>
-                  </div>
-                </div>
-              </div>
-            `,
-          }),
-        });
-      } catch (emailError) {
-        console.error('Resend email error:', emailError);
-        // Don't fail the application if email fails
-      }
-    }
-
-    return Response.json({ success: true, id: appData?.id }, { status: 200 });
+    return Response.json({ success: true, id: applicationId }, { status: 200 });
   } catch (err) {
     console.error('Unhandled error:', err);
+    if (uploadedFilePath) {
+      try {
+        const supabase = getSupabaseClient(env);
+        await supabase.storage.from('job-applications').remove([uploadedFilePath]);
+      } catch (cleanupErr) {
+        console.error('Failed to cleanup orphaned file:', cleanupErr);
+      }
+    }
     return Response.json({ error: 'Terjadi kesalahan server.' }, { status: 500 });
   }
 };
