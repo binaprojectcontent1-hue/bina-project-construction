@@ -16,10 +16,11 @@ const navLinks = [
   { name: t('nav.portfolio'), href: getLocalizedPath('/portfolio', currentLang), icon: 'solar:gallery-wide-linear' },
   { name: t('nav.liveProjects'), href: `${getLocalizedPath('/about', currentLang)}#proyek-berjalan`, icon: 'solar:map-point-linear' },
   { name: t('nav.articles'), href: getLocalizedPath('/blog', currentLang), icon: 'solar:document-text-linear' },
+  { name: t('nav.careers'), href: 'https://karir.binaproject.id', icon: 'solar:case-round-linear', external: true },
   { name: t('nav.contact'), href: getLocalizedPath('/contact', currentLang), icon: 'solar:chat-round-dots-linear' },
 ].map((item) => {
   const isHome = item.href === '/' || item.href === '/en';
-  const isActive = isHome ? (currentPath === '/' || currentPath === '/en') : currentPath.startsWith(item.href);
+  const isActive = !item.external && (isHome ? (currentPath === '/' || currentPath === '/en') : currentPath.startsWith(item.href));
   return { ...item, isActive };
 });
 ---
@@ -46,6 +47,8 @@ const navLinks = [
           <a
             href={item.href}
             class={`drawer-nav-link ${item.isActive ? 'active' : ''}`}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
           >
             <div class="d-flex align-items-center drawer-item-content">
               <div class="drawer-item-icon">

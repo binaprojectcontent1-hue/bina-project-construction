@@ -20,6 +20,7 @@ export const ui = {
     'nav.portfolio': 'Portfolio',
     'nav.liveProjects': 'Proyek Berjalan',
     'nav.articles': 'Artikel',
+    'nav.careers': 'Karir',
     'nav.contact': 'Kontak Kami',
 
     // Top Bar
@@ -351,6 +352,7 @@ export const ui = {
     'nav.portfolio': 'Portfolio',
     'nav.liveProjects': 'Live Projects',
     'nav.articles': 'Articles',
+    'nav.careers': 'Careers',
     'nav.contact': 'Contact Us',
 
     // Top Bar
