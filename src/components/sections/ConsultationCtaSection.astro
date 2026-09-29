@@ -21,24 +21,9 @@ const waConsultationUrl = createWhatsAppUrl({
 ---
 
 <section class="consultation-sec bg-title position-relative overflow-hidden" data-bg-src="/assets/img/bg/shape_bg_2.png">
-  <div class="consultation-thumb">
-    <div class="shape_1"></div>
-    <div class="shape_2"></div>
-    <Image
-      src={consultationImg}
-      alt={currentLang === 'en' ? 'Architectural Design & Construction Consultation Bina Project' : 'Konsultasi Desain & Konstruksi Bangunan Bina Project'}
-      loading="lazy"
-      decoding="async"
-      width={520}
-      height={450}
-      format="webp"
-      quality={85}
-      style="height: 100%; width: auto; object-fit: cover;"
-    />
-  </div>
   <div class="container">
-    <div class="row align-items-center flex-md-row-reverse">
-      <div class="col-md-8">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7">
         <div class="consultation-title-area">
           <SectionHeader
             badge={t('consultationCta.badge')}
@@ -66,46 +51,133 @@ const waConsultationUrl = createWhatsAppUrl({
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="consultation-image movingX">
-          <Image 
-            src={consultationThumb} 
-            alt="Konsultasi Bina Project" 
-            loading="lazy" 
-            decoding="async" 
-            width={240} 
-            height={260} 
-            format="webp" 
-            quality={85} 
+      <div class="col-lg-5">
+        <figure class="consultation-photo">
+          <Image
+            src={consultationImg}
+            alt={currentLang === 'en' ? 'Architectural Design & Construction Consultation Bina Project' : 'Konsultasi Desain & Konstruksi Bangunan Bina Project'}
+            loading="lazy"
+            decoding="async"
+            width={880}
+            height={660}
+            format="webp"
+            quality={85}
           />
-        </div>
+          <figcaption class="consultation-float movingX">
+            <Image
+              src={consultationThumb}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              width={68}
+              height={74}
+              format="webp"
+              quality={80}
+            />
+            <span class="consultation-float-text">
+              <strong>{t('consultationCta.freeTitle')}</strong>
+              <small>{t('consultationCta.freeSub')}</small>
+            </span>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .consultation-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .consultation-sec {
+    padding: 72px 0 96px;
   }
-  .consultation-image img {
-    max-height: 220px;
+  .consultation-title-area {
+    max-width: 100%;
+  }
+  .consultation-cta-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .consultation-cta-actions .th-btn {
+    flex: 0 0 auto;
     width: auto;
-    object-fit: contain;
+    white-space: nowrap;
+    padding: 19px 24px;
+    font-size: 13.5px;
+  }
+  .consultation-photo {
+    position: relative;
+    margin: 0;
+    border-radius: 22px;
+    overflow: visible;
+  }
+  .consultation-photo > img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  }
+  .consultation-float {
+    position: absolute;
+    left: 18px;
+    bottom: -22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 12px 18px 12px 14px;
+    border-radius: 16px;
+    background: rgba(13, 25, 43, 0.72);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  .consultation-float img {
+    width: 34px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .consultation-float-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .consultation-float-text strong {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+  .consultation-float-text small {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.72);
+    white-space: nowrap;
   }
   @media (max-width: 1199px) {
-    .consultation-image img {
-      max-height: 180px;
+    .consultation-cta-actions .th-btn {
+      padding: 17px 18px;
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 991px) {
+    .consultation-photo {
+      max-width: 560px;
+    }
+    .consultation-float {
+      bottom: -18px;
     }
   }
   @media (max-width: 767px) {
-    .consultation-image {
-      margin-bottom: 20px;
-    }
-    .consultation-image img {
-      max-height: 140px;
+    .consultation-sec {
+      padding: 56px 0 76px;
     }
   }
   @media (max-width: 575px) {
@@ -116,6 +188,24 @@ const waConsultationUrl = createWhatsAppUrl({
     .consultation-cta-actions .th-btn {
       width: 100%;
       justify-content: center;
+    }
+    .consultation-float {
+      left: 12px;
+      padding: 10px 14px 10px 12px;
+    }
+    .consultation-float img {
+      width: 28px;
+    }
+    .consultation-float-text strong {
+      font-size: 13px;
+    }
+    .consultation-float-text small {
+      font-size: 11px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .consultation-float.movingX {
+      animation: none;
     }
   }
 

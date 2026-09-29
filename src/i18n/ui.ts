@@ -219,6 +219,8 @@ export const ui = {
       'Konsultasikan desain, konsep, serta estimasi biaya langsung bersama tim Bina Project.',
     'consultationCta.btnWa': 'Konsultasi via WhatsApp',
     'consultationCta.btnSurvey': 'Jadwalkan Survei Lokasi',
+    'consultationCta.freeTitle': 'Gratis Survei & Estimasi RAB',
+    'consultationCta.freeSub': 'Tanpa komitmen awal',
 
     // Testimonials
     'testimonials.badge': 'Testimonial Klien',
@@ -551,6 +553,8 @@ export const ui = {
       'Discuss photorealistic 3D plans, premium certified materials, and transparent cost estimates directly with our architects & project managers.',
     'consultationCta.btnWa': 'Fast WhatsApp Consultation',
     'consultationCta.btnSurvey': 'Schedule a Site Survey',
+    'consultationCta.freeTitle': 'Free Survey & Cost Estimate',
+    'consultationCta.freeSub': 'No commitment required',
 
     // Testimonials
     'testimonials.badge': 'Client Testimonials',

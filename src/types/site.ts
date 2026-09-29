@@ -33,6 +33,26 @@ export interface ContactInfo {
   readonly openingHoursDetail: string;
 }
 
+export interface AnnouncementInfo {
+  readonly isActive: boolean;
+  readonly badge: string;
+  readonly title: string;
+  readonly description: string;
+  readonly imageUrl: string;
+  readonly ctaLabel: string;
+  readonly ctaUrl: string;
+}
+
+export const DEFAULT_ANNOUNCEMENT: AnnouncementInfo = {
+  isActive: false,
+  badge: '',
+  title: '',
+  description: '',
+  imageUrl: '',
+  ctaLabel: '',
+  ctaUrl: '',
+};
+
 export interface SiteConfig {
   readonly name: string;
   readonly legalName: string;
@@ -42,4 +62,5 @@ export interface SiteConfig {
   readonly contact: ContactInfo;
   readonly socials: readonly SocialLink[];
   readonly mainNav: readonly NavItem[];
+  readonly announcement: AnnouncementInfo;
 }

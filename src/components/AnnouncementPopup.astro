@@ -1,0 +1,363 @@
+---
+/**
+ * @file AnnouncementPopup.astro
+ * @description Homepage announcement / promo popup. Rendered only when an
+ * active announcement exists (see getAnnouncement). Shows on every visit
+ * with a short entrance delay; dismissable via close button, ESC, or backdrop.
+ */
+import type { AnnouncementInfo } from '@types';
+import { getMediaUrl } from '@lib/cdn';
+
+interface Props {
+  announcement: AnnouncementInfo;
+}
+
+const { announcement } = Astro.props;
+const hasImage = Boolean(announcement.imageUrl);
+const hasCta = Boolean(announcement.ctaLabel && announcement.ctaUrl);
+const hasImageLink = Boolean(hasImage && announcement.ctaUrl);
+const hasText = Boolean(announcement.badge || announcement.title || announcement.description);
+const imageSrc = getMediaUrl(announcement.imageUrl);
+const isExternalLink = announcement.ctaUrl.startsWith('http');
+---
+
+<div
+  id="announcementPopup"
+  class="announce-overlay"
+  aria-hidden="true"
+  data-announce-overlay
+>
+  <div
+    class="announce-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-label={announcement.title || 'Pengumuman Bina Project'}
+  >
+    <button
+      type="button"
+      class="announce-close"
+      aria-label="Tutup pengumuman"
+      data-announce-close
+    >
+      <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <line x1="2.5" y1="2.5" x2="13.5" y2="13.5"></line>
+        <line x1="13.5" y1="2.5" x2="2.5" y2="13.5"></line>
+      </svg>
+    </button>
+
+    {hasImage && (
+      <div class="announce-media">
+        {hasImageLink ? (
+          <a
+            href={announcement.ctaUrl}
+            data-announce-imglink
+            target={isExternalLink ? '_blank' : undefined}
+            rel={isExternalLink ? 'noopener noreferrer' : undefined}
+            aria-label={announcement.title || 'Buka halaman pengumuman'}
+          >
+            <img
+              src={imageSrc}
+              alt={announcement.title || 'Pengumuman Bina Project'}
+              loading="lazy"
+            />
+          </a>
+        ) : (
+          <img
+            src={imageSrc}
+            alt={announcement.title || 'Pengumuman Bina Project'}
+            loading="lazy"
+          />
+        )}
+      </div>
+    )}
+
+    {hasText && (
+    <div class="announce-body">
+      {announcement.badge && (
+        <span class="announce-badge">{announcement.badge}</span>
+      )}
+      {announcement.title && (
+        <h2 class="announce-title">{announcement.title}</h2>
+      )}
+      {announcement.description && (
+        <p class="announce-desc">{announcement.description}</p>
+      )}
+      {hasCta && (
+        <a
+          href={announcement.ctaUrl}
+          class="announce-cta"
+          data-announce-cta
+          target={isExternalLink ? '_blank' : undefined}
+          rel={isExternalLink ? 'noopener noreferrer' : undefined}
+        >
+          {announcement.ctaLabel}
+        </a>
+      )}
+    </div>
+    )}
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function initAnnouncementPopup() {
+      var overlay = document.querySelector('[data-announce-overlay]');
+      if (!overlay || overlay.dataset.announceInit === 'true') return;
+      overlay.dataset.announceInit = 'true';
+
+      var dialog = overlay.querySelector('.announce-dialog');
+      var closeBtn = overlay.querySelector('[data-announce-close]');
+      var cta = overlay.querySelector('[data-announce-cta]');
+      var lastFocused = null;
+
+      function openPopup() {
+        lastFocused = document.activeElement;
+        overlay.classList.add('is-visible');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('announce-open');
+        if (closeBtn) closeBtn.focus({ preventScroll: true });
+      }
+
+      function closePopup() {
+        overlay.classList.remove('is-visible');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('announce-open');
+        if (lastFocused && typeof lastFocused.focus === 'function') {
+          lastFocused.focus({ preventScroll: true });
+        }
+      }
+
+      // Show on every visit with a short entrance delay
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.setTimeout(openPopup, reduceMotion ? 100 : 1200);
+
+      if (closeBtn) closeBtn.addEventListener('click', closePopup);
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closePopup();
+      });
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-visible')) closePopup();
+      });
+      if (cta) {
+        cta.addEventListener('click', function () {
+          if (typeof window.trackLead === 'function') {
+            window.trackLead('announcement_popup', window.location.pathname);
+          }
+          closePopup();
+        });
+      }
+      var imgLink = overlay.querySelector('[data-announce-imglink]');
+      if (imgLink) {
+        imgLink.addEventListener('click', function () {
+          if (typeof window.trackLead === 'function') {
+            window.trackLead('announcement_popup', window.location.pathname);
+          }
+        });
+      }
+      if (dialog) {
+        dialog.addEventListener('keydown', function (e) {
+          if (e.key !== 'Tab') return;
+          var focusables = dialog.querySelectorAll('a[href], button:not([disabled])');
+          if (!focusables.length) return;
+          var first = focusables[0];
+          var last = focusables[focusables.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnnouncementPopup);
+    } else {
+      initAnnouncementPopup();
+    }
+  })();
+</script>
+
+<style>
+  .announce-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(13, 25, 43, 0.62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+  }
+  .announce-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .announce-dialog {
+    position: relative;
+    width: min(480px, 100%);
+    max-height: min(88vh, 720px);
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(13, 25, 43, 0.35);
+    transform: translateY(16px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .announce-overlay.is-visible .announce-dialog {
+    transform: translateY(0) scale(1);
+  }
+  .announce-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    color: #17202a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(13, 25, 43, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .announce-close:hover {
+    transform: scale(1.08);
+    background: rgba(239, 68, 68, 0.85);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #fff;
+  }
+  .announce-close:active {
+    transform: scale(0.96);
+  }
+  .announce-close:focus-visible {
+    outline: 2px solid #22416d;
+    outline-offset: 2px;
+  }
+  .announce-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #e2e8f0;
+    border-radius: 20px 20px 0 0;
+  }
+  .announce-media:last-child img {
+    border-radius: 20px;
+  }
+  .announce-media a {
+    display: block;
+    cursor: pointer;
+  }
+  .announce-body {
+    padding: 26px 26px 28px;
+    text-align: center;
+  }
+  .announce-badge {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 5px 14px;
+    border-radius: 9999px;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .announce-title {
+    margin: 0 0 10px;
+    font-family: var(--title-font, 'Titillium Web', sans-serif);
+    font-size: clamp(21px, 4.6vw, 27px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: #17202a;
+  }
+  .announce-desc {
+    margin: 0 0 20px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #475569;
+  }
+  .announce-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 30px;
+    border-radius: 12px;
+    background: var(--theme-color, #22416d);
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 20px rgba(34, 65, 109, 0.3);
+  }
+  .announce-cta:hover {
+    background: #16294a;
+    transform: translateY(-2px);
+    color: #fff !important;
+  }
+  body.announce-open {
+    overflow: hidden;
+  }
+  @media (max-width: 560px) {
+    .announce-overlay {
+      padding: 16px 12px calc(16px + env(safe-area-inset-bottom, 0px));
+      align-items: center;
+    }
+    .announce-dialog {
+      width: 100%;
+      max-width: 420px;
+      max-height: 86vh;
+      max-height: 86dvh;
+      border-radius: 18px;
+    }
+    .announce-media img {
+      border-radius: 18px 18px 0 0;
+    }
+    .announce-media:last-child img {
+      border-radius: 18px;
+    }
+    .announce-body {
+      padding: 20px 18px 22px;
+    }
+    .announce-title {
+      font-size: 20px;
+    }
+    .announce-desc {
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+    .announce-cta {
+      width: 100%;
+      min-height: 48px;
+      padding: 13px 20px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .announce-overlay,
+    .announce-dialog,
+    .announce-close,
+    .announce-cta {
+      transition: none;
+    }
+  }
+</style>

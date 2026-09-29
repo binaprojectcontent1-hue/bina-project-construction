@@ -7,7 +7,7 @@
 
 import { supabase, isSupabaseConfigured } from './supabase';
 import { siteConfig as staticSiteConfig } from '@config/site';
-import type { SiteConfig, ContactInfo, SocialLink } from '@types';
+import type { SiteConfig, ContactInfo, SocialLink, AnnouncementInfo } from '@types';
 
 let cachedSiteConfig: SiteConfig | null = null;
 
@@ -92,6 +92,15 @@ export async function getSiteSettings(): Promise<SiteConfig> {
       ...staticSiteConfig,
       contact: mergedContact,
       socials: mergedSocials,
+      announcement: {
+        isActive: Boolean(data.is_announcement_active),
+        badge: data.announcement_badge || '',
+        title: data.announcement_title || '',
+        description: data.announcement_description || '',
+        imageUrl: data.announcement_image_url || '',
+        ctaLabel: data.announcement_cta_label || '',
+        ctaUrl: data.announcement_cta_url || '',
+      } satisfies AnnouncementInfo,
     };
 
     return cachedSiteConfig;
@@ -104,4 +113,16 @@ export async function getSiteSettings(): Promise<SiteConfig> {
 export async function getContactInfo(): Promise<ContactInfo> {
   const config = await getSiteSettings();
   return config.contact;
+}
+
+/**
+ * Returns the active homepage announcement, or null when disabled/incomplete.
+ * Keeps popup markup out of the HTML entirely when there is nothing to show.
+ */
+export async function getAnnouncement(): Promise<AnnouncementInfo | null> {
+  const config = await getSiteSettings();
+  const a = config.announcement;
+  if (!a || !a.isActive) return null;
+  if (!a.title && !a.description && !a.imageUrl) return null;
+  return a;
 }

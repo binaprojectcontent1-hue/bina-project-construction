@@ -77,6 +77,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         return 'Editor Proyek Berjalan';
       case 'biolink':
         return 'Bio Link';
+      case 'announcement':
+        return 'Pengumuman Popup';
       case 'site-settings':
         return 'Profil & Kontak Bisnis';
       case 'recruitment-jobs':

@@ -18,7 +18,7 @@ import heroImage1 from '@assets/images/hero/hero-image1.webp';
 const projects = await getAllProjects();
 ---
 
-<BaseLayout preloadImage={heroImage1.src}>
+<BaseLayout preloadImage={heroImage1.src} showAnnouncement={true}>
 
   <HeroSection />
   <TextTickerRibbon variant="dark" speed={36} />

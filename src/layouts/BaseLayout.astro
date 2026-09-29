@@ -7,12 +7,14 @@ import Preloader from '@components/Preloader.astro';
 import SmoothScroll from '@components/SmoothScroll.astro';
 import CustomCursor from '@components/CustomCursor.astro';
 import FloatingWhatsApp from '@components/FloatingWhatsApp.astro';
-import { getSiteSettings } from '@lib/siteSettingsService';
+import AnnouncementPopup from '@components/AnnouncementPopup.astro';
+import { getSiteSettings, getAnnouncement } from '@lib/siteSettingsService';
 import { MASTER_SERVICES } from '@data/services';
 import { useTranslations } from '@i18n/utils';
 import '@styles/global.css';
 
 const siteConfig = await getSiteSettings();
+const announcement = await getAnnouncement();
 
 interface Props {
   title?: string;
@@ -25,6 +27,7 @@ interface Props {
   preloadImage?: string;
   lang?: 'id' | 'en';
   googleSiteVerification?: string;
+  showAnnouncement?: boolean;
 }
 
 const siteUrl = Astro.site ? Astro.site.href : siteConfig.siteUrl;
@@ -51,6 +54,7 @@ const {
   noindex = false,
   preloadImage,
   googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || import.meta.env.GOOGLE_SITE_VERIFICATION || (siteConfig as any).googleSiteVerification || '',
+  showAnnouncement = false,
 } = Astro.props;
 
 const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${cleanSiteUrl}/${ogImage.replace(/^\//, '')}`;
@@ -518,6 +522,7 @@ const connectedSchemaGraph = {
 
     <Footer />
     <FloatingWhatsApp />
+    {showAnnouncement && announcement && <AnnouncementPopup announcement={announcement} />}
     <SmoothScroll />
     <CustomCursor />
 

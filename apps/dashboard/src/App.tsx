@@ -12,6 +12,7 @@ import { ArticleEditor } from './pages/ArticleEditor';
 import { RedirectsList } from './pages/RedirectsList';
 import { Settings } from './pages/Settings';
 import { BioLinkEditor } from './pages/BioLinkEditor';
+import { AnnouncementManager } from './pages/AnnouncementManager';
 import { LiveProjectsManager } from './pages/LiveProjectsManager';
 import { LiveProjectEditor } from './pages/LiveProjectEditor';
 import { BusinessProfileSettings } from './pages/BusinessProfileSettings';
@@ -75,6 +76,7 @@ function parseHash(rawHash: string): RouteState {
     'live-projects',
     'live-project-new',
     'biolink',
+    'announcement',
     'site-settings',
     'redirects',
     'settings',
@@ -344,6 +346,7 @@ export function App() {
       'live-projects': 'Peta Proyek Berjalan - Bina Project Construction',
       'live-project-new': editingLiveProjectId ? 'Edit Proyek Berjalan - Bina Project Construction' : 'Tambah Proyek Berjalan Baru - Bina Project Construction',
       'biolink': 'Bio Link Manager - Bina Project Construction',
+      'announcement': 'Pengumuman Popup - Bina Project Construction',
       'site-settings': 'Profil & Kontak Bisnis - Bina Project Construction',
       'redirects': 'Pengalihan Tautan - Bina Project Construction',
       'settings': 'Pengaturan & Publikasi Web - Bina Project Construction',
@@ -436,6 +439,8 @@ export function App() {
         );
       case 'biolink':
         return <BioLinkEditor />;
+      case 'announcement':
+        return <AnnouncementManager />;
       case 'site-settings':
         return <BusinessProfileSettings />;
       case 'live-projects':

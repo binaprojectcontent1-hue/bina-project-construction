@@ -14,7 +14,7 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
+  Megaphone,
   X,
 } from 'lucide-react';
 
@@ -24,6 +24,7 @@ export type TabType =
   | 'articles'
   | 'live-projects'
   | 'biolink'
+  | 'announcement'
   | 'site-settings'
   | 'redirects'
   | 'settings'
@@ -104,6 +105,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           label: 'Bio Link',
           icon: Link2,
           badge: 'Aktif',
+        },
+        {
+          id: 'announcement' as TabType,
+          label: 'Pengumuman Popup',
+          icon: Megaphone,
         },
         {
           id: 'site-settings' as TabType,

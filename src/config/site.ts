@@ -73,6 +73,16 @@ export const siteConfig: SiteConfig = {
   ],
 
   mainNav: MAIN_NAV,
+
+  announcement: {
+    isActive: false,
+    badge: '',
+    title: '',
+    description: '',
+    imageUrl: '',
+    ctaLabel: '',
+    ctaUrl: '',
+  },
 } as const;
 
 /**
