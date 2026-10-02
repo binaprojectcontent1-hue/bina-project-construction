@@ -31,7 +31,9 @@ if (!job) {
 
 const isClosed = job.status === 'closed' || (job.application_deadline && new Date(job.application_deadline).getTime() < Date.now());
 
+const displayDepartment = job.department === 'Arsitektur & Desain' ? 'Desain & Perencanaan' : job.department;
 const deptAccentColors: Record<string, string> = {
+  'Desain & Perencanaan': 'bg-blue-600',
   'Arsitektur & Desain': 'bg-blue-600',
   'Konstruksi & Lapangan': 'bg-emerald-600',
   'Estimator & RAB': 'bg-slate-700',
@@ -39,7 +41,7 @@ const deptAccentColors: Record<string, string> = {
   'Magang': 'bg-amber-500',
 };
 
-const topAccent = deptAccentColors[job.department] || 'bg-[#22416D]';
+const topAccent = deptAccentColors[displayDepartment] || deptAccentColors[job.department] || 'bg-[#22416D]';
 
 function formatListItems(data: unknown): string[] {
   if (!data) return [];
@@ -106,7 +108,7 @@ const responsibilitiesList = formatListItems(job.responsibilities);
         </div>
 
         <div class="flex items-center gap-2 shrink-0 text-xs font-technical">
-          <span class="font-bold uppercase tracking-wider text-[#84ACDF]">{job.department}</span>
+          <span class="font-bold uppercase tracking-wider text-[#84ACDF]">{displayDepartment}</span>
           <span class="text-slate-500">&bull;</span>
           <span class="text-slate-300">{job.job_type}</span>
         </div>

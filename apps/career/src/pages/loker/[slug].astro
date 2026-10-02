@@ -30,6 +30,7 @@ if (!job) {
 }
 
 // Employment type mapping for Google for Jobs Schema.org
+const displayDepartment = job.department === 'Arsitektur & Desain' ? 'Desain & Perencanaan' : job.department;
 const employmentTypeMap: Record<string, string> = {
   'Full-time': 'FULL_TIME',
   'Kontrak': 'CONTRACTOR',
@@ -155,7 +156,7 @@ const descriptionText = typeof job.description === 'string'
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              <span>{job.department}</span>
+              <span>{displayDepartment}</span>
             </span>
 
             <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/60 text-slate-300 font-medium">
@@ -408,13 +409,13 @@ const descriptionText = typeof job.description === 'string'
                   Tentang Bina Project Construction
                 </h3>
                 <span class="text-xs font-technical font-semibold text-[#22416D]">
-                  Studio Arsitektur &amp; Kontraktor Konstruksi Malang
+                  Kontraktor Konstruksi &amp; Rancang Bangun Malang
                 </span>
               </div>
             </div>
 
             <p class="text-sm font-body text-slate-600 leading-relaxed mb-5">
-              Bina Project adalah perusahaan arsitektur, kontraktor rancang-bangun (design &amp; build), dan interior yang berpusat di Kota Malang, Jawa Timur. Berpengalaman menangani 200+ proyek hunian dan komersial dengan komitmen amanah mutu, kepastian struktur, dan estetika desain kontemporer.
+              Bina Project adalah perusahaan kontraktor rancang-bangun (design &amp; build), konstruksi, dan interior yang berpusat di Kota Malang, Jawa Timur. Berpengalaman menangani 200+ proyek hunian dan komersial dengan komitmen amanah mutu, kepastian struktur, dan estetika desain kontemporer.
             </p>
 
             <!-- 3 Architectural Highlight Badges -->
@@ -477,7 +478,7 @@ const descriptionText = typeof job.description === 'string'
                   </svg>
                   <span>Departemen:</span>
                 </span>
-                <span class="font-semibold text-[#17202A] text-right text-xs sm:text-sm">{job.department}</span>
+                <span class="font-semibold text-[#17202A] text-right text-xs sm:text-sm">{displayDepartment}</span>
               </div>
 
               <!-- Job Type -->

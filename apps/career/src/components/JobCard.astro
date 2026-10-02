@@ -31,6 +31,7 @@ const {
 
 // Curated high-res architectural & construction photography per department
 const defaultThumbnails: Record<string, string> = {
+  'Desain & Perencanaan': 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop',
   'Arsitektur & Desain': 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop',
   'Konstruksi & Lapangan': 'https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?q=80&w=800&auto=format&fit=crop',
   'Estimator & RAB': 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=800&auto=format&fit=crop',
@@ -38,7 +39,8 @@ const defaultThumbnails: Record<string, string> = {
   'Magang': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop',
 };
 
-const thumbnail = thumbnailUrl?.trim() || defaultThumbnails[department] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop';
+const displayDepartment = department === 'Arsitektur & Desain' ? 'Desain & Perencanaan' : department;
+const thumbnail = thumbnailUrl?.trim() || defaultThumbnails[displayDepartment] || defaultThumbnails[department] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop';
 
 const deadlineDate = deadline ? new Date(deadline) : null;
 const isClosed = status === 'closed' || (deadlineDate && deadlineDate.getTime() < Date.now());
@@ -65,7 +67,7 @@ const isExpiringSoon = !isClosed && deadlineDate && (deadlineDate.getTime() - Da
       <!-- Eyebrow (Department & Job Type / Closed Notice) -->
       <div class="flex items-center justify-between gap-2 mb-2.5 text-xs font-technical">
         <span class="font-bold uppercase tracking-widest text-[#22416D]">
-          {department}
+          {displayDepartment}
         </span>
         {isClosed ? (
           <span class="font-bold text-rose-600 uppercase tracking-wider">

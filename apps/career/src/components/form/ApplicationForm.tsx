@@ -442,7 +442,7 @@ export function ApplicationForm({
         </label>
         <textarea
           className={`${inputClass} min-h-[90px] resize-none`}
-          placeholder="Contoh: Drafter Arsitektur di PT. Cipta Karya (2 Tahun) / Lulusan S1 Arsitektur UB 2024"
+          placeholder="Contoh: Drafter / Desainer di PT. Cipta Karya (2 Tahun) / Lulusan S1 Teknik Sipil UB 2024"
           value={formData.lastExperience}
           onChange={(e) => updateField('lastExperience', e.target.value)}
         />

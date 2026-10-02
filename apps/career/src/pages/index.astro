@@ -9,7 +9,12 @@ import { supabase } from '../lib/supabase';
 
 // Fetch published and closed job postings (closed jobs remain visible with notification)
 let jobs: any[] = [];
-const departments = ['Semua', 'Arsitektur & Desain', 'Konstruksi & Lapangan', 'Estimator & RAB', 'Marketing & Finance', 'Magang'];
+const mapDept = (dept: string) => {
+  if (!dept) return '';
+  if (dept.trim().toLowerCase() === 'arsitektur & desain') return 'Desain & Perencanaan';
+  return dept;
+};
+const departments = ['Semua', 'Desain & Perencanaan', 'Konstruksi & Lapangan', 'Estimator & RAB', 'Marketing & Finance', 'Magang'];
 
 if (supabase) {
   const { data } = await supabase
@@ -38,7 +43,7 @@ const deptCounts: Record<string, number> = {
 departments.forEach((dept) => {
   if (dept !== 'Semua') {
     deptCounts[dept] = jobs.filter(
-      (j) => j.department?.trim().toLowerCase() === dept.trim().toLowerCase()
+      (j) => mapDept(j.department)?.trim().toLowerCase() === dept.trim().toLowerCase()
     ).length;
   }
 });
@@ -73,12 +78,12 @@ departments.forEach((dept) => {
 
         <!-- Solid Authoritative Headline (Lighter / Clean Weight) -->
         <h1 class="text-3xl sm:text-5xl lg:text-6xl font-heading font-medium tracking-tight leading-[1.15] mb-6 text-white">
-          Bangun Mahakarya Arsitektur &amp; Karir Masa Depan Anda
+          Bangun Mahakarya Konstruksi &amp; Karir Masa Depan Anda
         </h1>
 
         <!-- Hero Description -->
         <p class="text-base sm:text-lg font-body text-slate-300 leading-relaxed max-w-2xl mb-10">
-          Bergabunglah bersama tim profesional Bina Project Construction. Berkolaborasi dalam proyek arsitektur, perencanaan kawasan, dan konstruksi modern di Jawa Timur.
+          Bergabunglah bersama tim profesional Bina Project Construction. Berkolaborasi dalam proyek rancang bangun, perencanaan teknis, dan konstruksi modern di Jawa Timur.
         </p>
 
         <!-- CTA Action Button -->
@@ -132,7 +137,7 @@ departments.forEach((dept) => {
           <input
             type="text"
             id="search-input"
-            placeholder="Cari judul posisi (contoh: Arsitek, Estimator, Site Supervisor, Drafter)..."
+            placeholder="Cari judul posisi (contoh: Drafter, Estimator, Site Supervisor, Project Manager)..."
             class="bina-input w-full pl-12 pr-4 py-3.5 text-sm shadow-xs placeholder:text-slate-400"
           />
         </div>
@@ -173,11 +178,11 @@ departments.forEach((dept) => {
       {jobs.length > 0 ? (
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="jobs-grid">
           {jobs.map((job) => (
-            <div data-department={job.department} data-title={job.title.toLowerCase()} class="h-full flex flex-col">
+            <div data-department={mapDept(job.department)} data-title={job.title.toLowerCase()} class="h-full flex flex-col">
               <JobCard
                 slug={job.slug}
                 title={job.title}
-                department={job.department}
+                department={mapDept(job.department)}
                 jobType={job.job_type}
                 workplaceType={job.workplace_type}
                 location={job.location}

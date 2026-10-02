@@ -21,7 +21,7 @@ interface JobEditorProps {
   onSave: () => void;
 }
 
-const DEPARTMENTS = ['Arsitektur & Desain', 'Konstruksi & Lapangan', 'Estimator & RAB', 'Marketing & Finance', 'Magang'];
+const DEPARTMENTS = ['Desain & Perencanaan', 'Konstruksi & Lapangan', 'Estimator & RAB', 'Marketing & Finance', 'Magang'];
 const JOB_TYPES = ['Full-time', 'Kontrak', 'Magang / Internship', 'Freelance'];
 const WORKPLACE_TYPES = ['On-site', 'Hybrid', 'Remote'];
 const EXP_LEVELS = ['Fresh Graduate', '1-3 Tahun', '3-5 Tahun', 'Senior'];
