@@ -80,7 +80,7 @@ export const Overview: React.FC<OverviewProps> = ({
 
         // Candidates count
         const { count: cCount } = await supabase
-          .from('candidates')
+          .from('job_applications')
           .select('*', { count: 'exact', head: true });
 
         if (typeof pCount === 'number') setPortfolioCount(pCount);

@@ -40,6 +40,11 @@ export class RateLimiter {
     resetTime?: number;
     blockedUntil?: number;
   }> {
+    // In development mode (localhost), bypass rate limiting completely to allow testing
+    if (import.meta.env.DEV) {
+      return { allowed: true, remainingAttempts: 999 };
+    }
+
     const now = Date.now();
     const record = rateLimitStore.get(identifier);
 
@@ -110,6 +115,15 @@ export class RateLimiter {
     blockEndsAt?: number;
   } {
     const now = Date.now();
+    if (import.meta.env.DEV) {
+      return {
+        attempts: 0,
+        remainingAttempts: 999,
+        windowEndsAt: now + this.config.windowMs,
+        isBlocked: false,
+      };
+    }
+
     const record = rateLimitStore.get(identifier);
 
     if (!record) {
@@ -136,8 +150,8 @@ export class RateLimiter {
 // Singleton instance
 export const deployRateLimiter = new RateLimiter({
   windowMs: 60 * 60 * 1000,    // 1 hour
-  maxAttempts: 10,             // 10 deploys per hour
-  blockDuration: 15 * 60 * 1000, // 15 min lockout
+  maxAttempts: 60,             // 60 deploys per hour
+  blockDuration: 2 * 60 * 1000, // 2 min lockout (was 15 min)
 });
 
 export const apiRateLimiter = new RateLimiter({
