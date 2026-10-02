@@ -53,36 +53,44 @@ departments.forEach((dept) => {
   <Header />
 
   <!-- =========================================================================
-       HERO SECTION — Authentic Architectural Editorial with Real Project Visual
+       HERO SECTION — 1672:941 Exact Image Ratio & Clean Left Gradient
        ========================================================================= -->
-  <section class="relative bg-[#0A1320] text-white pt-24 pb-28 sm:pt-32 sm:pb-36 overflow-hidden">
+  <section class="relative w-full overflow-hidden bg-[#0A1320] text-white min-h-[calc(100vh-76px)] min-h-[calc(100dvh-76px)] flex items-center">
     
-    <!-- Real Architectural Project Image -->
-    <div 
-      class="absolute inset-0 bg-cover bg-center sm:bg-right opacity-45 mix-blend-luminosity pointer-events-none"
-      style="background-image: url('/assets/img/hero-career.webp');"
-    ></div>
-    <!-- Hero Dark Overlay Gradient -->
-    <div class="absolute inset-0 bg-gradient-to-r from-[#0A1320] via-[#0A1320]/85 to-[#0A1320]/45 pointer-events-none"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0A1320]/60 via-transparent to-[#0A1320] pointer-events-none"></div>
+    <!-- Real Architectural Project Image (Natural Full Color, No Overlay) -->
+    <img
+      src="/assets/img/hero-career.webp"
+      alt="Proyek Bina Project Construction"
+      class="absolute inset-0 w-full h-full object-cover object-right md:object-center pointer-events-none"
+      width="1672"
+      height="941"
+      fetchpriority="high"
+      decoding="async"
+    />
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-left max-w-3xl">
+    <!-- Ultra-Smooth Eased Cinematic Gradient (Extended further right with smooth non-linear feathering) -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: linear-gradient(to right, #0A1320 0%, #0A1320 22%, rgba(10, 19, 32, 0.98) 32%, rgba(10, 19, 32, 0.92) 42%, rgba(10, 19, 32, 0.78) 52%, rgba(10, 19, 32, 0.58) 62%, rgba(10, 19, 32, 0.36) 70%, rgba(10, 19, 32, 0.16) 78%, rgba(10, 19, 32, 0.04) 85%, rgba(10, 19, 32, 0) 90%);"
+    ></div>
+
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-0">
+      <div class="text-left max-w-xl md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         
         <!-- Clean Editorial Eyebrow -->
-        <div class="mb-5 sm:mb-6">
+        <div class="mb-3 sm:mb-4">
           <span class="text-xs sm:text-sm font-technical font-medium uppercase tracking-widest text-[#84ACDF]">
             Portal Rekrutmen Resmi &bull; Bina Project Construction
           </span>
         </div>
 
-        <!-- Solid Authoritative Headline (Lighter / Clean Weight) -->
-        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-heading font-medium tracking-tight leading-[1.15] mb-6 text-white">
+        <!-- Solid Authoritative Headline -->
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-medium tracking-tight leading-[1.18] mb-4 text-white">
           Bangun Mahakarya Konstruksi &amp; Karir Masa Depan Anda
         </h1>
 
         <!-- Hero Description -->
-        <p class="text-base sm:text-lg font-body text-slate-300 leading-relaxed max-w-2xl mb-10">
+        <p class="text-sm sm:text-base font-body text-slate-200 leading-relaxed max-w-lg mb-6 sm:mb-8">
           Bergabunglah bersama tim profesional Bina Project Construction. Berkolaborasi dalam proyek rancang bangun, perencanaan teknis, dan konstruksi modern di Jawa Timur.
         </p>
 
@@ -90,7 +98,7 @@ departments.forEach((dept) => {
         <div class="flex items-center justify-start">
           <a
             href="#lowongan"
-            class="th-btn gap-2.5 px-8 py-3.5 shadow-lg"
+            class="th-btn gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 shadow-lg"
           >
             <span>Lihat Lowongan Kerja ({openJobsCount > 0 ? `${openJobsCount} Terbuka` : `${jobs.length} Posisi`})</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +108,6 @@ departments.forEach((dept) => {
         </div>
 
       </div>
-
 
     </div>
   </section>
